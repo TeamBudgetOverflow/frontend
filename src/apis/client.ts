@@ -42,4 +42,4 @@ tokenClient.interceptors.response.use(
   }
 );
 
-export { noneTokenClient };
+export { noneTokenClient, tokenClient };
