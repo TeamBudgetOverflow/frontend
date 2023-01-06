@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { RecoilRoot } from 'recoil';
 
@@ -10,7 +10,9 @@ import './index.css';
 ReactDOM.render(
   <React.StrictMode>
     <RecoilRoot>
-      <App />
+      <Suspense>
+        <App />
+      </Suspense>
     </RecoilRoot>
   </React.StrictMode>,
   document.getElementById('root') as HTMLElement
