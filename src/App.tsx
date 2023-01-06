@@ -2,8 +2,8 @@ import React from 'react';
 
 import Router from './shared/Router';
 
-function App() {
+const App = () => {
   return <Router />;
-}
+};
 
 export default App;
