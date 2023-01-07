@@ -6,12 +6,14 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import './index.css';
+import GlobalStyles from './styles/globalStyles';
 
 ReactDOM.render(
   <React.StrictMode>
     <RecoilRoot>
       <Suspense>
         <App />
+        <GlobalStyles />
       </Suspense>
     </RecoilRoot>
   </React.StrictMode>,
