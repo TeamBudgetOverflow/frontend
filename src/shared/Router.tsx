@@ -10,6 +10,7 @@ import DetailGoal from '../pages/DetailGoal';
 import GroupGoals from '../pages/GroupGoals';
 import SearchGoals from '../pages/SearchGoals';
 import DetailUser from '../pages/DetailUser';
+import LandingPage from '../pages/LandingPage';
 import Layout from './Layout';
 
 const Router = () => {
@@ -26,6 +27,7 @@ const Router = () => {
           <Route path='/goals/lookup' element={<GroupGoals />} />
           <Route path='/goals/lookup/search' element={<SearchGoals />} />
           <Route path='/users/:id' element={<DetailUser />} />
+          <Route path='/' element={<LandingPage />} />
         </Routes>
       </Layout>
     </BrowserRouter>
