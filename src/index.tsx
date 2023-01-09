@@ -1,23 +1,25 @@
 import React, { Suspense } from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { RecoilRoot } from 'recoil';
+import { ThemeProvider } from 'styled-components';
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import './index.css';
-import GlobalStyles from './styles/globalStyles';
+import './styles/index.css';
+import defaultTheme from './styles/theme';
 
-ReactDOM.render(
+const rootElement = document.getElementById('root');
+if (!rootElement) throw new Error('Failed to find the root element');
+const root = ReactDOM.createRoot(rootElement);
+root.render(
   <React.StrictMode>
     <RecoilRoot>
       <Suspense>
         <App />
-        <GlobalStyles />
       </Suspense>
     </RecoilRoot>
-  </React.StrictMode>,
-  document.getElementById('root') as HTMLElement
+  </React.StrictMode>
 );
 
 reportWebVitals();
