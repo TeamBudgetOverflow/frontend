@@ -20,21 +20,7 @@ time, mark, audio, video {
 	margin: 0;
 	padding: 0;
 	border: 0;
-	font: inherit;
 	vertical-align: baseline;
-}
-
-html,
-body {
-  font-size: 10px;
-  word-break: keep-all;
-}
-
-@media screen and (min-width: 841px) and (max-width: 1280px) and (max-aspect-ratio: 4 / 3) {
-  html,
-  body {
-    font-size: 0.75vw;
-  }
 }
 
 /* HTML5 display-role reset for older browsers */
@@ -70,7 +56,7 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: "";
+  content: '';
   content: none;
 }
 
@@ -82,23 +68,4 @@ table {
 a {
   color: white !important;
   text-decoration: none !important;
-}
-
-.logo {
-  width: auto;
-  height: 1.5rem;
-}
-
-@media only screen and (min-width: 1450px) {
-  .logo {
-    width: 10.4375rem;
-    height: 2.8125rem;
-  }
-}
-
-@media only screen and (min-width: 950px) and (max-width: 1449px) {
-  .logo {
-    width: 8.375rem;
-    height: 2.25rem;
-  }
 }

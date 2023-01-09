@@ -1,11 +1,13 @@
 import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import { RecoilRoot } from 'recoil';
+import { ThemeProvider } from 'styled-components';
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import './index.css';
+import './styles/index.css';
+import defaultTheme from './styles/theme';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) throw new Error('Failed to find the root element');
@@ -14,7 +16,9 @@ root.render(
   <React.StrictMode>
     <RecoilRoot>
       <Suspense>
-        <App />
+        <ThemeProvider theme={defaultTheme}>
+          <App />
+        </ThemeProvider>
       </Suspense>
     </RecoilRoot>
   </React.StrictMode>
