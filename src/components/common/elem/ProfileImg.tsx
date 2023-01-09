@@ -14,6 +14,7 @@ const Img = styled.img<{ size: string }>`
   width: ${(props) => props.size};
   height: ${(props) => props.size};
   border-radius: 50%;
+  border: 1px solid ${(props) => props.theme.gray500};
 `;
 
 export default ProfileImg;
