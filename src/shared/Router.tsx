@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import AgreementOfCollectionPersonalInfo from '../pages/AgreementOfCollectionPersonalInfo';
 
 import Home from '../pages/Home';
 import SelectType from '../pages/SelectType';
@@ -30,6 +31,7 @@ const Router = () => {
           <Route path='/users/:id' element={<DetailUser />} />
           <Route path='/' element={<LandingPage />} />
           <Route path='/pinnumber' element={<PinNumberInputPage />} />
+          <Route path='/agreement' element={<AgreementOfCollectionPersonalInfo />} />
         </Routes>
       </Layout>
     </BrowserRouter>

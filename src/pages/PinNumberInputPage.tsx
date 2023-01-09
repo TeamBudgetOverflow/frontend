@@ -57,7 +57,7 @@ const PinNumberInputPage = () => {
   };
 
   return (
-    <>
+    <Wrapper>
       <KeypadWrapper>
         <PinNumInputContainer>{pinNumber}</PinNumInputContainer>
         {numbers.map((n) => {
@@ -74,9 +74,16 @@ const PinNumberInputPage = () => {
           Submit
         </SubmitButtonFlex>
       </KeypadWrapper>
-    </>
+    </Wrapper>
   );
 };
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 
 const KeypadWrapper = styled.div`
   margin: 30px;
