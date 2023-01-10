@@ -42,4 +42,11 @@ tokenClient.interceptors.response.use(
   }
 );
 
+export const userAPI = {
+  getUserProfile: async (userId: number) => {
+    const { data } = await tokenClient.get(`users/${userId}`);
+    return data;
+  },
+};
+
 export { noneTokenClient, tokenClient };
