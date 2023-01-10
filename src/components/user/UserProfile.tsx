@@ -28,7 +28,7 @@ const Wrapper = styled.div`
   padding: 10px;
   flex-direction: row;
   align-items: center;
-  gap: 10 px;
+  gap: 10px;
 `;
 
 const Nickname = styled.div`
