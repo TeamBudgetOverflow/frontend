@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
@@ -60,14 +61,11 @@ const PinNumberInputPage = () => {
     <Wrapper>
       <KeypadWrapper>
         <PinNumInputContainer>{pinNumber}</PinNumInputContainer>
-        {numbers.map((n) => {
-          const pinButton = (
-            <NumButtonFlex value={n} onClick={inputNums(n)}>
-              {n}
-            </NumButtonFlex>
-          );
-          return n === numbers.length - 1 ? <>{pinButton}</> : pinButton;
-        })}
+        {numbers.map((n) => (
+          <NumButtonFlex key={n} value={n} onClick={inputNums(n)}>
+            {n}
+          </NumButtonFlex>
+        ))}
         <NumButtonFlex onClick={erasePinNumberOne}>←</NumButtonFlex>
         <NumButtonFlex onClick={erasePinNumberAll}>✕</NumButtonFlex>
         <SubmitButtonFlex type='submit' onClick={handlerSubmitButton}>
