@@ -3,3 +3,20 @@ export interface IUserProfile {
   nickname: string;
   description: string;
 }
+
+export interface IUserGoals {
+  goals: Array<IUserGoal>;
+}
+
+export interface IUserGoal {
+  id: number;
+  title: string;
+  description: string;
+  isPrivate: boolean;
+  hashtag: Array<string>;
+  amount: number;
+  attainment: number;
+  startDate: Date;
+  endDate: Date;
+  headCount: number;
+}

@@ -16,3 +16,21 @@ export const userProfile = atom({
     description: '',
   },
 });
+
+export const userGoals = atom({
+  key: 'userGoals',
+  default: [
+    {
+      id: 0,
+      title: '',
+      description: '',
+      isPrivate: false,
+      hashtag: [''],
+      amount: 0,
+      attainment: 0,
+      startDate: new Date(),
+      endDate: new Date(),
+      headCount: 0,
+    },
+  ],
+});
