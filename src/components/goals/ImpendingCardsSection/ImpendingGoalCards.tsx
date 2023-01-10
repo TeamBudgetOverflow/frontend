@@ -2,13 +2,18 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-const ImpendingGoalCards = () => {
+type GoalCardProps = {
+  title: string;
+  hashtag?: string;
+};
+
+const ImpendingGoalCards = ({ title, hashtag }: GoalCardProps) => {
   return (
     <CardWrapper>
       <ImageWrapper></ImageWrapper>
       <TextWrapper>
-        <Title>Title</Title>
-        <Hashtag>hashtage</Hashtag>
+        <Title>{title}</Title>
+        <Hashtag>{hashtag}</Hashtag>
       </TextWrapper>
     </CardWrapper>
   );

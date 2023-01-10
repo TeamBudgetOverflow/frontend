@@ -3,14 +3,38 @@ import React from 'react';
 import styled from 'styled-components';
 import ImpendingGoalCards from './ImpendingGoalCards';
 
-const ImpendingGoalCardsList = () => {
+export interface GoalsArrProp {
+  goals: [
+    {
+      goalId: number;
+      title: string;
+      description?: string;
+      isPrivate: boolean;
+      hashtag?: string;
+      initialAmount: number;
+      currentAmount: number;
+      startDate: Date;
+      endDate: Date;
+      headCount: number;
+    }
+  ];
+}
+
+const ImpendingGoalCardsList = ({ goals }: GoalsArrProp) => {
+  const impendingGoalCard = goals.map((goal) => (
+    <ImpendingGoalCards
+      key={goal.goalId}
+      title={goal.title}
+      hashtag={goal.hashtag}
+    />
+  ));
   return (
     <ImpendingGoalCardsListLayout>
       <UpperWrapper>
         <Paragraphs>마감임박 목표</Paragraphs>
         <Paragraphs>모두보기</Paragraphs>
       </UpperWrapper>
-      <ImpendingGoalCards />
+      {impendingGoalCard}
     </ImpendingGoalCardsListLayout>
   );
 };

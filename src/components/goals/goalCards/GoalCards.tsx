@@ -11,6 +11,7 @@ import PercentageIndicator from '../../common/elem/PercentageIndicator';
 
 export type GoalAtomProps = {
   goal: {
+    goalId: number;
     title: string;
     description?: string;
     isPrivate: boolean;

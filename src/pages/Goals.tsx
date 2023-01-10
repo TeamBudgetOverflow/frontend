@@ -16,7 +16,7 @@ const Goals = () => {
 
   return (
     <div>
-      <ImpendingGoalCardsList />
+      <ImpendingGoalCardsList goals={goals} />
       <GoalCardsWrapper>{goalCards}</GoalCardsWrapper>
     </div>
   );
