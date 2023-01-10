@@ -6,7 +6,7 @@ import Home from '../pages/Home';
 import AddGoal from '../pages/AddGoal';
 import DetailGoal from '../pages/DetailGoal';
 import Navigation from './Navigation';
-import Goals from '../pages/Goals';
+import Goals from '../pages/SearchGoals';
 
 const Router = () => {
   return (
@@ -16,7 +16,7 @@ const Router = () => {
         <Route path='/' element={<Home />} />
         <Route path='/goal/add' element={<AddGoal />} />
         <Route path='/goal/:id' element={<DetailGoal />} />
-        <Route path='/goals' element={<Goals />} />
+        <Route path='/searchgoals' element={<Goals />} />
       </Routes>
       <Navigation />
     </BrowserRouter>

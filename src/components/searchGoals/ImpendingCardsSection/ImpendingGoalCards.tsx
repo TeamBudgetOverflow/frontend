@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 type GoalCardProps = {
   title: string;
-  hashtag?: string;
+  hashtag?: string[];
 };
 
 const ImpendingGoalCards = ({ title, hashtag }: GoalCardProps) => {
