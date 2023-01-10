@@ -1,20 +1,24 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import GoalCards from '../components/goals/goalCards/GoalCards';
-import GoalAtom from '../recoil/GoalAtom';
 
 import styled from 'styled-components';
+import { goalInfo } from '../recoil/GoalAtom';
+import ImpendingGoalCards from '../components/goals/ImpendingCardsSection/ImpendingGoalCards';
+import ImpendingGoalCardsList from '../components/goals/ImpendingCardsSection/ImpendingGoalCardsList';
 
 const Goals = () => {
-  const goals = useRecoilValue(GoalAtom);
+  const goals = useRecoilValue(goalInfo);
 
-  // const goalCards = goals.map()
+  const goalCards = goals.map((goal) => (
+    <GoalCards key={goal.goalId} goal={goal} />
+  ));
 
-  // console.log(goals);
   return (
-    <GoalCardsWrapper>
-      <GoalCards goals={goals} />
-    </GoalCardsWrapper>
+    <div>
+      <ImpendingGoalCardsList />
+      <GoalCardsWrapper>{goalCards}</GoalCardsWrapper>
+    </div>
   );
 };
 

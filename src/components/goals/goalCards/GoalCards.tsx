@@ -10,7 +10,7 @@ import EndDateIndicator from '../../common/elem/EndDateIndicator';
 import PercentageIndicator from '../../common/elem/PercentageIndicator';
 
 export type GoalAtomProps = {
-  goals: {
+  goal: {
     title: string;
     description?: string;
     isPrivate: boolean;
@@ -23,7 +23,7 @@ export type GoalAtomProps = {
   };
 };
 
-const GoalCards = ({ goals }: GoalAtomProps) => {
+const GoalCards = ({ goal }: GoalAtomProps) => {
   const profile = useRecoilValue(userProfile);
   return (
     <CardWrapper>
@@ -32,7 +32,7 @@ const GoalCards = ({ goals }: GoalAtomProps) => {
           <span>진행중</span>
         </GoalStatusWrapper>
         <DdayCounterWrapper>
-          <DdayCounter endDate={goals.endDate} />
+          <DdayCounter endDate={goal.endDate} />
         </DdayCounterWrapper>
       </UpperWrapper>
       <MiddleWrapper>
@@ -45,24 +45,24 @@ const GoalCards = ({ goals }: GoalAtomProps) => {
           }
         />{' '}
         <TitleWrapper>
-          <CardTitle>{goals.title}</CardTitle>
+          <CardTitle>{goal.title}</CardTitle>
           <AmountAcumulated>
-            {goals.currentAmount - goals.initialAmount}원
+            {goal.currentAmount - goal.initialAmount}원
           </AmountAcumulated>
         </TitleWrapper>
       </MiddleWrapper>
       <ProgressBarWrapper>
         <ProgressBar
-          initialAmount={goals.initialAmount}
-          currentAmount={goals.currentAmount}
+          initialAmount={goal.initialAmount}
+          currentAmount={goal.currentAmount}
         />
       </ProgressBarWrapper>
 
       <LowLineWrapper>
-        <EndDateIndicator endDate={goals.endDate} />
+        <EndDateIndicator endDate={goal.endDate} />
         <PercentageIndicator
-          initialAmount={goals.initialAmount}
-          currentAmount={goals.currentAmount}
+          initialAmount={goal.initialAmount}
+          currentAmount={goal.currentAmount}
         />
       </LowLineWrapper>
     </CardWrapper>
