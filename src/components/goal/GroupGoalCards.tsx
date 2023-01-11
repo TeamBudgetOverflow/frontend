@@ -40,7 +40,6 @@ const GroupGoalCards = ({ goal }: { goal: IUserGoal }) => {
 
 const Wrapper = styled.div`
   padding: 12px 20px;
-  display: flex;
   flex-direction: column;
   flex: 0 0 auto;
   gap: 18px;

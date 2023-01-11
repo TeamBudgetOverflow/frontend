@@ -1,9 +1,9 @@
 import React from 'react';
 
 type SearchProps = {
-  width: number;
-  height: number;
-  props?: unknown;
+  width?: number;
+  height?: number;
+  [key: string]: unknown;
 };
 
 export const Search = ({ width = 16, height = 16, ...props }: SearchProps) => {

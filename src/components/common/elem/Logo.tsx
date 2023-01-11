@@ -13,6 +13,8 @@ export const Logo = ({ size }: LogoProps) => {
     medium: 32,
     small: 24,
   };
+
+  // TODO: team Logo 로 대체
   return (
     <svg
       width={sizes[size]}
