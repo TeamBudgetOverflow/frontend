@@ -1,3 +1,5 @@
+// dateStringTranslator returns date to formatted string
+// ex.'YYYY/MM/DD(Day)'
 export const dateStringTranslator = (targetDate: Date) => {
   const dayIndex = (day: number) => {
     switch (day) {

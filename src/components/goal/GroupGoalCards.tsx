@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { IUserGoal } from '../../interfaces/interfaces';
 
 import { dDayCalculator } from '../../utils/dDayCalculator';
-import { dateStringTranslator } from '../../utils/dateStringTranslator';
+import { dateStringTranslator } from '../../utils/dateTranslator';
 
 const GroupGoalCards = ({ goal }: { goal: IUserGoal }) => {
   const navigate = useNavigate();
