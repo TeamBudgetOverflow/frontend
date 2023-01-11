@@ -37,10 +37,6 @@ const Home = () => {
   }, [userGoalsData]);
 
   const navigate = useNavigate();
-  const handleAddGoal = () => {
-    navigate('/goal/add');
-  };
-
   return (
     <Wrapper>
       <UserProfile />
@@ -51,7 +47,7 @@ const Home = () => {
           goals?.map((goal) => <MyGoalCard key={goal.id} goal={goal} />)
         )}
       </CardList>
-      <AddGoalBtn onClick={handleAddGoal}>
+      <AddGoalBtn onClick={() => navigate('/goals/post')}>
         <SVGIcon viewBox='0 0 24 24'>
           <path fill='#f18529' d='M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z' />
         </SVGIcon>
