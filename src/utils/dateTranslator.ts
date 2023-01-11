@@ -39,3 +39,9 @@ export const dateStringTranslator = (targetDate: Date) => {
 
   return endDateIndicator;
 };
+
+// dateISOStringDateTranslator returns date to ISO formatted string
+// ex. 'YYYY-MM-DD'
+export const dateISOStringDateTranslator = (date: Date) => {
+  return date.toISOString().split('T')[0];
+};
