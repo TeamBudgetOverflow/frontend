@@ -36,8 +36,6 @@ const GroupGoals = () => {
     <NarrowGroupGoalCards key={goal.id} goal={goal} />
   ));
 
-  // TODO: view size 확정후 scroll 구현
-
   return (
     <div>
       <UpperWrapper>
@@ -46,13 +44,11 @@ const GroupGoals = () => {
           <Captions>모두보기</Captions>
         </UpperText>
         <ImpendingGoalCardsWrapper>
-          <ScrollMenu>
-            {isLoadingGoals ? (
-              <LoadingMsg>데이터를 불러오는 중입니다</LoadingMsg>
-            ) : (
-              impendingGoalCard
-            )}
-          </ScrollMenu>
+          {isLoadingGoals ? (
+            <LoadingMsg>데이터를 불러오는 중입니다</LoadingMsg>
+          ) : (
+            impendingGoalCard
+          )}
         </ImpendingGoalCardsWrapper>
       </UpperWrapper>
       <LowerWrapper>
@@ -77,6 +73,8 @@ const UpperWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  height: 100%;
+  width: 100%;
 `;
 
 const UpperText = styled.div`
@@ -99,8 +97,10 @@ const ImpendingGoalCardsWrapper = styled.div`
   display: flex;
   flex-direction: row;
   gap: 20px;
-  width: 414px;
-  height: 200px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  width: 100%;
+  height: 100%;
   padding: 8px;
   border-bottom: 2px solid;
 `;
@@ -110,13 +110,18 @@ const LowerWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  width: 95%;
+  height: 50%;
 `;
 
 const GoalCardsWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  flex-wrap: nowrap;
+  overflow-y: auto;
   gap: 20px;
   width: 100%;
+  height: 430px;
 `;
 
 const LoadingMsg = styled.div`

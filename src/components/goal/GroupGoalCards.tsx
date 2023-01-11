@@ -42,6 +42,7 @@ const Wrapper = styled.div`
   padding: 12px 20px;
   display: flex;
   flex-direction: column;
+  flex: 0 0 auto;
   gap: 18px;
   border-radius: 16px;
   background-color: ${(props) => props.theme.primary200};
