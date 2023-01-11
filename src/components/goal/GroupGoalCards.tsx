@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
 
-import EndDateIndicator from '../common/elem/EndDateIndicator';
-
 import { IUserGoal } from '../../interfaces/interfaces';
 
 import { dDayCalculator } from '../../utils/dDayCalculator';
