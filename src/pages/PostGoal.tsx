@@ -1,7 +1,7 @@
 import React from 'react';
 
-const AddGoal = () => {
+const PostGoal = () => {
   return <div>Add</div>;
 };
 
-export default AddGoal;
+export default PostGoal;
