@@ -8,7 +8,7 @@ import GoogleSignupButton from '../components/users/signup/GoogleSignupButton';
 
 // TODO: media query 설정
 // TODO: redirect uri, client id env 파일 설정
-const LandingPage = () => {
+const LoginPage = () => {
   return (
     <Wrapper>
       <KakaoSignupButton />
@@ -25,4 +25,4 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-export default LandingPage;
+export default LoginPage;

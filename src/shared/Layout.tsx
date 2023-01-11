@@ -1,16 +1,29 @@
 import React, { FunctionComponent, PropsWithChildren, useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useQuery } from 'react-query';
 
 import Header from './Header';
 import Navigation from './Navigation';
 
-import usersApi from '../apis/usersApi';
+import { userAPI } from '../apis/client';
 
+<<<<<<< HEAD
 const Layout: FunctionComponent<PropsWithChildren> = ({ children }) => {
   const { pathname } = useLocation();
   const headerRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
+=======
+export interface IChildrenProps {
+  children: React.ReactNode;
+}
+
+export interface IResponeType {
+  response: string | undefined;
+}
+
+function Layout({ children }: IChildrenProps) {
+>>>>>>> 02724a4 (FEAT: modify signup #4)
   const navigate = useNavigate();
 
   const [headerNavHeight, setHeaderNavHeight] = useState<number>(0);
@@ -20,28 +33,53 @@ const Layout: FunctionComponent<PropsWithChildren> = ({ children }) => {
     setHeaderNavHeight(headerRef.current.clientHeight + navRef.current.clientHeight);
   }, [headerRef.current?.clientHeight, navRef.current?.clientHeight, pathname]);
 
-  useEffect(() => {
-    // KAKAO & NAVER "/login"일 경우
-    if (location.pathname === '/login') {
-      // 인가 코드 받기
-      const code = location.search.split('code=')[1];
+  if (location.pathname === '/kakaologin') {
+    const code = new URL(window.location.href).searchParams.get('code');
+    try {
+      const { isLoading, data } = useQuery('kakaoLogin', () =>
+        userAPI.getKakaoSignup(code)
+      );
+      console.log(code);
 
-      //코드를 api에 전달
-      (async () => {
-        try {
-          const response = await usersApi.getSocialSignup(code);
-          // [배포전 삭제요] response test
-          console.log(response);
-          localStorage.setItem('accesstoken', response.data.accesstoken);
-          localStorage.setItem('refreshtoken', response.data.refreshtoken);
-
-          navigate('/');
-        } catch (err) {
-          console.error(err);
-        }
-      })();
+      localStorage.setItem('accesstoken', data.data.accesstoken);
+      localStorage.setItem('refreshtoken', data.data.refreshtoken);
+      navigate('/');
+    } catch (error) {
+      console.log(error);
     }
-  }, []);
+  }
+
+  if (location.pathname === '/googlelogin') {
+    const code = new URL(window.location.href).searchParams.get('code');
+    try {
+      const { isLoading, data } = useQuery('googleLogin', () =>
+        userAPI.getGoogleSignup(code)
+      );
+      console.log(code);
+
+      localStorage.setItem('accesstoken', data.data.accesstoken);
+      localStorage.setItem('refreshtoken', data.data.refreshtoken);
+      navigate('/');
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  if (location.pathname === '/naverlogin') {
+    const code = new URL(window.location.href).searchParams.get('code');
+    try {
+      const { isLoading, data } = useQuery('naverLogin', () =>
+        userAPI.getNaverSignup(code)
+      );
+      console.log(code);
+
+      localStorage.setItem('accesstoken', data.data.accesstoken);
+      localStorage.setItem('refreshtoken', data.data.refreshtoken);
+      navigate('/');
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <>

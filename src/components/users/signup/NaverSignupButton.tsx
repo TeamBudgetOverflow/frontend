@@ -13,7 +13,7 @@ const NaverSignupButton = () => {
   const naverStateString = 'test';
 
   const handleNaverSignup = () => {
-    window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${process.env.REACT_APP_NAVER_CLIENT_ID}&state=${naverStateString}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}`;
+    window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${process.env.REACT_APP_NAVER_CLIENT_ID}&state=${naverStateString}&redirect_uri=${process.env.REACT_APP_NAVER_REDIRECT_URI}`;
   };
 
   return (

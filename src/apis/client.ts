@@ -56,6 +56,26 @@ tokenClient.interceptors.response.use(
 );
 
 export const userAPI = {
+  getKakaoSignup: async (code: string | null) => {
+    const { data } = await noneTokenClient.get('/api/login/kakao?code=' + code);
+
+    return data;
+  },
+
+  getNaverSignup: async (code: string | null) => {
+    const { data } = await noneTokenClient.get('/api/login/naver?code=' + code);
+
+    return data;
+  },
+
+  getGoogleSignup: async (code: string | null) => {
+    const { data } = await noneTokenClient.get(
+      '/api/login/google?code=' + code
+    );
+
+    return data;
+  },
+
   getUserProfile: async (userId: number) => {
     const { data } = await tokenClient.get(`/users/${userId}`);
     // const data = {
@@ -65,6 +85,7 @@ export const userAPI = {
     // };
     return data;
   },
+
   getUserGoals: async (userId: number) => {
     const { data } = await tokenClient.get(`/users/${userId}/goals`);
     // const data = {
