@@ -10,7 +10,7 @@ import KakaoLogo from '../../../assets/icons/ico_KakaoTalk_logo.svg';
 // TODO: redirect uri, client id env 파일 설정
 const KakaoSignupButton = () => {
   const handleKakaoSignup = () => {
-    window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}`;
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.REACT_APP_KAKAO_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_KAKAO_REDIRECT_URI}`;
   };
 
   return (

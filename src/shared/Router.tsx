@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AgreementOfCollectionPersonalInfo from '../pages/\bAgreementOfCollectionPersonalInfo';
 
-import LandingPage from '../pages/LandingPage';
+import LandingPage from '../pages/LoginPage';
 import PinNumberInputPage from '../pages/PinNumberInputPage';
 import PostGoal from '../pages/PostGoal';
 import DetailGoal from '../pages/DetailGoal';

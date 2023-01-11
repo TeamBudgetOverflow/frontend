@@ -1,41 +1,71 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useQuery } from 'react-query';
 
 import Header from './Header';
 import Navigation from './Navigation';
 
-import usersApi from '../apis/usersApi';
+import { userAPI } from '../apis/client';
 
 export interface IChildrenProps {
   children: React.ReactNode;
+}
+
+export interface IResponeType {
+  response: string | undefined;
 }
 
 function Layout({ children }: IChildrenProps) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    // KAKAO & NAVER "/login"일 경우
-    if (location.pathname === '/login') {
-      // 인가 코드 받기
-      const code = location.search.split('code=')[1];
+  if (location.pathname === '/kakaologin') {
+    const code = new URL(window.location.href).searchParams.get('code');
+    try {
+      const { isLoading, data } = useQuery('kakaoLogin', () =>
+        userAPI.getKakaoSignup(code)
+      );
+      console.log(code);
 
-      //코드를 api에 전달
-      (async () => {
-        try {
-          const response = await usersApi.getSocialSignup(code);
-          // [배포전 삭제요] response test
-          console.log(response);
-          localStorage.setItem('accesstoken', response.data.accesstoken);
-          localStorage.setItem('refreshtoken', response.data.refreshtoken);
-
-          navigate('/');
-        } catch (err) {
-          console.error(err);
-        }
-      })();
+      localStorage.setItem('accesstoken', data.data.accesstoken);
+      localStorage.setItem('refreshtoken', data.data.refreshtoken);
+      navigate('/');
+    } catch (error) {
+      console.log(error);
     }
-  }, []);
+  }
+
+  if (location.pathname === '/googlelogin') {
+    const code = new URL(window.location.href).searchParams.get('code');
+    try {
+      const { isLoading, data } = useQuery('googleLogin', () =>
+        userAPI.getGoogleSignup(code)
+      );
+      console.log(code);
+
+      localStorage.setItem('accesstoken', data.data.accesstoken);
+      localStorage.setItem('refreshtoken', data.data.refreshtoken);
+      navigate('/');
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  if (location.pathname === '/naverlogin') {
+    const code = new URL(window.location.href).searchParams.get('code');
+    try {
+      const { isLoading, data } = useQuery('naverLogin', () =>
+        userAPI.getNaverSignup(code)
+      );
+      console.log(code);
+
+      localStorage.setItem('accesstoken', data.data.accesstoken);
+      localStorage.setItem('refreshtoken', data.data.refreshtoken);
+      navigate('/');
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div>
