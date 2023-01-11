@@ -3,13 +3,14 @@ import { useNavigate } from 'react-router-dom';
 
 import styled from 'styled-components';
 
-import EndDateIndicator from '../../common/elem/EndDateIndicator';
+import EndDateIndicator from '../common/elem/EndDateIndicator';
 
-import { IUserGoal } from '../../../interfaces/interfaces';
+import { IUserGoal } from '../../interfaces/interfaces';
 
-import { dDayCalculator } from '../../../utils/dDayCalculator';
+import { dDayCalculator } from '../../utils/dDayCalculator';
+import { dateStringTranslator } from '../../utils/dateStringTranslator';
 
-const GoalCards = ({ goal }: { goal: IUserGoal }) => {
+const GroupGoalCards = ({ goal }: { goal: IUserGoal }) => {
   const navigate = useNavigate();
 
   return (
@@ -29,7 +30,9 @@ const GoalCards = ({ goal }: { goal: IUserGoal }) => {
           <ProgressBar width={`${goal.attainment}%`} />
         </ProgressBarWrapper>
         <LowerLine>
-          <EndDateIndicator endDate={goal.endDate} />
+          <ProgressText>{`${dateStringTranslator(
+            goal.endDate
+          )} 종료`}</ProgressText>
           <ProgressText>{`${goal.attainment}%`}</ProgressText>
         </LowerLine>
       </BottomContent>
@@ -128,4 +131,4 @@ const LowerLine = styled.div`
   justify-content: space-between;
 `;
 
-export default GoalCards;
+export default GroupGoalCards;

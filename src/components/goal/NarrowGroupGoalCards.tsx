@@ -1,19 +1,15 @@
 import React from 'react';
 
 import styled from 'styled-components';
+import { IUserGoal } from '../../interfaces/interfaces';
 
-type GoalCardProps = {
-  title: string;
-  hashtag?: string[];
-};
-
-const ImpendingGoalCards = ({ title, hashtag }: GoalCardProps) => {
+const NarrowGroupGoalCards = ({ goal }: { goal: IUserGoal }) => {
   return (
     <CardWrapper>
       <ImageWrapper></ImageWrapper>
       <TextWrapper>
-        <Title>{title}</Title>
-        <Hashtag>{hashtag}</Hashtag>
+        <Title>{goal.title}</Title>
+        <Hashtag>{goal.hashtag}</Hashtag>
       </TextWrapper>
     </CardWrapper>
   );
@@ -47,4 +43,4 @@ const Hashtag = styled.span`
   font: ${(props) => props.theme.captionC2};
 `;
 
-export default ImpendingGoalCards;
+export default NarrowGroupGoalCards;

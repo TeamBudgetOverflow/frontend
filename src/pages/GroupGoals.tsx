@@ -4,8 +4,8 @@ import { useQuery } from 'react-query';
 
 import styled from 'styled-components';
 
-import GoalCards from '../components/searchGoals/goalCards/GoalCards';
-import ImpendingGoalCards from '../components/searchGoals/ImpendingCardsSection/ImpendingGoalCards';
+import GroupGoalCards from '../components/goal/GroupGoalCards';
+import NarrowGroupGoalCards from '../components/goal/NarrowGroupGoalCards';
 
 import { userGoals, userInfo } from '../recoil/atoms';
 
@@ -13,7 +13,7 @@ import { IUserGoals } from '../interfaces/interfaces';
 
 import { userAPI } from '../apis/client';
 
-const Goals = () => {
+const GroupGoals = () => {
   const { id } = useRecoilValue(userInfo);
 
   const { isLoading: isLoadingGoals, data: userGoalsData } =
@@ -27,15 +27,11 @@ const Goals = () => {
   }, [userGoalsData]);
 
   const goalCards = goals.map((goal) => (
-    <GoalCards key={goal.id} goal={goal} />
+    <GroupGoalCards key={goal.id} goal={goal} />
   ));
 
   const impendingGoalCard = goals.map((goal) => (
-    <ImpendingGoalCards
-      key={goal.id}
-      title={goal.title}
-      hashtag={goal.hashtag}
-    />
+    <NarrowGroupGoalCards key={goal.id} goal={goal} />
   ));
 
   return (
@@ -125,4 +121,4 @@ const LoadingMsg = styled.div`
   background-color: ${(props) => props.theme.gray400};
 `;
 
-export default Goals;
+export default GroupGoals;
