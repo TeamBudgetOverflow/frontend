@@ -5,10 +5,11 @@ import styled from 'styled-components';
 // TODO: submit pinnumber 연결
 // TODO: keypad design
 const PinNumberInputPage = () => {
-  const PASSWORD_MAX_LENGTH = 4;
+  const PASSWORD_MAX_LENGTH = 6;
 
   const numberInit = Array.from({ length: 10 }, (v, k) => k);
 
+  const [inputType, setInputType] = useState('password');
   const [numbers, setNumbers] = useState(numberInit);
   const [pinNumber, setPinNumber] = useState('');
 
@@ -36,9 +37,7 @@ const PinNumberInputPage = () => {
   };
 
   const erasePinNumberOne = () => {
-    setPinNumber(
-      pinNumber.slice(0, pinNumber.length === 0 ? 0 : pinNumber.length - 1)
-    );
+    setPinNumber(pinNumber.slice(0, pinNumber.length === 0 ? 0 : pinNumber.length - 1));
   };
 
   const erasePinNumberAll = () => {
@@ -59,15 +58,18 @@ const PinNumberInputPage = () => {
   return (
     <Wrapper>
       <KeypadWrapper>
-        <PinNumInputContainer>{pinNumber}</PinNumInputContainer>
-        {numbers.map((n) => {
-          const pinButton = (
-            <NumButtonFlex value={n} onClick={inputNums(n)}>
-              {n}
-            </NumButtonFlex>
-          );
-          return n === numbers.length - 1 ? <>{pinButton}</> : pinButton;
-        })}
+        <InputWrapper>
+          <PinNumInputContainer type={inputType} defaultValue={pinNumber} />
+          <PinNumberChecker onMouseDown={() => setInputType('text')} onMouseUp={() => setInputType('password')}>
+            보이기
+          </PinNumberChecker>
+        </InputWrapper>
+
+        {numbers.map((n) => (
+          <NumButtonFlex key={n} value={n} onClick={inputNums(n)}>
+            {n}
+          </NumButtonFlex>
+        ))}
         <NumButtonFlex onClick={erasePinNumberOne}>←</NumButtonFlex>
         <NumButtonFlex onClick={erasePinNumberAll}>✕</NumButtonFlex>
         <SubmitButtonFlex type='submit' onClick={handlerSubmitButton}>
@@ -88,21 +90,43 @@ const Wrapper = styled.div`
 const KeypadWrapper = styled.div`
   margin: 30px;
   flex-wrap: wrap;
-  width: 420px;
+  max-width: 350px;
+  width: 90%;
   height: 360px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 `;
 
-const PinNumInputContainer = styled.span`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 420px;
+const InputWrapper = styled.div`
+  width: 100%;
   height: 60px;
+  border-bottom: 1px solid;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+`;
+
+const PinNumberChecker = styled.i`
   border: 1px solid;
-  border-color: black;
+  border-radius: 20px;
+  width: 50px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  :hover {
+    cursor: pointer;
+  }
+`;
+
+const PinNumInputContainer = styled.input`
+  font: ${(props) => props.theme.captionC1};
+  text-align: center;
+  border: none;
 `;
 
 const NumButtonFlex = styled.button`
@@ -115,6 +139,9 @@ const NumButtonFlex = styled.button`
   border-radius: 20px;
   overflow: hidden;
   position: relative;
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 const SubmitButtonFlex = styled.button`
@@ -127,6 +154,9 @@ const SubmitButtonFlex = styled.button`
   border-radius: 20px;
   overflow: hidden;
   position: relative;
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 export default PinNumberInputPage;
