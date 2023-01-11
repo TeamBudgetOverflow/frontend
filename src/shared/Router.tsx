@@ -4,6 +4,9 @@ import AgreementOfCollectionPersonalInfo from '../pages/\bAgreementOfCollectionP
 
 import LandingPage from '../pages/LandingPage';
 import PinNumberInputPage from '../pages/PinNumberInputPage';
+import PostGoal from '../pages/PostGoal';
+import DetailGoal from '../pages/DetailGoal';
+import GroupGoals from '../pages/GroupGoals';
 import Layout from './Layout';
 
 const Router = () => {
@@ -17,6 +20,9 @@ const Router = () => {
             path='/agreement'
             element={<AgreementOfCollectionPersonalInfo />}
           />
+          <Route path='/goals/post' element={<PostGoal />} />
+          <Route path='/goals/:id' element={<DetailGoal />} />
+          <Route path='/goals/search' element={<GroupGoals />} />
         </Routes>
       </Layout>
     </BrowserRouter>

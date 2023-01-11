@@ -42,4 +42,36 @@ tokenClient.interceptors.response.use(
   }
 );
 
+export const userAPI = {
+  getUserProfile: async (userId: number) => {
+    const { data } = await tokenClient.get(`/users/${userId}`);
+    // const data = {
+    //   img: '',
+    //   nickname: '유진',
+    //   description: '안녕하세요',
+    // };
+    return data;
+  },
+  getUserGoals: async (userId: number) => {
+    const { data } = await tokenClient.get(`/users/${userId}/goals`);
+    // const data = {
+    //   goals: [
+    //     {
+    //       id: 1,
+    //       title: '생일선물',
+    //       description: '친구 생일선물 구매비용 모으기',
+    //       isPrivate: false,
+    //       hashtag: ['생일선물', '소액모으기'],
+    //       amount: 100000,
+    //       attainment: 80,
+    //       startDate: new Date(),
+    //       endDate: new Date('2023-01-20'),
+    //       headCount: 1,
+    //     },
+    //   ],
+    // };
+    return data;
+  },
+};
+
 export { noneTokenClient, tokenClient };
