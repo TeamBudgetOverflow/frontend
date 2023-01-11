@@ -4,7 +4,8 @@ export const userInfo = atom({
   key: 'userInfo',
   default: {
     id: 0,
-    isLogin: false,
+    isLogin: true,
+    // 로그인: true
   },
 });
 
