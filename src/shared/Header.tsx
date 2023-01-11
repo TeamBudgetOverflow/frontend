@@ -6,7 +6,7 @@ const Header = () => {
 };
 
 const Wrapper = styled.div`
-  height: 100px;
+  height: 50px;
   background-color: ${(props) => props.theme.primaryMain};
 `;
 

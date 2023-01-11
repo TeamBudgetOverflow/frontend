@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useQuery } from 'react-query';
-import { ScrollMenu } from 'react-horizontal-scrolling-menu';
 
 import styled from 'styled-components';
 
