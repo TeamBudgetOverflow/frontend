@@ -53,7 +53,7 @@ export default styled.button<
   ${({ size }) => size && sizeList[size]};
   height: ${({ height }) => height || '55px'};
   line-height: ${({ lineHeight }) => lineHeight};
-  width: ${({ width }) => width || '95%'};
+  width: ${({ width }) => width || '350px'};
 
   cursor: pointer;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);

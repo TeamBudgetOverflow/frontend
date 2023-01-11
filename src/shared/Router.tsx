@@ -1,20 +1,27 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import AgreementOfCollectionPersonalInfo from '../pages/\bAgreementOfCollectionPersonalInfo';
 
-import LandingPage from '../pages/LoginPage';
+import { useRecoilValue } from 'recoil';
+
+import Home from '../pages/Home';
+import LoginPage from '../pages/LoginPage';
 import PinNumberInputPage from '../pages/PinNumberInputPage';
+import AgreementOfCollectionPersonalInfo from '../pages/AgreementOfCollectionPersonalInfo';
 import PostGoal from '../pages/PostGoal';
 import DetailGoal from '../pages/DetailGoal';
 import GroupGoals from '../pages/GroupGoals';
 import Layout from './Layout';
 
+import { userInfo } from '../recoil/atoms';
+
 const Router = () => {
+  const { isLogin } = useRecoilValue(userInfo);
+
   return (
     <BrowserRouter>
       <Layout>
         <Routes>
-          <Route path='/' element={<LandingPage />} />
+          <Route path='/' element={!isLogin ? <LoginPage /> : <Home />} />
           <Route path='/pinnumber' element={<PinNumberInputPage />} />
           <Route
             path='/agreement'

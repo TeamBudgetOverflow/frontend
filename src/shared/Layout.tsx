@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 
@@ -6,6 +6,8 @@ import Header from './Header';
 import Navigation from './Navigation';
 
 import { userAPI } from '../apis/client';
+import { userInfo } from '../recoil/atoms';
+import { useSetRecoilState } from 'recoil';
 
 export interface IChildrenProps {
   children: React.ReactNode;
@@ -22,13 +24,18 @@ function Layout({ children }: IChildrenProps) {
   if (location.pathname === '/kakaologin') {
     const code = new URL(window.location.href).searchParams.get('code');
     try {
-      const { isLoading, data } = useQuery('kakaoLogin', () =>
+      const { data } = useQuery('kakaoLogin', () =>
         userAPI.getKakaoSignup(code)
       );
       console.log(code);
 
       localStorage.setItem('accesstoken', data.data.accesstoken);
       localStorage.setItem('refreshtoken', data.data.refreshtoken);
+
+      // TODO: data 형식 확인후 적용
+      const setUserInfo = useSetRecoilState(userInfo);
+      setUserInfo({ id: 0, isLogin: true });
+
       navigate('/');
     } catch (error) {
       console.log(error);
@@ -45,6 +52,11 @@ function Layout({ children }: IChildrenProps) {
 
       localStorage.setItem('accesstoken', data.data.accesstoken);
       localStorage.setItem('refreshtoken', data.data.refreshtoken);
+
+      // TODO: data 형식 확인후 적용
+      const setUserInfo = useSetRecoilState(userInfo);
+      setUserInfo({ id: 0, isLogin: true });
+
       navigate('/');
     } catch (error) {
       console.log(error);
@@ -61,6 +73,11 @@ function Layout({ children }: IChildrenProps) {
 
       localStorage.setItem('accesstoken', data.data.accesstoken);
       localStorage.setItem('refreshtoken', data.data.refreshtoken);
+
+      // TODO: data 형식 확인후 적용
+      const setUserInfo = useSetRecoilState(userInfo);
+      setUserInfo({ id: 0, isLogin: true });
+
       navigate('/');
     } catch (error) {
       console.log(error);
