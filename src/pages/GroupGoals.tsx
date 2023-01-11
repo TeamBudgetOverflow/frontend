@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useQuery } from 'react-query';
+import { ScrollMenu } from 'react-horizontal-scrolling-menu';
 
 import styled from 'styled-components';
 
@@ -9,6 +10,7 @@ import NarrowGroupGoalCards from '../components/goal/NarrowGroupGoalCards';
 
 import { userGoals, userInfo } from '../recoil/atoms';
 
+import { useScroll } from '../hooks/useScroll';
 import { IUserGoals } from '../interfaces/interfaces';
 
 import { userAPI } from '../apis/client';
@@ -34,6 +36,8 @@ const GroupGoals = () => {
     <NarrowGroupGoalCards key={goal.id} goal={goal} />
   ));
 
+  // TODO: view size 확정후 scroll 구현
+
   return (
     <div>
       <UpperWrapper>
@@ -42,11 +46,13 @@ const GroupGoals = () => {
           <Captions>모두보기</Captions>
         </UpperText>
         <ImpendingGoalCardsWrapper>
-          {isLoadingGoals ? (
-            <LoadingMsg>데이터를 불러오는 중입니다</LoadingMsg>
-          ) : (
-            impendingGoalCard
-          )}
+          <ScrollMenu>
+            {isLoadingGoals ? (
+              <LoadingMsg>데이터를 불러오는 중입니다</LoadingMsg>
+            ) : (
+              impendingGoalCard
+            )}
+          </ScrollMenu>
         </ImpendingGoalCardsWrapper>
       </UpperWrapper>
       <LowerWrapper>
@@ -93,7 +99,8 @@ const ImpendingGoalCardsWrapper = styled.div`
   display: flex;
   flex-direction: row;
   gap: 20px;
-  width: 100%;
+  width: 414px;
+  height: 200px;
   padding: 8px;
   border-bottom: 2px solid;
 `;
