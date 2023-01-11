@@ -1,4 +1,4 @@
-// dateStringTranslator returns date to formatted string
+// dateStringTranslator returns date to formatted string timestamp
 // ex.'YYYY/MM/DD(Day)'
 export const dateStringTranslator = (targetDate: Date) => {
   const dayIndex = (day: number) => {
@@ -40,8 +40,10 @@ export const dateStringTranslator = (targetDate: Date) => {
   return endDateIndicator;
 };
 
-// dateISOStringDateTranslator returns date to ISO formatted string
+// dateISOStringDateTranslator returns date to local ISO formatted string timestamp
 // ex. 'YYYY-MM-DD'
 export const dateISOStringDateTranslator = (date: Date) => {
-  return date.toISOString().split('T')[0];
+  const localTimeOffset = new Date().getTimezoneOffset() * 60000;
+  const localDate = date.getTime() - localTimeOffset;
+  return new Date(localDate).toISOString().split('T')[0];
 };
