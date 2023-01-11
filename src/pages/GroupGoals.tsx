@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useQuery } from 'react-query';
 import { ScrollMenu } from 'react-horizontal-scrolling-menu';
@@ -10,7 +10,7 @@ import NarrowGroupGoalCards from '../components/goal/NarrowGroupGoalCards';
 
 import { userGoals, userInfo } from '../recoil/atoms';
 
-import { useScroll } from '../hooks/useScroll';
+// import { useScroll } from '../hooks/useScroll';
 import { IUserGoals } from '../interfaces/interfaces';
 
 import { userAPI } from '../apis/client';
