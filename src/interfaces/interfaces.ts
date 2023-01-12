@@ -20,3 +20,20 @@ export interface IUserGoal {
   endDate: Date;
   headCount: number;
 }
+
+export interface IGroupGoals {
+  goals: Array<IGroupGoal>;
+}
+
+export interface IGroupGoal {
+  id: number;
+  title: string;
+  description: string;
+  isPrivate: boolean;
+  hashtag: Array<string>;
+  amount: number;
+  attainment: number;
+  startDate: Date;
+  endDate: Date;
+  headCount: number;
+}

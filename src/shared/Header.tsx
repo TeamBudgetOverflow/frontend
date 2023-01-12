@@ -1,28 +1,13 @@
-import React, { useEffect } from 'react';
-import { useQuery } from 'react-query';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import React from 'react';
+
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import { goalApi } from '../apis/client';
 import { Logo } from '../components/common/elem/Logo';
 import SearchBar from '../components/header/SearchBar';
 import { userInfo } from '../recoil/atoms';
 
 const Header = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
   const { isLogin } = useRecoilValue(userInfo);
-
-  // TODO: location 감지해서 api 호출 + 검색 결과페이지로 이동
-  // TODO: search 결과 전역상태 저장
-  if (location.search) {
-    const { data } = useQuery('searchGoals', () =>
-      goalApi.getGoalsByWord(location.search)
-    );
-
-    console.log(data);
-    navigate('/goals/search');
-  }
 
   return (
     <HeaderLayout>
