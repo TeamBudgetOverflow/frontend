@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import Logo from '../components/common/elem/Logo';
 import Icon from '../components/common/elem/Icon';
 import SearchBar from '../components/header/SearchBar';
-import { postGoal } from '../recoil/goalsAtoms';
 
 interface HeaderProps {
   props: string;

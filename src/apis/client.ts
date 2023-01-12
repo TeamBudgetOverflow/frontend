@@ -97,12 +97,12 @@ export const userAPI = {
   },
 
   getUserProfile: async (userId: number) => {
-    const { data } = await tokenClient.get(`/users/${userId}`);
-    // const data = {
-    //   img: '',
-    //   nickname: '유진',
-    //   description: '안녕하세요',
-    // };
+    // const { data } = await tokenClient.get(`/users/${userId}`);
+    const data = {
+      img: '',
+      nickname: '유진',
+      description: '안녕하세요',
+    };
     return data;
   },
 
