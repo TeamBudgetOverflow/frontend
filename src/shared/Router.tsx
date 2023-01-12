@@ -35,7 +35,6 @@ const Router = () => {
           <Route path='/goals/lookup' element={<GroupGoals />} />
           <Route path='/goals/lookup/search' element={<SearchGoals />} />
           <Route path='/users/:id' element={<DetailUser />} />
-          <Route path='/' element={<LandingPage />} />
           <Route path='/pinnumber' element={<PinNumberInputPage />} />
           <Route path='/agreement' element={<AgreementOfCollectionPersonalInfo />} />
         </Routes>

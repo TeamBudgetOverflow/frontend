@@ -57,20 +57,24 @@ tokenClient.interceptors.response.use(
 
 export const userAPI = {
   getKakaoSignup: async (code: string | null) => {
-    const { data } = await noneTokenClient.get('/api/login/kakao?code=' + code);
+    const { data } = await noneTokenClient.get(
+      '/api/users/auth/kakao?code=' + code
+    );
 
     return data;
   },
 
   getNaverSignup: async (code: string | null) => {
-    const { data } = await noneTokenClient.get('/api/login/naver?code=' + code);
+    const { data } = await noneTokenClient.get(
+      '/api/users/auth/naver?code=' + code
+    );
 
     return data;
   },
 
   getGoogleSignup: async (code: string | null) => {
     const { data } = await noneTokenClient.get(
-      '/api/login/google?code=' + code
+      '/api/users/auth/google?code=' + code
     );
 
     return data;
