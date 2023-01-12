@@ -17,7 +17,7 @@ const Header = () => {
   // TODO: search 결과 전역상태 저장
   if (location.search) {
     const { data } = useQuery('searchGoals', () =>
-      goalApi.getGoalsBySearchQuery(location.search)
+      goalApi.getGoalsByWord(location.search)
     );
 
     console.log(data);
@@ -31,6 +31,7 @@ const Header = () => {
         <TeamName>티끌모아 태산</TeamName>
       </LeftBox>
       <SearchBar />
+      <RightBox></RightBox>
     </HeaderLayout>
   );
 };
@@ -44,7 +45,7 @@ const HeaderLayout = styled.div`
 `;
 
 const LeftBox = styled.div`
-  width: 30%;
+  width: 25%;
   height: 100%;
   display: flex;
   flex-direction: row;
@@ -53,7 +54,16 @@ const LeftBox = styled.div`
 `;
 
 const TeamName = styled.span`
-  font: ${(props) => props.theme.headingH3};
+  font: ${(props) => props.theme.paragraphsP3M};
+`;
+
+const RightBox = styled.div`
+  width: 25%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
 `;
 
 export default Header;

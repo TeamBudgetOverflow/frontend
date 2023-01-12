@@ -111,7 +111,7 @@ export const userAPI = {
 };
 
 export const goalApi = {
-  getGoalsBySearchQuery: async (query: string) => {
+  getGoalsByWord: async (query: string) => {
     const { data } = await tokenClient.get(`/goals/getgoals/search` + query);
     return data;
   },

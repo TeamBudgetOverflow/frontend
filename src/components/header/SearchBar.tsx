@@ -8,21 +8,28 @@ import { Search } from '../common/icons/Search';
 const SearchBar = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const navigate = useNavigate();
-  const handleSubmitKeyPress = (e: string) => {
-    navigate('/goals?search=' + searchKeyword);
+  const handleSearchButton = (e: string) => {
+    navigate('/goals/search?search=' + searchKeyword);
     setSearchKeyword('');
   };
 
-  // TODO: 엔터키에도 작동하도록 만들기
+  const handleOnKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.code === 'Enter' && searchKeyword) {
+      handleSearchButton(searchKeyword);
+    }
+  };
+
   return (
     <SearchBarLayout>
       <InputBox
         placeholder='검색'
         borderRadius='20px'
         onChangeHandler={(e) => setSearchKeyword(e.currentTarget.value)}
-        // onKeyPressHandler={() => handleSubmitKeyPress(searchKeyword)}
+        onKeyPressHandler={(e) => handleOnKeyPress(e)}
       />
-      <Search onClick={() => handleSubmitKeyPress(searchKeyword)} />
+      <SearchIconWrapper>
+        <Search onClick={() => handleSearchButton(searchKeyword)} />
+      </SearchIconWrapper>
     </SearchBarLayout>
   );
 };
@@ -34,7 +41,16 @@ const SearchBarLayout = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: baseline;
+`;
+
+const SearchIconWrapper = styled.div`
+  margin: 0px 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 export default SearchBar;

@@ -5,7 +5,7 @@ interface InputBoxProps {
   value?: string | number;
   placeholder?: string;
   onChangeHandler?: (e: React.FormEvent<HTMLInputElement>) => void;
-  onKeyPressHandler?: (e: React.FormEvent<HTMLInputElement>) => void;
+  onKeyPressHandler?: (e: React.KeyboardEvent<HTMLDivElement>) => void;
   borderRadius?: string;
 }
 
