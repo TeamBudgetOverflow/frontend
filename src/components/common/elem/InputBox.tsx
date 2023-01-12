@@ -2,9 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 
 interface InputBoxProps {
-  value: string | number;
-  placeholder: string;
-  onChangeHandler: (e: React.FormEvent<HTMLInputElement>) => void;
+  value?: string | number;
+  placeholder?: string;
+  onChangeHandler?: (e: React.FormEvent<HTMLInputElement>) => void;
+  onKeyPressHandler?: (e: React.KeyboardEvent<HTMLDivElement>) => void;
   borderRadius?: string;
 }
 
@@ -12,6 +13,7 @@ const InputBox = ({
   placeholder,
   value,
   onChangeHandler,
+  onKeyPressHandler,
   borderRadius,
 }: InputBoxProps) => {
   return (
@@ -19,6 +21,7 @@ const InputBox = ({
       value={value}
       placeholder={placeholder}
       onChange={onChangeHandler}
+      onKeyPress={onKeyPressHandler}
       borderRadius={borderRadius}
     />
   );

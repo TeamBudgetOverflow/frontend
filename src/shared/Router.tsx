@@ -13,6 +13,7 @@ import GroupGoals from '../pages/GroupGoals';
 import Layout from './Layout';
 
 import { userInfo } from '../recoil/atoms';
+import SearchGoals from '../pages/SearchGoals';
 
 const Router = () => {
   const { isLogin } = useRecoilValue(userInfo);
@@ -29,7 +30,8 @@ const Router = () => {
           />
           <Route path='/goals/post' element={<PostGoal />} />
           <Route path='/goals/:id' element={<DetailGoal />} />
-          <Route path='/goals/search' element={<GroupGoals />} />
+          <Route path='/goals/lookup' element={<GroupGoals />} />
+          <Route path='/goals/lookup/search' element={<SearchGoals />} />
         </Routes>
       </Layout>
     </BrowserRouter>
