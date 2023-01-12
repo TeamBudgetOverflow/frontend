@@ -1,9 +1,10 @@
 import React from 'react';
-
-import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
+import { useRecoilValue } from 'recoil';
+
 import { Logo } from '../components/common/elem/Logo';
 import SearchBar from '../components/header/SearchBar';
+
 import { userInfo } from '../recoil/atoms';
 
 const Header = () => {

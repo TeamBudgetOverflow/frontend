@@ -18,7 +18,7 @@ const Router = () => {
         <Route path='/goals/post' element={<PostGoal />} />
         <Route path='/goals/:id' element={<DetailGoal />} />
         <Route path='/goals/lookup' element={<GroupGoals />} />
-        <Route path='/goals/search' element={<SearchGoals />} />
+        <Route path='/goals/lookup/search' element={<SearchGoals />} />
       </Routes>
       <Navigation />
     </BrowserRouter>

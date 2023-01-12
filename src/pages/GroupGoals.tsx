@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useQuery } from 'react-query';
-
 import styled from 'styled-components';
 
 import GroupGoalCards from '../components/goal/GroupGoalCards';
@@ -9,16 +8,17 @@ import NarrowGroupGoalCards from '../components/goal/NarrowGroupGoalCards';
 
 import { userGoals, userInfo } from '../recoil/atoms';
 
-// import { useScroll } from '../hooks/useScroll';
-import { IUserGoals } from '../interfaces/interfaces';
+import { IGoals } from '../interfaces/interfaces';
 
 import { userAPI } from '../apis/client';
 
 const GroupGoals = () => {
   const { id } = useRecoilValue(userInfo);
 
-  const { isLoading: isLoadingGoals, data: userGoalsData } =
-    useQuery<IUserGoals>('userGoals', () => userAPI.getUserGoals(id));
+  const { isLoading: isLoadingGoals, data: userGoalsData } = useQuery<IGoals>(
+    'userGoals',
+    () => userAPI.getUserGoals(id)
+  );
   const setUserGoals = useSetRecoilState(userGoals);
   const goals = useRecoilValue(userGoals);
 

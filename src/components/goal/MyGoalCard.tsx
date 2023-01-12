@@ -2,12 +2,12 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { IUserGoal } from '../../interfaces/interfaces';
+import { IGoal } from '../../interfaces/interfaces';
 import { dDayCalculator } from '../../utils/dDayCalculator';
 
 import { setProgressState } from '../../utils/progressState';
 
-const MyGoalCard = ({ goal }: { goal: IUserGoal }) => {
+const MyGoalCard = ({ goal }: { goal: IGoal }) => {
   const navigate = useNavigate();
   return (
     <Wrapper onClick={() => navigate(`/goal/${goal.id}`)}>

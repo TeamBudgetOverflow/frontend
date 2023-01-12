@@ -1,14 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import styled from 'styled-components';
 
-import { IUserGoal } from '../../interfaces/interfaces';
+import { IGoal } from '../../interfaces/interfaces';
 
 import { dDayCalculator } from '../../utils/dDayCalculator';
 import { dateStringTranslator } from '../../utils/dateTranslator';
 
-const GroupGoalCards = ({ goal }: { goal: IUserGoal }) => {
+const GroupGoalCards = ({ goal }: { goal: IGoal }) => {
   const navigate = useNavigate();
 
   return (

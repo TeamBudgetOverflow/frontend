@@ -9,7 +9,7 @@ import MyGoalCard from '../components/goal/MyGoalCard';
 
 import { userGoals, userInfo, userProfile } from '../recoil/atoms';
 
-import { IUserGoals, IUserProfile } from '../interfaces/interfaces';
+import { IGoals, IUserProfile } from '../interfaces/interfaces';
 
 import { userAPI } from '../apis/client';
 
@@ -26,8 +26,10 @@ const Home = () => {
     setUserProfile(profile);
   }, [profile]);
 
-  const { isLoading: isLoadingGoals, data: userGoalsData } =
-    useQuery<IUserGoals>('userGoals', () => userAPI.getUserGoals(id));
+  const { isLoading: isLoadingGoals, data: userGoalsData } = useQuery<IGoals>(
+    'userGoals',
+    () => userAPI.getUserGoals(id)
+  );
   const setUserGoals = useSetRecoilState(userGoals);
   const goals = useRecoilValue(userGoals);
 

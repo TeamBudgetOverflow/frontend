@@ -5,7 +5,7 @@ type sizeType = {
 };
 
 type LogoProps = {
-  size: string;
+  size: 'midium' | 'small';
 };
 
 export const Logo = ({ size }: LogoProps) => {

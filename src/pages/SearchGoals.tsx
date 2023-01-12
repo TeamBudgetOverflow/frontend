@@ -7,18 +7,20 @@ import styled from 'styled-components';
 import GroupGoalCards from '../components/goal/GroupGoalCards';
 
 import { goalApi } from '../apis/client';
+
 import { groupGoals } from '../recoil/goalsAtoms';
-import { IGroupGoals } from '../interfaces/interfaces';
+
+import { IGoals } from '../interfaces/interfaces';
 
 const SearchGoals = () => {
   const location = useLocation();
 
   const setGoalsList = useSetRecoilState(groupGoals);
 
-  const { isLoading: isLoadingGoals, data: searchGoals } =
-    useQuery<IGroupGoals>('searchGoals', () =>
-      goalApi.getGoalsByWord(location.search)
-    );
+  const { isLoading: isLoadingGoals, data: searchGoals } = useQuery<IGoals>(
+    'searchGoals',
+    () => goalApi.getGoalsByWord(location.search)
+  );
 
   const searchGroupGoals = useRecoilValue(groupGoals);
 

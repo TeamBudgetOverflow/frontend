@@ -4,28 +4,11 @@ export interface IUserProfile {
   description: string;
 }
 
-export interface IUserGoals {
-  goals: Array<IUserGoal>;
+export interface IGoals {
+  goals: Array<IGoal>;
 }
 
-export interface IUserGoal {
-  id: number;
-  title: string;
-  description: string;
-  isPrivate: boolean;
-  hashtag: Array<string>;
-  amount: number;
-  attainment: number;
-  startDate: Date;
-  endDate: Date;
-  headCount: number;
-}
-
-export interface IGroupGoals {
-  goals: Array<IGroupGoal>;
-}
-
-export interface IGroupGoal {
+export interface IGoal {
   id: number;
   title: string;
   description: string;
