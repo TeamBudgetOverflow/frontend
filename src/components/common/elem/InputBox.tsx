@@ -7,6 +7,7 @@ interface InputBoxProps {
   placeholder?: string;
   onChangeHandler?: (e: React.FormEvent<HTMLInputElement>) => void;
   onKeyPressHandler?: (e: React.KeyboardEvent<HTMLDivElement>) => void;
+  isDisabled?: boolean;
   borderRadius?: string;
 }
 
@@ -16,6 +17,7 @@ const InputBox = ({
   placeholder,
   onChangeHandler,
   onKeyPressHandler,
+  isDisabled,
   borderRadius,
 }: InputBoxProps) => {
   return (
@@ -25,6 +27,7 @@ const InputBox = ({
       placeholder={placeholder}
       onChange={onChangeHandler}
       onKeyPress={onKeyPressHandler}
+      disabled={isDisabled}
       borderRadius={borderRadius}
     />
   );
