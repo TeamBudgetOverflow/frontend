@@ -3,8 +3,8 @@ import { useLocation, useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 import Logo from '../components/common/elem/Logo';
-import Icon from '../components/common/elem/Icon';
 import SearchBar from '../components/header/SearchBar';
+import Icon from '../components/common/elem/Icon';
 
 interface HeaderProps {
   props: string;
@@ -99,6 +99,8 @@ const Header = (props: HeaderProps, ref: Ref<HTMLDivElement>) => {
   useEffect(() => {
     if (showSearchBar) return setShowBeforeBtn(true);
   }, [showSearchBar]);
+
+  const [searchBarIndicator, setSearchBarIndicator] = useState(false);
 
   return (
     <HeaderLayout ref={ref}>

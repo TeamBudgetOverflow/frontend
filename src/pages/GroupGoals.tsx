@@ -59,7 +59,7 @@ const GroupGoals = () => {
 };
 
 const Wrapper = styled.div`
-  width: 90%;
+  width: 95%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -107,7 +107,7 @@ const LowerWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 95%;
+  width: 100%;
   height: 50%;
 `;
 
