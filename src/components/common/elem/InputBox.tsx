@@ -6,6 +6,8 @@ interface InputBoxProps {
   placeholder?: string;
   onChangeHandler?: (e: React.FormEvent<HTMLInputElement>) => void;
   onKeyPressHandler?: (e: React.KeyboardEvent<HTMLDivElement>) => void;
+  onFocusHandler?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  onBlurHandler?: (e: React.FocusEvent<HTMLInputElement>) => void;
   borderRadius?: string;
 }
 
@@ -14,14 +16,19 @@ const InputBox = ({
   value,
   onChangeHandler,
   onKeyPressHandler,
+  onFocusHandler,
+  onBlurHandler,
   borderRadius,
 }: InputBoxProps) => {
   return (
     <Input
+      type='text'
       value={value}
       placeholder={placeholder}
       onChange={onChangeHandler}
       onKeyPress={onKeyPressHandler}
+      onFocus={onFocusHandler}
+      onBlur={onBlurHandler}
       borderRadius={borderRadius}
     />
   );

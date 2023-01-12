@@ -11,6 +11,7 @@ import { userGoals, userInfo } from '../recoil/atoms';
 import { IGoals } from '../interfaces/interfaces';
 
 import { userAPI } from '../apis/client';
+import { searchBarOnFocusEvent } from '../recoil/searchAtoms';
 
 const GroupGoals = () => {
   const { id } = useRecoilValue(userInfo);
@@ -34,6 +35,9 @@ const GroupGoals = () => {
   const impendingGoalCard = goals.map((goal) => (
     <NarrowGroupGoalCards key={goal.id} goal={goal} />
   ));
+
+  const searchBarOnFocusAtom = useRecoilValue(searchBarOnFocusEvent);
+  console.log(searchBarOnFocusAtom);
 
   return (
     <div>

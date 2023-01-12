@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
+import { searchBarOnFocusEvent } from '../../recoil/searchAtoms';
 
 import Icon from '../common/elem/Icon';
 import InputBox from '../common/elem/InputBox';
@@ -9,7 +11,7 @@ const SearchBar = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const navigate = useNavigate();
   const handleSearchButton = (e: string) => {
-    navigate('/goals/lookup/search?search=' + searchKeyword);
+    navigate('/goals/lookup/search?search=' + e);
     setSearchKeyword('');
   };
 
@@ -19,6 +21,14 @@ const SearchBar = () => {
     }
   };
 
+  const [onFocus, setOnFocus] = useState(false);
+
+  const setSearchBarOnFocusEvent = useSetRecoilState(searchBarOnFocusEvent);
+
+  useEffect(() => {
+    setSearchBarOnFocusEvent(onFocus);
+  }, [onFocus]);
+
   return (
     <SearchBarLayout>
       <InputBox
@@ -26,6 +36,8 @@ const SearchBar = () => {
         borderRadius='20px'
         onChangeHandler={(e) => setSearchKeyword(e.currentTarget.value)}
         onKeyPressHandler={(e) => handleOnKeyPress(e)}
+        onFocusHandler={() => setOnFocus(true)}
+        onBlurHandler={() => setOnFocus(false)}
       />
       <SearchIconWrapper>
         <Icon>
