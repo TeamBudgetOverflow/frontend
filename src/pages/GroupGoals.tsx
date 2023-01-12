@@ -58,6 +58,13 @@ const GroupGoals = () => {
   );
 };
 
+const Wrapper = styled.div`
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
 const UpperWrapper = styled.div`
   padding: 10px;
   display: flex;
