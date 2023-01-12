@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Icon from '../common/elem/Icon';
+import Icon from '../elem/Icon';
 
 interface HashTagProps {
   tag: IHashTag;
