@@ -15,9 +15,6 @@ const SearchGoals = () => {
 
   const setGoalsList = useSetRecoilState(groupGoals);
 
-  // TODO: location 감지해서 api 호출 + 검색 결과페이지로 이동
-  // TODO: search 결과 전역상태 저장
-
   const { isLoading: isLoadingGoals, data: searchGoals } =
     useQuery<IGroupGoals>('searchGoals', () =>
       goalApi.getGoalsByWord(location.search)
