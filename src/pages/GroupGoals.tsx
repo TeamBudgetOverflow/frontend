@@ -42,7 +42,10 @@ const GroupGoals = () => {
   return (
     <>
       {searchBarOnFocusAtom ? (
-        <div>onFocusTrue</div>
+        <Wrapper>
+          <div>tag</div>
+          <div>최근본</div>
+        </Wrapper>
       ) : (
         <Wrapper>
           <UpperWrapper>
