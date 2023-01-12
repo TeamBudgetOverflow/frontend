@@ -20,3 +20,28 @@ export interface IGoal {
   endDate: Date;
   headCount: number;
 }
+
+export interface IPostAuthAccnt {
+  oriSeqNo: string;
+  authString: string;
+}
+
+export interface IPostGoal {
+  title: string;
+  description: string;
+  amount: number;
+  hashTag: Array<string>;
+  startDate: Date;
+  endDate: Date;
+  headCount: number;
+  isPrivate: boolean;
+  account: IAccountInfo;
+}
+
+export interface IAccountInfo {
+  bankId: number;
+  bankUserId: string;
+  bankUserPw: string;
+  accntNo: string;
+  accntPw: string;
+}
