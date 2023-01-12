@@ -5,7 +5,7 @@ import Icon from '../elem/Icon';
 
 interface HashTagProps {
   tag: IHashTag;
-  removeHandler: (tag: IHashTag) => void | null;
+  removeHandler?: (tag: IHashTag) => void;
 }
 
 export interface IHashTag {
@@ -20,7 +20,7 @@ const HashTag = React.memo(function HashTag({
   return (
     <Tag bgColor={bgColor}>
       {`#${content}`}
-      {removeHandler === null ? (
+      {!removeHandler ? (
         <></>
       ) : (
         <DeleteButton onClick={() => removeHandler({ content, bgColor })}>
