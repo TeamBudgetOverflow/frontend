@@ -7,6 +7,7 @@ import PostGoal from '../pages/PostGoal';
 import DetailGoal from '../pages/DetailGoal';
 import GroupGoals from '../pages/GroupGoals';
 import Navigation from './Navigation';
+import SearchGoals from '../pages/SearchGoals';
 
 const Router = () => {
   return (
@@ -16,7 +17,8 @@ const Router = () => {
         <Route path='/' element={<Home />} />
         <Route path='/goals/post' element={<PostGoal />} />
         <Route path='/goals/:id' element={<DetailGoal />} />
-        <Route path='/goals/search' element={<GroupGoals />} />
+        <Route path='/goals/lookup' element={<GroupGoals />} />
+        <Route path='/goals/lookup/search' element={<SearchGoals />} />
       </Routes>
       <Navigation />
     </BrowserRouter>

@@ -1,23 +1,25 @@
 import React from 'react';
-
 import styled from 'styled-components';
-import { IUserGoal } from '../../interfaces/interfaces';
 
-const NarrowGroupGoalCards = ({ goal }: { goal: IUserGoal }) => {
+import { IGoal } from '../../interfaces/interfaces';
+
+const NarrowGroupGoalCards = ({ goal }: { goal: IGoal }) => {
   return (
     <CardWrapper>
       <ImageWrapper></ImageWrapper>
       <TextWrapper>
         <Title>{goal.title}</Title>
-        <Hashtag>{goal.hashtag}</Hashtag>
       </TextWrapper>
     </CardWrapper>
   );
 };
 
 const CardWrapper = styled.div`
-  width: 120px;
-  height: 144px;
+  flex: 0 0 auto;
+  min-width: 120px;
+  width: 30%;
+  max-height: 160px;
+  height: 100%;
   padding: 8px;
   margin: 4px;
   border: 1px solid;
@@ -34,13 +36,11 @@ const TextWrapper = styled.div`
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
+  width: 100%;
 `;
 
-const Title = styled.span`
+const Title = styled.p`
   font: ${(props) => props.theme.paragraphsP3M};
-`;
-const Hashtag = styled.span`
-  font: ${(props) => props.theme.captionC2};
 `;
 
 export default NarrowGroupGoalCards;

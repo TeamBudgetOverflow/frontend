@@ -16,7 +16,7 @@ const Navigation = () => {
         </SVGIcon>
         <Text>홈</Text>
       </Menu>
-      <Menu>
+      <Menu onClick={() => navigate('/goals/lookup')}>
         <SVGIcon viewBox='0 0 24 24'>
           <path
             fill='#e4f7ea'

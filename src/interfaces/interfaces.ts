@@ -4,11 +4,11 @@ export interface IUserProfile {
   description: string;
 }
 
-export interface IUserGoals {
-  goals: Array<IUserGoal>;
+export interface IGoals {
+  goals: Array<IGoal>;
 }
 
-export interface IUserGoal {
+export interface IGoal {
   id: number;
   title: string;
   description: string;

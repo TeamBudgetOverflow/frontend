@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useQuery } from 'react-query';
-
 import styled from 'styled-components';
 
 import GroupGoalCards from '../components/goal/GroupGoalCards';
@@ -9,15 +8,17 @@ import NarrowGroupGoalCards from '../components/goal/NarrowGroupGoalCards';
 
 import { userGoals, userInfo } from '../recoil/atoms';
 
-import { IUserGoals } from '../interfaces/interfaces';
+import { IGoals } from '../interfaces/interfaces';
 
 import { userAPI } from '../apis/client';
 
 const GroupGoals = () => {
   const { id } = useRecoilValue(userInfo);
 
-  const { isLoading: isLoadingGoals, data: userGoalsData } =
-    useQuery<IUserGoals>('userGoals', () => userAPI.getUserGoals(id));
+  const { isLoading: isLoadingGoals, data: userGoalsData } = useQuery<IGoals>(
+    'userGoals',
+    () => userAPI.getUserGoals(id)
+  );
   const setUserGoals = useSetRecoilState(userGoals);
   const goals = useRecoilValue(userGoals);
 
@@ -71,6 +72,8 @@ const UpperWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  height: 100%;
+  width: 100%;
 `;
 
 const UpperText = styled.div`
@@ -93,7 +96,10 @@ const ImpendingGoalCardsWrapper = styled.div`
   display: flex;
   flex-direction: row;
   gap: 20px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
   width: 100%;
+  height: 100%;
   padding: 8px;
   border-bottom: 2px solid;
 `;
@@ -103,13 +109,18 @@ const LowerWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  width: 95%;
+  height: 50%;
 `;
 
 const GoalCardsWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  flex-wrap: nowrap;
+  overflow-y: auto;
   gap: 20px;
   width: 100%;
+  height: 430px;
 `;
 
 const LoadingMsg = styled.div`

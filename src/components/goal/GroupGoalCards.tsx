@@ -1,14 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import styled from 'styled-components';
 
-import { IUserGoal } from '../../interfaces/interfaces';
+import { IGoal } from '../../interfaces/interfaces';
 
 import { dDayCalculator } from '../../utils/dDayCalculator';
 import { dateStringTranslator } from '../../utils/dateTranslator';
 
-const GroupGoalCards = ({ goal }: { goal: IUserGoal }) => {
+const GroupGoalCards = ({ goal }: { goal: IGoal }) => {
   const navigate = useNavigate();
 
   return (
@@ -40,8 +39,8 @@ const GroupGoalCards = ({ goal }: { goal: IUserGoal }) => {
 
 const Wrapper = styled.div`
   padding: 12px 20px;
-  display: flex;
   flex-direction: column;
+  flex: 0 0 auto;
   gap: 18px;
   border-radius: 16px;
   background-color: ${(props) => props.theme.primary200};
