@@ -40,36 +40,49 @@ const GroupGoals = () => {
   console.log(searchBarOnFocusAtom);
 
   return (
-    <div>
-      <UpperWrapper>
-        <UpperText>
-          <Captions>마감임박 목표</Captions>
-          <Captions>모두보기</Captions>
-        </UpperText>
-        <ImpendingGoalCardsWrapper>
-          {isLoadingGoals ? (
-            <LoadingMsg>데이터를 불러오는 중입니다</LoadingMsg>
-          ) : (
-            impendingGoalCard
-          )}
-        </ImpendingGoalCardsWrapper>
-      </UpperWrapper>
-      <LowerWrapper>
-        <LowerText>
-          <Captions>전체 목표</Captions>
-          <Captions>전체</Captions>
-        </LowerText>
-        <GoalCardsWrapper>
-          {isLoadingGoals ? (
-            <LoadingMsg>데이터를 불러오는 중입니다</LoadingMsg>
-          ) : (
-            goalCards
-          )}
-        </GoalCardsWrapper>
-      </LowerWrapper>
-    </div>
+    <>
+      {searchBarOnFocusAtom ? (
+        <div>onFocusTrue</div>
+      ) : (
+        <Wrapper>
+          <UpperWrapper>
+            <UpperText>
+              <Captions>마감임박 목표</Captions>
+              <Captions>모두보기</Captions>
+            </UpperText>
+            <ImpendingGoalCardsWrapper>
+              {isLoadingGoals ? (
+                <LoadingMsg>데이터를 불러오는 중입니다</LoadingMsg>
+              ) : (
+                impendingGoalCard
+              )}
+            </ImpendingGoalCardsWrapper>
+          </UpperWrapper>
+          <LowerWrapper>
+            <LowerText>
+              <Captions>전체 목표</Captions>
+              <Captions>전체</Captions>
+            </LowerText>
+            <GoalCardsWrapper>
+              {isLoadingGoals ? (
+                <LoadingMsg>데이터를 불러오는 중입니다</LoadingMsg>
+              ) : (
+                goalCards
+              )}
+            </GoalCardsWrapper>
+          </LowerWrapper>
+        </Wrapper>
+      )}
+    </>
   );
 };
+
+const Wrapper = styled.div`
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
 
 const UpperWrapper = styled.div`
   padding: 10px;
