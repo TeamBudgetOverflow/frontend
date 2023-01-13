@@ -1,7 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const GoalDescCard = () => {
+type GoalDescCard = {
+  description: string;
+};
+
+const GoalDescCard = ({ description }: GoalDescCard) => {
   return (
     <GoalDescCardWrapper>
       <div>GoalDescription</div>

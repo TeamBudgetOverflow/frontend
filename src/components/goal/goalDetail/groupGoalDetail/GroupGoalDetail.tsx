@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { IGoalDetail } from '../../../../interfaces/interfaces';
 import GoalDescCard from '../GoalDescCard';
 
 import GoalInfo from '../GoalInfoCard';
@@ -8,12 +7,25 @@ import GoalPeriodCard from '../GoalPeriodCard';
 import GroupGoalJoinButton from './GroupGoalJoinButton';
 import GroupGoalParticipantList from './GroupGoalParticipationList';
 
+export interface IGoalDetail {
+  id?: number;
+  title: string;
+  description: string;
+  isPrivate?: boolean;
+  hashtag?: Array<string>;
+  amount: number;
+  attainment?: number;
+  startDate: Date;
+  endDate: Date;
+  headCount: number;
+}
+
 const GroupGoalDetail = ({ title, description, startDate, endDate, headCount, amount }: IGoalDetail) => {
   return (
     <Wrapper>
-      <GoalInfo />
-      <GoalPeriodCard />
-      <GoalDescCard />
+      <GoalInfo title={title} startDate={startDate} headCount={headCount} amount={amount} />
+      <GoalPeriodCard startDate={startDate} endDate={endDate} />
+      <GoalDescCard description={description} />
       <GroupGoalParticipantList />
       <GroupGoalJoinButton />
     </Wrapper>

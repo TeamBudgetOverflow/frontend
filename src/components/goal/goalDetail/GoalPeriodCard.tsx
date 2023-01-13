@@ -1,7 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const GoalPeriodCard = () => {
+type GoalPeriodCard = {
+  startDate: Date;
+  endDate: Date;
+};
+
+const GoalPeriodCard = ({ startDate, endDate }: GoalPeriodCard) => {
   return (
     <GoalPeriodCardWrapper>
       <div>GoalPeriod</div>

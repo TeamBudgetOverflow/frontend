@@ -21,19 +21,6 @@ export interface IGoal {
   headCount: number;
 }
 
-export interface IGoalDetail {
-  id?: number;
-  title: string;
-  description: string;
-  isPrivate?: boolean;
-  hashtag?: Array<string>;
-  amount: number;
-  attainment?: number;
-  startDate: Date;
-  endDate: Date;
-  headCount: number;
-}
-
 export interface IPostAuthAccnt {
   oriSeqNo: string;
   authString: string;
