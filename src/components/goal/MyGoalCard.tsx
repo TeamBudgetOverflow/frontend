@@ -2,6 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+import DdayTag from '../common/tag/DdayTag';
+
 import { IGoal } from '../../interfaces/interfaces';
 import { dDayCalculator } from '../../utils/dDayCalculator';
 
@@ -10,7 +12,7 @@ import { setProgressState } from '../../utils/progressState';
 const MyGoalCard = ({ goal }: { goal: IGoal }) => {
   const navigate = useNavigate();
   return (
-    <Wrapper onClick={() => navigate(`/goal/${goal.id}`)}>
+    <Wrapper onClick={() => navigate(`/goals/${goal.id}`)}>
       <TopContent>
         <TopLeftContent>
           <Icon />
@@ -19,7 +21,9 @@ const MyGoalCard = ({ goal }: { goal: IGoal }) => {
             <Amount>{`${goal.amount.toLocaleString()}원`}</Amount>
           </TextContent>
         </TopLeftContent>
-        <DdayTag>{`D-${dDayCalculator(goal.endDate)}`}</DdayTag>
+        <TopRightContent>
+          <DdayTag dDay={dDayCalculator(goal.endDate)} />
+        </TopRightContent>
       </TopContent>
       <BottomContent>
         <ProgressBarWrapper>
@@ -61,6 +65,10 @@ const TopLeftContent = styled.div`
   gap: 8px;
 `;
 
+const TopRightContent = styled.div`
+  float: right;
+`;
+
 const Icon = styled.div`
   width: 40px;
   height: 40px;
@@ -80,14 +88,6 @@ const Title = styled.div`
 
 const Amount = styled.div`
   font: ${(props) => props.theme.headingH4};
-`;
-
-const DdayTag = styled.div`
-  float: right;
-  padding: 12px;
-  border-radius: 15px;
-  font: ${(props) => props.theme.captionC3};
-  background-color: ${(props) => props.theme.primary50};
 `;
 
 const BottomContent = styled.div`
