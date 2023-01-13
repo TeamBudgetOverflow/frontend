@@ -3,8 +3,8 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 
-import GroupGoalCards from '../components/goal/GroupGoalCards';
-import NarrowGroupGoalCards from '../components/goal/NarrowGroupGoalCards';
+import GroupGoalCard from '../components/goal/GroupGoalCard';
+import NarrowGroupGoalCard from '../components/goal/NarrowGroupGoalCard';
 
 import { userGoals, userInfo } from '../recoil/userAtoms';
 
@@ -27,12 +27,10 @@ const GroupGoals = () => {
     setUserGoals(userGoalsData.goals);
   }, [userGoalsData]);
 
-  const goalCards = goals.map((goal) => <GroupGoalCards key={goal.id} goal={goal} />);
-
-  const impendingGoalCard = goals.map((goal) => <NarrowGroupGoalCards key={goal.id} goal={goal} />);
+  const goalCards = goals.map((goal) => <GroupGoalCard key={goal.id} goal={goal} />);
+  const impendingGoalCard = goals.map((goal) => <NarrowGroupGoalCard key={goal.id} goal={goal} />);
 
   const searchBarOnFocusAtom = useRecoilValue(searchBarOnFocusEvent);
-  console.log(searchBarOnFocusAtom);
 
   return (
     <div>

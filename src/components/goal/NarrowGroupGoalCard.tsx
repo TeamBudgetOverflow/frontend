@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { IGoal } from '../../interfaces/interfaces';
 
-const NarrowGroupGoalCards = ({ goal }: { goal: IGoal }) => {
+const NarrowGroupGoalCard = ({ goal }: { goal: IGoal }) => {
   return (
     <CardWrapper>
       <ImageWrapper></ImageWrapper>
@@ -43,4 +43,4 @@ const Title = styled.p`
   font: ${(props) => props.theme.paragraphsP3M};
 `;
 
-export default NarrowGroupGoalCards;
+export default NarrowGroupGoalCard;

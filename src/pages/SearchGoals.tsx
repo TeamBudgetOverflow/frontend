@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
-import GroupGoalCards from '../components/goal/GroupGoalCards';
+import GroupGoalCards from '../components/goal/GroupGoalCard';
 
 import { goalApi } from '../apis/client';
 
