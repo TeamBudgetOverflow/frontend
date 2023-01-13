@@ -7,7 +7,7 @@ import { IGoal } from '../../interfaces/interfaces';
 import { dDayCalculator } from '../../utils/dDayCalculator';
 import { dateStringTranslator } from '../../utils/dateTranslator';
 
-const GroupGoalCards = ({ goal }: { goal: IGoal }) => {
+const GroupGoalCard = ({ goal }: { goal: IGoal }) => {
   const navigate = useNavigate();
 
   return (
@@ -128,4 +128,4 @@ const LowerLine = styled.div`
   justify-content: space-between;
 `;
 
-export default GroupGoalCards;
+export default GroupGoalCard;
