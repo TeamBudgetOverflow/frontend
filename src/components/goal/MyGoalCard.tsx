@@ -10,7 +10,7 @@ import { setProgressState } from '../../utils/progressState';
 const MyGoalCard = ({ goal }: { goal: IGoal }) => {
   const navigate = useNavigate();
   return (
-    <Wrapper onClick={() => navigate(`/goal/${goal.id}`)}>
+    <Wrapper onClick={() => navigate(`/goals/${goal.id}`)}>
       <TopContent>
         <TopLeftContent>
           <Icon />

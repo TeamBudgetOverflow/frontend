@@ -9,7 +9,7 @@ const SearchBar = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const navigate = useNavigate();
   const handleSearchButton = (e: string) => {
-    navigate('/goals/lookup/search?search=' + searchKeyword);
+    navigate('/goals/lookup/search?search=' + e);
     setSearchKeyword('');
   };
 
