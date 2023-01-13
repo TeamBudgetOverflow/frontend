@@ -1,9 +1,15 @@
 import axios from 'axios';
+import { IAccountInfo, IPostAuthAccnt } from '../interfaces/interfaces';
 
 const BASE_URL = process.env.REACT_APP_API_ENDPOINT;
+const BANK_BASE_URL = process.env.REACT_APP_BANK_API_ENDPOINT;
 
 const noneTokenClient = axios.create({ baseURL: BASE_URL });
 const tokenClient = axios.create({ baseURL: BASE_URL });
+const bankClient = axios.create({ baseURL: BANK_BASE_URL });
+bankClient.defaults.headers.common['Content-Type'] = 'application/json';
+bankClient.defaults.headers.common['user-id'] = process.env.REACT_APP_BANK_API_USER_ID;
+bankClient.defaults.headers.common['Hkey'] = process.env.REACT_APP_BANK_API_HKEY;
 
 tokenClient.interceptors.request.use((config) => {
   config.headers = {
@@ -53,59 +59,59 @@ export const userAPI = {
     return data;
   },
   getUserGoals: async (userId: number) => {
-    // const { data } = await tokenClient.get(`/users/${userId}/goals`);
-    const data = {
-      goals: [
-        {
-          id: 1,
-          title: '생일선물',
-          description: '친구 생일선물 구매비용 모으기',
-          isPrivate: false,
-          hashtag: ['생일선물', '소액모으기'],
-          amount: 100000,
-          attainment: 80,
-          startDate: new Date(),
-          endDate: new Date('2023-01-20'),
-          headCount: 1,
-        },
-        {
-          id: 2,
-          title: 'test2',
-          description: 'test입니다2',
-          isPrivate: false,
-          hashtag: ['생일선물', '소액모으기'],
-          amount: 150000,
-          attainment: 80,
-          startDate: new Date(),
-          endDate: new Date('2023-02-15'),
-          headCount: 3,
-        },
-        {
-          id: 3,
-          title: 'test3',
-          description: 'test입니다3',
-          isPrivate: false,
-          hashtag: ['생일선물', '랄라'],
-          amount: 150000,
-          attainment: 80,
-          startDate: new Date(),
-          endDate: new Date('2023-03-10'),
-          headCount: 3,
-        },
-        {
-          id: 4,
-          title: 'test4',
-          description: 'test입니다4',
-          isPrivate: false,
-          hashtag: ['생일선물', '랄라'],
-          amount: 50000,
-          attainment: 20,
-          startDate: new Date(),
-          endDate: new Date('2023-04-10'),
-          headCount: 3,
-        },
-      ],
-    };
+    const { data } = await tokenClient.get(`/users/${userId}/goals`);
+    // const data = {
+    //   goals: [
+    //     {
+    //       id: 1,
+    //       title: '생일선물',
+    //       description: '친구 생일선물 구매비용 모으기',
+    //       isPrivate: false,
+    //       hashtag: ['생일선물', '소액모으기'],
+    //       amount: 100000,
+    //       attainment: 80,
+    //       startDate: new Date(),
+    //       endDate: new Date('2023-01-20'),
+    //       headCount: 1,
+    //     },
+    // {
+    //   id: 2,
+    //   title: 'test2',
+    //   description: 'test입니다2',
+    //   isPrivate: false,
+    //   hashtag: ['생일선물', '소액모으기'],
+    //   amount: 150000,
+    //   attainment: 80,
+    //   startDate: new Date(),
+    //   endDate: new Date('2023-02-15'),
+    //   headCount: 3,
+    // },
+    // {
+    //   id: 3,
+    //   title: 'test3',
+    //   description: 'test입니다3',
+    //   isPrivate: false,
+    //   hashtag: ['생일선물', '랄라'],
+    //   amount: 150000,
+    //   attainment: 80,
+    //   startDate: new Date(),
+    //   endDate: new Date('2023-03-10'),
+    //   headCount: 3,
+    // },
+    // {
+    //   id: 4,
+    //   title: 'test4',
+    //   description: 'test입니다4',
+    //   isPrivate: false,
+    //   hashtag: ['생일선물', '랄라'],
+    //   amount: 50000,
+    //   attainment: 20,
+    //   startDate: new Date(),
+    //   endDate: new Date('2023-04-10'),
+    //   headCount: 3,
+    // },
+    // ],
+    // };
     return data;
   },
 };
@@ -168,6 +174,24 @@ export const goalApi = {
     };
 
     return data;
+  },
+};
+
+export const bankAPI = {
+  reqAuthAccnt: async (accntInfo: IAccountInfo) => {
+    const result = await bankClient.post('/hb0081000378', {
+      inBankCode: accntInfo.bankId,
+      inAccount: accntInfo.accntNo,
+    });
+
+    return result;
+  },
+  authAccnt: async ({ oriSeqNo, authString }: IPostAuthAccnt) => {
+    const result = await bankClient.post('/hb0081000379', {
+      oriSeqNo: oriSeqNo,
+      inPrintContent: authString,
+    });
+    return result;
   },
 };
 

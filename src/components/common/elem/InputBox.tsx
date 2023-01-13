@@ -9,19 +9,11 @@ interface InputBoxProps {
   onKeyPressHandler?: (e: React.KeyboardEvent<HTMLDivElement>) => void;
   onFocusHandler?: (e: React.FocusEvent<HTMLInputElement>) => void;
   onBlurHandler?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  isDisabled?: boolean;
   borderRadius?: string;
 }
 
-const InputBox = ({
-  type,
-  value,
-  placeholder,
-  onChangeHandler,
-  onKeyPressHandler,
-  onFocusHandler,
-  onBlurHandler,
-  borderRadius,
-}: InputBoxProps) => {
+const InputBox = ({ type, value, placeholder, onChangeHandler, onKeyPressHandler, borderRadius }: InputBoxProps) => {
   return (
     <Input
       type={type}
@@ -29,8 +21,6 @@ const InputBox = ({
       placeholder={placeholder}
       onChange={onChangeHandler}
       onKeyPress={onKeyPressHandler}
-      onFocus={onFocusHandler}
-      onBlur={onBlurHandler}
       borderRadius={borderRadius}
     />
   );
