@@ -22,6 +22,7 @@ const SearchBar = () => {
   return (
     <SearchBarLayout>
       <InputBox
+        type='text'
         placeholder='검색'
         borderRadius='20px'
         onChangeHandler={(e) => setSearchKeyword(e.currentTarget.value)}
