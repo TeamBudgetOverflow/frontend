@@ -114,6 +114,45 @@ export const userAPI = {
     // };
     return data;
   },
+  getUserBadges: async (userId: number) => {
+    const { data } = await tokenClient.get(`/users/${userId}/badges`);
+    // const data = [
+    //   {
+    //     title: '첫 목표 생성',
+    //     description: '처음 목표를 추가하면 획득할 수 있는 뱃지입니다.',
+    //     isObtained: true,
+    //   },
+    //   {
+    //     title: '첫 목표 달성',
+    //     description:
+    //       '마감 기한까지 목표 금액을 100% 달성하면 획득할 수 있는 뱃지입니다.',
+    //     isObtained: true,
+    //   },
+    //   {
+    //     title: '첫 그룹 참여',
+    //     description: '처음 그룹 목표에 참여하면 획득할 수 있는 뱃지입니다.',
+    //     isObtained: true,
+    //   },
+    //   {
+    //     title: '첫 그룹 모집',
+    //     description: '처음 그룹 목표를 모집하면 획득할 수 있는 뱃지입니다.',
+    //     isObtained: true,
+    //   },
+    //   {
+    //     title: '첫 그룹 목표 100% 달성',
+    //     description:
+    //       '그룹 목표에서 마감 기한까지 목표 금액을 100% 달성하면 획득할 수 있는 뱃지입니다.',
+    //     isObtained: true,
+    //   },
+    //   {
+    //     title: '3회 연속 도달',
+    //     description:
+    //       '목표 금액 100% 달성을 3번 연속하면 획득할 수 있는 뱃지입니다.',
+    //     isObtained: true,
+    //   },
+    // ];
+    return data;
+  },
 };
 
 export const goalApi = {

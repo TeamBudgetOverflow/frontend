@@ -45,3 +45,8 @@ export interface IAccountInfo {
   accntNo: string;
   accntPw: string;
 }
+
+export interface IBadge {
+  title: string;
+  description: string;
+}
