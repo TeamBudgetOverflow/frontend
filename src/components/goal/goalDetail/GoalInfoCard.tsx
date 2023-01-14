@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+
 import { dateStringTranslator } from '../../../utils/dateTranslator';
 
 type GoalInfoCardProps = {
@@ -9,6 +10,7 @@ type GoalInfoCardProps = {
   amount: number;
 };
 
+// TODO: 목표 대표 이미지 get
 const GoalInfoCard = ({ title, startDate, headCount, amount }: GoalInfoCardProps) => {
   return (
     <GoalInfoCardWrapper>

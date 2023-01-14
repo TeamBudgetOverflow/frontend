@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
+// TODO: 목표 참가자 리스트 get
 const GroupGoalParticipantList = () => {
   return (
     <GroupGoalParticipantListWrapper>

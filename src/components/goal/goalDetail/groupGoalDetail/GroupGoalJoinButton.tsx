@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import { goalApi } from '../../../../apis/client';
 
+// TODO : 공통 버튼 컴포넌트 리팩터링
 const GroupGoalJoinButton = () => {
   const param = useParams();
 

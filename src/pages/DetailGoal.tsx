@@ -9,7 +9,7 @@ import GroupGoalDetail from '../components/goal/goalDetail/groupGoalDetail/Group
 
 import { goalDetail, goalId } from '../recoil/goalsAtoms';
 
-// TODO: 개인 목표 화면전환
+// TODO: 개인 목표 UI
 const DetailGoal = () => {
   const { id } = useRecoilValue(goalId);
 
