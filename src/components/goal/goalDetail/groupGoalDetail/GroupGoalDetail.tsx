@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import GoalDescCard from '../GoalDescCard';
 
+import GoalDescCard from '../GoalDescCard';
 import GoalInfo from '../GoalInfoCard';
 import GoalPeriodCard from '../GoalPeriodCard';
 import GroupGoalJoinButton from './GroupGoalJoinButton';

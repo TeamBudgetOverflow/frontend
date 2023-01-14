@@ -1,10 +1,22 @@
 import React from 'react';
+import { useMutation } from 'react-query';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { goalApi } from '../../../../apis/client';
+
 const GroupGoalJoinButton = () => {
+  const param = useParams();
+
+  const { mutate } = useMutation('joinGoal', () => goalApi.joinGoal(param.id));
+
+  const handleJoinGoalButton = () => {
+    mutate();
+  };
+
   return (
     <JoinButtonWrapper>
-      <JoinButton>참여하기</JoinButton>
+      <JoinButton onClick={() => handleJoinGoalButton()}>참여하기</JoinButton>
     </JoinButtonWrapper>
   );
 };
@@ -25,10 +37,6 @@ const JoinButton = styled.button`
   height: 51px;
   top: 725px;
   border-radius: 8px;
-  /* display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center; */
   display: flex;
   flex-direction: row;
   justify-content: center;

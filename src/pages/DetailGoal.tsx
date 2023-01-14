@@ -22,8 +22,6 @@ const DetailGoal = () => {
     setGoalDetail(goalDetailData.goalDetail);
   }, [goalDetailData]);
 
-  console.log(goalDetails);
-
   return (
     <Wrapper>
       <GroupGoalDetail
