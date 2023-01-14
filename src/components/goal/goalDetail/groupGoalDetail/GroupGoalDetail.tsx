@@ -20,6 +20,8 @@ export interface IGoalDetail {
   headCount: number;
 }
 
+// TODO: 목표생성자 -> 목표 수정하기, 삭제하기 버튼
+// TODO: 목표참가자 -> 목표 생성자 아이디가 아닌경우 참가 버튼
 const GroupGoalDetail = ({ title, description, startDate, endDate, headCount, amount }: IGoalDetail) => {
   return (
     <Wrapper>
