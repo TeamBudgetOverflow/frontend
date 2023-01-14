@@ -1,37 +1,68 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+import StateTag from '../common/tag/StateTag';
 import DdayTag from '../common/tag/DdayTag';
 
-import { IGoal } from '../../interfaces/interfaces';
 import { dDayCalculator } from '../../utils/dDayCalculator';
+import { dateStringTranslator } from '../../utils/dateTranslator';
 
-import { setProgressState } from '../../utils/progressState';
+import { IGoal } from '../../interfaces/interfaces';
 
-const MyGoalCard = ({ goal }: { goal: IGoal }) => {
+const StateGoalCard = ({ goal }: { goal: IGoal }) => {
   const navigate = useNavigate();
+  const [state, setState] = useState<'working' | 'recruiting'>('working');
+  const setGoalState = () => {
+    if (new Date(goal.startDate).getTime() <= new Date().getTime()) {
+      setState('working');
+      return;
+    }
+
+    setState('recruiting');
+  };
+
+  useEffect(() => {
+    setGoalState();
+  }, []);
   return (
     <Wrapper onClick={() => navigate(`/goals/${goal.id}`)}>
       <TopContent>
         <TopLeftContent>
-          <Icon />
-          <TextContent>
-            <Title>{goal.title}</Title>
-            <Amount>{`${goal.amount.toLocaleString()}원`}</Amount>
-          </TextContent>
+          <StateTag state={state} />
+          <Content>
+            <IconWrapper>
+              <Icon />
+            </IconWrapper>
+            <TextContent>
+              <Title>{goal.title}</Title>
+              <Amount>{`${goal.amount.toLocaleString()}원`}</Amount>
+            </TextContent>
+          </Content>
         </TopLeftContent>
         <TopRightContent>
           <DdayTag dDay={dDayCalculator(goal.endDate)} />
         </TopRightContent>
       </TopContent>
       <BottomContent>
-        <ProgressBarWrapper>
-          <ProgressBar width={`${goal.attainment}%`} />
-        </ProgressBarWrapper>
+        {state === 'working' ? (
+          <ProgressBarWrapper>
+            <ProgressBar width={`${goal.attainment}%`} />
+          </ProgressBarWrapper>
+        ) : (
+          <></>
+        )}
         <ProgressInfo>
-          <ProgressText>{setProgressState(goal.attainment)}</ProgressText>
-          <ProgressText>{`${goal.attainment}%`}</ProgressText>
+          <ProgressText>
+            {state === 'working'
+              ? `${dateStringTranslator(new Date(goal.endDate))} 자정 종료`
+              : `${dateStringTranslator(new Date(goal.startDate))} 자정 시작`}
+          </ProgressText>
+          {state === 'working' ? (
+            <ProgressText>{`${goal.attainment}%`}</ProgressText>
+          ) : (
+            <></>
+          )}
         </ProgressInfo>
       </BottomContent>
     </Wrapper>
@@ -61,12 +92,23 @@ const TopContent = styled.div`
 const TopLeftContent = styled.div`
   float: left;
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+
+const Content = styled.div`
+  display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 8px;
 `;
 
 const TopRightContent = styled.div`
   float: right;
+`;
+
+const IconWrapper = styled.div`
+  padding: 5px 0;
 `;
 
 const Icon = styled.div`
@@ -125,4 +167,4 @@ const ProgressText = styled.div`
   font: ${(props) => props.theme.captionC3};
 `;
 
-export default MyGoalCard;
+export default StateGoalCard;
