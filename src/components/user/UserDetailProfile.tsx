@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useQuery } from 'react-query';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 import ProfileImg from '../common/elem/ProfileImg';
@@ -17,11 +16,7 @@ interface UserDetailProfileProps {
   workingGoalsCnt: number;
 }
 
-const UserDetailProfile = ({
-  userId,
-  successGoalsCnt,
-  workingGoalsCnt,
-}: UserDetailProfileProps) => {
+const UserDetailProfile = ({ userId, successGoalsCnt, workingGoalsCnt }: UserDetailProfileProps) => {
   const { id } = useRecoilValue(userInfo);
   const [profile, setProfile] = useState<IUserProfile>({
     img: '',
@@ -49,11 +44,7 @@ const UserDetailProfile = ({
     <Wrapper>
       <TopContent>
         <ProfileImg
-          url={
-            profile?.img.length === 0
-              ? require('../../assets/img/default.png')
-              : profile?.img
-          }
+          url={profile?.img.length === 0 ? require('../../assets/img/default.png') : profile?.img}
           size={85}
         />
         <UserGoalsStaticList>

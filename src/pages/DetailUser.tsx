@@ -7,13 +7,13 @@ import styled from 'styled-components';
 import UserDetailProfile from '../components/user/UserDetailProfile';
 import TextButton from '../components/common/elem/TextButton';
 import MyFilteredGoals from '../components/goal/MyFilteredGoals';
+import MyFilteredBadges from '../components/badge/MyFilteredBadges';
 
 import { userGoals, userInfo } from '../recoil/atoms';
 
-import { IBadge, IGoals } from '../interfaces/interfaces';
+import { IGoals } from '../interfaces/interfaces';
 
 import { userAPI } from '../apis/client';
-import MyFilteredBadges from '../components/badge/MyFilteredBadges';
 
 interface ITab {
   title: string;
@@ -24,9 +24,8 @@ const DetailUser = () => {
   const { id } = useParams();
   const { id: loginUserId } = useRecoilValue(userInfo);
   if (!id) return <>잘못된 아이디 값입니다</>;
-  const { isLoading: isLoadingGoals, data: userGoalsData } = useQuery<IGoals>(
-    'memberGoals',
-    () => userAPI.getUserGoals(Number(id))
+  const { isLoading: isLoadingGoals, data: userGoalsData } = useQuery<IGoals>('memberGoals', () =>
+    userAPI.getUserGoals(Number(id))
   );
   const setUserGoals = useSetRecoilState(userGoals);
   const filterPrivateUserGoals = (userGoalsData: IGoals) => {
@@ -71,15 +70,11 @@ const DetailUser = () => {
   const [workingGoalsCnt, setWorkingGoalsCnt] = useState<number>(0);
   useEffect(() => {
     const successGoals = goals.filter(
-      (goal) =>
-        new Date(goal.endDate).getTime() < new Date().getTime() &&
-        goal.attainment === 100
+      (goal) => new Date(goal.endDate).getTime() < new Date().getTime() && goal.attainment === 100
     );
     setSuccessGoalsCnt(successGoals.length);
 
-    const workingGoals = goals.filter(
-      (goal) => new Date(goal.startDate).getTime() < new Date().getTime()
-    );
+    const workingGoals = goals.filter((goal) => new Date(goal.startDate).getTime() < new Date().getTime());
     setWorkingGoalsCnt(workingGoals.length);
   }, [goals]);
 
@@ -99,11 +94,7 @@ const DetailUser = () => {
   return (
     <Wrapper>
       <TopContent ref={topContentRef}>
-        <UserDetailProfile
-          userId={Number(id)}
-          successGoalsCnt={successGoalsCnt}
-          workingGoalsCnt={workingGoalsCnt}
-        />
+        <UserDetailProfile userId={Number(id)} successGoalsCnt={successGoalsCnt} workingGoalsCnt={workingGoalsCnt} />
         <BtnWrapper>
           <TextButton text='프로필 수정' onClickHandler={handleUserEdit} />
         </BtnWrapper>
@@ -111,10 +102,7 @@ const DetailUser = () => {
       <UserContentBox topContentHeight={topContentHeight}>
         <TabList ref={tabRef}>
           {tabs.map((tab) => (
-            <Tab
-              key={tab.title}
-              selected={tab.isSelected}
-              onClick={() => handleTabClick(tab.title)}>
+            <Tab key={tab.title} selected={tab.isSelected} onClick={() => handleTabClick(tab.title)}>
               {tab.title}
             </Tab>
           ))}
@@ -127,13 +115,7 @@ const DetailUser = () => {
               if (tab.isSelected) {
                 switch (tab.title) {
                   case '목표':
-                    return (
-                      <MyFilteredGoals
-                        key={tab.title}
-                        isOwner={Number(id) === loginUserId}
-                        goals={goals}
-                      />
-                    );
+                    return <MyFilteredGoals key={tab.title} isOwner={Number(id) === loginUserId} goals={goals} />;
                   case '뱃지':
                     return <MyFilteredBadges key={tab.title} />;
                 }
@@ -177,8 +159,7 @@ const Tab = styled.div<{ selected: boolean }>`
   width: 50%;
   font: ${(props) => props.theme.paragraphsP1M};
   text-align: center;
-  border-bottom: ${(props) =>
-    props.selected ? `1px solid ${props.theme.primaryMain}` : ''};
+  border-bottom: ${(props) => (props.selected ? `1px solid ${props.theme.primaryMain}` : '')};
 `;
 
 const ContentBox = styled.div<{ tabHeight: number }>`
