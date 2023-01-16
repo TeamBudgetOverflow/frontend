@@ -4,22 +4,24 @@ import { Emoji } from 'emoji-picker-react';
 
 interface Emoji {
   unicode: string;
+  boxSize: number;
+  emojiSize: number;
 }
 
-const EmojiBox = ({ unicode }: Emoji) => {
+const EmojiBox = ({ unicode, boxSize, emojiSize }: Emoji) => {
   return (
-    <Wrapper>
-      <Emoji unified={unicode} size={20} />
+    <Wrapper size={`${boxSize}px`}>
+      <Emoji unified={unicode} size={emojiSize} />
     </Wrapper>
   );
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ size: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40px;
-  height: 40px;
+  width: ${(props) => props.size};
+  height: ${(props) => props.size};
   border-radius: 8px;
   background-color: ${(props) => props.theme.gray100};
 `;
