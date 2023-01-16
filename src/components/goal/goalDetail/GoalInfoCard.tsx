@@ -3,15 +3,16 @@ import styled from 'styled-components';
 
 import { dateStringTranslator } from '../../../utils/dateTranslator';
 
-type GoalInfoCardProps = {
+interface GoalInfoCardProps {
   title: string;
   startDate: Date;
+  recruitCount: number;
   headCount: number;
   amount: number;
-};
+}
 
 // TODO: 목표 대표 이미지 get
-const GoalInfoCard = ({ title, startDate, headCount, amount }: GoalInfoCardProps) => {
+const GoalInfoCard = ({ title, startDate, headCount, recruitCount, amount }: GoalInfoCardProps) => {
   return (
     <GoalInfoCardWrapper>
       <UpperWrapper>
@@ -20,7 +21,9 @@ const GoalInfoCard = ({ title, startDate, headCount, amount }: GoalInfoCardProps
       </UpperWrapper>
       <Amount>{amount.toLocaleString()} 원</Amount>
       <StartDate>{`${dateStringTranslator(startDate)} 시작`}</StartDate>
-      <HeadCount>{headCount} / 10</HeadCount>
+      <HeadCount>
+        {headCount} / {recruitCount}
+      </HeadCount>
     </GoalInfoCardWrapper>
   );
 };

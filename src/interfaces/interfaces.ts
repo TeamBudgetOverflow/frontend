@@ -45,3 +45,9 @@ export interface IAccountInfo {
   accntNo: string;
   accntPw: string;
 }
+
+export interface IParticapantInfo {
+  userId: number;
+  nickname: string;
+  img: string;
+}

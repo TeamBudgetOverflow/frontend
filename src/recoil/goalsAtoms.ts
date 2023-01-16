@@ -19,7 +19,9 @@ export const goalDetail = atom({
     attainment: 0,
     startDate: new Date(),
     endDate: new Date(),
+    recruitCount: 0,
     headCount: 0,
+    recruitMembers: [{ userId: 0, nickname: '', img: '' }],
   },
 });
 

@@ -30,9 +30,11 @@ const DetailGoal = () => {
         title={goalDetails.title}
         amount={goalDetails.amount}
         startDate={goalDetails.startDate}
+        recruitCount={goalDetails.recruitCount}
         headCount={goalDetails.headCount}
         endDate={goalDetails.endDate}
         description={goalDetails.description}
+        recruitMembers={goalDetails.recruitMembers}
       />
     </Wrapper>
   );

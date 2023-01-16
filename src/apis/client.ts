@@ -50,90 +50,98 @@ tokenClient.interceptors.response.use(
 
 export const userAPI = {
   getUserProfile: async (userId: number) => {
-    const { data } = await tokenClient.get(`/users/${userId}`);
-    // const data = {
-    //   img: '',
-    //   nickname: '유진',
-    //   description: '안녕하세요',
-    // };
+    // const { data } = await tokenClient.get(`/users/${userId}`);
+    const data = {
+      img: '',
+      nickname: '유진',
+      description: '안녕하세요',
+    };
     return data;
   },
   getUserGoals: async (userId: number) => {
-    const { data } = await tokenClient.get(`/users/${userId}/goals`);
-    // const data = {
-    //   goals: [
-    //     {
-    //       id: 1,
-    //       title: '생일선물',
-    //       description: '친구 생일선물 구매비용 모으기',
-    //       isPrivate: false,
-    //       hashtag: ['생일선물', '소액모으기'],
-    //       amount: 100000,
-    //       attainment: 80,
-    //       startDate: new Date(),
-    //       endDate: new Date('2023-01-20'),
-    //       headCount: 1,
-    //     },
-    //     {
-    //       id: 2,
-    //       title: 'test2',
-    //       description: 'test입니다2',
-    //       isPrivate: false,
-    //       hashtag: ['생일선물', '소액모으기'],
-    //       amount: 150000,
-    //       attainment: 80,
-    //       startDate: new Date(),
-    //       endDate: new Date('2023-02-15'),
-    //       headCount: 3,
-    //     },
-    //     {
-    //       id: 3,
-    //       title: 'test3',
-    //       description: 'test입니다3',
-    //       isPrivate: false,
-    //       hashtag: ['생일선물', '랄라'],
-    //       amount: 150000,
-    //       attainment: 80,
-    //       startDate: new Date(),
-    //       endDate: new Date('2023-03-10'),
-    //       headCount: 3,
-    //     },
-    //     {
-    //       id: 4,
-    //       title: 'test4',
-    //       description: 'test입니다4',
-    //       isPrivate: false,
-    //       hashtag: ['생일선물', '랄라'],
-    //       amount: 50000,
-    //       attainment: 20,
-    //       startDate: new Date(),
-    //       endDate: new Date('2023-04-10'),
-    //       headCount: 3,
-    //     },
-    //   ],
-    // };
+    // const { data } = await tokenClient.get(`/users/${userId}/goals`);
+    const data = {
+      goals: [
+        {
+          id: 1,
+          title: '생일선물',
+          description: '친구 생일선물 구매비용 모으기',
+          isPrivate: false,
+          hashtag: ['생일선물', '소액모으기'],
+          amount: 100000,
+          attainment: 80,
+          startDate: new Date(),
+          endDate: new Date('2023-01-20'),
+          headCount: 1,
+        },
+        {
+          id: 2,
+          title: 'test2',
+          description: 'test입니다2',
+          isPrivate: false,
+          hashtag: ['생일선물', '소액모으기'],
+          amount: 150000,
+          attainment: 80,
+          startDate: new Date(),
+          endDate: new Date('2023-02-15'),
+          headCount: 3,
+        },
+        {
+          id: 3,
+          title: 'test3',
+          description: 'test입니다3',
+          isPrivate: false,
+          hashtag: ['생일선물', '랄라'],
+          amount: 150000,
+          attainment: 80,
+          startDate: new Date(),
+          endDate: new Date('2023-03-10'),
+          headCount: 3,
+        },
+        {
+          id: 4,
+          title: 'test4',
+          description: 'test입니다4',
+          isPrivate: false,
+          hashtag: ['생일선물', '랄라'],
+          amount: 50000,
+          attainment: 20,
+          startDate: new Date(),
+          endDate: new Date('2023-04-10'),
+          headCount: 3,
+        },
+      ],
+    };
     return data;
   },
 };
 
 export const goalApi = {
   getGoalDetail: async (goalId: number) => {
-    const { data } = await tokenClient.get(`goals/${goalId}`);
+    // const { data } = await tokenClient.get(`goals/${goalId}`);
 
-    // const data = {
-    //   goalDetail: {
-    //     id: 1,
-    //     title: '생일선물',
-    //     description: '친구 생일선물 구매비용 모으기',
-    //     isPrivate: false,
-    //     hashtag: ['생일선물', '소액모으기'],
-    //     amount: 100000,
-    //     attainment: 80,
-    //     startDate: new Date(),
-    //     endDate: new Date('2023-01-20'),
-    //     headCount: 1,
-    //   },
-    // };
+    const data = {
+      goalDetail: {
+        id: 1,
+        title: '생일선물',
+        description: '친구 생일선물 구매비용 모으기',
+        isPrivate: false,
+        hashtag: ['생일선물', '소액모으기'],
+        amount: 100000,
+        attainment: 80,
+        startDate: new Date(),
+        endDate: new Date('2023-01-20'),
+        recruitCount: 10,
+        headCount: 1,
+        recruitMembers: [
+          { userId: 1, nickname: '태근', img: 'img.jpg' },
+          { userId: 2, nickname: '유진', img: 'img2.jpg' },
+          { userId: 3, nickname: '제승', img: 'img3.jpg' },
+          { userId: 4, nickname: '수완', img: 'img4.jpg' },
+          { userId: 5, nickname: '쥬향', img: 'img5.jpg' },
+        ],
+      },
+    };
 
     return data;
   },
