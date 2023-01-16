@@ -2,12 +2,14 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+import EmojiBox from '../common/elem/EmojiBox';
 import DdayTag from '../common/tag/DdayTag';
 
 import { IGoal } from '../../interfaces/interfaces';
 import { dDayCalculator } from '../../utils/dDayCalculator';
 
 import { setProgressState } from '../../utils/progressState';
+import C3TextBox from '../common/elem/C3TextBox';
 
 const MyGoalCard = ({ goal }: { goal: IGoal }) => {
   const navigate = useNavigate();
@@ -15,7 +17,7 @@ const MyGoalCard = ({ goal }: { goal: IGoal }) => {
     <Wrapper onClick={() => navigate(`/goals/${goal.id}`)}>
       <TopContent>
         <TopLeftContent>
-          <Icon />
+          <EmojiBox unicode='1f63a' boxSize={40} emojiSize={20} />
           <TextContent>
             <Title>{goal.title}</Title>
             <Amount>{`${goal.amount.toLocaleString()}원`}</Amount>
@@ -30,8 +32,8 @@ const MyGoalCard = ({ goal }: { goal: IGoal }) => {
           <ProgressBar width={`${goal.attainment}%`} />
         </ProgressBarWrapper>
         <ProgressInfo>
-          <ProgressText>{setProgressState(goal.attainment)}</ProgressText>
-          <ProgressText>{`${goal.attainment}%`}</ProgressText>
+          <C3TextBox text={setProgressState(goal.attainment)} />
+          <C3TextBox text={`${goal.attainment}%`} />
         </ProgressInfo>
       </BottomContent>
     </Wrapper>
@@ -44,7 +46,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   gap: 18px;
   border-radius: 16px;
-  background-color: ${(props) => props.theme.primary200};
+  background-color: white;
   :hover {
     cursor: pointer;
   }
@@ -67,13 +69,6 @@ const TopLeftContent = styled.div`
 
 const TopRightContent = styled.div`
   float: right;
-`;
-
-const Icon = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  background-color: ${(props) => props.theme.primary50};
 `;
 
 const TextContent = styled.div`
@@ -112,17 +107,13 @@ const ProgressBar = styled.div<{ width: string }>`
   width: ${(props) => props.width};
   height: 8px;
   border-radius: 25px;
-  background-color: ${(props) => props.theme.primary900};
+  background-color: ${(props) => props.theme.primary500};
 `;
 
 const ProgressInfo = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-`;
-
-const ProgressText = styled.div`
-  font: ${(props) => props.theme.captionC3};
 `;
 
 export default MyGoalCard;
