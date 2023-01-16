@@ -62,14 +62,6 @@ export interface IGetGoalDetail {
   recruitMembers: Array<IParticapantInfoProps>;
 }
 
-export interface IGoalInfoCardProps {
-  title: string;
-  startDate: Date;
-  recruitCount?: number;
-  headCount?: number;
-  amount: number;
-}
-
 export interface IParticapantInfoProps {
   userId: number;
   nickname: string;

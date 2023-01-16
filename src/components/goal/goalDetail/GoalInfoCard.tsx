@@ -1,11 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { IGoalInfoCardProps } from '../../../interfaces/interfaces';
-
 import { dateStringTranslator } from '../../../utils/dateTranslator';
 
-interface MyGoalInfoCardProps extends IGoalInfoCardProps {
+interface IGoalInfoCardProps {
+  title: string;
+  startDate: Date;
+  recruitCount?: number;
+  headCount?: number;
+  amount: number;
   isPrivate?: boolean;
   attainment?: number;
 }
@@ -20,7 +23,7 @@ const GoalInfoCard = ({
   amount,
   isPrivate,
   attainment,
-}: MyGoalInfoCardProps) => {
+}: IGoalInfoCardProps) => {
   return (
     <GoalInfoCardWrapper>
       <UpperWrapper>
