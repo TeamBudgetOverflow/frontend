@@ -8,7 +8,7 @@ interface IGoalParticipnatListProps {
   recruitCount: number;
 }
 
-// TODO: 목표 참가자 리스트 get
+// TODO: 목표 참가자 달성률
 const GroupGoalParticipantList = ({ recruitMembers, recruitCount }: IGoalParticipnatListProps) => {
   const recruitMember = recruitMembers.map((member) => (
     <GroupGoalParticipantCard key={member.userId} userId={member.userId} nickname={member.nickname} img={member.img} />

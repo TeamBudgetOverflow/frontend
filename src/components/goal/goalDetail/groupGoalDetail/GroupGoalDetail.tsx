@@ -1,14 +1,21 @@
 import React from 'react';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import { IParticapantInfo } from '../../../../interfaces/interfaces';
 
 import GoalDescCard from '../GoalDescCard';
 import GoalInfo from '../GoalInfoCard';
 import GoalPeriodCard from '../GoalPeriodCard';
 import GroupGoalJoinButton from './GroupGoalJoinButton';
 import GroupGoalParticipantList from './GroupGoalParticipationList';
+import GroupGoalModifyButton from './GroupGoalModifyButton';
+import GoalDeleteButton from '../GoalDeleteButton';
+
+import { IParticapantInfo } from '../../../../interfaces/interfaces';
+
+import { userInfo } from '../../../../recoil/atoms';
 
 export interface IGoalDetail {
+  createdUserId: number;
   id?: number;
   title: string;
   description: string;
@@ -23,10 +30,9 @@ export interface IGoalDetail {
   recruitMembers: Array<IParticapantInfo>;
 }
 
-// TODO: 목표생성자 -> 목표 수정하기, 삭제하기 버튼
 // TODO: 목표참가자 -> 목표 생성자 아이디가 아닌경우 목표 탈퇴
-// TODO: 목표미참가자 -> 목표 생성자 아이디가 아니거나 참가자가 아닌 경우 참가 버튼
 const GroupGoalDetail = ({
+  createdUserId,
   title,
   description,
   startDate,
@@ -36,13 +42,25 @@ const GroupGoalDetail = ({
   amount,
   recruitMembers,
 }: IGoalDetail) => {
+  const { id } = useRecoilValue(userInfo);
+  console.log(createdUserId, id);
+
   return (
     <Wrapper>
       <GoalInfo title={title} startDate={startDate} headCount={headCount} recruitCount={recruitCount} amount={amount} />
       <GoalPeriodCard startDate={startDate} endDate={endDate} />
       <GoalDescCard description={description} />
       <GroupGoalParticipantList recruitMembers={recruitMembers} recruitCount={recruitCount} />
-      <GroupGoalJoinButton />
+      {createdUserId !== id ? (
+        <GoalButtonSet>
+          <GroupGoalJoinButton />
+        </GoalButtonSet>
+      ) : (
+        <GoalButtonSet>
+          <GroupGoalModifyButton />
+          <GoalDeleteButton />
+        </GoalButtonSet>
+      )}
     </Wrapper>
   );
 };
@@ -55,6 +73,14 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+`;
+
+const GoalButtonSet = styled.div`
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
   align-items: center;
 `;
 

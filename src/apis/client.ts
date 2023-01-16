@@ -122,6 +122,7 @@ export const goalApi = {
 
     const data = {
       goalDetail: {
+        createdUserId: 2,
         id: 1,
         title: '생일선물',
         description: '친구 생일선물 구매비용 모으기',

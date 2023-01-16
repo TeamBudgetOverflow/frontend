@@ -27,6 +27,7 @@ const DetailGoal = () => {
     <Wrapper>
       <GroupGoalDetail
         key={goalDetails.id}
+        createdUserId={goalDetails.createdUserId}
         title={goalDetails.title}
         amount={goalDetails.amount}
         startDate={goalDetails.startDate}

@@ -10,6 +10,7 @@ export const goalId = atom({
 export const goalDetail = atom({
   key: 'goalDetail',
   default: {
+    createdUserId: 0,
     id: 0,
     title: '',
     description: '',

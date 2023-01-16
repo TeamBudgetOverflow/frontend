@@ -5,7 +5,6 @@ import ProfileImg from '../../../common/elem/ProfileImg';
 
 // TODO: 참가자 달성률
 const GroupGoalParticipantCard = ({ nickname, img }: IParticapantInfo) => {
-  console.log(nickname, img);
   return (
     <GroupGoalParticipantCardWrapper>
       <PaticpantInfoWrapper>
