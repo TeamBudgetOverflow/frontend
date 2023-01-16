@@ -8,7 +8,10 @@ interface InputBoxProps {
   onChangeHandler?: (e: React.FormEvent<HTMLInputElement>) => void;
   onKeyPressHandler?: (e: React.KeyboardEvent<HTMLDivElement>) => void;
   isDisabled?: boolean;
-  borderRadius?: string;
+  showBorder?: boolean;
+  showTextCounter?: boolean;
+  maxLen?: number;
+  textLen?: number;
 }
 
 const InputBox = ({
@@ -18,29 +21,46 @@ const InputBox = ({
   onChangeHandler,
   onKeyPressHandler,
   isDisabled,
-  borderRadius,
+  showBorder = true,
+  showTextCounter = false,
+  maxLen,
+  textLen,
 }: InputBoxProps) => {
   return (
-    <Input
-      type={type}
-      value={value}
-      placeholder={placeholder}
-      onChange={onChangeHandler}
-      onKeyPress={onKeyPressHandler}
-      disabled={isDisabled}
-      borderRadius={borderRadius}
-    />
+    <Wrapper>
+      <Input
+        type={type}
+        value={value}
+        placeholder={placeholder}
+        onChange={onChangeHandler}
+        onKeyPress={onKeyPressHandler}
+        disabled={isDisabled}
+        showBorder={showBorder}
+      />
+      {showTextCounter ? <InputCounter>{`${textLen}/${maxLen}`}</InputCounter> : <></>}
+    </Wrapper>
   );
 };
 
-const Input = styled.input<{ borderRadius?: string }>`
+const Wrapper = styled.div`
+  width: 100%;
+  height: 100%;
+`;
+
+const Input = styled.input<{ showBorder: boolean }>`
   padding: 0;
   width: 100%;
   height: 100%;
-  border: 1px solid black;
-  text-indent: 10px;
+  border: none;
+  border-bottom: ${(props) => (props.showBorder ? '1px solid black' : '')};
+  font: ${(props) => props.theme.paragraphP3};
+  color: ${(props) => props.theme.gray600};
+  background-color: transparent;
+`;
+
+const InputCounter = styled.span`
   font: ${(props) => props.theme.captionC3};
-  border-radius: ${(props) => props.borderRadius};
+  color: ${(props) => props.theme.gray600};
 `;
 
 export default InputBox;
