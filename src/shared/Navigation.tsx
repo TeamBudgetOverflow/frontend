@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef, Ref } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
@@ -13,7 +13,11 @@ enum Menu {
   my,
 }
 
-const Navigation = () => {
+interface NavProps {
+  props: string;
+}
+
+const Navigation = (props: NavProps, ref: Ref<HTMLDivElement>) => {
   const navigate = useNavigate();
   const { id } = useRecoilValue(userInfo);
 
@@ -33,7 +37,7 @@ const Navigation = () => {
   };
 
   return (
-    <Wrapper>
+    <Wrapper ref={ref}>
       <Button onClick={() => handleMenuSelect(Menu.home)}>
         <Icon
           size={24}
@@ -91,4 +95,4 @@ const Text = styled.div`
   font: ${(props) => props.theme.paragraphP3M};
 `;
 
-export default Navigation;
+export default forwardRef(Navigation);

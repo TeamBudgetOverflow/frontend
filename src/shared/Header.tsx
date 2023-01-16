@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Ref, forwardRef } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import styled from 'styled-components';
 
@@ -6,7 +6,11 @@ import Logo from '../components/common/elem/Logo';
 import Icon from '../components/common/elem/Icon';
 import SearchBar from '../components/header/SearchBar';
 
-const Header = () => {
+interface HeaderProps {
+  props: string;
+}
+
+const Header = (props: HeaderProps, ref: Ref<HTMLDivElement>) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [showSearchBar, setShowSearchBar] = useState<boolean>(false);
@@ -20,7 +24,7 @@ const Header = () => {
   }, [pathname]);
 
   return (
-    <HeaderLayout showBgColor={!showSearchBar}>
+    <HeaderLayout ref={ref} showBgColor={!showSearchBar}>
       {pathname === '/' ? <Logo size='small' /> : <></>}
       <Button show={showSearchBar} onClick={handleSearch}>
         <Icon
@@ -92,4 +96,4 @@ const PageName = styled.div<{ show: boolean }>`
   font: ${(props) => props.theme.paragraphP2};
 `;
 
-export default Header;
+export default forwardRef(Header);
