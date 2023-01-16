@@ -9,6 +9,7 @@ import GroupGoalJoinButton from './GroupGoalJoinButton';
 import GroupGoalParticipantList from './GroupGoalParticipationList';
 import GroupGoalModifyButton from './GroupGoalModifyButton';
 import GoalDeleteButton from '../GoalDeleteButton';
+import GroupGoalWithDrawButton from './GroupGoalWithdrawButton';
 
 import { IParticapantInfo } from '../../../../interfaces/interfaces';
 
@@ -43,7 +44,35 @@ const GroupGoalDetail = ({
   recruitMembers,
 }: IGoalDetail) => {
   const { id } = useRecoilValue(userInfo);
-  console.log(createdUserId, id);
+
+  const buttonSet = (id: number) => {
+    const findId = recruitMembers.findIndex((member) => member.userId === id);
+
+    if (id === createdUserId) {
+      return (
+        <GoalButtonSet>
+          <GroupGoalModifyButton />
+          <GoalDeleteButton />
+        </GoalButtonSet>
+      );
+    }
+
+    if (id !== createdUserId && findId !== -1) {
+      return (
+        <GoalButtonSet>
+          <GroupGoalWithDrawButton />
+        </GoalButtonSet>
+      );
+    }
+
+    if (id !== createdUserId && findId === -1) {
+      return (
+        <GoalButtonSet>
+          <GroupGoalJoinButton />
+        </GoalButtonSet>
+      );
+    }
+  };
 
   return (
     <Wrapper>
@@ -51,16 +80,7 @@ const GroupGoalDetail = ({
       <GoalPeriodCard startDate={startDate} endDate={endDate} />
       <GoalDescCard description={description} />
       <GroupGoalParticipantList recruitMembers={recruitMembers} recruitCount={recruitCount} />
-      {createdUserId !== id ? (
-        <GoalButtonSet>
-          <GroupGoalJoinButton />
-        </GoalButtonSet>
-      ) : (
-        <GoalButtonSet>
-          <GroupGoalModifyButton />
-          <GoalDeleteButton />
-        </GoalButtonSet>
-      )}
+      {buttonSet(id)}
     </Wrapper>
   );
 };
