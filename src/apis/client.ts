@@ -211,6 +211,18 @@ export const goalApi = {
 
     return response;
   },
+
+  withdrawGoal: async (goalId: string | undefined) => {
+    const response = await tokenClient.post(`api/goals/${goalId}`);
+
+    return response;
+  },
+
+  deleteGoal: async (goalId: string | undefined) => {
+    const response = await tokenClient.post(`api/goals/${goalId}`);
+
+    return response;
+  },
 };
 
 export const bankAPI = {
