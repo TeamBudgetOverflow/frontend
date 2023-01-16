@@ -17,7 +17,7 @@ const MyGoalCard = ({ goal }: { goal: IGoal }) => {
     <Wrapper onClick={() => navigate(`/goals/${goal.id}`)}>
       <TopContent>
         <TopLeftContent>
-          <EmojiBox unicode='1f63a' boxSize={40} emojiSize={20} />
+          <EmojiBox unicode={goal.emoji} boxSize={40} emojiSize={20} />
           <TextContent>
             <Title>{goal.title}</Title>
             <Amount>{`${goal.amount.toLocaleString()}원`}</Amount>
