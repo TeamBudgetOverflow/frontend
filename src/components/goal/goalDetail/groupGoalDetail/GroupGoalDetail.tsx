@@ -11,7 +11,7 @@ import GroupGoalModifyButton from '../GoalModifyButton';
 import GoalDeleteButton from '../GoalDeleteButton';
 import GroupGoalWithDrawButton from './GroupGoalWithdrawButton';
 
-import { IGoalDetail } from '../../../../interfaces/interfaces';
+import { IGetGoalDetail } from '../../../../interfaces/interfaces';
 
 import { userInfo } from '../../../../recoil/atoms';
 
@@ -25,7 +25,7 @@ const GroupGoalDetail = ({
   headCount,
   amount,
   recruitMembers,
-}: IGoalDetail) => {
+}: IGetGoalDetail) => {
   const { id } = useRecoilValue(userInfo);
 
   const buttonSet = (id: number) => {

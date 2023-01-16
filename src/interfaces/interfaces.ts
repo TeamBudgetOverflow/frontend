@@ -46,7 +46,7 @@ export interface IAccountInfo {
   accntPw: string;
 }
 
-export interface IGoalDetail {
+export interface IGetGoalDetail {
   createdUserId?: number;
   id: number;
   title: string;
@@ -59,10 +59,10 @@ export interface IGoalDetail {
   endDate: Date;
   recruitCount: number;
   headCount?: number;
-  recruitMembers: Array<IParticapantInfo>;
+  recruitMembers: Array<IParticapantInfoProps>;
 }
 
-export interface GoalInfoCardProps {
+export interface IGoalInfoCardProps {
   title: string;
   startDate: Date;
   recruitCount?: number;
@@ -70,8 +70,9 @@ export interface GoalInfoCardProps {
   amount: number;
 }
 
-export interface IParticapantInfo {
+export interface IParticapantInfoProps {
   userId: number;
   nickname: string;
   img: string;
+  // TODO: add attainment
 }

@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { GoalInfoCardProps } from '../../../interfaces/interfaces';
+import { IGoalInfoCardProps } from '../../../interfaces/interfaces';
 
 import { dateStringTranslator } from '../../../utils/dateTranslator';
 
-interface MyGoalInfoCardProps extends GoalInfoCardProps {
+interface MyGoalInfoCardProps extends IGoalInfoCardProps {
   isPrivate?: boolean;
   attainment?: number;
 }
