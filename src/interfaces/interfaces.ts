@@ -47,19 +47,21 @@ export interface IAccountInfo {
 }
 
 export interface IGetGoalDetail {
-  createdUserId: number;
-  id: number;
-  title: string;
-  description: string;
-  isPrivate: boolean;
-  hashtag: Array<string>;
-  amount: number;
-  attainment: number;
-  startDate: Date;
-  endDate: Date;
-  recruitCount: number;
-  headCount: number;
-  recruitMembers: Array<IParticapantInfoProps>;
+  goalDetail: {
+    createdUserId: number;
+    id: number;
+    title: string;
+    description: string;
+    isPrivate: boolean;
+    hashtag: Array<string>;
+    amount: number;
+    attainment: number;
+    startDate: Date;
+    endDate: Date;
+    recruitCount: number;
+    headCount: number;
+    recruitMembers: Array<IParticapantInfoProps>;
+  };
 }
 
 export interface IParticapantInfoProps {

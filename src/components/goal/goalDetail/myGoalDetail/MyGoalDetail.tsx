@@ -10,7 +10,7 @@ import MyGoalAccountInfoCard from './MyGoalAccountInfoCard';
 import { IGetGoalDetail } from '../../../../interfaces/interfaces';
 
 // TODO: 개인 목표 연결 계좌정보 연결
-const MyGoalDetail = ({ title, startDate, endDate, isPrivate, amount, attainment }: IGetGoalDetail) => {
+const MyGoalDetail = ({ goalDetail }: IGetGoalDetail) => {
   return (
     <Wrapper>
       <GoalInfo isPrivate={isPrivate} title={title} startDate={startDate} amount={amount} attainment={attainment} />

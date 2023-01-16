@@ -9,13 +9,14 @@ import MyGoalDetail from '../components/goal/goalDetail/myGoalDetail/MyGoalDetai
 import { goalDetail, goalId } from '../recoil/goalsAtoms';
 
 import { goalApi } from '../apis/client';
+import { IGetGoalDetail } from '../interfaces/interfaces';
 
-// TODO: 목표 대표 이미지 연결
+// TODO: 목표 대표 이모지 연결
 const DetailGoal = () => {
   const { id } = useRecoilValue(goalId);
   const { isPrivate } = useRecoilValue(goalDetail);
 
-  const { data: goalDetailData } = useQuery('goalDetail', () => goalApi.getGoalDetail(id));
+  const { data: goalDetailData } = useQuery<IGetGoalDetail>('goalDetail', () => goalApi.getGoalDetail(id));
 
   const setGoalDetail = useSetRecoilState(goalDetail);
   const goalDetails = useRecoilValue(goalDetail);
@@ -25,42 +26,13 @@ const DetailGoal = () => {
     setGoalDetail(goalDetailData.goalDetail);
   }, [goalDetailData]);
 
+  // TODO: 개인 / 그룹 목표를 어떻게 구분해야할지에 따라 리팩터링
   return (
     <Wrapper>
       {isPrivate ? (
-        <MyGoalDetail
-          key={goalDetails.id}
-          id={goalDetails.id}
-          createdUserId={goalDetails.createdUserId}
-          title={goalDetails.title}
-          amount={goalDetails.amount}
-          isPrivate={goalDetails.isPrivate}
-          hashtag={goalDetails.hashtag}
-          attainment={goalDetails.attainment}
-          startDate={goalDetails.startDate}
-          endDate={goalDetails.endDate}
-          headCount={goalDetails.headCount}
-          recruitCount={goalDetails.recruitCount}
-          recruitMembers={goalDetails.recruitMembers}
-          description={goalDetails.description}
-        />
+        <MyGoalDetail key={goalDetails.id} goalDetail={goalDetails} />
       ) : (
-        <GroupGoalDetail
-          key={goalDetails.id}
-          id={goalDetails.id}
-          createdUserId={goalDetails.createdUserId}
-          title={goalDetails.title}
-          amount={goalDetails.amount}
-          isPrivate={goalDetails.isPrivate}
-          hashtag={goalDetails.hashtag}
-          attainment={goalDetails.attainment}
-          startDate={goalDetails.startDate}
-          endDate={goalDetails.endDate}
-          headCount={goalDetails.headCount}
-          recruitCount={goalDetails.recruitCount}
-          recruitMembers={goalDetails.recruitMembers}
-          description={goalDetails.description}
-        />
+        <GroupGoalDetail key={goalDetails.id} goalDetail={goalDetails} />
       )}
     </Wrapper>
   );
