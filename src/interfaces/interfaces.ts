@@ -46,6 +46,11 @@ export interface IAccountInfo {
   accntPw: string;
 }
 
+export interface IBadge {
+  title: string;
+  description: string;
+}
+
 export interface IGetGoalDetail {
   goalDetail: {
     createdUserId: number;
