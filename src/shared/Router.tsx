@@ -10,10 +10,10 @@ import AgreementOfCollectionPersonalInfo from '../pages/AgreementOfCollectionPer
 import PostGoal from '../pages/PostGoal';
 import DetailGoal from '../pages/DetailGoal';
 import GroupGoals from '../pages/GroupGoals';
-import Layout from './Layout';
-
-import { userInfo } from '../recoil/atoms';
+import Navigation from './Navigation';
 import SearchGoals from '../pages/SearchGoals';
+import DetailUser from '../pages/DetailUser';
+import Navigation from './Navigation';
 
 const Router = () => {
   const { isLogin } = useRecoilValue(userInfo);
@@ -24,14 +24,12 @@ const Router = () => {
         <Routes>
           <Route path='/' element={!isLogin ? <LoginPage /> : <Home />} />
           <Route path='/pinnumber' element={<PinNumberInputPage />} />
-          <Route
-            path='/agreement'
-            element={<AgreementOfCollectionPersonalInfo />}
-          />
+          <Route path='/agreement' element={<AgreementOfCollectionPersonalInfo />} />
           <Route path='/goals/post' element={<PostGoal />} />
           <Route path='/goals/:id' element={<DetailGoal />} />
           <Route path='/goals/lookup' element={<GroupGoals />} />
           <Route path='/goals/lookup/search' element={<SearchGoals />} />
+          <Route path='/users/:id' element={<DetailUser />} />
         </Routes>
       </Layout>
     </BrowserRouter>

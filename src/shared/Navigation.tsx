@@ -1,9 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
+
+import { userInfo } from '../recoil/atoms';
 
 const Navigation = () => {
   const navigate = useNavigate();
+  const { id } = useRecoilValue(userInfo);
 
   return (
     <Wrapper>
@@ -25,7 +29,7 @@ const Navigation = () => {
         </SVGIcon>
         <Text>목표 조회</Text>
       </Menu>
-      <Menu>
+      <Menu onClick={() => navigate(`/users/${id}`)}>
         <SVGIcon viewBox='0 0 24 24'>
           <path
             fill='#e4f7ea'

@@ -24,7 +24,8 @@ const StateGoalCard = ({ goal }: { goal: IGoal }) => {
 
   useEffect(() => {
     setGoalState();
-  }, []);
+  }, [goal]);
+
   return (
     <Wrapper onClick={() => navigate(`/goals/${goal.id}`)}>
       <TopContent>
