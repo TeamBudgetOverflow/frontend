@@ -30,6 +30,7 @@ const DetailGoal = () => {
       {isPrivate ? (
         <MyGoalDetail
           key={goalDetails.id}
+          id={goalDetails.id}
           title={goalDetails.title}
           amount={goalDetails.amount}
           isPrivate={goalDetails.isPrivate}
@@ -43,9 +44,11 @@ const DetailGoal = () => {
       ) : (
         <GroupGoalDetail
           key={goalDetails.id}
+          id={goalDetails.id}
           createdUserId={goalDetails.createdUserId}
           title={goalDetails.title}
           amount={goalDetails.amount}
+          isPrivate={goalDetails.isPrivate}
           startDate={goalDetails.startDate}
           recruitCount={goalDetails.recruitCount}
           headCount={goalDetails.headCount}

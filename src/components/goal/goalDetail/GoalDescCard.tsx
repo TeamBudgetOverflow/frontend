@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-interface GoalDescCard {
+interface GoalDescCardProps {
   description: string;
 }
 
-const GoalDescCard = ({ description }: GoalDescCard) => {
+const GoalDescCard = ({ description }: GoalDescCardProps) => {
   return (
     <Wrapper>
       <GoalDescCardWrapper>

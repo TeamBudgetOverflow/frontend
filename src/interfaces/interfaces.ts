@@ -48,10 +48,10 @@ export interface IAccountInfo {
 
 export interface IGoalDetail {
   createdUserId?: number;
-  id?: number;
+  id: number;
   title: string;
   description: string;
-  isPrivate?: boolean;
+  isPrivate: boolean;
   hashtag?: Array<string>;
   amount: number;
   attainment?: number;
