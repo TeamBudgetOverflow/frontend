@@ -118,31 +118,31 @@ export const userAPI = {
 
 export const goalApi = {
   getGoalDetail: async (goalId: number) => {
-    const { data } = await tokenClient.get(`goals/${goalId}`);
+    // const { data } = await tokenClient.get(`goals/${goalId}`);
 
-    // const data = {
-    //   goalDetail: {
-    //     createdUserId: 2,
-    //     id: 1,
-    //     title: '생일선물',
-    //     description: '친구 생일선물 구매비용 모으기',
-    //     isPrivate: false,
-    //     hashtag: ['생일선물', '소액모으기'],
-    //     amount: 100000,
-    //     attainment: 80,
-    //     startDate: new Date(),
-    //     endDate: new Date('2023-01-20'),
-    //     recruitCount: 10,
-    //     headCount: 1,
-    //     recruitMembers: [
-    //       { userId: 1, nickname: '태근', img: 'img.jpg' },
-    //       { userId: 2, nickname: '유진', img: 'img2.jpg' },
-    //       { userId: 3, nickname: '제승', img: 'img3.jpg' },
-    //       { userId: 4, nickname: '수완', img: 'img4.jpg' },
-    //       { userId: 5, nickname: '쥬향', img: 'img5.jpg' },
-    //     ],
-    //   },
-    // };
+    const data = {
+      goalDetail: {
+        createdUserId: 2,
+        id: 1,
+        title: '생일선물',
+        description: '친구 생일선물 구매비용 모으기',
+        isPrivate: false,
+        hashtag: ['생일선물', '소액모으기'],
+        amount: 100000,
+        attainment: 80,
+        startDate: new Date(),
+        endDate: new Date('2023-01-20'),
+        recruitCount: 10,
+        headCount: 1,
+        recruitMembers: [
+          { userId: 1, nickname: '태근', img: 'img.jpg' },
+          { userId: 2, nickname: '유진', img: 'img2.jpg' },
+          { userId: 3, nickname: '제승', img: 'img3.jpg' },
+          { userId: 4, nickname: '수완', img: 'img4.jpg' },
+          { userId: 5, nickname: '쥬향', img: 'img5.jpg' },
+        ],
+      },
+    };
 
     return data;
   },

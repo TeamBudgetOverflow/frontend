@@ -31,12 +31,15 @@ const DetailGoal = () => {
         <MyGoalDetail
           key={goalDetails.id}
           id={goalDetails.id}
+          createdUserId={goalDetails.createdUserId}
           title={goalDetails.title}
           amount={goalDetails.amount}
           isPrivate={goalDetails.isPrivate}
+          hashtag={goalDetails.hashtag}
           attainment={goalDetails.attainment}
           startDate={goalDetails.startDate}
           endDate={goalDetails.endDate}
+          headCount={goalDetails.headCount}
           recruitCount={goalDetails.recruitCount}
           recruitMembers={goalDetails.recruitMembers}
           description={goalDetails.description}
@@ -49,12 +52,14 @@ const DetailGoal = () => {
           title={goalDetails.title}
           amount={goalDetails.amount}
           isPrivate={goalDetails.isPrivate}
+          hashtag={goalDetails.hashtag}
+          attainment={goalDetails.attainment}
           startDate={goalDetails.startDate}
-          recruitCount={goalDetails.recruitCount}
-          headCount={goalDetails.headCount}
           endDate={goalDetails.endDate}
-          description={goalDetails.description}
+          headCount={goalDetails.headCount}
+          recruitCount={goalDetails.recruitCount}
           recruitMembers={goalDetails.recruitMembers}
+          description={goalDetails.description}
         />
       )}
     </Wrapper>
