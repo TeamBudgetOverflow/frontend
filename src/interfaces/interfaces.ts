@@ -46,6 +46,30 @@ export interface IAccountInfo {
   accntPw: string;
 }
 
+export interface IGoalDetail {
+  createdUserId?: number;
+  id?: number;
+  title: string;
+  description: string;
+  isPrivate?: boolean;
+  hashtag?: Array<string>;
+  amount: number;
+  attainment?: number;
+  startDate: Date;
+  endDate: Date;
+  recruitCount: number;
+  headCount?: number;
+  recruitMembers: Array<IParticapantInfo>;
+}
+
+export interface GoalInfoCardProps {
+  title: string;
+  startDate: Date;
+  recruitCount?: number;
+  headCount?: number;
+  amount: number;
+}
+
 export interface IParticapantInfo {
   userId: number;
   nickname: string;

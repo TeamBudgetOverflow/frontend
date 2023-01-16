@@ -3,15 +3,17 @@ import { useQuery } from 'react-query';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
-import { goalApi } from '../apis/client';
-
 import GroupGoalDetail from '../components/goal/goalDetail/groupGoalDetail/GroupGoalDetail';
+import MyGoalDetail from '../components/goal/goalDetail/myGoalDetail/MyGoalDetail';
 
 import { goalDetail, goalId } from '../recoil/goalsAtoms';
 
-// TODO: 개인 목표 UI
+import { goalApi } from '../apis/client';
+
+// TODO: 목표 대표 이미지 연결
 const DetailGoal = () => {
   const { id } = useRecoilValue(goalId);
+  const { isPrivate } = useRecoilValue(goalDetail);
 
   const { data: goalDetailData } = useQuery('goalDetail', () => goalApi.getGoalDetail(id));
 
@@ -25,18 +27,33 @@ const DetailGoal = () => {
 
   return (
     <Wrapper>
-      <GroupGoalDetail
-        key={goalDetails.id}
-        createdUserId={goalDetails.createdUserId}
-        title={goalDetails.title}
-        amount={goalDetails.amount}
-        startDate={goalDetails.startDate}
-        recruitCount={goalDetails.recruitCount}
-        headCount={goalDetails.headCount}
-        endDate={goalDetails.endDate}
-        description={goalDetails.description}
-        recruitMembers={goalDetails.recruitMembers}
-      />
+      {isPrivate ? (
+        <MyGoalDetail
+          key={goalDetails.id}
+          title={goalDetails.title}
+          amount={goalDetails.amount}
+          isPrivate={goalDetails.isPrivate}
+          attainment={goalDetails.attainment}
+          startDate={goalDetails.startDate}
+          endDate={goalDetails.endDate}
+          recruitCount={goalDetails.recruitCount}
+          recruitMembers={goalDetails.recruitMembers}
+          description={goalDetails.description}
+        />
+      ) : (
+        <GroupGoalDetail
+          key={goalDetails.id}
+          createdUserId={goalDetails.createdUserId}
+          title={goalDetails.title}
+          amount={goalDetails.amount}
+          startDate={goalDetails.startDate}
+          recruitCount={goalDetails.recruitCount}
+          headCount={goalDetails.headCount}
+          endDate={goalDetails.endDate}
+          description={goalDetails.description}
+          recruitMembers={goalDetails.recruitMembers}
+        />
+      )}
     </Wrapper>
   );
 };

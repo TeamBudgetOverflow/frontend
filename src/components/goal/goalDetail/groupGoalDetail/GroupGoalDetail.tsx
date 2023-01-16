@@ -7,31 +7,14 @@ import GoalInfo from '../GoalInfoCard';
 import GoalPeriodCard from '../GoalPeriodCard';
 import GroupGoalJoinButton from './GroupGoalJoinButton';
 import GroupGoalParticipantList from './GroupGoalParticipationList';
-import GroupGoalModifyButton from './GroupGoalModifyButton';
+import GroupGoalModifyButton from '../GoalModifyButton';
 import GoalDeleteButton from '../GoalDeleteButton';
 import GroupGoalWithDrawButton from './GroupGoalWithdrawButton';
 
-import { IParticapantInfo } from '../../../../interfaces/interfaces';
+import { IGoalDetail } from '../../../../interfaces/interfaces';
 
 import { userInfo } from '../../../../recoil/atoms';
 
-export interface IGoalDetail {
-  createdUserId: number;
-  id?: number;
-  title: string;
-  description: string;
-  isPrivate?: boolean;
-  hashtag?: Array<string>;
-  amount: number;
-  attainment?: number;
-  startDate: Date;
-  endDate: Date;
-  recruitCount: number;
-  headCount: number;
-  recruitMembers: Array<IParticapantInfo>;
-}
-
-// TODO: 목표참가자 -> 목표 생성자 아이디가 아닌경우 목표 탈퇴
 const GroupGoalDetail = ({
   createdUserId,
   title,

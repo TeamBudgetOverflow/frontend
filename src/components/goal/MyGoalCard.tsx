@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import DdayTag from '../common/tag/DdayTag';
 
 import { IGoal } from '../../interfaces/interfaces';
-import { dDayCalculator } from '../../utils/dDayCalculator';
 
+import { dDayCalculator } from '../../utils/dDayCalculator';
 import { setProgressState } from '../../utils/progressState';
 
 const MyGoalCard = ({ goal }: { goal: IGoal }) => {

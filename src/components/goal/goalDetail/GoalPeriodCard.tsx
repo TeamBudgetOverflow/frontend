@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+
 import { dateStringTranslator } from '../../../utils/dateTranslator';
 import { dDayCalculator } from '../../../utils/dDayCalculator';
 import DdayTag from '../../common/tag/DdayTag';
@@ -10,15 +11,12 @@ interface GoalPeriodCard {
 }
 
 const GoalPeriodCard = ({ startDate, endDate }: GoalPeriodCard) => {
-  // const dateNumber = Math.floor((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
-  const dDayCalculated = dDayCalculator(endDate);
-
   return (
     <Wrapper>
       <GoalPeriodCardWrapper>
         <SubTitleSpan>기간</SubTitleSpan>
         <PeriodWrapper>{`${dateStringTranslator(startDate)} - ${dateStringTranslator(endDate)}`}</PeriodWrapper>
-        <DdayTag dDay={dDayCalculated} />
+        <DdayTag dDay={dDayCalculator(endDate)} />
       </GoalPeriodCardWrapper>
     </Wrapper>
   );

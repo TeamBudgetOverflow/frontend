@@ -1,17 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
-interface GoalDescCard {
-  description: string;
-}
-
-const GoalDescCard = ({ description }: GoalDescCard) => {
+// TODO: 게좌 정보 get 연결
+const MyGoalAccountInfoCard = () => {
   return (
     <Wrapper>
-      <GoalDescCardWrapper>
-        <SubTitleSpan>목표</SubTitleSpan>
-        <DescWrapper>{description}</DescWrapper>
-      </GoalDescCardWrapper>
+      <GoalAccountInfoCardWrapper>
+        <SubTitleSpan>계좌</SubTitleSpan>
+        <AccountInfoWrapper>우리은행 1002-645-123456</AccountInfoWrapper>
+      </GoalAccountInfoCardWrapper>
     </Wrapper>
   );
 };
@@ -24,7 +21,7 @@ const Wrapper = styled.div`
   display: flex;
 `;
 
-const GoalDescCardWrapper = styled.div`
+const GoalAccountInfoCardWrapper = styled.div`
   width: 100%;
   height: 70%;
   margin: 10px 20px;
@@ -38,9 +35,9 @@ const SubTitleSpan = styled.div`
   font: ${(props) => props.theme.captionC1};
 `;
 
-const DescWrapper = styled.div`
+const AccountInfoWrapper = styled.div`
   width: 85%;
   padding-top: 3px;
 `;
 
-export default GoalDescCard;
+export default MyGoalAccountInfoCard;

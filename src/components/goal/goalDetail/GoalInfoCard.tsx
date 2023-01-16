@@ -1,18 +1,26 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { GoalInfoCardProps } from '../../../interfaces/interfaces';
+
 import { dateStringTranslator } from '../../../utils/dateTranslator';
 
-interface GoalInfoCardProps {
-  title: string;
-  startDate: Date;
-  recruitCount: number;
-  headCount: number;
-  amount: number;
+interface MyGoalInfoCardProps extends GoalInfoCardProps {
+  isPrivate?: boolean;
+  attainment?: number;
 }
 
 // TODO: 목표 대표 이미지 get
-const GoalInfoCard = ({ title, startDate, headCount, recruitCount, amount }: GoalInfoCardProps) => {
+// TODO: 개인 목표 달성율에 따른 문구 연결
+const GoalInfoCard = ({
+  title,
+  startDate,
+  headCount,
+  recruitCount,
+  amount,
+  isPrivate,
+  attainment,
+}: MyGoalInfoCardProps) => {
   return (
     <GoalInfoCardWrapper>
       <UpperWrapper>
@@ -20,10 +28,20 @@ const GoalInfoCard = ({ title, startDate, headCount, recruitCount, amount }: Goa
         <TitleSpan>{title}</TitleSpan>
       </UpperWrapper>
       <Amount>{amount.toLocaleString()} 원</Amount>
-      <StartDate>{`${dateStringTranslator(startDate)} 시작`}</StartDate>
-      <HeadCount>
-        {headCount} / {recruitCount}
-      </HeadCount>
+      {isPrivate ? (
+        <>
+          <ProgressBarWrapper>
+            <ProgressBar width={`${attainment}%`} />
+          </ProgressBarWrapper>
+        </>
+      ) : (
+        <>
+          <StartDate>{`${dateStringTranslator(startDate)} 시작`}</StartDate>
+          <HeadCount>
+            {headCount} / {recruitCount}
+          </HeadCount>
+        </>
+      )}
     </GoalInfoCardWrapper>
   );
 };
@@ -79,6 +97,24 @@ const HeadCount = styled.div`
   height: 21px;
   text-align: center;
   font: ${(props) => props.theme.captionC1};
+`;
+
+const ProgressBarWrapper = styled.div`
+  position: relative;
+  width: 90%;
+  height: 8px;
+  border-radius: 25px;
+  background-color: ${(props) => props.theme.primary50};
+`;
+
+const ProgressBar = styled.div<{ width: string }>`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: ${(props) => props.width};
+  height: 8px;
+  border-radius: 25px;
+  background-color: ${(props) => props.theme.primary900};
 `;
 
 export default GoalInfoCard;
