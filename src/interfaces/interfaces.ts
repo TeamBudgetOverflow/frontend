@@ -51,3 +51,29 @@ export interface IBadge {
   title: string;
   description: string;
 }
+
+export interface IGetGoalDetail {
+  goalDetail: {
+    createdUserId: number;
+    id: number;
+    title: string;
+    emoji: string;
+    description: string;
+    isPrivate: boolean;
+    hashtag: Array<string>;
+    amount: number;
+    attainment: number;
+    startDate: Date;
+    endDate: Date;
+    recruitCount: number;
+    headCount: number;
+    recruitMember: Array<IParticapantInfoProps>;
+  };
+}
+
+export interface IParticapantInfoProps {
+  userId: number;
+  nickname: string;
+  img: string;
+  attainment: number;
+}

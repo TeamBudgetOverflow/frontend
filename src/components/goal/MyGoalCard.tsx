@@ -6,8 +6,8 @@ import EmojiBox from '../common/elem/EmojiBox';
 import DdayTag from '../common/tag/DdayTag';
 
 import { IGoal } from '../../interfaces/interfaces';
-import { dDayCalculator } from '../../utils/dDayCalculator';
 
+import { dDayCalculator } from '../../utils/dDayCalculator';
 import { setProgressState } from '../../utils/progressState';
 import C3TextBox from '../common/elem/C3TextBox';
 

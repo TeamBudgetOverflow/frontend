@@ -160,6 +160,56 @@ export const userAPI = {
 };
 
 export const goalApi = {
+  getGoalDetail: async (goalId: number) => {
+    const { data } = await tokenClient.get(`goals/${goalId}`);
+
+    // const data = {
+    //   goalDetail: {
+    //     createdUserId: 2,
+    //     id: 1,
+    //     title: '생일선물',
+    //     emoji: '26f0-fe0f',
+    //     description: '친구 생일선물 구매비용 모으기',
+    //     isPrivate: false,
+    //     hashtag: ['생일선물', '소액모으기'],
+    //     amount: 100000,
+    //     attainment: 80,
+    //     startDate: new Date('2023-01-15'),
+    //     endDate: new Date('2023-01-16'),
+    //     recruitCount: 5,
+    //     headCount: 10,
+    //     recruitMember: [
+    //       { userId: 1, nickname: '태근', img: 'img.jpg', attainment: 80 },
+    //       { userId: 2, nickname: '유진', img: 'img2.jpg', attainment: 80 },
+    //       { userId: 3, nickname: '제승', img: 'img3.jpg', attainment: 80 },
+    //       { userId: 4, nickname: '수완', img: 'img4.jpg', attainment: 80 },
+    //       { userId: 5, nickname: '쥬향', img: 'img5.jpg', attainment: 80 },
+    //     ],
+    //   },
+    // };
+
+    // const data = {
+    //   goalDetail: {
+    //     createdUserId: 1,
+    //     id: 2,
+    //     title: '생일선물',
+    //     emoji: '26f0-fe0f',
+    //     description: '친구 생일선물 구매비용 모으기',
+    //     isPrivate: false,
+    //     hashtag: ['생일선물', '소액모으기'],
+    //     amount: 100000,
+    //     attainment: 80,
+    //     startDate: new Date('2023-01-15'),
+    //     endDate: new Date('2023-01-20'),
+    //     recruitCount: 1,
+    //     headCount: 1,
+    //     recruitMember: [{ userId: 1, nickname: '태근', img: 'img.jpg', attainment: 80 }],
+    //   },
+    // };
+
+    return data;
+  },
+
   getGoalsByWord: async (query: string) => {
     const { data } = await tokenClient.get(`/goals/getgoals/search` + query);
 
@@ -221,6 +271,24 @@ export const goalApi = {
     // };
 
     return data;
+  },
+
+  joinGoal: async (goalId: string | undefined) => {
+    const response = await tokenClient.post(`/api/goals/join/${goalId}`);
+
+    return response;
+  },
+
+  withdrawGoal: async (goalId: string | undefined) => {
+    const response = await tokenClient.post(`/api/goals/exit/${goalId}`);
+
+    return response;
+  },
+
+  deleteGoal: async (goalId: string | undefined) => {
+    const response = await tokenClient.post(`/api/goals/${goalId}`);
+
+    return response;
   },
 };
 
