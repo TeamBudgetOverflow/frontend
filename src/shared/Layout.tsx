@@ -8,6 +8,7 @@ import Navigation from './Navigation';
 import { userAPI } from '../apis/client';
 import { userInfo } from '../recoil/atoms';
 import { useSetRecoilState } from 'recoil';
+import { setCookie } from '../utils/cookie';
 
 export interface IChildrenProps {
   children: React.ReactNode;
@@ -24,9 +25,7 @@ function Layout({ children }: IChildrenProps) {
   if (location.pathname === '/kakaologin') {
     const code = new URL(window.location.href).searchParams.get('code');
     try {
-      const { data } = useQuery('kakaoLogin', () =>
-        userAPI.getKakaoSignup(code)
-      );
+      const { data } = useQuery('kakaoLogin', () => userAPI.getKakaoSignup(code));
       console.log(code);
 
       localStorage.setItem('accesstoken', data.data.accesstoken);
@@ -36,7 +35,7 @@ function Layout({ children }: IChildrenProps) {
       const setUserInfo = useSetRecoilState(userInfo);
       setUserInfo({ id: 0, isLogin: true });
 
-      navigate('/');
+      navigate('/pinnumber');
     } catch (error) {
       console.log(error);
     }
@@ -45,10 +44,9 @@ function Layout({ children }: IChildrenProps) {
   if (location.pathname === '/googlelogin') {
     const code = new URL(window.location.href).searchParams.get('code');
     try {
-      const { isLoading, data } = useQuery('googleLogin', () =>
-        userAPI.getGoogleSignup(code)
-      );
-      console.log(code);
+      const { data } = useQuery('googleLogin', () => userAPI.getGoogleSignup(code));
+
+      console.log(data);
 
       localStorage.setItem('accesstoken', data.data.accesstoken);
       localStorage.setItem('refreshtoken', data.data.refreshtoken);
@@ -57,28 +55,30 @@ function Layout({ children }: IChildrenProps) {
       const setUserInfo = useSetRecoilState(userInfo);
       setUserInfo({ id: 0, isLogin: true });
 
-      navigate('/');
+      navigate('/pinnumber');
     } catch (error) {
       console.log(error);
     }
   }
 
   if (location.pathname === '/naverlogin') {
-    const code = new URL(window.location.href).searchParams.get('code');
+    // const code = new URL(window.location.href).searchParams.get('code');
     try {
-      const { isLoading, data } = useQuery('naverLogin', () =>
-        userAPI.getNaverSignup(code)
-      );
-      console.log(code);
+      const response = userAPI.getNaverSignup();
 
-      localStorage.setItem('accesstoken', data.data.accesstoken);
-      localStorage.setItem('refreshtoken', data.data.refreshtoken);
+      console.log(response);
+      // setCookie('accessToken', response.data)
+      // const response = useQuery('googleLogin', () => userAPI.getNaverSignup(code));
+      // console.log(response);
+
+      // localStorage.setItem('accesstoken', data.data.accesstoken);
+      // localStorage.setItem('refreshtoken', data.data.refreshtoken);
 
       // TODO: data 형식 확인후 적용
-      const setUserInfo = useSetRecoilState(userInfo);
-      setUserInfo({ id: 0, isLogin: true });
+      // const setUserInfo = useSetRecoilState(userInfo);
+      // setUserInfo({ id: 0, isLogin: true });
 
-      navigate('/');
+      // navigate('/pinnumber');
     } catch (error) {
       console.log(error);
     }

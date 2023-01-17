@@ -30,31 +30,19 @@ const PinNumberInputPage = () => {
   }, []);
 
   const handlePinNumberChange = (num: number) => {
-    if (pinNumber.length === PASSWORD_MAX_LENGTH) {
-      return;
+    if (pinNumber.length + 1 === PASSWORD_MAX_LENGTH) {
+      return console.log(pinNumber);
     }
+
     setPinNumber(pinNumber + num.toString());
   };
 
   const erasePinNumberOne = () => {
-    setPinNumber(
-      pinNumber.slice(0, pinNumber.length === 0 ? 0 : pinNumber.length - 1)
-    );
-  };
-
-  const erasePinNumberAll = () => {
-    setPinNumber('');
+    setPinNumber(pinNumber.slice(0, pinNumber.length === 0 ? 0 : pinNumber.length - 1));
   };
 
   const inputNums = (nums: number) => () => {
     handlePinNumberChange(nums);
-  };
-
-  // TODO: submit pinnumber 연결
-  const handlerSubmitButton = () => {
-    if (pinNumber.length === 4) {
-      console.log(pinNumber);
-    }
   };
 
   return (
@@ -62,9 +50,7 @@ const PinNumberInputPage = () => {
       <KeypadWrapper>
         <InputWrapper>
           <PinNumInputContainer type={inputType} defaultValue={pinNumber} />
-          <PinNumberChecker
-            onMouseDown={() => setInputType('text')}
-            onMouseUp={() => setInputType('password')}>
+          <PinNumberChecker onMouseDown={() => setInputType('text')} onMouseUp={() => setInputType('password')}>
             보이기
           </PinNumberChecker>
         </InputWrapper>
@@ -75,10 +61,6 @@ const PinNumberInputPage = () => {
           </NumButtonFlex>
         ))}
         <NumButtonFlex onClick={erasePinNumberOne}>←</NumButtonFlex>
-        <NumButtonFlex onClick={erasePinNumberAll}>✕</NumButtonFlex>
-        <SubmitButtonFlex type='submit' onClick={handlerSubmitButton}>
-          Submit
-        </SubmitButtonFlex>
       </KeypadWrapper>
     </Wrapper>
   );
@@ -114,7 +96,7 @@ const InputWrapper = styled.div`
 `;
 
 const PinNumberChecker = styled.i`
-  border: 1px solid;
+  border: none;
   border-radius: 20px;
   width: 50px;
   height: 30px;
@@ -138,24 +120,10 @@ const NumButtonFlex = styled.button`
   width: 32%;
   height: 20%;
   margin: 5px 0px;
-  line-height: 100%;
-  border: 1px solid;
   border-radius: 20px;
-  overflow: hidden;
-  position: relative;
-  :hover {
-    cursor: pointer;
-  }
-`;
-
-const SubmitButtonFlex = styled.button`
-  vertical-align: middle;
-  width: 100%;
-  height: 24%;
-  margin: 5px 0px;
-  line-height: 100%;
-  border: 1px solid;
-  border-radius: 20px;
+  border: none;
+  background-color: transparent;
+  font: ${(props) => props.theme.headingH1};
   overflow: hidden;
   position: relative;
   :hover {
