@@ -66,6 +66,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   gap: 10px;
   height: 100%;
+  background-color: ${(props) => props.theme.gray100};
 `;
 
 const ContentWrapper = styled(Wrapper)`

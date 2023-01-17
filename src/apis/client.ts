@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IAccountInfo, IPostAuthAccnt } from '../interfaces/interfaces';
+import { IAccount, IPostAuthAccnt, IPostAccount, IPostGoal } from '../interfaces/interfaces';
 
 const BASE_URL = process.env.REACT_APP_API_ENDPOINT;
 const BANK_BASE_URL = process.env.REACT_APP_BANK_API_ENDPOINT;
@@ -159,10 +159,31 @@ export const userAPI = {
   },
 };
 
+export const accountApi = {
+  getAccounts: async (userId: number) => {
+    const { data } = await tokenClient.get(`/accounts/${userId}`);
+
+    return data;
+  },
+  // TODO: 계좌 추가 API 명세에 맞춰 구현
+  // createAccount: async () => {},
+};
+
 export const goalApi = {
+  getBanks: async () => {
+    const { data } = await tokenClient.get(`/banks`);
+    // const data = {
+    //   banks: [{ id: 0, code: '088', name: '신한은행' }],
+    // };
+    return data;
+  },
+  postGoal: async (goalData: IPostGoal) => {
+    const { data } = await tokenClient.post(`/goals`, goalData);
+
+    return data;
+  },
   getGoalsByWord: async (query: string) => {
     const { data } = await tokenClient.get(`/goals/getgoals/search` + query);
-
     // const data = {
     //   goals: [
     //     {
@@ -225,7 +246,7 @@ export const goalApi = {
 };
 
 export const bankAPI = {
-  reqAuthAccnt: async (accntInfo: IAccountInfo) => {
+  reqAuthAccnt: async (accntInfo: IAccount) => {
     const result = await bankClient.post('/hb0081000378', {
       inBankCode: accntInfo.bankId,
       inAccount: accntInfo.accntNo,
@@ -237,6 +258,23 @@ export const bankAPI = {
     const result = await bankClient.post('/hb0081000379', {
       oriSeqNo: oriSeqNo,
       inPrintContent: authString,
+    });
+    return result;
+  },
+  validateAccntInfo: async (accntInfo: IPostAccount, bankCode: string) => {
+    const result = await bankClient.post('/in0087000484', {
+      gubun: '01',
+      bankCd: bankCode,
+      loginMethod: 'ID',
+      userId: accntInfo.bankUserId,
+      userPw: accntInfo.bankUserPw,
+      acctNo: accntInfo.accntNo,
+      acctPw: accntInfo.accntPw,
+      signCert: '',
+      signPw: '',
+      curCd: '',
+      detailYN: 'N',
+      vndrCode: 'N',
     });
     return result;
   },

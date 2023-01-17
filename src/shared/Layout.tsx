@@ -28,7 +28,8 @@ const Layout: FunctionComponent<PropsWithChildren> = ({ children }) => {
 const Body = styled.div<{ height: string }>`
   width: 100%;
   height: ${(props) => `calc(100vh - ${props.height})`};
-  background-color: ${(props) => props.theme.gray100};
+  overflow-y: auto;
+  background-color: white;
 `;
 
 export default Layout;

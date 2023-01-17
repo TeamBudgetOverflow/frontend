@@ -11,6 +11,7 @@ enum Menu {
   home,
   lookup,
   my,
+  none,
 }
 
 interface NavProps {
@@ -22,7 +23,7 @@ const pathMenuConverter = (path: string) => {
   if (path.includes('/users/')) return Menu.my;
   if (path === '/') return Menu.home;
 
-  return Menu.home;
+  return Menu.none;
 };
 
 const Navigation = (props: NavProps, ref: Ref<HTMLDivElement>) => {

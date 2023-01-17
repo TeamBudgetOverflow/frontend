@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import randomcolor from 'randomcolor';
+// import randomcolor from 'randomcolor';
 
 import InputBox from '../../common/elem/InputBox';
 import Icon from '../../common/elem/Icon';
@@ -30,16 +30,16 @@ const TagInputSection = ({ changeTagListHandler }: TagInputSectionProps) => {
   const [tagList, setTagList] = useState<Array<IHashTag>>([]);
   const validateTag = (tagContent: string) => {
     if (tagContent.length === 0) {
-      return alert('태그 내용을 입력해주세요.');
+      return alert('키워드를 입력해주세요.');
     }
 
     if (tagList.length === 10) {
-      return alert('태그는 최대 10개까지 추가가 가능합니다.');
+      return alert('해시태그는 최대 10개까지 추가가 가능합니다.');
     }
 
     for (const t of tagList) {
       if (t.content === tagContent) {
-        return alert('이미 추가된 태그입니다');
+        return alert('이미 추가된 해시태그입니다');
       }
     }
   };
@@ -50,7 +50,8 @@ const TagInputSection = ({ changeTagListHandler }: TagInputSectionProps) => {
       ...prev,
       {
         content: tagContent,
-        bgColor: randomcolor({ luminosity: 'light' }),
+        // bgColor: randomcolor({ luminosity: 'light' }),
+        bgColor: '#CCC',
       },
     ]);
     resetTag();
@@ -69,37 +70,21 @@ const TagInputSection = ({ changeTagListHandler }: TagInputSectionProps) => {
       <SubTitle>해시태그</SubTitle>
       <RowContent>
         <InputWrapper>
-          <InputBox
-            placeholder='해시 태그를 추가해주세요'
-            type='text'
-            value={tagContent}
-            onChangeHandler={changeTag}
-          />
+          <InputBox placeholder='키워드를 입력해 주세요' type='text' value={tagContent} onChangeHandler={changeTag} />
         </InputWrapper>
-        <IconButton onClick={handleAddTag}>
-          <Icon>
-            <path
-              fill='#f18529'
-              d='M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z'
-            />
-          </Icon>
-        </IconButton>
       </RowContent>
       <ValidateMsg msg={tagErr} type='error' />
-      <ContentBox>
+      {/* TODO: 추가된 해시 태그 목록 보여주기 */}
+      {/* <ContentBox>
         <TagInfo>
           <C3TextBox text={`${tagList.length}/10`} />
         </TagInfo>
         <TagList>
           {tagList.map((tag) => (
-            <HashTag
-              key={tag.content}
-              tag={tag}
-              removeHandler={() => handleDeleteTag(tag)}
-            />
+            <HashTag key={tag.content} tag={tag} removeHandler={() => handleDeleteTag(tag)} />
           ))}
         </TagList>
-      </ContentBox>
+      </ContentBox> */}
     </ContentBox>
   );
 };
@@ -109,11 +94,12 @@ const ContentBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 10px;
+  gap: 8px;
 `;
 
 const SubTitle = styled.div`
   font: ${(props) => props.theme.captionC1};
+  color: ${(props) => props.theme.gray600};
 `;
 
 const InputWrapper = styled.div`

@@ -22,7 +22,7 @@ const Button = styled.button<{ disable?: boolean }>`
   justify-content: center;
   align-items: center;
   border: none;
-  border-radius: 96px;
+  border-radius: 8px;
   background-color: ${(props) => (props.disable ? props.theme.gray300 : props.theme.primaryMain)};
   :hover {
     cursor: pointer;

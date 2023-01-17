@@ -22,6 +22,12 @@ export interface IGoal {
   headCount: number;
 }
 
+export interface IBank {
+  id: number;
+  code: string;
+  name: string;
+}
+
 export interface IPostAuthAccnt {
   oriSeqNo: string;
   authString: string;
@@ -36,10 +42,16 @@ export interface IPostGoal {
   endDate: Date;
   headCount: number;
   isPrivate: boolean;
-  account: IAccountInfo;
+  accntId: number;
 }
 
-export interface IAccountInfo {
+export interface IAccount {
+  id: number;
+  bankId: string;
+  accntNo: string;
+}
+
+export interface IPostAccount {
   bankId: number;
   bankUserId: string;
   bankUserPw: string;
