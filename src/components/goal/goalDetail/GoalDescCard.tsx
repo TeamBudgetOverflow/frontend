@@ -20,8 +20,9 @@ const Wrapper = styled.div`
   width: 90%;
   height: 46px;
   border-radius: 16px;
-  background: #f7f7f7;
+  background-color: beige;
   display: flex;
+  align-items: center;
 `;
 
 const GoalDescCardWrapper = styled.div`

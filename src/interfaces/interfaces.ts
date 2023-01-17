@@ -57,6 +57,7 @@ export interface IGetGoalDetail {
     createdUserId: number;
     id: number;
     title: string;
+    emoji: string;
     description: string;
     isPrivate: boolean;
     hashtag: Array<string>;
@@ -66,7 +67,7 @@ export interface IGetGoalDetail {
     endDate: Date;
     recruitCount: number;
     headCount: number;
-    recruitMembers: Array<IParticapantInfoProps>;
+    recruitMember: Array<IParticapantInfoProps>;
   };
 }
 
@@ -74,5 +75,5 @@ export interface IParticapantInfoProps {
   userId: number;
   nickname: string;
   img: string;
-  // TODO: add attainment
+  attainment: number;
 }

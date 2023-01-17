@@ -13,6 +13,7 @@ export const goalDetail = atom({
     createdUserId: 0,
     id: 0,
     title: '',
+    emoji: '',
     description: '',
     isPrivate: false,
     hashtag: [''],
@@ -22,7 +23,7 @@ export const goalDetail = atom({
     endDate: new Date(),
     recruitCount: 0,
     headCount: 0,
-    recruitMembers: [{ userId: 0, nickname: '', img: '' }],
+    recruitMember: [{ userId: 0, nickname: '', img: '', attainment: 0 }],
   },
 });
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { IParticapantInfo } from '../../../../interfaces/interfaces';
+import { IParticapantInfoProps } from '../../../../interfaces/interfaces';
 import ProfileImg from '../../../common/elem/ProfileImg';
 
 // TODO: 참가자 달성률
-const GroupGoalParticipantCard = ({ nickname, img }: IParticapantInfo) => {
+const GroupGoalParticipantCard = ({ nickname, img }: IParticapantInfoProps) => {
   return (
     <GroupGoalParticipantCardWrapper>
       <PaticpantInfoWrapper>
@@ -20,7 +20,7 @@ const GroupGoalParticipantCardWrapper = styled.div`
   height: 60px;
   border-radius: 16px;
   flex: 0 0 auto;
-  background: #f7f7f7;
+  background-color: beige;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;

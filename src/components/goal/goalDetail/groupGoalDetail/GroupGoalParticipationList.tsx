@@ -1,17 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
-import { IParticapantInfo } from '../../../../interfaces/interfaces';
+import { IParticapantInfoProps } from '../../../../interfaces/interfaces';
 import GroupGoalParticipantCard from './GroupGoalParticipantCard';
 
 interface IGoalParticipnatListProps {
-  recruitMembers: Array<IParticapantInfo>;
+  recruitMember: Array<IParticapantInfoProps>;
   recruitCount: number;
 }
 
 // TODO: 목표 참가자 달성률
-const GroupGoalParticipantList = ({ recruitMembers, recruitCount }: IGoalParticipnatListProps) => {
-  const recruitMember = recruitMembers.map((member) => (
-    <GroupGoalParticipantCard key={member.userId} userId={member.userId} nickname={member.nickname} img={member.img} />
+const GroupGoalParticipantList = ({ recruitMember, recruitCount }: IGoalParticipnatListProps) => {
+  const recruitMembers = recruitMember.map((member) => (
+    <GroupGoalParticipantCard
+      key={member.userId}
+      userId={member.userId}
+      nickname={member.nickname}
+      img={member.img}
+      attainment={member.attainment}
+    />
   ));
 
   return (
@@ -21,7 +27,7 @@ const GroupGoalParticipantList = ({ recruitMembers, recruitCount }: IGoalPartici
           참가자 {recruitMember.length} / {recruitCount}
         </ParticipantCount>
       </UpperLineWrapper>
-      <ParticapantList>{recruitMember}</ParticapantList>
+      <ParticapantList>{recruitMembers}</ParticapantList>
     </GroupGoalParticipantListWrapper>
   );
 };

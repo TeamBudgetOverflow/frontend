@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// TODO: 게좌 정보 get 연결
+// TODO: 계좌 정보 get 연결
+// TODO: 디자인에 맞게 UI 변경
 const MyGoalAccountInfoCard = () => {
   return (
     <Wrapper>
@@ -17,8 +18,9 @@ const Wrapper = styled.div`
   width: 90%;
   height: 46px;
   border-radius: 16px;
-  background: #f7f7f7;
+  background-color: beige;
   display: flex;
+  align-items: center;
 `;
 
 const GoalAccountInfoCardWrapper = styled.div`

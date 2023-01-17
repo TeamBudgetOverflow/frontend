@@ -9,7 +9,7 @@ import { goalApi } from '../../../../apis/client';
 const GroupGoalWithDrawButton = () => {
   const param = useParams();
 
-  const { mutate } = useMutation('joinGoal', () => goalApi.withdrawGoal(param.id));
+  const { mutate } = useMutation('withDrawGoal', () => goalApi.withdrawGoal(param.id));
 
   const handleWithdrawGoalButton = () => {
     mutate();

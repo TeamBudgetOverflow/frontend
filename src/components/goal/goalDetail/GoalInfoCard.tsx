@@ -1,44 +1,58 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import C3TextBox from '../../common/elem/C3TextBox';
+import EmojiBox from '../../common/elem/EmojiBox';
+
+import { IParticapantInfoProps } from '../../../interfaces/interfaces';
+
 import { dateStringTranslator } from '../../../utils/dateTranslator';
+import { participantIdFinder } from '../../../utils/myGoalChecker';
+import { setProgressState } from '../../../utils/progressState';
 
 interface IGoalInfoCardProps {
+  userId: number;
   title: string;
+  emoji: string;
   startDate: Date;
-  recruitCount?: number;
-  headCount?: number;
+  recruitCount: number;
+  headCount: number;
   amount: number;
-  isPrivate?: boolean;
-  attainment?: number;
+  attainment: number;
+  recruitMember: Array<IParticapantInfoProps>;
 }
 
-// TODO: 목표 대표 이미지 get
-// TODO: 개인 목표 달성율에 따른 문구 연결
 const GoalInfoCard = ({
+  userId,
   title,
+  emoji,
   startDate,
   headCount,
   recruitCount,
   amount,
-  isPrivate,
   attainment,
+  recruitMember,
 }: IGoalInfoCardProps) => {
   return (
     <GoalInfoCardWrapper>
       <UpperWrapper>
-        <ImgBox>img</ImgBox>
+        <EmojiBox unicode={emoji} boxSize={40} emojiSize={20} />
         <TitleSpan>{title}</TitleSpan>
       </UpperWrapper>
       <Amount>{amount.toLocaleString()} 원</Amount>
-      {isPrivate ? (
-        <>
+      {participantIdFinder(recruitMember, userId) ? (
+        <BottomContent>
           <ProgressBarWrapper>
             <ProgressBar width={`${attainment}%`} />
           </ProgressBarWrapper>
-        </>
+          <ProgressInfo>
+            <C3TextBox text={setProgressState(attainment)} />
+            <C3TextBox text={`${attainment}%`} />
+          </ProgressInfo>
+        </BottomContent>
       ) : (
         <>
+          {' '}
           <StartDate>{`${dateStringTranslator(startDate)} 시작`}</StartDate>
           <HeadCount>
             {headCount} / {recruitCount}
@@ -53,7 +67,7 @@ const GoalInfoCardWrapper = styled.div`
   width: 90%;
   height: 188px;
   border-radius: 16px;
-  background: #f7f7f7;
+  background-color: beige;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -66,13 +80,6 @@ const UpperWrapper = styled.div`
   align-items: center;
   gap: 8px;
   margin: 20px;
-`;
-
-const ImgBox = styled.div`
-  width: 40px;
-  height: 40px;
-  background: #d9d9d9;
-  border-radius: 8px;
 `;
 
 const TitleSpan = styled.div`
@@ -104,7 +111,7 @@ const HeadCount = styled.div`
 
 const ProgressBarWrapper = styled.div`
   position: relative;
-  width: 90%;
+  width: 100%;
   height: 8px;
   border-radius: 25px;
   background-color: ${(props) => props.theme.primary50};
@@ -118,6 +125,19 @@ const ProgressBar = styled.div<{ width: string }>`
   height: 8px;
   border-radius: 25px;
   background-color: ${(props) => props.theme.primary900};
+`;
+
+const BottomContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 90%;
+`;
+
+const ProgressInfo = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 `;
 
 export default GoalInfoCard;

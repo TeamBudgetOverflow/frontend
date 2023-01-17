@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import DdayTag from '../../common/tag/DdayTag';
+
 import { dateStringTranslator } from '../../../utils/dateTranslator';
 import { dDayCalculator } from '../../../utils/dDayCalculator';
-import DdayTag from '../../common/tag/DdayTag';
 
 interface GoalPeriodCard {
   startDate: Date;
@@ -26,7 +27,7 @@ const Wrapper = styled.div`
   width: 90%;
   height: 46px;
   border-radius: 16px;
-  background: #f7f7f7;
+  background-color: beige;
   display: flex;
 `;
 
