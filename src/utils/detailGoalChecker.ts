@@ -1,4 +1,3 @@
-import { start } from 'repl';
 import { IParticapantInfoProps } from '../interfaces/interfaces';
 
 export const participantIdFinder = (recruitMember: Array<IParticapantInfoProps>, userId: number) => {

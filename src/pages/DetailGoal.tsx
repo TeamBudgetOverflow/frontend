@@ -75,7 +75,13 @@ const DetailGoal = () => {
     if (userId !== goalDetails.createdUserId && findId === -1) {
       return (
         <GoalButtonSet>
-          <GroupGoalJoinButton />
+          {inProgressChecker(goalDetails.startDate, goalDetails.endDate) ? (
+            <></>
+          ) : (
+            <>
+              <GroupGoalJoinButton />
+            </>
+          )}
         </GoalButtonSet>
       );
     }
