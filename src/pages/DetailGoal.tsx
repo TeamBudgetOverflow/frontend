@@ -38,8 +38,6 @@ const DetailGoal = () => {
     setGoalDetail(goalDetailData.goalDetail);
   }, [goalDetailData]);
 
-  console.log(inProgressChecker(goalDetails.startDate, goalDetails.endDate));
-
   const buttonSet = (userId: number) => {
     const findId = goalDetails?.recruitMember.findIndex((member) => member.userId === userId);
 
