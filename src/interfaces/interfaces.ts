@@ -51,3 +51,10 @@ export interface IBadge {
   title: string;
   description: string;
 }
+
+export interface MyToken {
+  userId: number;
+  tokenType: string;
+  iat: number;
+  exp: number;
+}
