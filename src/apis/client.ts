@@ -1,5 +1,5 @@
 import axios from 'axios';
-<<<<<<< HEAD
+
 import {
   IAuthAccount,
   IAccount,
@@ -8,10 +8,6 @@ import {
   IValidateAccount,
   IReqAuthAccout,
 } from '../interfaces/interfaces';
-=======
-import { IAccountInfo, IPostAuthAccnt } from '../interfaces/interfaces';
-import { setCookie } from '../utils/cookie';
->>>>>>> 74247a8 (FEAT: modify social login #4)
 
 const BASE_URL = process.env.REACT_APP_API_ENDPOINT;
 const BANK_BASE_URL = process.env.REACT_APP_BANK_API_ENDPOINT;
@@ -31,7 +27,7 @@ bankClient.defaults.headers.common['Hkey'] = process.env.REACT_APP_BANK_API_HKEY
 
 tokenClient.interceptors.request.use((config) => {
   config.headers = {
-    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+    Authorization: `${localStorage.getItem('accessToken')}`,
   };
 
   return config;
@@ -73,10 +69,12 @@ export const userAPI = {
     return data;
   },
 
-  getNaverSignup: async () => {
-    const response = await noneTokenClient.get(`/api/users/auth/naver`);
+  getNaverSignup: async (code: string | null) => {
+    const { data } = await noneTokenClient.get(`/api/users/auth/naver?code=${code}`);
 
-    console.log(response);
+    localStorage.setItem('accessToken', data.accessToken);
+    localStorage.setItem('refreshToken', data.refreshToken);
+    return data;
   },
 
   getGoogleSignup: async (code: string | null) => {
@@ -85,9 +83,11 @@ export const userAPI = {
     return data;
   },
 
-  // postPinCode: async (pinCode: number) => {
-  //   const {data} = await tokenClient.post(`/api/users/${}`)
-  // }
+  postPinCode: async (userId: number, pinCode: object) => {
+    const { data } = await tokenClient.post(`/api/users/${userId}/pincode`, pinCode);
+
+    return data;
+  },
 
   getUserProfile: async (userId: number) => {
     const { data } = await tokenClient.get(`/users/${userId}`);

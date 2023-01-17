@@ -109,3 +109,10 @@ export interface IParticapantInfoProps {
   img: string;
   attainment: number;
 }
+
+export interface MyToken {
+  userId: number;
+  tokenType: string;
+  iat: number;
+  exp: number;
+}

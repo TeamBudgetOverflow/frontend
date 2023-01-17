@@ -11,6 +11,7 @@ const Layout: FunctionComponent<PropsWithChildren> = ({ children }) => {
   const navRef = useRef<HTMLDivElement>(null);
 
   const [headerNavHeight, setHeaderNavHeight] = useState<number>(0);
+
   useEffect(() => {
     if (!headerRef.current || !navRef.current) return;
     if (pathname.includes('/goals/post')) return setHeaderNavHeight(headerRef.current.clientHeight);
