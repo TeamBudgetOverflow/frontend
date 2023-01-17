@@ -174,10 +174,10 @@ export const goalApi = {
     //     hashtag: ['생일선물', '소액모으기'],
     //     amount: 100000,
     //     attainment: 80,
-    //     startDate: new Date(),
-    //     endDate: new Date('2023-01-20'),
-    //     recruitCount: 10,
-    //     headCount: 1,
+    //     startDate: new Date('2023-01-15'),
+    //     endDate: new Date('2023-01-16'),
+    //     recruitCount: 5,
+    //     headCount: 10,
     //     recruitMember: [
     //       { userId: 1, nickname: '태근', img: 'img.jpg', attainment: 80 },
     //       { userId: 2, nickname: '유진', img: 'img2.jpg', attainment: 80 },
@@ -199,7 +199,7 @@ export const goalApi = {
     //     hashtag: ['생일선물', '소액모으기'],
     //     amount: 100000,
     //     attainment: 80,
-    //     startDate: new Date(),
+    //     startDate: new Date('2023-01-15'),
     //     endDate: new Date('2023-01-20'),
     //     recruitCount: 1,
     //     headCount: 1,
@@ -274,19 +274,19 @@ export const goalApi = {
   },
 
   joinGoal: async (goalId: string | undefined) => {
-    const response = await tokenClient.post(`api/goals/${goalId}`);
+    const response = await tokenClient.post(`/api/goals/join/${goalId}`);
 
     return response;
   },
 
   withdrawGoal: async (goalId: string | undefined) => {
-    const response = await tokenClient.post(`api/goals/${goalId}`);
+    const response = await tokenClient.post(`/api/goals/exit/${goalId}`);
 
     return response;
   },
 
   deleteGoal: async (goalId: string | undefined) => {
-    const response = await tokenClient.post(`api/goals/${goalId}`);
+    const response = await tokenClient.post(`/api/goals/${goalId}`);
 
     return response;
   },

@@ -7,7 +7,7 @@ import EmojiBox from '../../common/elem/EmojiBox';
 import { IParticapantInfoProps } from '../../../interfaces/interfaces';
 
 import { dateStringTranslator } from '../../../utils/dateTranslator';
-import { participantIdFinder } from '../../../utils/myGoalChecker';
+import { participantIdFinder } from '../../../utils/detailGoalChecker';
 import { setProgressState } from '../../../utils/progressState';
 
 interface IGoalInfoCardProps {
@@ -55,7 +55,7 @@ const GoalInfoCard = ({
           {' '}
           <StartDate>{`${dateStringTranslator(startDate)} 시작`}</StartDate>
           <HeadCount>
-            {headCount} / {recruitCount}
+            {recruitCount} / {headCount}
           </HeadCount>
         </>
       )}

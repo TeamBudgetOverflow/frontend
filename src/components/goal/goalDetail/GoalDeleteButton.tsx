@@ -19,7 +19,7 @@ const GoalDeleteButton = () => {
 
 const DelelteButton = styled.button`
   max-width: 370px;
-  width: 45%;
+  width: 100%;
   height: 51px;
   border-radius: 8px;
   padding: 12px 16.5px;

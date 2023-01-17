@@ -20,7 +20,7 @@ import { goalApi } from '../apis/client';
 
 import { IGetGoalDetail } from '../interfaces/interfaces';
 
-import { participantIdFinder, personalGoalChecker } from '../utils/myGoalChecker';
+import { inProgressChecker, participantIdFinder, personalGoalChecker } from '../utils/detailGoalChecker';
 
 const DetailGoal = () => {
   const { id: userId } = useRecoilValue(userInfo);
@@ -38,6 +38,8 @@ const DetailGoal = () => {
     setGoalDetail(goalDetailData.goalDetail);
   }, [goalDetailData]);
 
+  console.log(inProgressChecker(goalDetails.startDate, goalDetails.endDate));
+
   const buttonSet = (userId: number) => {
     const findId = goalDetails?.recruitMember.findIndex((member) => member.userId === userId);
 
@@ -45,7 +47,13 @@ const DetailGoal = () => {
       return (
         <GoalButtonSet>
           <GoalModifyButton />
-          <GoalDeleteButton />
+          {inProgressChecker(goalDetails.startDate, goalDetails.endDate) ? (
+            <></>
+          ) : (
+            <>
+              <GoalDeleteButton />
+            </>
+          )}
         </GoalButtonSet>
       );
     }
@@ -53,12 +61,16 @@ const DetailGoal = () => {
     if (userId !== goalDetails.createdUserId && findId !== -1) {
       return (
         <GoalButtonSet>
-          <GroupGoalWithDrawButton />
+          {inProgressChecker(goalDetails.startDate, goalDetails.endDate) ? (
+            <></>
+          ) : (
+            <>
+              <GroupGoalWithDrawButton />
+            </>
+          )}
         </GoalButtonSet>
       );
     }
-
-    console.log(findId);
 
     if (userId !== goalDetails.createdUserId && findId === -1) {
       return (
@@ -102,10 +114,7 @@ const DetailGoal = () => {
             </>
           ) : (
             <>
-              <GroupGoalParticipantList
-                recruitMember={goalDetails.recruitMember}
-                recruitCount={goalDetails.recruitCount}
-              />
+              <GroupGoalParticipantList recruitMember={goalDetails.recruitMember} headCount={goalDetails.headCount} />
             </>
           )}
 
@@ -139,9 +148,10 @@ const DetailGoalWrapper = styled.div`
 const GoalButtonSet = styled.div`
   width: 90%;
   display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
+  gap: 10px;
 `;
 
 const PersonalGoalSpace = styled.div`

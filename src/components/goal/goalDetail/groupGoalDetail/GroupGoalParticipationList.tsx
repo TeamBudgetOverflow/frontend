@@ -5,11 +5,11 @@ import GroupGoalParticipantCard from './GroupGoalParticipantCard';
 
 interface IGoalParticipnatListProps {
   recruitMember: Array<IParticapantInfoProps>;
-  recruitCount: number;
+  headCount: number;
 }
 
 // TODO: 목표 참가자 달성률
-const GroupGoalParticipantList = ({ recruitMember, recruitCount }: IGoalParticipnatListProps) => {
+const GroupGoalParticipantList = ({ recruitMember, headCount }: IGoalParticipnatListProps) => {
   const recruitMembers = recruitMember.map((member) => (
     <GroupGoalParticipantCard
       key={member.userId}
@@ -24,7 +24,7 @@ const GroupGoalParticipantList = ({ recruitMember, recruitCount }: IGoalParticip
     <GroupGoalParticipantListWrapper>
       <UpperLineWrapper>
         <ParticipantCount>
-          참가자 {recruitMember.length} / {recruitCount}
+          참가자 {recruitMember.length} / {headCount}
         </ParticipantCount>
       </UpperLineWrapper>
       <ParticapantList>{recruitMembers}</ParticapantList>
