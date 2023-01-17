@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import UserProfile from '../components/user/UserProfile';
 import MyGoalCard from '../components/goal/MyGoalCard';
+import Icon from '../components/common/elem/Icon';
 
 import { userGoals, userInfo, userProfile } from '../recoil/atoms';
 
@@ -15,9 +16,8 @@ import { userAPI } from '../apis/client';
 
 const Home = () => {
   const { id } = useRecoilValue(userInfo);
-  const { isLoading: isLoadingProfile, data: profile } = useQuery<IUserProfile>(
-    'userProfile',
-    () => userAPI.getUserProfile(id)
+  const { isLoading: isLoadingProfile, data: profile } = useQuery<IUserProfile>('userProfile', () =>
+    userAPI.getUserProfile(id)
   );
   const setUserProfile = useSetRecoilState(userProfile);
 
@@ -26,9 +26,8 @@ const Home = () => {
     setUserProfile(profile);
   }, [profile]);
 
-  const { isLoading: isLoadingGoals, data: userGoalsData } = useQuery<IGoals>(
-    'userGoals',
-    () => userAPI.getUserGoals(id)
+  const { isLoading: isLoadingGoals, data: userGoalsData } = useQuery<IGoals>('userGoals', () =>
+    userAPI.getUserGoals(id)
   );
   const setUserGoals = useSetRecoilState(userGoals);
   const goals = useRecoilValue(userGoals);
@@ -42,34 +41,36 @@ const Home = () => {
   return (
     <Wrapper>
       <UserProfile />
-      <CardList>
+      <ContentWrapper>
         {isLoadingGoals ? (
           <LoadingMsg>데이터를 불러오는 중입니다</LoadingMsg>
         ) : (
           goals?.map((goal) => <MyGoalCard key={goal.id} goal={goal} />)
         )}
-      </CardList>
-      <AddGoalBtn onClick={() => navigate('/goals/post')}>
-        <SVGIcon viewBox='0 0 24 24'>
-          <path fill='#f18529' d='M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z' />
-        </SVGIcon>
-      </AddGoalBtn>
+        <AddGoalBtn onClick={() => navigate('/goals/post')}>
+          <IconWrapper>
+            <Icon
+              size={20}
+              color={'gray400'}
+              path='M19.3333 11.3332H11.3333V19.3332H8.66663V11.3332H0.666626V8.6665H8.66663V0.666504H11.3333V8.6665H19.3333V11.3332Z'
+            />
+          </IconWrapper>
+        </AddGoalBtn>
+      </ContentWrapper>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  padding: 10px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  height: 100%;
 `;
 
-const CardList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
+const ContentWrapper = styled(Wrapper)`
+  padding: 10px;
+  gap: 8px;
 `;
 
 const LoadingMsg = styled.div`
@@ -86,17 +87,21 @@ const AddGoalBtn = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 12px;
-  border-radius: 16px;
-  background-color: ${(props) => props.theme.secondary200};
+  padding: 14px 0;
+  border-radius: 12px;
+  background-color: white;
   :hover {
     cursor: pointer;
   }
 `;
 
-const SVGIcon = styled.svg`
-  width: 24px;
-  height: 24px;
+const IconWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
 `;
 
 export default Home;

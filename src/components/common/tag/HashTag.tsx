@@ -13,10 +13,7 @@ export interface IHashTag {
   bgColor: string;
 }
 
-const HashTag = React.memo(function HashTag({
-  tag: { content, bgColor },
-  removeHandler,
-}: HashTagProps) {
+const HashTag = React.memo(function HashTag({ tag: { content, bgColor }, removeHandler }: HashTagProps) {
   return (
     <Tag bgColor={bgColor}>
       {`#${content}`}
@@ -24,12 +21,11 @@ const HashTag = React.memo(function HashTag({
         <></>
       ) : (
         <DeleteButton onClick={() => removeHandler({ content, bgColor })}>
-          <Icon>
-            <path
-              fill='#e4f7ea'
-              d='M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z'
-            />
-          </Icon>
+          <Icon
+            size={12}
+            color={'gray400'}
+            path='M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z'
+          />
         </DeleteButton>
       )}
     </Tag>

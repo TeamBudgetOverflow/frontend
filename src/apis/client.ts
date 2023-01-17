@@ -64,6 +64,7 @@ export const userAPI = {
     //   goals: [
     //     {
     //       id: 1,
+    //       emoji: '26f0-fe0f',
     //       title: '생일선물',
     //       description: '친구 생일선물 구매비용 모으기',
     //       isPrivate: false,
@@ -76,6 +77,7 @@ export const userAPI = {
     //     },
     //     {
     //       id: 2,
+    //       emoji: '26f0-fe0f',
     //       title: 'test2',
     //       description: 'test입니다2',
     //       isPrivate: false,
@@ -88,6 +90,7 @@ export const userAPI = {
     //     },
     //     {
     //       id: 3,
+    //       emoji: '26f0-fe0f',
     //       title: 'test3',
     //       description: 'test입니다3',
     //       isPrivate: false,
@@ -100,6 +103,7 @@ export const userAPI = {
     //     },
     //     {
     //       id: 4,
+    //       emoji: '26f0-fe0f',
     //       title: 'test4',
     //       description: 'test입니다4',
     //       isPrivate: false,
@@ -193,6 +197,7 @@ export const goalApi = {
     //   goals: [
     //     {
     //       id: 1,
+    //       emoji: '26f0-fe0f',
     //       title: '생일선물',
     //       description: '친구 생일선물 구매비용 모으기',
     //       isPrivate: false,
@@ -205,6 +210,7 @@ export const goalApi = {
     //     },
     //     {
     //       id: 2,
+    //       emoji: '26f0-fe0f',
     //       title: 'test2',
     //       description: 'test입니다2',
     //       isPrivate: false,
@@ -217,6 +223,7 @@ export const goalApi = {
     //     },
     //     {
     //       id: 3,
+    //       emoji: '26f0-fe0f',
     //       title: 'test3',
     //       description: 'test입니다3',
     //       isPrivate: false,
@@ -229,6 +236,7 @@ export const goalApi = {
     //     },
     //     {
     //       id: 4,
+    //       emoji: '26f0-fe0f',
     //       title: 'test4',
     //       description: 'test입니다4',
     //       isPrivate: false,

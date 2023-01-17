@@ -10,6 +10,7 @@ export interface IGoals {
 
 export interface IGoal {
   id: number;
+  emoji: string;
   title: string;
   description: string;
   isPrivate: boolean;
