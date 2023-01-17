@@ -1,6 +1,7 @@
 import React, { FunctionComponent, PropsWithChildren, useRef, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
+import { useLocation } from 'react-router';
 import styled from 'styled-components';
 
 import Header from './Header';
@@ -11,6 +12,7 @@ import { userInfo } from '../recoil/atoms';
 import { useSetRecoilState } from 'recoil';
 
 const Layout: FunctionComponent<PropsWithChildren> = ({ children }) => {
+  const { pathname } = useLocation();
   const headerRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -19,8 +21,9 @@ const Layout: FunctionComponent<PropsWithChildren> = ({ children }) => {
   const [headerNavHeight, setHeaderNavHeight] = useState<number>(0);
   useEffect(() => {
     if (!headerRef.current || !navRef.current) return;
+    if (pathname === '/goals/post') return setHeaderNavHeight(headerRef.current.clientHeight);
     setHeaderNavHeight(headerRef.current.clientHeight + navRef.current.clientHeight);
-  }, [headerRef.current, navRef.current]);
+  }, [headerRef.current?.clientHeight, navRef.current?.clientHeight, pathname]);
 
   if (location.pathname === '/kakaologin') {
     const code = new URL(window.location.href).searchParams.get('code');
