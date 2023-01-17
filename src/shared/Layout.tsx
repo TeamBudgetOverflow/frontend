@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { FunctionComponent, PropsWithChildren, useRef, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
+import styled from 'styled-components';
 
 import Header from './Header';
 import Navigation from './Navigation';
@@ -8,19 +9,18 @@ import Navigation from './Navigation';
 import { userAPI } from '../apis/client';
 import { userInfo } from '../recoil/atoms';
 import { useSetRecoilState } from 'recoil';
-import { setCookie } from '../utils/cookie';
 
-export interface IChildrenProps {
-  children: React.ReactNode;
-}
-
-export interface IResponeType {
-  response: string | undefined;
-}
-
-function Layout({ children }: IChildrenProps) {
+const Layout: FunctionComponent<PropsWithChildren> = ({ children }) => {
+  const headerRef = useRef<HTMLDivElement>(null);
+  const navRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [headerNavHeight, setHeaderNavHeight] = useState<number>(0);
+  useEffect(() => {
+    if (!headerRef.current || !navRef.current) return;
+    setHeaderNavHeight(headerRef.current.clientHeight + navRef.current.clientHeight);
+  }, [headerRef.current, navRef.current]);
 
   if (location.pathname === '/kakaologin') {
     const code = new URL(window.location.href).searchParams.get('code');
@@ -85,12 +85,18 @@ function Layout({ children }: IChildrenProps) {
   }
 
   return (
-    <div>
-      <Header />
-      <div>{children}</div>
-      <Navigation />
-    </div>
+    <>
+      <Header props='' ref={headerRef} />
+      <Body height={`${headerNavHeight}px`}>{children}</Body>
+      <Navigation props='' ref={navRef} />
+    </>
   );
-}
+};
+
+const Body = styled.div<{ height: string }>`
+  width: 100%;
+  height: ${(props) => `calc(100vh - ${props.height})`};
+  background-color: ${(props) => props.theme.gray100};
+`;
 
 export default Layout;

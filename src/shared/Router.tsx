@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
-import Layout from './Layout';
 import Home from '../pages/Home';
 import LoginPage from '../pages/LoginPage';
 import PinNumberInputPage from '../pages/PinNumberInputPage';
@@ -12,6 +11,7 @@ import DetailGoal from '../pages/DetailGoal';
 import GroupGoals from '../pages/GroupGoals';
 import SearchGoals from '../pages/SearchGoals';
 import DetailUser from '../pages/DetailUser';
+import Layout from './Layout';
 
 import { userInfo } from '../recoil/atoms';
 

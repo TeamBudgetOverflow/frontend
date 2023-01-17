@@ -9,21 +9,16 @@ interface ModalBoxProps {
   children: React.ReactNode;
 }
 
-const ModalBox: FunctionComponent<ModalBoxProps> = ({
-  title,
-  closeHandler,
-  children,
-}) => {
+const ModalBox: FunctionComponent<ModalBoxProps> = ({ title, closeHandler, children }) => {
   return (
     <Modal>
       <ContentWrapper>
         <Button onClick={closeHandler}>
-          <Icon>
-            <path
-              fill='#5fcf8a'
-              d='M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z'
-            />
-          </Icon>
+          <Icon
+            size={24}
+            color={'primary400'}
+            path='M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z'
+          />
         </Button>
         <Title>{title}</Title>
         <Content>{children}</Content>
