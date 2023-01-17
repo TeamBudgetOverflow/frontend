@@ -1,43 +1,67 @@
-import React from 'react';
+import React, { useState, forwardRef, Ref } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
+import Icon from '../components/common/elem/Icon';
+
 import { userInfo } from '../recoil/atoms';
 
-const Navigation = () => {
+enum Menu {
+  home,
+  lookup,
+  my,
+}
+
+interface NavProps {
+  props: string;
+}
+
+const Navigation = (props: NavProps, ref: Ref<HTMLDivElement>) => {
   const navigate = useNavigate();
   const { id } = useRecoilValue(userInfo);
 
+  const [selectedMenu, setSelectedMenu] = useState<Menu>(Menu.home);
+  const handleMenuSelect = (menu: Menu) => {
+    switch (menu) {
+      case Menu.home:
+        setSelectedMenu(Menu.home);
+        return navigate('/');
+      case Menu.lookup:
+        setSelectedMenu(Menu.lookup);
+        return navigate('/goals/lookup');
+      case Menu.my:
+        setSelectedMenu(Menu.my);
+        return navigate(`/users/${id}`);
+    }
+  };
+
   return (
-    <Wrapper>
-      <Menu onClick={() => navigate('/')}>
-        <SVGIcon viewBox='0 0 24 24'>
-          <path
-            fill='#e4f7ea'
-            d='M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z'
-          />
-        </SVGIcon>
+    <Wrapper ref={ref}>
+      <Button onClick={() => handleMenuSelect(Menu.home)}>
+        <Icon
+          size={24}
+          color={selectedMenu === Menu.home ? 'primary400' : 'gray400'}
+          path='M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z'
+        />
         <Text>홈</Text>
-      </Menu>
-      <Menu onClick={() => navigate('/goals/lookup')}>
-        <SVGIcon viewBox='0 0 24 24'>
-          <path
-            fill='#e4f7ea'
-            d='M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z'
-          />
-        </SVGIcon>
+      </Button>
+      <Button onClick={() => handleMenuSelect(Menu.lookup)}>
+        <Icon
+          size={24}
+          color={selectedMenu === Menu.lookup ? 'primary400' : 'gray400'}
+          path='M4 13H10C10.55 13 11 12.55 11 12V4C11 3.45 10.55 3 10 3H4C3.45 3 3 3.45 3 4V12C3 12.55 3.45 13 4 13ZM4 21H10C10.55 21 11 20.55 11 20V16C11 15.45 10.55 15 10 15H4C3.45 15 3 15.45 3 16V20C3 20.55 3.45 21 4 21ZM14 21H20C20.55 21 21 20.55 21 20V12C21 11.45 20.55 11 20 11H14C13.45 11 13 11.45 13 12V20C13 20.55 13.45 21 14 21ZM13 4V8C13 8.55 13.45 9 14 9H20C20.55 9 21 8.55 21 8V4C21 3.45 20.55 3 20 3H14C13.45 3 13 3.45 13 4Z'
+        />
         <Text>목표 조회</Text>
-      </Menu>
-      <Menu onClick={() => navigate(`/users/${id}`)}>
-        <SVGIcon viewBox='0 0 24 24'>
-          <path
-            fill='#e4f7ea'
-            d='M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z'
-          />
-        </SVGIcon>
+      </Button>
+      <Button onClick={() => handleMenuSelect(Menu.my)}>
+        <Icon
+          size={24}
+          color={selectedMenu === Menu.my ? 'primary400' : 'gray400'}
+          path='M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V19C4 19.55 4.45 20 5 20H19C19.55 20 20 19.55 20 19V18C20 15.34 14.67 14 12 14Z'
+        />
         <Text>마이페이지</Text>
-      </Menu>
+      </Button>
     </Wrapper>
   );
 };
@@ -52,10 +76,10 @@ const Wrapper = styled.div`
   left: 0;
   width: 100%;
   height: 88px;
-  background-color: ${(props) => props.theme.primaryMain};
+  background-color: white;
 `;
 
-const Menu = styled.div`
+const Button = styled.div`
   padding: 8px;
   display: flex;
   flex-direction: column;
@@ -67,13 +91,8 @@ const Menu = styled.div`
   }
 `;
 
-const SVGIcon = styled.svg`
-  width: 24px;
-  height: 24px;
-`;
-
 const Text = styled.div`
   font: ${(props) => props.theme.paragraphP3M};
 `;
 
-export default Navigation;
+export default forwardRef(Navigation);

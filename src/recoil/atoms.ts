@@ -23,6 +23,7 @@ export const userGoals = atom({
   default: [
     {
       id: 0,
+      emoji: '',
       title: '',
       description: '',
       isPrivate: false,
