@@ -1,4 +1,5 @@
 import axios from 'axios';
+<<<<<<< HEAD
 import {
   IAuthAccount,
   IAccount,
@@ -7,11 +8,21 @@ import {
   IValidateAccount,
   IReqAuthAccout,
 } from '../interfaces/interfaces';
+=======
+import { IAccountInfo, IPostAuthAccnt } from '../interfaces/interfaces';
+import { setCookie } from '../utils/cookie';
+>>>>>>> 74247a8 (FEAT: modify social login #4)
 
 const BASE_URL = process.env.REACT_APP_API_ENDPOINT;
 const BANK_BASE_URL = process.env.REACT_APP_BANK_API_ENDPOINT;
 
-const noneTokenClient = axios.create({ baseURL: BASE_URL });
+const noneTokenClient = axios.create({
+  baseURL: BASE_URL,
+  responseType: 'json',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 const tokenClient = axios.create({ baseURL: BASE_URL });
 const bankClient = axios.create({ baseURL: BANK_BASE_URL });
 bankClient.defaults.headers.common['Content-Type'] = 'application/json';
@@ -57,28 +68,26 @@ tokenClient.interceptors.response.use(
 
 export const userAPI = {
   getKakaoSignup: async (code: string | null) => {
-    const { data } = await noneTokenClient.get(
-      '/api/users/auth/kakao?code=' + code
-    );
+    const { data } = await noneTokenClient.get('/api/users/auth/kakao?code=' + code);
 
     return data;
   },
 
-  getNaverSignup: async (code: string | null) => {
-    const { data } = await noneTokenClient.get(
-      '/api/users/auth/naver?code=' + code
-    );
+  getNaverSignup: async () => {
+    const response = await noneTokenClient.get(`/api/users/auth/naver`);
 
-    return data;
+    console.log(response);
   },
 
   getGoogleSignup: async (code: string | null) => {
-    const { data } = await noneTokenClient.get(
-      '/api/users/auth/google?code=' + code
-    );
+    const { data } = await noneTokenClient.get('/api/users/auth/google?code=' + code);
 
     return data;
   },
+
+  // postPinCode: async (pinCode: number) => {
+  //   const {data} = await tokenClient.post(`/api/users/${}`)
+  // }
 
   getUserProfile: async (userId: number) => {
     const { data } = await tokenClient.get(`/users/${userId}`);
