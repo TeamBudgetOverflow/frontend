@@ -11,7 +11,7 @@ const GroupGoalCards = ({ goal }: { goal: IGoal }) => {
   const navigate = useNavigate();
 
   return (
-    <Wrapper onClick={() => navigate(`/goal/${goal.id}`)}>
+    <Wrapper onClick={() => navigate(`/goals/${goal.id}`)}>
       <TopContent>
         <TopLeftContent>
           <Icon />
@@ -27,9 +27,7 @@ const GroupGoalCards = ({ goal }: { goal: IGoal }) => {
           <ProgressBar width={`${goal.attainment}%`} />
         </ProgressBarWrapper>
         <LowerLine>
-          <ProgressText>{`${dateStringTranslator(
-            goal.endDate
-          )} 종료`}</ProgressText>
+          <ProgressText>{`${dateStringTranslator(goal.endDate)} 종료`}</ProgressText>
           <ProgressText>{`${goal.attainment}%`}</ProgressText>
         </LowerLine>
       </BottomContent>

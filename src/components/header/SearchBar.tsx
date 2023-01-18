@@ -11,7 +11,7 @@ interface SearchBarProps {
 const SearchBar = ({ show }: SearchBarProps) => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const navigate = useNavigate();
-  const handleSearchButton = (e: string) => {
+  const handleSearchButton = (searchKeyword: string) => {
     navigate('/goals/lookup/search?search=' + searchKeyword);
     setSearchKeyword('');
   };
