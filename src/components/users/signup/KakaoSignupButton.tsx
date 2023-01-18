@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Button from '../../common/Button';
+import Button from '../../common/elem/Button';
 import { Colors } from '../../../styles/colors';
 
 import KakaoLogo from '../../../assets/icons/ico_KakaoTalk_logo.svg';
@@ -15,11 +15,7 @@ const KakaoSignupButton = () => {
 
   return (
     <>
-      <Button
-        size='large'
-        background={Colors.kakao}
-        color='black'
-        onClick={handleKakaoSignup}>
+      <Button size='large' background={Colors.kakao} color='black' onClick={handleKakaoSignup}>
         <Img src={KakaoLogo} />
         Kakao talk으로 계속하기
       </Button>

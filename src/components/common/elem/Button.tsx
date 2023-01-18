@@ -1,6 +1,6 @@
 import { CSSProperties } from 'react';
 import styled from 'styled-components';
-import { Colors } from '../../styles/colors';
+import { Colors } from '../../../styles/colors';
 
 // TODO: design customizing
 const sizeList = {
@@ -22,8 +22,7 @@ export default styled.button<
   justify-content: ${({ justifyContent }) => justifyContent || 'center'};
   align-items: ${({ alignItems }) => alignItems || 'center'};
   align-content: ${({ alignContent }) => alignContent || 'center'};
-  ${({ flexDirection }) =>
-    flexDirection && `flex-direction : ${flexDirection}`};
+  ${({ flexDirection }) => flexDirection && `flex-direction : ${flexDirection}`};
 
   margin: ${({ margin }) => margin || '5px'};
   ${({ marginLeft }) => marginLeft && `margin-left : ${marginLeft}`};
@@ -42,8 +41,7 @@ export default styled.button<
   border-bottom-right-radius: ${({ borderRadiusRight }) => borderRadiusRight};
 
   z-index: ${({ zIndex }) => zIndex};
-  ${({ letterSpacing }) =>
-    letterSpacing && `letter-spacing : ${letterSpacing}`};
+  ${({ letterSpacing }) => letterSpacing && `letter-spacing : ${letterSpacing}`};
   ${({ textAlign }) => textAlign && `text-align : ${textAlign}`};
   ${({ boxShadow }) => boxShadow && `box-shadow : ${boxShadow}`};
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Button from '../../common/Button';
+import Button from '../../common/elem/Button';
 import { Colors } from '../../../styles/colors';
 
 import NaverLogo from '../../../assets/icons/ico_Naver_logo.png';

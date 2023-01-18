@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Button from '../../common/Button';
+import Button from '../../common/elem/Button';
 
 import GoogleLogo from '../../../assets/icons/ico_Google_logo.svg';
 
@@ -14,12 +14,7 @@ const GoogleSignupButton = () => {
 
   return (
     <>
-      <Button
-        size='large'
-        background='white'
-        color='black'
-        border='2px solid'
-        onClick={handleGoogleSignup}>
+      <Button size='large' background='white' color='black' border='2px solid' onClick={handleGoogleSignup}>
         <Img src={GoogleLogo} />
         Google으로 계속하기
       </Button>
