@@ -6,3 +6,5 @@ export const Colors = Object.freeze({
   white: '#FFFFFF',
   black: '#000000',
 });
+
+// TODO: 삭제 예정
