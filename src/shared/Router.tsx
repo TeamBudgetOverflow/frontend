@@ -22,13 +22,25 @@ import NaverLogin from '../pages/NaverLogin';
 import { userInfo } from '../recoil/userAtoms';
 
 const Router = () => {
-  const { isLogin } = useRecoilValue(userInfo);
+  const { isLogin, isAccessToken, isRefreshToken } = useRecoilValue(userInfo);
+
+  const tokenCheck = () => {
+    if (isLogin === true) {
+      return <Navigate to='/home' />;
+    } else if (isLogin === false && isAccessToken === false && isRefreshToken === true) {
+      return <Navigate to='/pinnumber' />;
+    } else if (isLogin === false && isAccessToken === false && isRefreshToken === false) {
+      return <Navigate to='/login' />;
+    }
+  };
 
   return (
     <BrowserRouter>
       <Layout>
         <Routes>
-          <Route path='/' element={!isLogin ? <LoginPage /> : <Home />} />
+          <Route path='/' element={tokenCheck()} />
+          <Route path='/home' element={isLogin ? <Home /> : <Navigate to='/login' />} />
+          <Route path='/login' element={!isLogin ? <LoginPage /> : <Navigate to='/home' />} />
           <Route path='/kakaologin' element={<KakaoLogin />} />
           <Route path='/naverlogin' element={<NaverLogin />} />
           <Route path='/googlelogin' element={<GoogleLogin />} />

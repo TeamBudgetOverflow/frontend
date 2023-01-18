@@ -49,9 +49,11 @@ const Navigation = (props: NavProps, ref: Ref<HTMLDivElement>) => {
   const { pathname } = useLocation();
   useEffect(() => {
     if (pathname.includes('/goals/post')) return setShow(false);
+    if (pathname === '/login') return setShow(false);
+    if (pathname === '/pinnumber') return setShow(false);
     setShow(true);
 
-    // handleMenuSelect(pathMenuConverter(pathname));
+    handleMenuSelect(pathMenuConverter(pathname));
   }, [pathname]);
   return (
     <Wrapper show={show} ref={ref}>

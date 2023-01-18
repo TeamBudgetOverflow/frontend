@@ -9,7 +9,6 @@ const Layout: FunctionComponent<PropsWithChildren> = ({ children }) => {
   const { pathname } = useLocation();
   const headerRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
-
   const [headerNavHeight, setHeaderNavHeight] = useState<number>(0);
 
   useEffect(() => {
