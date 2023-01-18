@@ -33,6 +33,12 @@ export const dateStringTranslator = (targetDate: Date) => {
   return endDateIndicator;
 };
 
+export const dateStringTranslatorWithPoint = (date: Date) => {
+  const endDateIndicator = date.getFullYear() + '.' + (date.getMonth() + 1) + '.' + date.getDate();
+
+  return endDateIndicator;
+};
+
 // dateISOStringDateTranslator returns date to local ISO formatted string timestamp
 // ex. 'YYYY-MM-DD'
 export const dateISOStringDateTranslator = (date: Date) => {

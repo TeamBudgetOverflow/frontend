@@ -43,6 +43,10 @@ const InputBox = ({
 };
 
 const Wrapper = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   width: 100%;
   height: 100%;
 `;
@@ -53,14 +57,24 @@ const Input = styled.input<{ showBorder: boolean }>`
   height: 100%;
   border: none;
   border-bottom: ${(props) => (props.showBorder ? '1px solid black' : '')};
-  font: ${(props) => props.theme.paragraphP3};
+  font: ${(props) => props.theme.paragraphsP3R};
   color: ${(props) => props.theme.gray600};
   background-color: transparent;
+  :focus {
+    outline: none;
+  }
 `;
 
 const InputCounter = styled.span`
+  position: absolute;
+  padding: 9px 5px 4px;
+  right: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   font: ${(props) => props.theme.captionC3};
   color: ${(props) => props.theme.gray600};
+  background-color: white;
 `;
 
 export default InputBox;

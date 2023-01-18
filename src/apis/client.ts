@@ -1,5 +1,12 @@
 import axios from 'axios';
-import { IAccountInfo, IPostAuthAccnt } from '../interfaces/interfaces';
+import {
+  IAuthAccount,
+  IAccount,
+  IPostAccount,
+  IPostGoal,
+  IValidateAccount,
+  IReqAuthAccout,
+} from '../interfaces/interfaces';
 
 const BASE_URL = process.env.REACT_APP_API_ENDPOINT;
 const BANK_BASE_URL = process.env.REACT_APP_BANK_API_ENDPOINT;
@@ -159,7 +166,69 @@ export const userAPI = {
   },
 };
 
+export const accountApi = {
+  getAccounts: async (userId: number): Promise<Array<IAccount>> => {
+    // const { data } = await tokenClient.get(`/accounts/${userId}`);
+    // const data = [
+    //   {
+    //     id: 1,
+    //     bankId: 0,
+    //     accntNo: '11011102012',
+    //   },
+    // ];
+
+    const data: Array<IAccount> = [];
+
+    return data;
+  },
+  createManualAccount: async (userId: number) => {
+    const { data } = await tokenClient.post(`/accounts/${userId}/manual`);
+
+    return data;
+  },
+  createAutoAccount: async (userId: number, accntInfo: IPostAccount) => {
+    const { data } = await tokenClient.post(`/accounts/${userId}`, accntInfo);
+
+    return data;
+  },
+};
+
 export const goalApi = {
+  getBanks: async () => {
+    // const { data } = await tokenClient.get(`/banks`);
+    // TODO: test get banks
+    const data = {
+      banks: [
+        { id: 0, code: '088', name: '신한은행' },
+        { id: 1, code: '088', name: '신한은행' },
+        { id: 2, code: '088', name: '신한은행' },
+        { id: 3, code: '088', name: '신한은행' },
+        { id: 4, code: '088', name: '신한은행' },
+        { id: 5, code: '088', name: '신한은행' },
+        { id: 6, code: '088', name: '신한은행' },
+        { id: 7, code: '088', name: '신한은행' },
+        { id: 8, code: '088', name: '신한은행' },
+        { id: 9, code: '088', name: '신한은행' },
+        { id: 10, code: '088', name: '신한은행' },
+        { id: 11, code: '088', name: '신한은행' },
+        { id: 12, code: '088', name: '신한은행' },
+        { id: 13, code: '088', name: '신한은행' },
+        { id: 14, code: '088', name: '신한은행' },
+        { id: 15, code: '088', name: '신한은행' },
+        { id: 16, code: '088', name: '신한은행' },
+        { id: 17, code: '088', name: '신한은행' },
+        { id: 18, code: '088', name: '신한은행' },
+        { id: 19, code: '088', name: '신한은행' },
+        { id: 20, code: '088', name: '신한은행' },
+      ],
+    };
+    return data.banks;
+  },
+  postGoal: async (goalData: IPostGoal) => {
+    const { data } = await tokenClient.post(`/goals`, goalData);
+
+    return data;
+  },
   getGoalDetail: async (goalId: number) => {
     const { data } = await tokenClient.get(`goals/${goalId}`);
 
@@ -209,10 +278,8 @@ export const goalApi = {
 
     return data;
   },
-
   getGoalsByWord: async (query: string) => {
     const { data } = await tokenClient.get(`/goals/getgoals/search` + query);
-
     // const data = {
     //   goals: [
     //     {
@@ -293,18 +360,35 @@ export const goalApi = {
 };
 
 export const bankAPI = {
-  reqAuthAccnt: async (accntInfo: IAccountInfo) => {
+  reqAuthAccnt: async ({ bankCode, accntNo }: IReqAuthAccout) => {
     const result = await bankClient.post('/hb0081000378', {
-      inBankCode: accntInfo.bankId,
-      inAccount: accntInfo.accntNo,
+      inBankCode: bankCode,
+      inAccount: accntNo,
     });
 
     return result;
   },
-  authAccnt: async ({ oriSeqNo, authString }: IPostAuthAccnt) => {
+  authAccnt: async ({ oriSeqNo, authString }: IAuthAccount) => {
     const result = await bankClient.post('/hb0081000379', {
       oriSeqNo: oriSeqNo,
       inPrintContent: authString,
+    });
+    return result;
+  },
+  validateAccntInfo: async (accntInfo: IValidateAccount) => {
+    const result = await bankClient.post('/in0087000484', {
+      gubun: '01',
+      bankCd: accntInfo.bankCode,
+      loginMethod: 'ID',
+      userId: accntInfo.bankUserId,
+      userPw: accntInfo.bankUserPw,
+      acctNo: accntInfo.accntNo,
+      acctPw: accntInfo.accntPw,
+      signCert: '',
+      signPw: '',
+      curCd: '',
+      detailYN: 'N',
+      vndrCode: 'N',
     });
     return result;
   },

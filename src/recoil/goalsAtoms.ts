@@ -1,4 +1,35 @@
 import { atom } from 'recoil';
+import { recoilPersist } from 'recoil-persist';
+
+import { IPostGoal } from '../interfaces/interfaces';
+
+const { persistAtom } = recoilPersist();
+
+export const postGoalType = atom({
+  key: 'postGoalType',
+  default: {
+    isGroup: false,
+  },
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const postGoal = atom<IPostGoal>({
+  key: 'postGoal',
+  default: {
+    emoji: '26f0-fe0f',
+    title: '',
+    description: '',
+    hashTag: [''],
+    amount: 1000,
+    startDate: new Date(),
+    endDate: new Date(),
+    headCount: 1,
+    isPrivate: false,
+    isManual: false,
+    accntId: 0,
+  },
+  effects_UNSTABLE: [persistAtom],
+});
 
 export const goalId = atom({
   key: 'goalId',
