@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import Icon from '../components/common/elem/Icon';
 
-import { userInfo } from '../recoil/atoms';
+import { userInfo } from '../recoil/userAtoms';
 
 enum Menu {
   home,
@@ -48,7 +48,7 @@ const Navigation = (props: NavProps, ref: Ref<HTMLDivElement>) => {
   const [show, setShow] = useState<boolean>(true);
   const { pathname } = useLocation();
   useEffect(() => {
-    if (pathname === '/goals/post') return setShow(false);
+    if (pathname.includes('/goals/post')) return setShow(false);
     setShow(true);
 
     handleMenuSelect(pathMenuConverter(pathname));

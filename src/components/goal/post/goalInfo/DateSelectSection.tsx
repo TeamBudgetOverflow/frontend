@@ -20,31 +20,40 @@ const DateSelectSection = ({ isGroup, dateSelectHandler }: DateSelectSectionProp
   const {
     minDate: minRecruitEndDate,
     maxDate: maxRecruitEndDate,
+    start: recruitStartDate,
     value: recruitEndDate,
-    onChange: changeRecruitEndDate,
+    onChangeStartDate: changeRecruitStartDate,
+    onChangeEndDate: changeRecruitEndDate,
   } = useDateInput({ startDate: new Date(), minDays: 1, maxDays: 3 });
 
-  const [goalStartDate, setGoalStartDate] = useState<Date>(new Date());
   useEffect(() => {
-    if (isGroup) {
-      return setGoalStartDate(new Date(new Date().setDate(new Date(recruitEndDate).getDate() + 1)));
-    }
-    setGoalStartDate(new Date());
-  }, [isGroup, recruitEndDate]);
+    if (new Date().getHours() === 0) changeRecruitStartDate(new Date());
+  }, [new Date().getHours()]);
 
   const {
     minDate: minGoalEndDate,
     maxDate: maxGoalEndDate,
+    start: goalStartDate,
     value: goalEndDate,
-    onChange: changeGoalEndDate,
-  } = useDateInput({ startDate: goalStartDate, minDays: 3, maxDays: 7 });
+    onChangeStartDate: changeGoalStartDate,
+    onChangeEndDate: changeGoalEndDate,
+  } = useDateInput({ startDate: new Date(), minDays: 3, maxDays: 7 });
+
+  useEffect(() => {
+    if (isGroup) {
+      changeGoalStartDate(new Date(new Date().setDate(new Date(recruitEndDate).getDate() + 1)));
+      return;
+    }
+
+    changeGoalStartDate(new Date());
+  }, [isGroup, recruitEndDate]);
 
   useEffect(() => {
     dateSelectHandler({
-      startDate: new Date(recruitEndDate),
+      startDate: goalStartDate,
       endDate: new Date(goalEndDate),
     });
-  }, [recruitEndDate, goalEndDate]);
+  }, [goalStartDate, goalEndDate]);
 
   return (
     <>
@@ -52,7 +61,7 @@ const DateSelectSection = ({ isGroup, dateSelectHandler }: DateSelectSectionProp
         <ContentBox>
           <SubTitle>모집 기간</SubTitle>
           <RowContent>
-            <DateText>{dateStringTranslatorWithPoint(new Date())}</DateText>
+            <DateText>{dateStringTranslatorWithPoint(recruitStartDate)}</DateText>
             <span>-</span>
             <InputWrapper>
               <DateSelectBox

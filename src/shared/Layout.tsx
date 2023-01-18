@@ -13,7 +13,7 @@ const Layout: FunctionComponent<PropsWithChildren> = ({ children }) => {
   const [headerNavHeight, setHeaderNavHeight] = useState<number>(0);
   useEffect(() => {
     if (!headerRef.current || !navRef.current) return;
-    if (pathname === '/goals/post') return setHeaderNavHeight(headerRef.current.clientHeight);
+    if (pathname.includes('/goals/post')) return setHeaderNavHeight(headerRef.current.clientHeight);
     setHeaderNavHeight(headerRef.current.clientHeight + navRef.current.clientHeight);
   }, [headerRef.current?.clientHeight, navRef.current?.clientHeight, pathname]);
   return (

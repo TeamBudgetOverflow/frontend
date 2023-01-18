@@ -16,7 +16,6 @@ const useNumInput = ({ initValue, min, max, type }: useNumInputProps) => {
     if (value < min) {
       switch (type) {
         case '목표 금액':
-          console.log('error');
           setErrMsg(`${type} 최소값은 ${min.toLocaleString()} 원 입니다.`);
           return;
         case '인원':

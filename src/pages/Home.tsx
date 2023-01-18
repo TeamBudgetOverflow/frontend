@@ -8,7 +8,7 @@ import UserProfile from '../components/user/UserProfile';
 import MyGoalCard from '../components/goal/MyGoalCard';
 import Icon from '../components/common/elem/Icon';
 
-import { userGoals, userInfo, userProfile } from '../recoil/atoms';
+import { userGoals, userInfo, userProfile } from '../recoil/userAtoms';
 
 import { IGoals, IUserProfile } from '../interfaces/interfaces';
 
@@ -47,7 +47,7 @@ const Home = () => {
         ) : (
           goals?.map((goal) => <MyGoalCard key={goal.id} goal={goal} />)
         )}
-        <AddGoalBtn onClick={() => navigate('/goals/post')}>
+        <AddGoalBtn onClick={() => navigate('/goals/post/type')}>
           <IconWrapper>
             <Icon
               size={20}

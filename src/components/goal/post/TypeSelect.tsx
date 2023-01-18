@@ -1,45 +1,63 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
-import { GoalType } from '../../../pages/PostGoal';
 import TextButton from '../../common/elem/TextButton';
 
-interface TypeSelectProps {
-  typeSelectHandler: (type: GoalType) => void;
-}
+import { postGoal, postGoalType } from '../../../recoil/goalsAtoms';
 
-const TypeSelect = ({ typeSelectHandler }: TypeSelectProps) => {
-  const [selected, setSelected] = useState<GoalType>(GoalType.none);
-  const handleSelect = (type: GoalType) => {
-    setSelected(type);
+const TypeSelect = () => {
+  const initialType = useRecoilValue(postGoalType);
+  const [isGroup, setIsGroup] = useState<boolean>(initialType.isGroup);
+  const setPostGoalType = useSetRecoilState(postGoalType);
+  const handleSelect = () => {
+    setIsGroup(!isGroup);
   };
+
+  useEffect(() => {
+    setPostGoalType({ isGroup: isGroup });
+  }, [isGroup]);
+
+  const setPostGoal = useSetRecoilState(postGoal);
+  useEffect(() => {
+    setPostGoal({
+      emoji: '26f0-fe0f',
+      title: '',
+      description: '',
+      hashTag: [''],
+      amount: 1000,
+      startDate: new Date(),
+      endDate: new Date(),
+      headCount: 1,
+      isPrivate: false,
+      isManual: false,
+      accntId: 0,
+    });
+  }, []);
+
+  const navigate = useNavigate();
   return (
-    <>
-      <Wrapper>
-        <SelectBoxWrapper>
-          <SelectBox selected={selected === GoalType.personal} onClick={() => handleSelect(GoalType.personal)}>
-            개인
-          </SelectBox>
-          <SelectBox selected={selected === GoalType.group} onClick={() => handleSelect(GoalType.group)}>
-            그룹
-          </SelectBox>
-        </SelectBoxWrapper>
-        <ButtonWrapper>
-          <TextButton
-            text='다음'
-            onClickHandler={() => typeSelectHandler(selected)}
-            isDisabled={selected === GoalType.none}
-          />
-        </ButtonWrapper>
-      </Wrapper>
-    </>
+    <Wrapper>
+      <SelectBoxWrapper>
+        <SelectBox selected={!isGroup} onClick={handleSelect}>
+          개인
+        </SelectBox>
+        <SelectBox selected={isGroup} onClick={handleSelect}>
+          그룹
+        </SelectBox>
+      </SelectBoxWrapper>
+      <ButtonWrapper>
+        <TextButton text='다음' onClickHandler={() => navigate(`/goals/post/data/${isGroup ? 'group' : 'personal'}`)} />
+      </ButtonWrapper>
+    </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
   height: 100%;

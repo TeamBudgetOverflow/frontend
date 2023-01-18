@@ -57,7 +57,7 @@ const Input = styled.input<{ showBorder: boolean }>`
   height: 100%;
   border: none;
   border-bottom: ${(props) => (props.showBorder ? '1px solid black' : '')};
-  font: ${(props) => props.theme.paragraphP3};
+  font: ${(props) => props.theme.paragraphsP3R};
   color: ${(props) => props.theme.gray600};
   background-color: transparent;
   :focus {

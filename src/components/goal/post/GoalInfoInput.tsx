@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
 
@@ -7,30 +9,33 @@ import Icon from '../../common/elem/Icon';
 import InputBox from '../../common/elem/InputBox';
 import ValidateMsg from '../../common/elem/ValidateMsg';
 import TagInputSection from './TagInputSection';
-import { IHashTag } from '../../common/tag/HashTag';
+import DateSelectSection, { GoalDate } from './goalInfo/DateSelectSection';
+import OptionSelectSection from './goalInfo/OptionSelectSection';
+import TextButton from '../../common/elem/TextButton';
 
 import useTxtInput from '../../../hooks/useTxtInput';
 import useNumInput from '../../../hooks/useNumInput';
 
 import { IPostGoal } from '../../../interfaces/interfaces';
-import TextButton from '../../common/elem/TextButton';
-import DateSelectSection, { GoalDate } from './goalInfo/DateSelectSection';
-import OptionSelectSection from './goalInfo/OptionSelectSection';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { postGoal } from '../../../recoil/goalsAtoms';
-import { useNavigate } from 'react-router';
+import { IHashTag } from '../../common/tag/HashTag';
+
+import { postGoal, postGoalType } from '../../../recoil/goalsAtoms';
+import { userInfo } from '../../../recoil/userAtoms';
+
 import { accountApi, goalApi } from '../../../apis/client';
+import Alert from '../../common/alert/Alert';
 
 interface GoalInfoInputProps {
   isGroup: boolean;
 }
 
 function GoalInfoInput({ isGroup }: GoalInfoInputProps) {
+  const savedPostGoal = useRecoilValue(postGoal);
   const [showEmojis, setShowEmojis] = useState<boolean>(false);
   const handleShowEmojis = () => {
     setShowEmojis(!showEmojis);
   };
-  const [emoji, setEmoji] = useState<string>('26f0-fe0f');
+  const [emoji, setEmoji] = useState<string>(savedPostGoal.emoji);
   const handleEmojiSelect = (emoji: EmojiClickData) => {
     setEmoji(emoji.unified);
   };
@@ -41,18 +46,19 @@ function GoalInfoInput({ isGroup }: GoalInfoInputProps) {
     onChange: changeTitle,
     reset: resetTitle,
   } = useTxtInput({
-    initValue: '',
+    initValue: savedPostGoal.title,
     minLength: 4,
     maxLength: 25,
     type: '제목',
   });
+
   const {
     value: description,
     errMsg: descriptionErr,
     onChange: changeDescription,
     reset: resetDescription,
   } = useTxtInput({
-    initValue: '',
+    initValue: savedPostGoal.description,
     minLength: 0,
     maxLength: 255,
     type: '설명',
@@ -63,14 +69,23 @@ function GoalInfoInput({ isGroup }: GoalInfoInputProps) {
     errMsg: amountErr,
     onChange: changeAmount,
     reset: resetAmount,
-  } = useNumInput({ initValue: 1000, min: 1000, max: 70000, type: '목표 금액' });
+  } = useNumInput({ initValue: savedPostGoal.amount, min: 1000, max: 70000, type: '목표 금액' });
 
-  const [tagList, setTagList] = useState<Array<IHashTag>>([]);
+  const [tagList, setTagList] = useState<Array<IHashTag>>(
+    savedPostGoal.hashTag
+      ? [...savedPostGoal.hashTag].map((v) => {
+          return { content: v, bgColor: '#ccc' };
+        })
+      : []
+  );
   const handleTagListChange = (tagList: Array<IHashTag>) => {
     setTagList((prev) => [...prev, ...tagList]);
   };
 
-  const [goalDate, setGoalDate] = useState<GoalDate>({ startDate: new Date(), endDate: new Date() });
+  const [goalDate, setGoalDate] = useState<GoalDate>({
+    startDate: savedPostGoal.startDate,
+    endDate: savedPostGoal.endDate,
+  });
   const handleGoalDateChange = (dateInfo: GoalDate) => {
     setGoalDate(dateInfo);
   };
@@ -79,15 +94,20 @@ function GoalInfoInput({ isGroup }: GoalInfoInputProps) {
     value: headCount,
     errMsg: headCountErr,
     onChange: changeHeadCount,
-    reset: restHeadCount,
-  } = useNumInput({ initValue: 2, min: 2, max: 100, type: '인원' });
+    reset: resetHeadCount,
+  } = useNumInput({
+    initValue: savedPostGoal.headCount < 2 ? 2 : savedPostGoal.headCount,
+    min: 2,
+    max: 100,
+    type: '인원',
+  });
 
-  const [isAuto, setisAuto] = useState<boolean>(true);
+  const [isManual, setisManual] = useState<boolean>(false);
   const handleSelectisAuto = (isTrue: boolean) => {
-    setisAuto(isTrue);
+    setisManual(isTrue);
   };
 
-  const [isPrivate, setIsPrivate] = useState<boolean>(false);
+  const [isPrivate, setIsPrivate] = useState<boolean>(savedPostGoal.isPrivate);
   const handleSelectIsPrivate = (isTrue: boolean) => {
     setIsPrivate(isTrue);
   };
@@ -123,33 +143,72 @@ function GoalInfoInput({ isGroup }: GoalInfoInputProps) {
   }, [emoji, title, description, amount, headCount]);
 
   const setPostGoal = useSetRecoilState(postGoal);
-  const savedPostGoal = useRecoilValue(postGoal);
+  const setPostGoalType = useSetRecoilState(postGoalType);
   const navigate = useNavigate();
-  const handlePostGoal = () => {
-    console.log(isAuto);
-    setPostGoal({
-      emoji: emoji,
-      title: title,
-      description: description,
-      hashtag: tagList,
-      amount: amount,
-      startDate: goalDate.startDate,
-      endDate: goalDate.endDate,
-      headCount: headCount,
-      isPrivate: isPrivate,
-      isAuto: isAuto,
-      accntId: 0,
-    });
-
-    if (isAuto) {
-      navigate('/goals/post/account/choose');
+  const [isPosted, setIsPosted] = useState<boolean>(false);
+  const [isPostError, setIsPostError] = useState<boolean>(false);
+  const { id } = useRecoilValue(userInfo);
+  const handlePostGoal = async () => {
+    if (isManual) {
+      try {
+        const accntId = await accountApi.createManualAccount(id);
+        const goalId = await goalApi.postGoal({
+          emoji,
+          title,
+          description,
+          hashTag: [...tagList].map((v) => v.content),
+          amount,
+          startDate: goalDate.startDate,
+          endDate: goalDate.endDate,
+          headCount,
+          isPrivate,
+          isManual,
+          accntId,
+        });
+        setPostGoalType({ isGroup: false });
+        setTimeout(() => setIsPosted(true), 1000);
+        setIsPostError(false);
+        setTimeout(() => navigate(`/goals/${goalId}`, { replace: true }), 3000);
+      } catch (e) {
+        alert(e);
+        setIsPosted(false);
+        setIsPostError(true);
+      }
     } else {
-      // TODO: createAccount
-      // const accntId = accountApi.createAccount();
-      // setPostGoal({...savedPostGoal, accntId: accntId });
-      // goalApi.postGoal(savedPostGoal);
+      setPostGoal({
+        emoji: emoji,
+        title: title,
+        description: description,
+        hashTag: [...tagList].map((v) => v.content),
+        amount: amount,
+        startDate: goalDate.startDate,
+        endDate: goalDate.endDate,
+        headCount: headCount,
+        isPrivate: isPrivate,
+        isManual: isManual,
+        accntId: 0,
+      });
+      navigate('/goals/post/account/choose');
     }
   };
+
+  if (isPosted)
+    return (
+      <Wrapper>
+        <Alert>목표 생성이 완료되었습니다.</Alert>
+      </Wrapper>
+    );
+
+  if (isPostError)
+    return (
+      <Wrapper>
+        <Alert>
+          목표 생성이 실패했습니다.
+          <br />
+          다시 시도해주세요.
+        </Alert>
+      </Wrapper>
+    );
 
   return (
     <Wrapper>
@@ -195,12 +254,7 @@ function GoalInfoInput({ isGroup }: GoalInfoInputProps) {
           <SubTitle>목표 금액</SubTitle>
           <RowContent>
             <AmountInputWrapper>
-              <InputBox
-                placeholder='목표 금액을 1,000원 ~ 70,000원 사이로 입력해주세요'
-                type='text'
-                value={amount.toLocaleString()}
-                onChangeHandler={changeAmount}
-              />
+              <InputBox placeholder='' type='text' value={amount.toLocaleString()} onChangeHandler={changeAmount} />
             </AmountInputWrapper>
             <span>원</span>
           </RowContent>
@@ -212,12 +266,7 @@ function GoalInfoInput({ isGroup }: GoalInfoInputProps) {
             <ContentBox>
               <RowContent>
                 <HeadCountInputWrapper>
-                  <InputBox
-                    placeholder='모집인원을 1명 ~ 100명까지 숫자로 입력해주세요'
-                    type='text'
-                    value={headCount}
-                    onChangeHandler={changeHeadCount}
-                  />
+                  <InputBox placeholder='' type='text' value={headCount} onChangeHandler={changeHeadCount} />
                 </HeadCountInputWrapper>
                 <span>명</span>
               </RowContent>
@@ -251,8 +300,8 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 45px;
   width: 100%;
+  height: 100%;
 `;
 
 const ContentWrapper = styled.div`

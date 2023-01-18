@@ -1,62 +1,78 @@
 import React from 'react';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
-import { IAccountInfo } from '../../interfaces/interfaces';
+import { privateInfoFormatter } from '../../utils/privateInfoFormatter';
+
+import { banksInfo } from '../../recoil/accntAtoms';
+
+import { IAccount } from '../../interfaces/interfaces';
 
 interface AccountInfoCardProps {
-  title: string;
-  formattedAccntInfo: IAccountInfo;
+  accntInfo: IAccount;
+  selectHandler: (accntId: number) => void;
 }
 
-const AccountInfoCard = ({ title, formattedAccntInfo }: AccountInfoCardProps) => {
+const AccountInfoCard = ({ accntInfo, selectHandler }: AccountInfoCardProps) => {
+  const banks = useRecoilValue(banksInfo);
   return (
     <AccountInfoBox>
-      <SubTitle>{title}</SubTitle>
-      <Line />
-      <InfoBoxRow>
-        <Label>은행</Label>
-        <Info>{formattedAccntInfo?.bankId}</Info>
-      </InfoBoxRow>
-      <InfoBoxRow>
-        <Label>계좌 번호</Label>
-        <Info>{formattedAccntInfo?.accntNo}</Info>
-      </InfoBoxRow>
+      <Content>
+        <Img />
+        <ColumnBox>
+          <Name>{banks.find((bank) => bank.id === accntInfo.bankId)?.name}</Name>
+          <Number>{privateInfoFormatter({ data: accntInfo.accntNo, showLen: 4, showDir: 'tail' })}</Number>
+        </ColumnBox>
+      </Content>
+      <Button onClick={() => selectHandler(accntInfo.id)}></Button>
     </AccountInfoBox>
   );
 };
 
 const AccountInfoBox = styled.div`
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
-  width: calc(100% - 20px);
-  border: 1px solid ${(props) => props.theme.primaryMain};
-`;
-
-const SubTitle = styled.div`
-  font: ${(props) => props.theme.captionC1};
-`;
-
-const Line = styled.span`
-  width: 100%;
-  border-top: 1px solid ${(props) => props.theme.primaryMain};
-`;
-
-const InfoBoxRow = styled.div`
+  padding: 20px;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   align-items: center;
-  gap: 20px;
-  width: 100%;
+  width: calc(100% - 40px);
+  border-radius: 16px;
+  background-color: ${(props) => props.theme.gray200};
 `;
 
-const Label = styled.span`
-  width: 40%;
+const Content = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+`;
+
+const ColumnBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 4px;
+`;
+
+const Img = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: ${(props) => props.theme.gray400};
+`;
+
+const Name = styled.span`
   font: ${(props) => props.theme.captionC3};
+  color: ${(props) => props.theme.gray700};
 `;
 
-const Info = styled(Label)``;
+const Number = styled.span`
+  font: ${(props) => props.theme.paragraphsP3M};
+`;
+
+const Button = styled.div`
+  width: 32px;
+  height: 32px;
+  border: 1px solid black;
+`;
 
 export default AccountInfoCard;

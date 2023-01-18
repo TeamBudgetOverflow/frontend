@@ -34,6 +34,7 @@ export interface IPostAuthAccnt {
 }
 
 export interface IPostGoal {
+  emoji: string;
   title: string;
   description: string;
   amount: number;
@@ -42,13 +43,32 @@ export interface IPostGoal {
   endDate: Date;
   headCount: number;
   isPrivate: boolean;
+  isManual: boolean;
   accntId: number;
 }
 
 export interface IAccount {
   id: number;
-  bankId: string;
+  bankId: number;
   accntNo: string;
+}
+
+export interface IReqAuthAccout {
+  bankCode: string;
+  accntNo: string;
+}
+
+export interface IAuthAccount {
+  oriSeqNo: string;
+  authString: string;
+}
+
+export interface IValidateAccount {
+  bankCode: string;
+  bankUserId: string;
+  bankUserPw: string;
+  accntNo: string;
+  accntPw: string;
 }
 
 export interface IPostAccount {
