@@ -5,7 +5,8 @@ export const userInfo = atom({
   default: {
     id: 0,
     isLogin: false,
-    // 로그인: true
+    isAccessToken: false,
+    isRefreshToken: false,
   },
 });
 

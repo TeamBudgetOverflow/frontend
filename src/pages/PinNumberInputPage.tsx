@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import jwtDecoder from 'jwt-decode';
-
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
+
 import { userAPI } from '../apis/client';
+
 import { userInfo } from '../recoil/atoms';
-import { MyToken } from '../interfaces/interfaces';
 
 // TODO: keypad 디자인이랑 똑같게
 // TODO: pinnumber 시간지나면 안보이게
 const PinNumberInputPage = () => {
   const navigate = useNavigate();
-  const setUserInfo = useSetRecoilState(userInfo);
-  const token = localStorage.getItem('accessToken');
-  const loginId = jwtDecoder<MyToken>(token).userId;
 
-  // const { id: userId } = useRecoilValue(userInfo);
+  const accessToken = localStorage.getItem('accessToken');
+
+  const { id: userId } = useRecoilValue(userInfo);
 
   const PASSWORD_MAX_LENGTH = 6;
 
@@ -27,8 +25,6 @@ const PinNumberInputPage = () => {
   const [pinNumber, setPinNumber] = useState('');
 
   useEffect(() => {
-    setUserInfo({ id: loginId, isLogin: true });
-
     const numbers: number[] = [];
     for (let i = 0; i < 10; i++) {
       numbers.push(i);
@@ -56,12 +52,22 @@ const PinNumberInputPage = () => {
     handlePinNumberChange(nums);
   };
 
-  const { mutate } = useMutation('postPinCode', () => userAPI.postPinCode(loginId, { pinCode: pinNumber }));
+  const postPinCodeMutate = useMutation('postPinCode', () => userAPI.postPinCode(userId, { pinCode: pinNumber }));
+  const postAccessTokenByPinCodeMutate = useMutation('postAccessTokenByPinCode', () =>
+    userAPI.postAccessTokenByPinCode({ pinCode: pinNumber })
+  );
 
-  if (pinNumber.length === PASSWORD_MAX_LENGTH) {
-    mutate();
-    navigate('/');
-  }
+  useEffect(() => {
+    if (pinNumber.length === PASSWORD_MAX_LENGTH && accessToken !== null) {
+      postPinCodeMutate.mutate();
+      navigate('/');
+      return;
+    } else if (pinNumber.length === PASSWORD_MAX_LENGTH && accessToken === null) {
+      postAccessTokenByPinCodeMutate.mutate();
+      navigate('/');
+      return;
+    }
+  }, [pinNumber]);
 
   return (
     <Wrapper>
@@ -86,7 +92,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: stretch;
+  align-items: center;
   gap: 50px;
 `;
 
@@ -108,7 +114,7 @@ const InputWrapper = styled.div`
   margin-bottom: 10px;
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
 `;
 

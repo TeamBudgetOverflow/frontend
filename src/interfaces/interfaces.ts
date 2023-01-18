@@ -58,3 +58,10 @@ export interface MyToken {
   iat: number;
   exp: number;
 }
+
+export interface IUserInfo {
+  id: number;
+  isLogin: boolean;
+  isAccessToken: boolean;
+  isRefreshToken: boolean;
+}

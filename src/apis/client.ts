@@ -81,6 +81,13 @@ export const userAPI = {
     return data;
   },
 
+  // TODO: 리프레신 토큰 전달
+  postAccessTokenByPinCode: async (pinCode: object) => {
+    const { data } = await tokenClient.post('/api/users/pinCode', pinCode);
+
+    return data;
+  },
+
   getUserProfile: async (userId: number) => {
     const { data } = await tokenClient.get(`/users/${userId}`);
     // const data = {
