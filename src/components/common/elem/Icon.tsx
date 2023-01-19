@@ -27,6 +27,8 @@ const Path = styled.path<{ color: string }>`
         return props.theme.primary400;
       case 'gray400':
         return props.theme.gray400;
+      case 'black':
+        return 'black';
       default:
         return props.theme.secondary900;
     }

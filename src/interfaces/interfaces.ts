@@ -24,9 +24,9 @@ export interface IGoal {
 }
 
 export interface IBank {
-  id: number;
-  code: string;
-  name: string;
+  bankId: number;
+  bankCode: string;
+  bankName: string;
 }
 
 export interface IPostAuthAccnt {
