@@ -27,6 +27,7 @@ const Layout: FunctionComponent<PropsWithChildren> = ({ children }) => {
 };
 
 const Body = styled.div<{ height: string }>`
+  position: relative;
   width: 100%;
   height: ${(props) => `calc(100vh - ${props.height})`};
   overflow-y: auto;

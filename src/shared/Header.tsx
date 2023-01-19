@@ -3,9 +3,8 @@ import { useLocation, useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 import Logo from '../components/common/elem/Logo';
-import Icon from '../components/common/elem/Icon';
 import SearchBar from '../components/header/SearchBar';
-import { postGoal } from '../recoil/goalsAtoms';
+import Icon from '../components/common/elem/Icon';
 
 interface HeaderProps {
   props: string;
@@ -43,6 +42,7 @@ const PageKR = (type: PageType) => {
 const Header = (props: HeaderProps, ref: Ref<HTMLDivElement>) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const [showHeader, setShowHeader] = useState<boolean>(false);
   const [showSearchBar, setShowSearchBar] = useState<boolean>(false);
   const handleSearch = () => {
     if (pathname !== '/goals/lookup') {
@@ -80,30 +80,52 @@ const Header = (props: HeaderProps, ref: Ref<HTMLDivElement>) => {
     }
 
     if (pathname !== '/goals/lookup') {
-      if (pathname === '/') {
+      if (pathname === '/login' || pathname === '/pinnumber') {
+        setShowBeforeBtn(false);
+        setShowSearchBar(false);
         setShowSearchIcons(false);
+        setShowChatIcons(false);
+        return;
+      }
+      if (pathname === '/home') {
+        setShowBeforeBtn(false);
+        setShowSearchBar(false);
+        setShowSearchIcons(false);
+        setShowChatIcons(true);
         return;
       }
       if (pathname.includes('/goals/post')) {
         setShowBeforeBtn(true);
+        setShowSearchBar(false);
         setShowChatIcons(false);
         setShowSearchIcons(false);
         return;
       }
-      setShowSearchBar(false);
-      setShowBeforeBtn(false);
-      setShowSearchIcons(true);
-      return;
+      if (pathname.includes('/users')) {
+        setPageType(PageType.my);
+        setShowBeforeBtn(false);
+        setShowSearchBar(false);
+        setShowChatIcons(true);
+        setShowSearchIcons(false);
+        return;
+      }
     }
+
+    setShowBeforeBtn(false);
+    setShowSearchBar(false);
+    setShowSearchIcons(true);
+    setShowChatIcons(true);
   }, [pathname]);
 
   useEffect(() => {
     if (showSearchBar) return setShowBeforeBtn(true);
   }, [showSearchBar]);
 
+  const [searchBarIndicator, setSearchBarIndicator] = useState(false);
+
   return (
     <HeaderLayout ref={ref}>
-      {pathname === '/' ? <Logo size='small' /> : <></>}
+      {pathname === '/home' ? <Logo size='small' /> : <></>}
       <Button show={showBeforeBtn} onClick={handleSearch}>
         <Icon
           size={showBeforeBtn ? 32 : 0}
@@ -123,7 +145,7 @@ const Header = (props: HeaderProps, ref: Ref<HTMLDivElement>) => {
         <Button show={showSearchIcons && !showSearchBar} onClick={handleSearch}>
           <Icon
             size={showSearchIcons && !showSearchBar ? 32 : 0}
-            color={'primary400'}
+            color={'black'}
             path={
               'M20.6667 18.6667H19.6133L19.24 18.3067C20.5467 16.7867 21.3333 14.8133 21.3333 12.6667C21.3333 7.88 17.4533 4 12.6667 4C7.88 4 4 7.88 4 12.6667C4 17.4533 7.88 21.3333 12.6667 21.3333C14.8133 21.3333 16.7867 20.5467 18.3067 19.24L18.6667 19.6133V20.6667L25.3333 27.32L27.32 25.3333L20.6667 18.6667ZM12.6667 18.6667C9.34667 18.6667 6.66667 15.9867 6.66667 12.6667C6.66667 9.34667 9.34667 6.66667 12.6667 6.66667C15.9867 6.66667 18.6667 9.34667 18.6667 12.6667C18.6667 15.9867 15.9867 18.6667 12.6667 18.6667Z'
             }
@@ -152,6 +174,7 @@ const HeaderLayout = styled.div`
   align-items: center;
   width: calc(100% - 44px);
   background-color: white;
+  border-bottom: 1px solid ${(props) => props.theme.gray100};
 `;
 
 const SearchBarWrapper = styled.div`

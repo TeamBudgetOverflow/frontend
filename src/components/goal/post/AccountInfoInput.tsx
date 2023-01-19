@@ -96,9 +96,9 @@ function AccountInfoInput({ goalIdHandler }: AccountInfoInputProps) {
   const { id } = useRecoilValue(userInfo);
   const banks = useRecoilValue(banksInfo);
   const getBankId = () => {
-    const bank = banks.find((bank) => bank.code === accnt.bankCode);
+    const bank = banks.find((bank) => bank.bankCode === accnt.bankCode);
     if (!bank) return 0;
-    return bank.id;
+    return bank.bankId;
   };
   const [isPosted, setIsPosted] = useState<boolean>(false);
   const savedPostGoal = useRecoilValue(postGoal);

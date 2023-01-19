@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
+import { searchBarOnFocusEvent } from '../../recoil/searchAtoms';
 
 import InputBox from '../common/elem/InputBox';
 
@@ -21,6 +23,14 @@ const SearchBar = ({ show }: SearchBarProps) => {
       handleSearchButton(searchKeyword);
     }
   };
+
+  const [onFocus, setOnFocus] = useState(false);
+
+  const setSearchBarOnFocusEvent = useSetRecoilState(searchBarOnFocusEvent);
+
+  useEffect(() => {
+    setSearchBarOnFocusEvent(onFocus);
+  }, [onFocus]);
 
   return (
     <SearchBarLayout show={show}>

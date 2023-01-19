@@ -20,12 +20,13 @@ export interface IGoal {
   startDate: Date;
   endDate: Date;
   headCount: number;
+  curCount: number;
 }
 
 export interface IBank {
-  id: number;
-  code: string;
-  name: string;
+  bankId: number;
+  bankCode: string;
+  bankName: string;
 }
 
 export interface IPostAuthAccnt {
