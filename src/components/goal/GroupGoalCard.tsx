@@ -1,35 +1,66 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { IGoal } from '../../interfaces/interfaces';
+import StateTag from '../common/tag/StateTag';
+import DdayTag from '../common/tag/DdayTag';
 
 import { dDayCalculator } from '../../utils/dDayCalculator';
 import { dateStringTranslator } from '../../utils/dateTranslator';
 
-const GroupGoalCard = ({ goal }: { goal: IGoal }) => {
+import { IGoal } from '../../interfaces/interfaces';
+
+const StateGoalCard = ({ goal }: { goal: IGoal }) => {
   const navigate = useNavigate();
+  const [state, setState] = useState<'working' | 'recruiting'>('working');
+  const setGoalState = () => {
+    if (new Date(goal.startDate).getTime() <= new Date().getTime()) {
+      setState('working');
+      return;
+    }
+
+    setState('recruiting');
+  };
+
+  useEffect(() => {
+    setGoalState();
+  }, [goal]);
 
   return (
     <Wrapper onClick={() => navigate(`/goals/${goal.id}`)}>
       <TopContent>
         <TopLeftContent>
-          <Icon />
-          <TextContent>
-            <Title>{goal.title}</Title>
-            <Amount>{`${goal.amount.toLocaleString()}원`}</Amount>
-          </TextContent>
+          <StateTag state={state} />
+          <Content>
+            <IconWrapper>
+              <Icon />
+            </IconWrapper>
+            <TextContent>
+              <Title>{goal.title}</Title>
+              <Amount>{`${goal.amount.toLocaleString()}원`}</Amount>
+            </TextContent>
+          </Content>
         </TopLeftContent>
-        <DdayTag>{`D-${dDayCalculator(goal.endDate)}`}</DdayTag>
+        <TopRightContent>
+          <DdayTag dDay={dDayCalculator(goal.endDate)} />
+        </TopRightContent>
       </TopContent>
       <BottomContent>
-        <ProgressBarWrapper>
-          <ProgressBar width={`${goal.attainment}%`} />
-        </ProgressBarWrapper>
-        <LowerLine>
-          <ProgressText>{`${dateStringTranslator(goal.endDate)} 종료`}</ProgressText>
-          <ProgressText>{`${goal.attainment}%`}</ProgressText>
-        </LowerLine>
+        {state === 'working' ? (
+          <ProgressBarWrapper>
+            <ProgressBar width={`${goal.attainment}%`} />
+          </ProgressBarWrapper>
+        ) : (
+          <></>
+        )}
+        <ProgressInfo>
+          <ProgressText>
+            {state === 'working'
+              ? `${dateStringTranslator(new Date(goal.endDate))} 자정 종료`
+              : `${dateStringTranslator(new Date(goal.startDate))} 자정 시작`}
+          </ProgressText>
+          {state === 'working' ? <></> : <RecruitState>{`${goal.curCount}/${goal.headCount}`}</RecruitState>}
+        </ProgressInfo>
       </BottomContent>
     </Wrapper>
   );
@@ -37,8 +68,8 @@ const GroupGoalCard = ({ goal }: { goal: IGoal }) => {
 
 const Wrapper = styled.div`
   padding: 12px 20px;
+  display: flex;
   flex-direction: column;
-  flex: 0 0 auto;
   gap: 18px;
   border-radius: 16px;
   background-color: ${(props) => props.theme.primary200};
@@ -58,8 +89,23 @@ const TopContent = styled.div`
 const TopLeftContent = styled.div`
   float: left;
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+
+const Content = styled.div`
+  display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 8px;
+`;
+
+const TopRightContent = styled.div`
+  float: right;
+`;
+
+const IconWrapper = styled.div`
+  padding: 5px 0;
 `;
 
 const Icon = styled.div`
@@ -81,14 +127,6 @@ const Title = styled.div`
 
 const Amount = styled.div`
   font: ${(props) => props.theme.headingH4};
-`;
-
-const DdayTag = styled.div`
-  float: right;
-  padding: 12px;
-  border-radius: 15px;
-  font: ${(props) => props.theme.captionC3};
-  background-color: ${(props) => props.theme.primary50};
 `;
 
 const BottomContent = styled.div`
@@ -116,14 +154,18 @@ const ProgressBar = styled.div<{ width: string }>`
   background-color: ${(props) => props.theme.primary900};
 `;
 
-const ProgressText = styled.div`
-  font: ${(props) => props.theme.captionC3};
-`;
-
-const LowerLine = styled.div`
+const ProgressInfo = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 `;
 
-export default GroupGoalCard;
+const ProgressText = styled.div`
+  font: ${(props) => props.theme.captionC3};
+`;
+
+const RecruitState = styled.div`
+  font: ${(props) => props.theme.captionC3};
+`;
+
+export default StateGoalCard;
