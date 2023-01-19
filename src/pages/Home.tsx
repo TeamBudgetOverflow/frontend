@@ -34,7 +34,7 @@ const Home = () => {
 
   useEffect(() => {
     if (!userGoalsData) return;
-    setUserGoals(userGoalsData.goals);
+    setUserGoals(userGoalsData.result);
   }, [userGoalsData]);
 
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ const Home = () => {
         {isLoadingGoals ? (
           <LoadingMsg>데이터를 불러오는 중입니다</LoadingMsg>
         ) : (
-          goals?.map((goal) => <MyGoalCard key={goal.id} goal={goal} />)
+          goals?.map((goal) => <MyGoalCard key={goal.goalId} goal={goal} />)
         )}
         <AddGoalBtn onClick={() => navigate('/goals/post/type')}>
           <IconWrapper>

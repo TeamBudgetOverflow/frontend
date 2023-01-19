@@ -1,34 +1,43 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 
 import NarrowGroupGoalCard from '../components/goal/NarrowGroupGoalCard';
-import GroupGoalCard from '../components/goal/StateGoalCard';
-
-import { userGoals, userInfo } from '../recoil/userAtoms';
-
-import { IGoals } from '../interfaces/interfaces';
+import GroupGoalCard from '../components/goal/GroupGoalCard';
 
 import { goalApi } from '../apis/client';
-import { searchBarOnFocusEvent } from '../recoil/searchAtoms';
+
+import { groupGoals } from '../recoil/goalsAtoms';
+
+import { ISearchGoal, ISearchGoals } from '../interfaces/interfaces';
+
+import { dDayCalculator } from '../utils/dDayCalculator';
 
 const GroupGoals = () => {
-  const { id } = useRecoilValue(userInfo);
+  const { isLoading: isLoadingGoals, data: goalsData } = useQuery<ISearchGoals>('getGoals', () => goalApi.getGoals());
+  const setUserGoals = useSetRecoilState(groupGoals);
+  const goals = useRecoilValue(groupGoals);
 
-  const { isLoading: isLoadingGoals, data: goalsData } = useQuery<IGoals>('getGoals', () => goalApi.getGoals());
-  const setUserGoals = useSetRecoilState(userGoals);
-  const goals = useRecoilValue(userGoals);
+  const [impendingGoals, setImpendingGoals] = useState<Array<ISearchGoal>>([...goals]);
 
   useEffect(() => {
     if (!goalsData) return;
-    setUserGoals(goalsData.goals);
+
+    setUserGoals(goalsData.result);
   }, [goalsData]);
 
-  const goalCards = goals.map((goal) => <GroupGoalCard key={goal.id} goal={goal} />);
-  const impendingGoalCard = goals.map((goal) => <NarrowGroupGoalCard key={goal.id} goal={goal} />);
+  useEffect(() => {
+    setImpendingGoals(() => {
+      const impendingGoals = [...goals];
 
-  const searchBarOnFocusAtom = useRecoilValue(searchBarOnFocusEvent);
+      const sorting = impendingGoals.sort((a, b) => dDayCalculator(a.startDate) - dDayCalculator(b.startDate));
+      return sorting;
+    });
+  }, [goals]);
+
+  const goalCards = goals.map((goal) => <GroupGoalCard key={goal.goalId} goal={goal} />);
+  const impendingGoalCard = impendingGoals.map((goal) => <NarrowGroupGoalCard key={goal.goalId} goal={goal} />);
 
   return (
     <Wrapper>
@@ -71,7 +80,7 @@ const Wrapper = styled.div`
 const TopContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 20px;
   width: 100%;
   height: 100%;
 `;
@@ -113,7 +122,7 @@ const BottomContent = styled.div`
   flex-direction: column;
   gap: 10px;
   width: 95%;
-  height: 50%;
+  height: 65%;
 `;
 
 const GoalCardsWrapper = styled.div`
