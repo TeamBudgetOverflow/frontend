@@ -7,17 +7,26 @@ import styled from 'styled-components';
 import UserProfile from '../components/user/UserProfile';
 import MyGoalCard from '../components/goal/MyGoalCard';
 import Icon from '../components/common/elem/Icon';
+import Alert from '../components/common/alert/Alert';
+import LoadingMsg from '../components/common/elem/LoadingMsg';
+import ErrorMsg from '../components/common/elem/ErrorMsg';
 
 import { userGoals, userInfo, userProfile } from '../recoil/userAtoms';
 
 import { IGoals, IUserProfile } from '../interfaces/interfaces';
 
 import { userAPI } from '../apis/client';
+import useLogout from '../hooks/useLogout';
 
 const Home = () => {
-  const { id } = useRecoilValue(userInfo);
+  const savedUserInfo = useRecoilValue(userInfo);
+  const logout = useLogout();
   const { isLoading: isLoadingProfile, data: profile } = useQuery<IUserProfile>('userProfile', () =>
-    userAPI.getUserProfile(id)
+    userAPI.getUserProfile(savedUserInfo.id).catch((e) => {
+      if (e.status === 410) {
+        logout();
+      }
+    })
   );
   const setUserProfile = useSetRecoilState(userProfile);
 
@@ -26,8 +35,16 @@ const Home = () => {
     setUserProfile(profile);
   }, [profile]);
 
-  const { isLoading: isLoadingGoals, data: userGoalsData } = useQuery<IGoals>('userGoals', () =>
-    userAPI.getUserGoals(id)
+  const {
+    isLoading: isLoadingGoals,
+    data: userGoalsData,
+    isError,
+  } = useQuery<IGoals>('userGoals', () =>
+    userAPI.getUserGoals(savedUserInfo.id).catch((e) => {
+      if (e.status === 410) {
+        logout();
+      }
+    })
   );
   const setUserGoals = useSetRecoilState(userGoals);
   const goals = useRecoilValue(userGoals);
@@ -38,14 +55,21 @@ const Home = () => {
   }, [userGoalsData]);
 
   const navigate = useNavigate();
+
   return (
     <Wrapper>
       <UserProfile />
       <ContentWrapper>
         {isLoadingGoals ? (
-          <LoadingMsg>데이터를 불러오는 중입니다</LoadingMsg>
+          <Alert height={150} showBgColor={true}>
+            <LoadingMsg />
+          </Alert>
+        ) : isError ? (
+          <Alert height={150} showBgColor={true}>
+            <ErrorMsg />
+          </Alert>
         ) : (
-          goals?.map((goal) => <MyGoalCard key={goal.id} goal={goal} />)
+          goals?.map((goal) => <MyGoalCard key={goal.goalId} goal={goal} />)
         )}
         <AddGoalBtn onClick={() => navigate('/goals/post/type')}>
           <IconWrapper>
@@ -72,15 +96,6 @@ const Wrapper = styled.div`
 const ContentWrapper = styled(Wrapper)`
   padding: 10px;
   gap: 8px;
-`;
-
-const LoadingMsg = styled.div`
-  width: 100%;
-  height: 120px;
-  line-height: 120px;
-  text-align: center;
-  border-radius: 16px;
-  background-color: ${(props) => props.theme.gray400};
 `;
 
 const AddGoalBtn = styled.div`
