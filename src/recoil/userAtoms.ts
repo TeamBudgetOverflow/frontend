@@ -1,5 +1,13 @@
 import { atom } from 'recoil';
+
 import { IGoal } from '../interfaces/interfaces';
+
+export const userPincode = atom({
+  key: 'pinCode',
+  default: {
+    pinCode: '',
+  },
+});
 
 export const userInfo = atom({
   key: 'userInfo',

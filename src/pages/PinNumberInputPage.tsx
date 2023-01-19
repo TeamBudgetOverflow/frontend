@@ -1,27 +1,86 @@
 import React, { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
+import jwtDecoder from 'jwt-decode';
+
 import { userAPI } from '../apis/client';
-import { userInfo } from '../recoil/userAtoms';
+import { userInfo, userPincode } from '../recoil/userAtoms';
+
+import { MyToken } from '../interfaces/interfaces';
 
 // TODO: keypad 디자인이랑 똑같게
 // TODO: pinnumber 시간지나면 안보이게
 const PinNumberInputPage = () => {
   const navigate = useNavigate();
 
-  const accessToken = localStorage.getItem('accessToken');
-
-  const { id: userId } = useRecoilValue(userInfo);
+  const setPinCodeAtom = useSetRecoilState(userPincode);
 
   const PASSWORD_MAX_LENGTH = 6;
 
   const numberInit = Array.from({ length: 10 }, (v, k) => k);
 
+  const { id: userId } = useRecoilValue(userInfo);
+  const { pinCode } = useRecoilValue(userPincode);
+
   const [numbers, setNumbers] = useState(numberInit);
   const [pinNumber, setPinNumber] = useState('');
+  const [pinCodeTry, setPinCodeTry] = useState(false);
+
+  console.log(pinCode);
+
+  useEffect(() => {
+    if (pinCodeTry === false && pinNumber.length === PASSWORD_MAX_LENGTH && accessToken !== null) {
+      setPinCodeAtom({ pinCode: pinNumber });
+      setPinCodeTry(true);
+      setPinNumber('');
+      return;
+    }
+    if (
+      pinCodeTry === true &&
+      pinCode === pinNumber &&
+      pinNumber.length === PASSWORD_MAX_LENGTH &&
+      accessToken !== null
+    ) {
+      postPinCodeMutate.mutate();
+      setPinCodeTry(false);
+      setPinNumber('');
+      navigate('/');
+      return;
+    }
+    if (pinNumber.length === PASSWORD_MAX_LENGTH && accessToken === null) {
+      postAccessTokenByPinCodeMutate.mutate();
+      navigate('/');
+      return;
+    }
+  }, [pinCode, pinCodeTry, pinNumber.length]);
+
+  const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
+
+  const setUserInfo = useSetRecoilState(userInfo);
+
+  useEffect(() => {
+    if (accessToken !== null && refreshToken !== null) {
+      setUserInfo({
+        id: jwtDecoder<MyToken>(accessToken).userId,
+        isLogin: true,
+        isAccessToken: true,
+        isRefreshToken: true,
+      });
+    }
+
+    if (accessToken === null && refreshToken !== null) {
+      setUserInfo({
+        id: 0,
+        isLogin: false,
+        isAccessToken: false,
+        isRefreshToken: true,
+      });
+    }
+  }, [accessToken, refreshToken]);
 
   useEffect(() => {
     const numbers: number[] = [];
@@ -40,6 +99,7 @@ const PinNumberInputPage = () => {
   }, []);
 
   const handlePinNumberChange = (num: number) => {
+    console.log(pinNumber);
     setPinNumber(pinNumber + num.toString());
   };
 
@@ -51,23 +111,12 @@ const PinNumberInputPage = () => {
     handlePinNumberChange(nums);
   };
 
-  const postPinCodeMutate = useMutation('postPinCode', () => userAPI.postPinCode(userId, { pinCode: pinNumber }));
-  const postAccessTokenByPinCodeMutate = useMutation('postAccessTokenByPinCode', () =>
-    userAPI.postAccessTokenByPinCode({ pinCode: pinNumber })
+  const postPinCodeMutate = useMutation('postPinCode', () =>
+    userAPI.postPinCode(userId, { pinCode: parseInt(pinNumber) })
   );
-
-  useEffect(() => {
-    if (pinNumber.length === PASSWORD_MAX_LENGTH && accessToken !== null) {
-      postPinCodeMutate.mutate();
-      navigate('/');
-      return;
-    } else if (pinNumber.length === PASSWORD_MAX_LENGTH && accessToken === null) {
-      postAccessTokenByPinCodeMutate.mutate();
-      navigate('/');
-      return;
-    }
-  }, [pinNumber]);
-
+  const postAccessTokenByPinCodeMutate = useMutation('postAccessTokenByPinCode', () =>
+    userAPI.postAccessTokenByPinCode({ pinCode: parseInt(pinNumber) })
+  );
   return (
     <Wrapper>
       <InputWrapper>

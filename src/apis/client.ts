@@ -64,13 +64,13 @@ tokenClient.interceptors.response.use(
 
 export const userAPI = {
   getKakaoSignup: async (code: string | null) => {
-    const { data } = await noneTokenClient.get('/api/users/auth/kakao?code=' + code);
+    const { data } = await noneTokenClient.get('/users/auth/kakao?code=' + code);
 
     return data;
   },
 
   getNaverSignup: async (code: string | null) => {
-    const { data } = await noneTokenClient.get(`/api/users/auth/naver?code=${code}`);
+    const { data } = await noneTokenClient.get(`/users/auth/naver?code=${code}`);
 
     localStorage.setItem('accessToken', data.accessToken);
     localStorage.setItem('refreshToken', data.refreshToken);
@@ -78,20 +78,20 @@ export const userAPI = {
   },
 
   getGoogleSignup: async (code: string | null) => {
-    const { data } = await noneTokenClient.get('/api/users/auth/google?code=' + code);
+    const { data } = await noneTokenClient.get('/users/auth/google?code=' + code);
 
     return data;
   },
 
   postPinCode: async (userId: number, pinCode: object) => {
-    const { data } = await tokenClient.post(`/api/users/${userId}/pincode`, pinCode);
+    const { data } = await tokenClient.post(`/users/${userId}/pincode`, pinCode);
 
     return data;
   },
 
   // TODO: 리프레신 토큰 전달
   postAccessTokenByPinCode: async (pinCode: object) => {
-    const { data } = await tokenClient.post('/api/users/pinCode', pinCode);
+    const { data } = await tokenClient.post('/users/pinCode', pinCode);
 
     return data;
   },
@@ -382,19 +382,19 @@ export const goalApi = {
   },
 
   joinGoal: async (goalId: string | undefined) => {
-    const response = await tokenClient.post(`/api/goals/join/${goalId}`);
+    const response = await tokenClient.post(`/goals/join/${goalId}`);
 
     return response;
   },
 
   withdrawGoal: async (goalId: string | undefined) => {
-    const response = await tokenClient.post(`/api/goals/exit/${goalId}`);
+    const response = await tokenClient.post(`/goals/exit/${goalId}`);
 
     return response;
   },
 
   deleteGoal: async (goalId: string | undefined) => {
-    const response = await tokenClient.post(`/api/goals/${goalId}`);
+    const response = await tokenClient.post(`/goals/${goalId}`);
 
     return response;
   },
