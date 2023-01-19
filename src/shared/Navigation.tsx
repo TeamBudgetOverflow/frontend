@@ -5,12 +5,13 @@ import styled from 'styled-components';
 
 import Icon from '../components/common/elem/Icon';
 
-import { userInfo } from '../recoil/atoms';
+import { userInfo } from '../recoil/userAtoms';
 
 enum Menu {
   home,
   lookup,
   my,
+  none,
 }
 
 interface NavProps {
@@ -22,7 +23,7 @@ const pathMenuConverter = (path: string) => {
   if (path.includes('/users/')) return Menu.my;
   if (path === '/') return Menu.home;
 
-  return Menu.home;
+  return Menu.none;
 };
 
 const Navigation = (props: NavProps, ref: Ref<HTMLDivElement>) => {
@@ -47,7 +48,9 @@ const Navigation = (props: NavProps, ref: Ref<HTMLDivElement>) => {
   const [show, setShow] = useState<boolean>(true);
   const { pathname } = useLocation();
   useEffect(() => {
-    if (pathname === '/goals/post') return setShow(false);
+    if (pathname.includes('/goals/post')) return setShow(false);
+    if (pathname === '/login') return setShow(false);
+    if (pathname === '/pinnumber') return setShow(false);
     setShow(true);
 
     handleMenuSelect(pathMenuConverter(pathname));

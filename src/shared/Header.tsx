@@ -5,10 +5,40 @@ import styled from 'styled-components';
 import Logo from '../components/common/elem/Logo';
 import Icon from '../components/common/elem/Icon';
 import SearchBar from '../components/header/SearchBar';
+import { postGoal } from '../recoil/goalsAtoms';
 
 interface HeaderProps {
   props: string;
 }
+
+enum PageType {
+  postGoal,
+  selectAccnt,
+  createAccnt,
+  lookupGoal,
+  my,
+  editProfile,
+  none,
+}
+
+const PageKR = (type: PageType) => {
+  switch (type) {
+    case PageType.postGoal:
+      return '목표 추가하기';
+    case PageType.selectAccnt:
+      return '계좌 선택';
+    case PageType.createAccnt:
+      return '계좌 연결';
+    case PageType.lookupGoal:
+      return '목표 찾기';
+    case PageType.my:
+      return '마이페이지';
+    case PageType.editProfile:
+      return '프로필 편집';
+    default:
+      return '';
+  }
+};
 
 const Header = (props: HeaderProps, ref: Ref<HTMLDivElement>) => {
   const { pathname } = useLocation();
@@ -16,35 +46,63 @@ const Header = (props: HeaderProps, ref: Ref<HTMLDivElement>) => {
   const [showSearchBar, setShowSearchBar] = useState<boolean>(false);
   const handleSearch = () => {
     if (pathname !== '/goals/lookup') {
-      if (pathname === '/goals/post') return navigate('/');
-      return navigate('/goals/lookup');
+      return navigate(-1);
     }
     setShowSearchBar(!showSearchBar);
   };
 
   const [showBeforeBtn, setShowBeforeBtn] = useState<boolean>(false);
-  const [showRightIcons, setShowRightIcons] = useState<boolean>(true);
+  const [showChatIcons, setShowChatIcons] = useState<boolean>(true);
+  const [showSearchIcons, setShowSearchIcons] = useState<boolean>(false);
+  const [pageType, setPageType] = useState<PageType>(PageType.none);
   useEffect(() => {
+    switch (pathname) {
+      case '/goals/post/type':
+        setPageType(PageType.postGoal);
+        break;
+      case '/goals/post/data/personal':
+        setPageType(PageType.postGoal);
+        break;
+      case '/goals/post/data/group':
+        setPageType(PageType.postGoal);
+        break;
+      case '/goals/post/account/choose':
+        setPageType(PageType.selectAccnt);
+        break;
+      case '/goals/post/account/post':
+        setPageType(PageType.createAccnt);
+        break;
+      case '/goals/lookup':
+        setPageType(PageType.lookupGoal);
+        break;
+      default:
+        setPageType(PageType.none);
+    }
+
     if (pathname !== '/goals/lookup') {
-      if (pathname === '/goals/post') {
+      if (pathname === '/') {
+        setShowSearchIcons(false);
+        return;
+      }
+      if (pathname.includes('/goals/post')) {
         setShowBeforeBtn(true);
-        setShowRightIcons(false);
+        setShowChatIcons(false);
+        setShowSearchIcons(false);
         return;
       }
       setShowSearchBar(false);
-      setShowRightIcons(true);
       setShowBeforeBtn(false);
+      setShowSearchIcons(true);
       return;
     }
   }, [pathname]);
 
   useEffect(() => {
     if (showSearchBar) return setShowBeforeBtn(true);
-    setShowBeforeBtn(false);
   }, [showSearchBar]);
 
   return (
-    <HeaderLayout ref={ref} showBgColor={!showSearchBar}>
+    <HeaderLayout ref={ref}>
       {pathname === '/' ? <Logo size='small' /> : <></>}
       <Button show={showBeforeBtn} onClick={handleSearch}>
         <Icon
@@ -58,20 +116,22 @@ const Header = (props: HeaderProps, ref: Ref<HTMLDivElement>) => {
       <SearchBarWrapper>
         <SearchBar show={showSearchBar} />
       </SearchBarWrapper>
-      <PageName show={!showSearchBar}>{}</PageName>
+      <PageNameWrapper>
+        <PageName show={!showSearchBar}>{PageKR(pageType)}</PageName>
+      </PageNameWrapper>
       <RightIcons>
-        <Button show={showRightIcons && !showSearchBar} onClick={handleSearch}>
+        <Button show={showSearchIcons && !showSearchBar} onClick={handleSearch}>
           <Icon
-            size={showRightIcons && !showSearchBar ? 32 : 0}
+            size={showSearchIcons && !showSearchBar ? 32 : 0}
             color={'primary400'}
             path={
               'M20.6667 18.6667H19.6133L19.24 18.3067C20.5467 16.7867 21.3333 14.8133 21.3333 12.6667C21.3333 7.88 17.4533 4 12.6667 4C7.88 4 4 7.88 4 12.6667C4 17.4533 7.88 21.3333 12.6667 21.3333C14.8133 21.3333 16.7867 20.5467 18.3067 19.24L18.6667 19.6133V20.6667L25.3333 27.32L27.32 25.3333L20.6667 18.6667ZM12.6667 18.6667C9.34667 18.6667 6.66667 15.9867 6.66667 12.6667C6.66667 9.34667 9.34667 6.66667 12.6667 6.66667C15.9867 6.66667 18.6667 9.34667 18.6667 12.6667C18.6667 15.9867 15.9867 18.6667 12.6667 18.6667Z'
             }
           />
         </Button>
-        <Button show={showRightIcons && !showSearchBar}>
+        <Button show={showChatIcons && !showSearchBar}>
           <Icon
-            size={showRightIcons && !showSearchBar ? 32 : 0}
+            size={showChatIcons && !showSearchBar ? 32 : 0}
             color={'primary400'}
             path={
               'M5.33317 2.66675H26.6665C28.1332 2.66675 29.3332 3.86675 29.3332 5.33341V21.3334C29.3332 22.8001 28.1332 24.0001 26.6665 24.0001H7.99984L2.6665 29.3334V5.33341C2.6665 3.86675 3.8665 2.66675 5.33317 2.66675ZM21.3332 14.6667C22.0696 14.6667 22.6665 14.0698 22.6665 13.3334C22.6665 12.597 22.0696 12.0001 21.3332 12.0001C20.5968 12.0001 19.9998 12.597 19.9998 13.3334C19.9998 14.0698 20.5968 14.6667 21.3332 14.6667ZM17.3332 13.3334C17.3332 14.0698 16.7362 14.6667 15.9998 14.6667C15.2635 14.6667 14.6665 14.0698 14.6665 13.3334C14.6665 12.597 15.2635 12.0001 15.9998 12.0001C16.7362 12.0001 17.3332 12.597 17.3332 13.3334ZM10.6665 14.6667C11.4029 14.6667 11.9998 14.0698 11.9998 13.3334C11.9998 12.597 11.4029 12.0001 10.6665 12.0001C9.93012 12.0001 9.33317 12.597 9.33317 13.3334C9.33317 14.0698 9.93012 14.6667 10.6665 14.6667Z'
@@ -83,14 +143,15 @@ const Header = (props: HeaderProps, ref: Ref<HTMLDivElement>) => {
   );
 };
 
-const HeaderLayout = styled.div<{ showBgColor: boolean }>`
+const HeaderLayout = styled.div`
+  position: relative;
   padding: 8px 22px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   width: calc(100% - 44px);
-  background-color: ${(props) => (props.showBgColor ? props.theme.primary200 : 'white')};
+  background-color: white;
 `;
 
 const SearchBarWrapper = styled.div`
@@ -99,6 +160,7 @@ const SearchBarWrapper = styled.div`
 `;
 
 const RightIcons = styled.div`
+  z-index: 5;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -106,14 +168,29 @@ const RightIcons = styled.div`
 `;
 
 const Button = styled.div<{ show: boolean }>`
+  z-index: 5;
   width: ${(props) => (props.show ? '32px' : '0')};
   height: ${(props) => (props.show ? '32px' : '0')};
   transition: width 0.5s;
 `;
 
+const PageNameWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  padding: 8px 22px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: calc(100% - 44px);
+  height: calc(100% - 16px);
+`;
+
 const PageName = styled.div<{ show: boolean }>`
   display: ${(props) => (props.show ? '' : 'none')};
-  font: ${(props) => props.theme.paragraphP2};
+  font: ${(props) => props.theme.paragraphsP2M};
 `;
 
 export default forwardRef(Header);

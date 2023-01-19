@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import GroupGoalCard from '../components/goal/GroupGoalCard';
 import NarrowGroupGoalCard from '../components/goal/NarrowGroupGoalCard';
 
-import { userGoals, userInfo } from '../recoil/atoms';
+import { userGoals, userInfo } from '../recoil/userAtoms';
 
 import { IGoals } from '../interfaces/interfaces';
 
@@ -16,9 +16,8 @@ import { searchBarOnFocusEvent } from '../recoil/searchAtoms';
 const GroupGoals = () => {
   const { id } = useRecoilValue(userInfo);
 
-  const { isLoading: isLoadingGoals, data: userGoalsData } = useQuery<IGoals>(
-    'userGoals',
-    () => userAPI.getUserGoals(id)
+  const { isLoading: isLoadingGoals, data: userGoalsData } = useQuery<IGoals>('userGoals', () =>
+    userAPI.getUserGoals(id)
   );
   const setUserGoals = useSetRecoilState(userGoals);
   const goals = useRecoilValue(userGoals);
@@ -28,64 +27,33 @@ const GroupGoals = () => {
     setUserGoals(userGoalsData.goals);
   }, [userGoalsData]);
 
-  const goalCards = goals.map((goal) => (
-    <GroupGoalCard key={goal.id} goal={goal} />
-  ));
+  const goalCards = goals.map((goal) => <GroupGoalCards key={goal.id} goal={goal} />);
 
-  const impendingGoalCard = goals.map((goal) => (
-    <NarrowGroupGoalCard key={goal.id} goal={goal} />
-  ));
-
-  const searchBarOnFocusAtom = useRecoilValue(searchBarOnFocusEvent);
-  console.log(searchBarOnFocusAtom);
+  const impendingGoalCard = goals.map((goal) => <NarrowGroupGoalCards key={goal.id} goal={goal} />);
 
   return (
-    <>
-      {searchBarOnFocusAtom ? (
-        <Wrapper>
-          <div>tag</div>
-          <div>최근본</div>
-        </Wrapper>
-      ) : (
-        <Wrapper>
-          <UpperWrapper>
-            <UpperText>
-              <Captions>마감임박 목표</Captions>
-              <Captions>모두보기</Captions>
-            </UpperText>
-            <ImpendingGoalCardsWrapper>
-              {isLoadingGoals ? (
-                <LoadingMsg>데이터를 불러오는 중입니다</LoadingMsg>
-              ) : (
-                impendingGoalCard
-              )}
-            </ImpendingGoalCardsWrapper>
-          </UpperWrapper>
-          <LowerWrapper>
-            <LowerText>
-              <Captions>전체 목표</Captions>
-              <Captions>전체</Captions>
-            </LowerText>
-            <GoalCardsWrapper>
-              {isLoadingGoals ? (
-                <LoadingMsg>데이터를 불러오는 중입니다</LoadingMsg>
-              ) : (
-                goalCards
-              )}
-            </GoalCardsWrapper>
-          </LowerWrapper>
-        </Wrapper>
-      )}
-    </>
+    <div>
+      <UpperWrapper>
+        <UpperText>
+          <Captions>마감임박 목표</Captions>
+          <Captions>모두보기</Captions>
+        </UpperText>
+        <ImpendingGoalCardsWrapper>
+          {isLoadingGoals ? <LoadingMsg>데이터를 불러오는 중입니다</LoadingMsg> : impendingGoalCard}
+        </ImpendingGoalCardsWrapper>
+      </UpperWrapper>
+      <LowerWrapper>
+        <LowerText>
+          <Captions>전체 목표</Captions>
+          <Captions>전체</Captions>
+        </LowerText>
+        <GoalCardsWrapper>
+          {isLoadingGoals ? <LoadingMsg>데이터를 불러오는 중입니다</LoadingMsg> : goalCards}
+        </GoalCardsWrapper>
+      </LowerWrapper>
+    </div>
   );
 };
-
-const Wrapper = styled.div`
-  width: 95%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
 
 const UpperWrapper = styled.div`
   padding: 10px;

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import ProfileImg from '../common/elem/ProfileImg';
 
-import { userProfile } from '../../recoil/atoms';
+import { userProfile } from '../../recoil/userAtoms';
 
 const UserProfile = () => {
   const profile = useRecoilValue(userProfile);

@@ -1,11 +1,13 @@
 import { atom } from 'recoil';
+import { IGoal } from '../interfaces/interfaces';
 
 export const userInfo = atom({
   key: 'userInfo',
   default: {
     id: 0,
     isLogin: false,
-    // 로그인: true
+    isAccessToken: false,
+    isRefreshToken: false,
   },
 });
 
@@ -18,7 +20,7 @@ export const userProfile = atom({
   },
 });
 
-export const userGoals = atom({
+export const userGoals = atom<Array<IGoal>>({
   key: 'userGoals',
   default: [
     {
