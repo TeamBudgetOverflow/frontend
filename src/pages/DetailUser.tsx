@@ -9,7 +9,7 @@ import TextButton from '../components/common/elem/TextButton';
 import MyFilteredGoals from '../components/goal/MyFilteredGoals';
 import MyFilteredBadges from '../components/badge/MyFilteredBadges';
 
-import { userGoals, userInfo } from '../recoil/atoms';
+import { userGoals, userInfo } from '../recoil/userAtoms';
 
 import { IGoals } from '../interfaces/interfaces';
 
@@ -166,7 +166,5 @@ const ContentBox = styled.div<{ tabHeight: number }>`
   padding: 25px 22px;
   height: ${(props) => `calc(100% - ${props.tabHeight + 50}px)`};
 `;
-
-const UserBadges = styled.div``;
 
 export default DetailUser;

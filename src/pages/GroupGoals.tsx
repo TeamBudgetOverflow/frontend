@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import GroupGoalCards from '../components/goal/GroupGoalCards';
 import NarrowGroupGoalCards from '../components/goal/NarrowGroupGoalCards';
 
-import { userGoals, userInfo } from '../recoil/atoms';
+import { userGoals, userInfo } from '../recoil/userAtoms';
 
 import { IGoals } from '../interfaces/interfaces';
 
@@ -15,9 +15,8 @@ import { userAPI } from '../apis/client';
 const GroupGoals = () => {
   const { id } = useRecoilValue(userInfo);
 
-  const { isLoading: isLoadingGoals, data: userGoalsData } = useQuery<IGoals>(
-    'userGoals',
-    () => userAPI.getUserGoals(id)
+  const { isLoading: isLoadingGoals, data: userGoalsData } = useQuery<IGoals>('userGoals', () =>
+    userAPI.getUserGoals(id)
   );
   const setUserGoals = useSetRecoilState(userGoals);
   const goals = useRecoilValue(userGoals);
@@ -27,13 +26,9 @@ const GroupGoals = () => {
     setUserGoals(userGoalsData.goals);
   }, [userGoalsData]);
 
-  const goalCards = goals.map((goal) => (
-    <GroupGoalCards key={goal.id} goal={goal} />
-  ));
+  const goalCards = goals.map((goal) => <GroupGoalCards key={goal.id} goal={goal} />);
 
-  const impendingGoalCard = goals.map((goal) => (
-    <NarrowGroupGoalCards key={goal.id} goal={goal} />
-  ));
+  const impendingGoalCard = goals.map((goal) => <NarrowGroupGoalCards key={goal.id} goal={goal} />);
 
   return (
     <div>
@@ -43,11 +38,7 @@ const GroupGoals = () => {
           <Captions>모두보기</Captions>
         </UpperText>
         <ImpendingGoalCardsWrapper>
-          {isLoadingGoals ? (
-            <LoadingMsg>데이터를 불러오는 중입니다</LoadingMsg>
-          ) : (
-            impendingGoalCard
-          )}
+          {isLoadingGoals ? <LoadingMsg>데이터를 불러오는 중입니다</LoadingMsg> : impendingGoalCard}
         </ImpendingGoalCardsWrapper>
       </UpperWrapper>
       <LowerWrapper>
@@ -56,11 +47,7 @@ const GroupGoals = () => {
           <Captions>전체</Captions>
         </LowerText>
         <GoalCardsWrapper>
-          {isLoadingGoals ? (
-            <LoadingMsg>데이터를 불러오는 중입니다</LoadingMsg>
-          ) : (
-            goalCards
-          )}
+          {isLoadingGoals ? <LoadingMsg>데이터를 불러오는 중입니다</LoadingMsg> : goalCards}
         </GoalCardsWrapper>
       </LowerWrapper>
     </div>

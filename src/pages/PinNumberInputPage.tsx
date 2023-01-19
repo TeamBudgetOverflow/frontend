@@ -5,8 +5,7 @@ import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 import { userAPI } from '../apis/client';
-
-import { userInfo } from '../recoil/atoms';
+import { userInfo } from '../recoil/userAtoms';
 
 // TODO: keypad 디자인이랑 똑같게
 // TODO: pinnumber 시간지나면 안보이게
@@ -52,9 +51,7 @@ const PinNumberInputPage = () => {
     handlePinNumberChange(nums);
   };
 
-  const postPinCodeMutate = useMutation('postPinCode', () =>
-    userAPI.postPinCode(userId, { pinCode: parseInt(pinNumber) })
-  );
+  const postPinCodeMutate = useMutation('postPinCode', () => userAPI.postPinCode(userId, { pinCode: pinNumber }));
   const postAccessTokenByPinCodeMutate = useMutation('postAccessTokenByPinCode', () =>
     userAPI.postAccessTokenByPinCode({ pinCode: pinNumber })
   );

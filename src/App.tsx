@@ -7,7 +7,7 @@ import Router from './shared/Router';
 
 import { MyToken } from './interfaces/interfaces';
 
-import { userInfo } from './recoil/atoms';
+import { userInfo } from './recoil/userAtoms';
 
 // TODO: 기존회원 핀코등 입력 생략
 const App = () => {

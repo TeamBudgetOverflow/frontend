@@ -1,4 +1,5 @@
 import { atom } from 'recoil';
+import { IGoal } from '../interfaces/interfaces';
 
 export const userInfo = atom({
   key: 'userInfo',
@@ -19,7 +20,7 @@ export const userProfile = atom({
   },
 });
 
-export const userGoals = atom({
+export const userGoals = atom<Array<IGoal>>({
   key: 'userGoals',
   default: [
     {

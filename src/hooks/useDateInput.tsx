@@ -7,29 +7,34 @@ interface useDateInputProps {
 }
 
 const useDateInput = ({ startDate, minDays, maxDays }: useDateInputProps) => {
-  const getFutureDate = (afterDays: number) => {
+  const getFutureDate = (startDate: Date, afterDays: number) => {
     const funtureDate = new Date().setDate(startDate.getDate() + afterDays);
     return dateISOStringDateTranslator(new Date(funtureDate));
   };
 
-  const [minDate, setMinDate] = useState<string>(getFutureDate(minDays));
-  const [maxDate, setMaxDate] = useState<string>(getFutureDate(maxDays));
+  const [start, setStart] = useState<Date>(startDate);
+  const [minDate, setMinDate] = useState<string>(getFutureDate(startDate, minDays));
+  const [maxDate, setMaxDate] = useState<string>(getFutureDate(startDate, maxDays));
   const [value, setValue] = useState<string>(minDate);
 
-  const onChange = (e: React.FormEvent<HTMLInputElement>) => {
-    console.log('selected time', e.currentTarget.value);
+  const onChangeStartDate = (date: Date) => {
+    setStart(date);
+  };
+
+  const onChangeEndDate = (e: React.FormEvent<HTMLInputElement>) => {
     setValue(e.currentTarget.value);
   };
 
   useEffect(() => {
-    if (new Date().getHours() === 0) {
-      setMinDate(getFutureDate(minDays));
-      setMaxDate(getFutureDate(maxDays));
-      setValue(minDate);
-    }
-  }, [new Date().getHours()]);
+    setMinDate(getFutureDate(start, minDays));
+    setMaxDate(getFutureDate(start, maxDays));
+  }, [start]);
 
-  return { minDate, maxDate, value, onChange };
+  useEffect(() => {
+    setValue(minDate);
+  }, [minDate]);
+
+  return { minDate, maxDate, start, value, onChangeStartDate, onChangeEndDate };
 };
 
 export default useDateInput;
