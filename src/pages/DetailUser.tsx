@@ -8,6 +8,8 @@ import UserDetailProfile from '../components/user/UserDetailProfile';
 import TextButton from '../components/common/elem/TextButton';
 import MyFilteredGoals from '../components/goal/MyFilteredGoals';
 import MyFilteredBadges from '../components/badge/MyFilteredBadges';
+import Alert from '../components/common/alert/Alert';
+import LoadingMsg from '../components/common/elem/LoadingMsg';
 
 import { userGoals, userId } from '../recoil/userAtoms';
 
@@ -109,7 +111,9 @@ const DetailUser = () => {
         </TabList>
         <ContentBox tabHeight={tabHeight}>
           {isLoadingGoals ? (
-            <>로딩중 입니다.</>
+            <Alert height={150} showBgColor={true}>
+              <LoadingMsg />
+            </Alert>
           ) : (
             tabs.map((tab) => {
               if (tab.isSelected) {

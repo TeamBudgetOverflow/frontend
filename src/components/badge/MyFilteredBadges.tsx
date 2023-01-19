@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 
 import BadgeBox from '../common/elem/BadgeBox';
+import Alert from '../common/alert/Alert';
+import LoadingMsg from '../common/elem/LoadingMsg';
 
 import { userAPI } from '../../apis/client';
 
@@ -24,7 +26,9 @@ const MyFilteredBadges = () => {
   return (
     <Wrapper>
       {isLoading || !badges ? (
-        <>데이터를 불러오는 중입니다</>
+        <Alert height={150} showBgColor={true}>
+          <LoadingMsg />
+        </Alert>
       ) : (
         <Row>
           {badges.map((badge) => (
