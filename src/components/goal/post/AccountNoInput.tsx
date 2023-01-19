@@ -42,7 +42,7 @@ const AccountNoInput = ({ authNoHandler, authReqHandler }: AccountNoInputProps) 
   const handleShowBanks = () => {
     setShowBanks(!showBanks);
   };
-  const [selectedBank, setSelectedBank] = useState<IBank>({ id: 0, code: '', name: '' });
+  const [selectedBank, setSelectedBank] = useState<IBank>({ bankId: 0, bankCode: '', bankName: '' });
   const handleBankSelect = (bank: IBank) => {
     setSelectedBank(bank);
     setShowBanks(false);
@@ -51,7 +51,7 @@ const AccountNoInput = ({ authNoHandler, authReqHandler }: AccountNoInputProps) 
   const [isValid, setIsValid] = useState<boolean>(false);
   const validate = () => {
     if (accntNo.length === 0 || accntNoErr.length !== 0) return setIsValid(false);
-    if (selectedBank.id === 0) return setIsValid(false);
+    if (selectedBank.bankId === 0) return setIsValid(false);
 
     setIsValid(true);
   };
@@ -64,7 +64,7 @@ const AccountNoInput = ({ authNoHandler, authReqHandler }: AccountNoInputProps) 
   const handleReqAuthAccnt = async () => {
     try {
       // TODO: test API request
-      const { data } = await bankAPI.reqAuthAccnt({ bankCode: selectedBank.code, accntNo: accntNo });
+      const { data } = await bankAPI.reqAuthAccnt({ bankCode: selectedBank.bankCode, accntNo: accntNo });
       console.log('req auth response:', data);
       if (data.successYn === 'N') {
         throw new Error();
@@ -104,7 +104,7 @@ const AccountNoInput = ({ authNoHandler, authReqHandler }: AccountNoInputProps) 
             <SubTitle>은행</SubTitle>
             <OptionSelectBox
               placeholder='은행선택'
-              value={selectedBank.id !== 0 ? selectedBank.name : ''}
+              value={selectedBank.bankId !== 0 ? selectedBank.bankName : ''}
               onClickHandler={handleShowBanks}
             />
           </ContentBox>

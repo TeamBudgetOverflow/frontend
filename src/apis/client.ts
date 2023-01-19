@@ -4,6 +4,7 @@ import {
   IAuthAccount,
   IAccount,
   IPostAccount,
+  IBank,
   IPostGoal,
   IValidateAccount,
   IReqAuthAccout,
@@ -235,34 +236,34 @@ export const accountApi = {
 };
 
 export const goalApi = {
-  getBanks: async () => {
-    // const { data } = await tokenClient.get(`/banks`);
-    // TODO: test get banks
-    const data = {
-      banks: [
-        { id: 0, code: '088', name: '신한은행' },
-        { id: 1, code: '088', name: '신한은행' },
-        { id: 2, code: '088', name: '신한은행' },
-        { id: 3, code: '088', name: '신한은행' },
-        { id: 4, code: '088', name: '신한은행' },
-        { id: 5, code: '088', name: '신한은행' },
-        { id: 6, code: '088', name: '신한은행' },
-        { id: 7, code: '088', name: '신한은행' },
-        { id: 8, code: '088', name: '신한은행' },
-        { id: 9, code: '088', name: '신한은행' },
-        { id: 10, code: '088', name: '신한은행' },
-        { id: 11, code: '088', name: '신한은행' },
-        { id: 12, code: '088', name: '신한은행' },
-        { id: 13, code: '088', name: '신한은행' },
-        { id: 14, code: '088', name: '신한은행' },
-        { id: 15, code: '088', name: '신한은행' },
-        { id: 16, code: '088', name: '신한은행' },
-        { id: 17, code: '088', name: '신한은행' },
-        { id: 18, code: '088', name: '신한은행' },
-        { id: 19, code: '088', name: '신한은행' },
-        { id: 20, code: '088', name: '신한은행' },
-      ],
-    };
+  getBanks: async (): Promise<Array<IBank>> => {
+    const { data } = await tokenClient.get(`/banks`);
+    // const data = {
+    //   banks: [
+    //     { bankId: 0, bankCode: '088', bankName: '신한은행' },
+    //     { bankId: 1, bankCode: '088', bankName: '신한은행' },
+    //     { bankId: 2, bankCode: '088', bankName: '신한은행' },
+    //     { bankId: 3, bankCode: '088', bankName: '신한은행' },
+    //     { bankId: 4, bankCode: '088', bankName: '신한은행' },
+    //     { bankId: 5, bankCode: '088', bankName: '신한은행' },
+    //     { bankId: 6, bankCode: '088', bankName: '신한은행' },
+    //     { bankId: 7, bankCode: '088', bankName: '신한은행' },
+    //     { bankId: 8, bankCode: '088', bankName: '신한은행' },
+    //     { bankId: 9, bankCode: '088', bankName: '신한은행' },
+    //     { bankId: 10, bankCode: '088', bankName: '신한은행' },
+    //     { bankId: 11, bankCode: '088', bankName: '신한은행' },
+    //     { bankId: 12, bankCode: '088', bankName: '신한은행' },
+    //     { bankId: 13, bankCode: '088', bankName: '신한은행' },
+    //     { bankId: 14, bankCode: '088', bankName: '신한은행' },
+    //     { bankId: 15, bankCode: '088', bankName: '신한은행' },
+    //     { bankId: 16, bankCode: '088', bankName: '신한은행' },
+    //     { bankId: 17, bankCode: '088', bankName: '신한은행' },
+    //     { bankId: 18, bankCode: '088', bankName: '신한은행' },
+    //     { bankId: 19, bankCode: '088', bankName: '신한은행' },
+    //     { bankId: 20, bankCode: '088', bankName: '신한은행' },
+    //   ],
+    // };
+
     return data.banks;
   },
   postGoal: async (goalData: IPostGoal) => {
