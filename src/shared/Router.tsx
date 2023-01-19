@@ -23,7 +23,6 @@ import { userInfo } from '../recoil/userAtoms';
 
 const Router = () => {
   const { isLogin, isAccessToken, isRefreshToken } = useRecoilValue(userInfo);
-  console.log(isLogin);
 
   const tokenCheck = () => {
     if (isLogin === true) {
