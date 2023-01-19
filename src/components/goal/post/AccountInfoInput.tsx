@@ -5,7 +5,7 @@ import ProgressBar from '../../common/elem/ProgressBar';
 import InputBox from '../../common/elem/InputBox';
 import ValidateMsg from '../../common/elem/ValidateMsg';
 import TextButton from '../../common/elem/TextButton';
-import Alert from '../../common/alert/Alert';
+import Alert from '../../common/alert/Info';
 
 import useTxtInput from '../../../hooks/useTxtInput';
 import { IValidateAccount } from '../../../interfaces/interfaces';
@@ -96,17 +96,17 @@ function AccountInfoInput({ goalIdHandler }: AccountInfoInputProps) {
   const { id } = useRecoilValue(userInfo);
   const banks = useRecoilValue(banksInfo);
   const getBankId = () => {
-    const bank = banks.find((bank) => bank.code === accnt.bankCode);
+    const bank = banks.find((bank) => bank.bankCode === accnt.bankCode);
     if (!bank) return 0;
-    return bank.id;
+    return bank.bankId;
   };
   const [isPosted, setIsPosted] = useState<boolean>(false);
   const savedPostGoal = useRecoilValue(postGoal);
   const handlePostGoal = async () => {
     try {
-      const accntId = await accountApi.createAutoAccount(id, { ...accnt, bankId: getBankId() });
+      const accountId = await accountApi.createAutoAccount(id, { ...accnt, bankId: getBankId() });
       setTimeout(() => setIsPosted(true), 2000);
-      const goalId = await goalApi.postGoal({ ...savedPostGoal, accntId: accntId });
+      const goalId = await goalApi.postGoal({ ...savedPostGoal, accountId: accountId });
       setTimeout(() => goalIdHandler(goalId), 3000);
     } catch (e) {
       alert(e);

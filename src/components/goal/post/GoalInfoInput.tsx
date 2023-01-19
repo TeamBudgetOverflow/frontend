@@ -12,18 +12,17 @@ import TagInputSection from './TagInputSection';
 import DateSelectSection, { GoalDate } from './goalInfo/DateSelectSection';
 import OptionSelectSection from './goalInfo/OptionSelectSection';
 import TextButton from '../../common/elem/TextButton';
+import Info from '../../common/alert/Info';
 
 import useTxtInput from '../../../hooks/useTxtInput';
 import useNumInput from '../../../hooks/useNumInput';
 
-import { IPostGoal } from '../../../interfaces/interfaces';
 import { IHashTag } from '../../common/tag/HashTag';
 
 import { postGoal, postGoalType } from '../../../recoil/goalsAtoms';
 import { userInfo } from '../../../recoil/userAtoms';
 
 import { accountApi, goalApi } from '../../../apis/client';
-import Alert from '../../common/alert/Alert';
 
 interface GoalInfoInputProps {
   isGroup: boolean;
@@ -96,8 +95,8 @@ function GoalInfoInput({ isGroup }: GoalInfoInputProps) {
     onChange: changeHeadCount,
     reset: resetHeadCount,
   } = useNumInput({
-    initValue: savedPostGoal.headCount < 2 ? 2 : savedPostGoal.headCount,
-    min: 2,
+    initValue: isGroup && savedPostGoal.headCount < 2 ? 2 : savedPostGoal.headCount,
+    min: isGroup ? 2 : 1,
     max: 100,
     type: '인원',
   });
@@ -151,7 +150,7 @@ function GoalInfoInput({ isGroup }: GoalInfoInputProps) {
   const handlePostGoal = async () => {
     if (isManual) {
       try {
-        const accntId = await accountApi.createManualAccount(id);
+        const accountId = await accountApi.createManualAccount(id);
         const goalId = await goalApi.postGoal({
           emoji,
           title,
@@ -163,7 +162,7 @@ function GoalInfoInput({ isGroup }: GoalInfoInputProps) {
           headCount,
           isPrivate,
           isManual,
-          accntId,
+          accountId,
         });
         setPostGoalType({ isGroup: false });
         setTimeout(() => setIsPosted(true), 1000);
@@ -186,7 +185,7 @@ function GoalInfoInput({ isGroup }: GoalInfoInputProps) {
         headCount: headCount,
         isPrivate: isPrivate,
         isManual: isManual,
-        accntId: 0,
+        accountId: 0,
       });
       navigate('/goals/post/account/choose');
     }
@@ -195,18 +194,18 @@ function GoalInfoInput({ isGroup }: GoalInfoInputProps) {
   if (isPosted)
     return (
       <Wrapper>
-        <Alert>목표 생성이 완료되었습니다.</Alert>
+        <Info>목표 생성이 완료되었습니다.</Info>
       </Wrapper>
     );
 
   if (isPostError)
     return (
       <Wrapper>
-        <Alert>
+        <Info>
           목표 생성이 실패했습니다.
           <br />
           다시 시도해주세요.
-        </Alert>
+        </Info>
       </Wrapper>
     );
 

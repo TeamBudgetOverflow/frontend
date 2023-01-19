@@ -26,7 +26,7 @@ export const postGoal = atom<IPostGoal>({
     headCount: 1,
     isPrivate: false,
     isManual: false,
-    accntId: 0,
+    accountId: 0,
   },
   effects_UNSTABLE: [persistAtom],
 });
@@ -62,7 +62,7 @@ export const groupGoals = atom<Array<IGoal>>({
   key: 'groupGoals',
   default: [
     {
-      id: 0,
+      goalId: 0,
       emoji: '',
       title: '',
       description: '',

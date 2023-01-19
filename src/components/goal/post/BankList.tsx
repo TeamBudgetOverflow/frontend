@@ -27,7 +27,9 @@ const BankList = ({ banks, closeHandler, selectHandler }: BankListProps) => {
       </TopContent>
       <BottomContent>
         {banks.map((bank) => (
-          <BankBox key={bank.id} id={bank.id} name={bank.name} selectHandler={() => selectHandler(bank)} />
+          <BankBoxWrapper key={bank.bankId}>
+            <BankBox id={bank.bankId} name={bank.bankName} selectHandler={() => selectHandler(bank)} />
+          </BankBoxWrapper>
         ))}
       </BottomContent>
     </Wrapper>
@@ -62,9 +64,14 @@ const BottomContent = styled.div`
   display: flex;
   flex-direction: row;
   row-gap: 12px;
-  column-gap: 10px;
   flex-wrap: wrap;
   width: 100%;
+`;
+
+const BankBoxWrapper = styled.div`
+  padding: 0 5px;
+  width: calc(25% - 10px);
+  height: 81px;
 `;
 
 export default BankList;

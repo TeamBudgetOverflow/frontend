@@ -1,5 +1,5 @@
 export interface IUserProfile {
-  img: string;
+  image: string;
   nickname: string;
   description: string;
 }
@@ -9,7 +9,7 @@ export interface IGoals {
 }
 
 export interface IGoal {
-  id: number;
+  goalId: number;
   emoji: string;
   title: string;
   description: string;
@@ -24,9 +24,9 @@ export interface IGoal {
 }
 
 export interface IBank {
-  id: number;
-  code: string;
-  name: string;
+  bankId: number;
+  bankCode: string;
+  bankName: string;
 }
 
 export interface IPostAuthAccnt {
@@ -45,7 +45,7 @@ export interface IPostGoal {
   headCount: number;
   isPrivate: boolean;
   isManual: boolean;
-  accntId: number;
+  accountId: number;
 }
 
 export interface IAccount {
@@ -116,11 +116,4 @@ export interface MyToken {
   tokenType: string;
   iat: number;
   exp: number;
-}
-
-export interface IUserInfo {
-  id: number;
-  isLogin: boolean;
-  isAccessToken: boolean;
-  isRefreshToken: boolean;
 }

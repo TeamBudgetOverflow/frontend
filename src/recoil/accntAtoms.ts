@@ -9,9 +9,9 @@ export const banksInfo = atom<Array<IBank>>({
   key: 'banksInfo',
   default: [
     {
-      id: 0,
-      code: '',
-      name: '',
+      bankId: 0,
+      bankCode: '',
+      bankName: '',
     },
   ],
   effects_UNSTABLE: [persistAtom],

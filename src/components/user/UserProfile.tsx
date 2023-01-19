@@ -11,7 +11,10 @@ const UserProfile = () => {
 
   return (
     <Wrapper>
-      <ProfileImg size={52} url={profile.img.length === 0 ? require('../../assets/img/default.png') : profile.img} />
+      <ProfileImg
+        size={52}
+        url={profile.image.length === 0 ? require('../../assets/img/default.png') : profile.image}
+      />
       <Nickname>{profile.nickname}</Nickname>
     </Wrapper>
   );

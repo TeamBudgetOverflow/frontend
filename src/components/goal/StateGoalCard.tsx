@@ -27,7 +27,7 @@ const StateGoalCard = ({ goal }: { goal: IGoal }) => {
   }, [goal]);
 
   return (
-    <Wrapper onClick={() => navigate(`/goals/${goal.id}`)}>
+    <Wrapper onClick={() => navigate(`/goals/${goal.goalId}`)}>
       <TopContent>
         <TopLeftContent>
           <StateTag state={state} />
@@ -59,11 +59,7 @@ const StateGoalCard = ({ goal }: { goal: IGoal }) => {
               ? `${dateStringTranslator(new Date(goal.endDate))} 자정 종료`
               : `${dateStringTranslator(new Date(goal.startDate))} 자정 시작`}
           </ProgressText>
-          {state === 'working' ? (
-            <ProgressText>{`${goal.attainment}%`}</ProgressText>
-          ) : (
-            <></>
-          )}
+          {state === 'working' ? <ProgressText>{`${goal.attainment}%`}</ProgressText> : <></>}
         </ProgressInfo>
       </BottomContent>
     </Wrapper>

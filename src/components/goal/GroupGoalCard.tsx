@@ -27,7 +27,7 @@ const StateGoalCard = ({ goal }: { goal: IGoal }) => {
   }, [goal]);
 
   return (
-    <Wrapper onClick={() => navigate(`/goals/${goal.id}`)}>
+    <Wrapper onClick={() => navigate(`/goals/${goal.goalId}`)}>
       <TopContent>
         <TopLeftContent>
           <StateTag state={state} />

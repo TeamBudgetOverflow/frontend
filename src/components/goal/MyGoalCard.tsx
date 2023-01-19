@@ -14,7 +14,7 @@ import C3TextBox from '../common/elem/C3TextBox';
 const MyGoalCard = ({ goal }: { goal: IGoal }) => {
   const navigate = useNavigate();
   return (
-    <Wrapper onClick={() => navigate(`/goals/${goal.id}`)}>
+    <Wrapper onClick={() => navigate(`/goals/${goal.goalId}`)}>
       <TopContent>
         <TopLeftContent>
           <EmojiBox unicode={goal.emoji} boxSize={40} emojiSize={20} />
