@@ -6,24 +6,25 @@ interface Emoji {
   unicode: string;
   boxSize: number;
   emojiSize: number;
+  showBg?: boolean;
 }
 
-const EmojiBox = ({ unicode, boxSize, emojiSize }: Emoji) => {
+const EmojiBox = ({ unicode, boxSize, emojiSize, showBg = true }: Emoji) => {
   return (
-    <Wrapper size={`${boxSize}px`}>
+    <Wrapper size={`${boxSize}px`} showBg={showBg}>
       <Emoji unified={unicode} size={emojiSize} />
     </Wrapper>
   );
 };
 
-const Wrapper = styled.div<{ size: string }>`
+const Wrapper = styled.div<{ size: string; showBg: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
   width: ${(props) => props.size};
   height: ${(props) => props.size};
   border-radius: 8px;
-  background-color: ${(props) => props.theme.gray100};
+  background-color: ${(props) => (props.showBg ? props.theme.gray100 : 'transparent')};
 `;
 
 export default EmojiBox;
