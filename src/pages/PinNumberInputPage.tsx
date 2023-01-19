@@ -52,7 +52,9 @@ const PinNumberInputPage = () => {
     handlePinNumberChange(nums);
   };
 
-  const postPinCodeMutate = useMutation('postPinCode', () => userAPI.postPinCode(userId, { pinCode: pinNumber }));
+  const postPinCodeMutate = useMutation('postPinCode', () =>
+    userAPI.postPinCode(userId, { pinCode: parseInt(pinNumber) })
+  );
   const postAccessTokenByPinCodeMutate = useMutation('postAccessTokenByPinCode', () =>
     userAPI.postAccessTokenByPinCode({ pinCode: pinNumber })
   );
