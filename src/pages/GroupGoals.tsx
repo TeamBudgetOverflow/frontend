@@ -5,6 +5,9 @@ import styled from 'styled-components';
 
 import NarrowGroupGoalCard from '../components/goal/NarrowGroupGoalCard';
 import GroupGoalCard from '../components/goal/GroupGoalCard';
+import Alert from '../components/common/alert/Alert';
+import LoadingMsg from '../components/common/elem/LoadingMsg';
+import ErrorMsg from '../components/common/elem/ErrorMsg';
 
 import { goalApi } from '../apis/client';
 
@@ -15,10 +18,13 @@ import { ISearchGoal, ISearchGoals } from '../interfaces/interfaces';
 import { dDayCalculator } from '../utils/dDayCalculator';
 
 const GroupGoals = () => {
-  const { isLoading: isLoadingGoals, data: goalsData } = useQuery<ISearchGoals>('getGoals', () => goalApi.getGoals());
+  const {
+    isLoading: isLoadingGoals,
+    data: goalsData,
+    isError,
+  } = useQuery<ISearchGoals>('getGoals', () => goalApi.getGoals());
   const setUserGoals = useSetRecoilState(groupGoals);
   const goals = useRecoilValue(groupGoals);
-
   const [impendingGoals, setImpendingGoals] = useState<Array<ISearchGoal>>([...goals]);
 
   useEffect(() => {
@@ -46,9 +52,21 @@ const GroupGoals = () => {
           <SubTitle>마감임박 목표</SubTitle>
           <Button>모두보기</Button>
         </TitleBox>
-        <ImpendingGoalCards>
-          {isLoadingGoals ? <LoadingMsg>데이터를 불러오는 중입니다</LoadingMsg> : impendingGoalCard}
-        </ImpendingGoalCards>
+        {isLoadingGoals ? (
+          <AlertWrapper>
+            <Alert height={150} showBgColor={true}>
+              <LoadingMsg />
+            </Alert>
+          </AlertWrapper>
+        ) : isError ? (
+          <AlertWrapper>
+            <Alert height={150} showBgColor={true}>
+              <ErrorMsg />
+            </Alert>
+          </AlertWrapper>
+        ) : (
+          <ImpendingGoalCards>{impendingGoalCard}</ImpendingGoalCards>
+        )}
       </TopContent>
       <Line />
       <BottomContent>
@@ -56,9 +74,21 @@ const GroupGoals = () => {
           <SubTitle>전체 목표</SubTitle>
           <Button>추천순</Button>
         </TitleBox>
-        <GoalCardsWrapper>
-          {isLoadingGoals ? <LoadingMsg>데이터를 불러오는 중입니다</LoadingMsg> : goalCards}
-        </GoalCardsWrapper>
+        {isLoadingGoals ? (
+          <AlertWrapper>
+            <Alert height={150} showBgColor={true}>
+              <LoadingMsg />
+            </Alert>
+          </AlertWrapper>
+        ) : isError ? (
+          <AlertWrapper>
+            <Alert height={150} showBgColor={true}>
+              <ErrorMsg />
+            </Alert>
+          </AlertWrapper>
+        ) : (
+          <GoalCardsWrapper>{goalCards}</GoalCardsWrapper>
+        )}
       </BottomContent>
     </Wrapper>
   );
@@ -82,7 +112,6 @@ const TopContent = styled.div`
   flex-direction: column;
   gap: 20px;
   width: 100%;
-  height: 100%;
 `;
 
 const TitleBox = styled.div`
@@ -135,13 +164,9 @@ const GoalCardsWrapper = styled.div`
   overflow-y: auto;
 `;
 
-const LoadingMsg = styled.div`
-  width: 100%;
-  height: 120px;
-  line-height: 120px;
-  text-align: center;
-  border-radius: 16px;
-  background-color: ${(props) => props.theme.gray100};
+const AlertWrapper = styled.div`
+  padding: 0 22px;
+  width: calc(100% - 44px);
 `;
 
 export default GroupGoals;
