@@ -3,9 +3,8 @@ import { useLocation, useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 import Logo from '../components/common/elem/Logo';
-import Icon from '../components/common/elem/Icon';
 import SearchBar from '../components/header/SearchBar';
-import { postGoal } from '../recoil/goalsAtoms';
+import Icon from '../components/common/elem/Icon';
 
 interface HeaderProps {
   props: string;
@@ -101,6 +100,8 @@ const Header = (props: HeaderProps, ref: Ref<HTMLDivElement>) => {
     if (showSearchBar) return setShowBeforeBtn(true);
   }, [showSearchBar]);
 
+  const [searchBarIndicator, setSearchBarIndicator] = useState(false);
+
   return (
     <HeaderLayout ref={ref}>
       {pathname === '/' ? <Logo size='small' /> : <></>}
@@ -152,6 +153,7 @@ const HeaderLayout = styled.div`
   align-items: center;
   width: calc(100% - 44px);
   background-color: white;
+  border-bottom: 1px solid ${(props) => props.theme.gray100};
 `;
 
 const SearchBarWrapper = styled.div`

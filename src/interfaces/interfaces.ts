@@ -20,6 +20,7 @@ export interface IGoal {
   startDate: Date;
   endDate: Date;
   headCount: number;
+  curCount: number;
 }
 
 export interface IBank {

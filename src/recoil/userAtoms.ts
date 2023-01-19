@@ -35,6 +35,7 @@ export const userGoals = atom<Array<IGoal>>({
       startDate: new Date(),
       endDate: new Date(),
       headCount: 0,
+      curCount: 0,
     },
   ],
 });

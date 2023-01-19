@@ -2,45 +2,62 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { IGoal } from '../../interfaces/interfaces';
+import EmojiBox from '../common/elem/EmojiBox';
 
 const NarrowGroupGoalCard = ({ goal }: { goal: IGoal }) => {
   return (
     <CardWrapper>
-      <ImageWrapper></ImageWrapper>
+      <EmojiBox unicode={'26f0-fe0f'} boxSize={72} emojiSize={72} showBg={false} />
       <TextWrapper>
         <Title>{goal.title}</Title>
+        <TagList>
+          {goal.hashtag.map((tag) => (
+            <Tag key={tag}>{`#${tag}`}</Tag>
+          ))}
+        </TagList>
       </TextWrapper>
     </CardWrapper>
   );
 };
 
 const CardWrapper = styled.div`
-  flex: 0 0 auto;
-  min-width: 120px;
-  width: 30%;
-  max-height: 160px;
-  height: 100%;
   padding: 8px;
-  margin: 4px;
-  border: 1px solid;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  max-width: 120px;
+  max-height: 160px;
+  width: 30%;
   border-radius: 16px;
-`;
-
-const ImageWrapper = styled.div`
-  width: 100%;
-  height: 100px;
+  background-color: white;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
 `;
 
 const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
+  gap: 4px;
   width: 100%;
 `;
 
 const Title = styled.p`
   font: ${(props) => props.theme.paragraphsP3M};
+`;
+
+const TagList = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+`;
+
+const Tag = styled.span`
+  font: ${(props) => props.theme.captionC3};
+  color: ${(props) => props.theme.primaryMain};
 `;
 
 export default NarrowGroupGoalCard;
