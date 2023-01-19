@@ -8,9 +8,9 @@ import DdayTag from '../common/tag/DdayTag';
 import { dDayCalculator } from '../../utils/dDayCalculator';
 import { dateStringTranslator } from '../../utils/dateTranslator';
 
-import { IGoal } from '../../interfaces/interfaces';
+import { ISearchGoal } from '../../interfaces/interfaces';
 
-const StateGoalCard = ({ goal }: { goal: IGoal }) => {
+const GroupGoalCards = ({ goal }: { goal: ISearchGoal }) => {
   const navigate = useNavigate();
   const [state, setState] = useState<'working' | 'recruiting'>('working');
   const setGoalState = () => {
@@ -46,13 +46,6 @@ const StateGoalCard = ({ goal }: { goal: IGoal }) => {
         </TopRightContent>
       </TopContent>
       <BottomContent>
-        {state === 'working' ? (
-          <ProgressBarWrapper>
-            <ProgressBar width={`${goal.attainment}%`} />
-          </ProgressBarWrapper>
-        ) : (
-          <></>
-        )}
         <ProgressInfo>
           <ProgressText>
             {state === 'working'
@@ -136,24 +129,9 @@ const BottomContent = styled.div`
   width: 100%;
 `;
 
-const ProgressBarWrapper = styled.div`
-  position: relative;
-  width: 100%;
-  height: 8px;
-  border-radius: 25px;
-  background-color: ${(props) => props.theme.primary50};
+const RecruitState = styled.div`
+  font: ${(props) => props.theme.captionC3};
 `;
-
-const ProgressBar = styled.div<{ width: string }>`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: ${(props) => props.width};
-  height: 8px;
-  border-radius: 25px;
-  background-color: ${(props) => props.theme.primary900};
-`;
-
 const ProgressInfo = styled.div`
   display: flex;
   flex-direction: row;
@@ -164,8 +142,4 @@ const ProgressText = styled.div`
   font: ${(props) => props.theme.captionC3};
 `;
 
-const RecruitState = styled.div`
-  font: ${(props) => props.theme.captionC3};
-`;
-
-export default StateGoalCard;
+export default GroupGoalCards;

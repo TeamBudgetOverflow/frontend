@@ -51,7 +51,7 @@ const Home = () => {
 
   useEffect(() => {
     if (!userGoalsData) return;
-    setUserGoals(userGoalsData.goals);
+    setUserGoals(userGoalsData.result);
   }, [userGoalsData]);
 
   const navigate = useNavigate();

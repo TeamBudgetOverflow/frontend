@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import EmojiBox from '../common/elem/EmojiBox';
+import C3TextBox from '../common/elem/C3TextBox';
 import DdayTag from '../common/tag/DdayTag';
 
 import { IGoal } from '../../interfaces/interfaces';
 
 import { dDayCalculator } from '../../utils/dDayCalculator';
 import { setProgressState } from '../../utils/progressState';
-import C3TextBox from '../common/elem/C3TextBox';
 
 const MyGoalCard = ({ goal }: { goal: IGoal }) => {
   const navigate = useNavigate();
