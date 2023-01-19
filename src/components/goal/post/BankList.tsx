@@ -27,7 +27,7 @@ const BankList = ({ banks, closeHandler, selectHandler }: BankListProps) => {
       </TopContent>
       <BottomContent>
         {banks.map((bank) => (
-          <BankBox key={bank.id} id={bank.id} name={bank.name} selectHandler={() => selectHandler(bank)} />
+          <BankBox key={bank.bankId} id={bank.bankId} name={bank.bankName} selectHandler={() => selectHandler(bank)} />
         ))}
       </BottomContent>
     </Wrapper>
