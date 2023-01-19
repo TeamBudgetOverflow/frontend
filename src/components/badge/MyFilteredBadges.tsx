@@ -7,7 +7,7 @@ import BadgeBox from '../common/elem/BadgeBox';
 
 import { userAPI } from '../../apis/client';
 
-import { userInfo } from '../../recoil/atoms';
+import { userInfo } from '../../recoil/userAtoms';
 
 import { IBadge } from '../../interfaces/interfaces';
 

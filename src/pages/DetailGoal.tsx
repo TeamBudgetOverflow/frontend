@@ -13,7 +13,7 @@ import GoalDeleteButton from '../components/goal/goalDetail/GoalDeleteButton';
 import GroupGoalWithDrawButton from '../components/goal/goalDetail/groupGoalDetail/GroupGoalWithdrawButton';
 import MyGoalAccountInfoCard from '../components/goal/goalDetail/myGoalDetail/MyGoalAccountInfoCard';
 
-import { userInfo } from '../recoil/atoms';
+import { userInfo } from '../recoil/userAtoms';
 import { goalDetail, goalId } from '../recoil/goalsAtoms';
 
 import { goalApi } from '../apis/client';

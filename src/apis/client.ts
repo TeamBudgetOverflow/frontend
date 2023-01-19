@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import {
   IAuthAccount,
   IAccount,
@@ -11,7 +12,13 @@ import {
 const BASE_URL = process.env.REACT_APP_API_ENDPOINT;
 const BANK_BASE_URL = process.env.REACT_APP_BANK_API_ENDPOINT;
 
-const noneTokenClient = axios.create({ baseURL: BASE_URL });
+const noneTokenClient = axios.create({
+  baseURL: BASE_URL,
+  responseType: 'json',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 const tokenClient = axios.create({ baseURL: BASE_URL });
 const bankClient = axios.create({ baseURL: BANK_BASE_URL });
 bankClient.defaults.headers.common['Content-Type'] = 'application/json';
@@ -20,7 +27,7 @@ bankClient.defaults.headers.common['Hkey'] = process.env.REACT_APP_BANK_API_HKEY
 
 tokenClient.interceptors.request.use((config) => {
   config.headers = {
-    Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+    Authorization: `${localStorage.getItem('accessToken')}`,
   };
 
   return config;
@@ -56,6 +63,39 @@ tokenClient.interceptors.response.use(
 );
 
 export const userAPI = {
+  getKakaoSignup: async (code: string | null) => {
+    const { data } = await noneTokenClient.get('/api/users/auth/kakao?code=' + code);
+
+    return data;
+  },
+
+  getNaverSignup: async (code: string | null) => {
+    const { data } = await noneTokenClient.get(`/api/users/auth/naver?code=${code}`);
+
+    localStorage.setItem('accessToken', data.accessToken);
+    localStorage.setItem('refreshToken', data.refreshToken);
+    return data;
+  },
+
+  getGoogleSignup: async (code: string | null) => {
+    const { data } = await noneTokenClient.get('/api/users/auth/google?code=' + code);
+
+    return data;
+  },
+
+  postPinCode: async (userId: number, pinCode: object) => {
+    const { data } = await tokenClient.post(`/api/users/${userId}/pincode`, pinCode);
+
+    return data;
+  },
+
+  // TODO: 리프레신 토큰 전달
+  postAccessTokenByPinCode: async (pinCode: object) => {
+    const { data } = await tokenClient.post('/api/users/pinCode', pinCode);
+
+    return data;
+  },
+
   getUserProfile: async (userId: number) => {
     const { data } = await tokenClient.get(`/users/${userId}`);
     // const data = {
@@ -65,6 +105,7 @@ export const userAPI = {
     // };
     return data;
   },
+
   getUserGoals: async (userId: number) => {
     const { data } = await tokenClient.get(`/users/${userId}/goals`);
     // const data = {

@@ -8,7 +8,7 @@ import { userAPI } from '../../apis/client';
 
 import { IUserProfile } from '../../interfaces/interfaces';
 
-import { userInfo, userProfile } from '../../recoil/atoms';
+import { userInfo, userProfile } from '../../recoil/userAtoms';
 
 interface UserDetailProfileProps {
   userId: number;
