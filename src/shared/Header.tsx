@@ -153,6 +153,7 @@ const HeaderLayout = styled.div`
   align-items: center;
   width: calc(100% - 44px);
   background-color: white;
+  border-bottom: 1px solid ${(props) => props.theme.gray100};
 `;
 
 const SearchBarWrapper = styled.div`
