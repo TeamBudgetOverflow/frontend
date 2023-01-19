@@ -20,7 +20,7 @@ const AccountInfoCard = ({ accntInfo, selectHandler }: AccountInfoCardProps) => 
       <Content>
         <Img />
         <ColumnBox>
-          <Name>{banks.find((bank) => bank.id === accntInfo.bankId)?.name}</Name>
+          <Name>{banks.find((bank) => bank.bankId === accntInfo.bankId)?.bankName}</Name>
           <Number>{privateInfoFormatter({ data: accntInfo.accntNo, showLen: 4, showDir: 'tail' })}</Number>
         </ColumnBox>
       </Content>
