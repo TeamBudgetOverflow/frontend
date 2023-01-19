@@ -131,8 +131,8 @@ const DetailUser = () => {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  // TODO: set page wrapper height 100%
-  height: calc(100vh - 138px);
+  width: 100%;
+  height: 100%;
 `;
 
 const TopContent = styled.div`
