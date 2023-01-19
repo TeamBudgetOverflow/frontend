@@ -29,8 +29,6 @@ const PinNumberInputPage = () => {
   const [pinNumber, setPinNumber] = useState('');
   const [pinCodeTry, setPinCodeTry] = useState(false);
 
-  console.log(pinCode);
-
   useEffect(() => {
     if (pinCodeTry === false && pinNumber.length === PASSWORD_MAX_LENGTH && accessToken !== null) {
       setPinCodeAtom({ pinCode: pinNumber });
