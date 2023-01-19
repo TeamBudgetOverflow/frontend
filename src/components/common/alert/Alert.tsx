@@ -1,47 +1,34 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
-interface AlterProps {
+interface AlertProps {
+  height: number;
+  showBgColor: boolean;
   children: React.ReactNode;
 }
 
-const Alert: FunctionComponent<AlterProps> = ({ children }: AlterProps) => {
+const Alert = ({ height, showBgColor, children }: AlertProps) => {
   return (
-    <Wrapper>
-      <ContentWrapper>
-        <Img></Img>
-        <Text>{children}</Text>
-      </ContentWrapper>
-    </Wrapper>
+    <AlertWrapper height={`${height}px`}>
+      <AlertBox showBgColor={showBgColor}>{children}</AlertBox>
+    </AlertWrapper>
   );
 };
 
-const Wrapper = styled.div`
+const AlertWrapper = styled.div<{ height: string }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100%;
+  height: ${(props) => props.height};
 `;
 
-const ContentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-`;
-
-const Img = styled.div`
-  width: 120px;
-  height: 120px;
-  border: 1px solid black;
-`;
-
-const Text = styled.div`
-  text-align: center;
-  white-space: pre-wrap;
-  font: ${(props) => props.theme.headingH2};
+const AlertBox = styled.div<{ showBgColor: boolean }>`
+  padding: 20px 0;
+  width: 100%;
+  border-radius: 16px;
+  background-color: ${(props) => (props.showBgColor ? props.theme.gray300 : 'transparent')};
 `;
 
 export default Alert;
