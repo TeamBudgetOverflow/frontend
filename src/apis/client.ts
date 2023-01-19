@@ -8,6 +8,8 @@ import {
   IPostGoal,
   IValidateAccount,
   IReqAuthAccout,
+  IGoal,
+  ISearchGoals,
 } from '../interfaces/interfaces';
 
 const BASE_URL = process.env.REACT_APP_API_ENDPOINT;
@@ -17,10 +19,12 @@ const noneTokenClient = axios.create({
   baseURL: BASE_URL,
   responseType: 'json',
   headers: {
+    'Cache-Control': 'no-cache',
     'Content-Type': 'application/json',
   },
 });
 const tokenClient = axios.create({ baseURL: BASE_URL });
+const refreshClient = axios.create({ baseURL: BASE_URL });
 const bankClient = axios.create({ baseURL: BANK_BASE_URL });
 bankClient.defaults.headers.common['Content-Type'] = 'application/json';
 bankClient.defaults.headers.common['user-id'] = process.env.REACT_APP_BANK_API_USER_ID;
@@ -28,7 +32,15 @@ bankClient.defaults.headers.common['Hkey'] = process.env.REACT_APP_BANK_API_HKEY
 
 tokenClient.interceptors.request.use((config) => {
   config.headers = {
-    Authorization: `${localStorage.getItem('accessToken')}`,
+    authorization: `${localStorage.getItem('accessToken')}`,
+  };
+
+  return config;
+});
+
+refreshClient.interceptors.request.use((config) => {
+  config.headers = {
+    refreshToken: `${localStorage.getItem('refreshToken')}`,
   };
 
   return config;
@@ -51,8 +63,9 @@ tokenClient.interceptors.response.use(
   (response) => {
     return response;
   },
-  async (error) => {
-    if (error.response?.status === 401) {
+  (error) => {
+    if (error.response?.status === 401 || error.response?.status === 410) {
+      localStorage.removeItem('accessToken');
       // TODO: 리프레시 토큰을 활용한 재인증 요청 api를 사용
     }
     const errorResponse = {
@@ -64,35 +77,32 @@ tokenClient.interceptors.response.use(
 );
 
 export const userAPI = {
-  getKakaoSignup: async (code: string | null) => {
+  getKakaoSignup: async (code: string) => {
     const { data } = await noneTokenClient.get('/users/auth/kakao?code=' + code);
 
     return data;
   },
 
-  getNaverSignup: async (code: string | null) => {
+  getNaverSignup: async (code: string) => {
     const { data } = await noneTokenClient.get(`/users/auth/naver?code=${code}`);
 
-    localStorage.setItem('accessToken', data.accessToken);
-    localStorage.setItem('refreshToken', data.refreshToken);
     return data;
   },
 
-  getGoogleSignup: async (code: string | null) => {
+  getGoogleSignup: async (code: string) => {
     const { data } = await noneTokenClient.get('/users/auth/google?code=' + code);
 
     return data;
   },
 
-  postPinCode: async (userId: number, pinCode: object) => {
-    const { data } = await tokenClient.post(`/users/${userId}/pincode`, pinCode);
+  postPinCode: async (userId: number, pinCode: string) => {
+    const { data } = await tokenClient.post(`/users/${userId}/pincode`, { pinCode: pinCode });
 
     return data;
   },
 
-  // TODO: 리프레신 토큰 전달
-  postAccessTokenByPinCode: async (pinCode: object) => {
-    const { data } = await tokenClient.post('/users/pinCode', pinCode);
+  postAccessTokenByPinCode: async (pinCode: string) => {
+    const { data } = await refreshClient.post('/users/pinCode', { pinCode: pinCode });
 
     return data;
   },
@@ -218,20 +228,19 @@ export const accountApi = {
     //     accntNo: '11011102012',
     //   },
     // ];
-
     // const data: Array<IAccount> = [];
 
     return data;
   },
-  createManualAccount: async (userId: number) => {
+  createManualAccount: async (userId: number): Promise<number> => {
     const { data } = await tokenClient.post(`/accounts/${userId}/manual`);
 
-    return data;
+    return data.accountId;
   },
   createAutoAccount: async (userId: number, accntInfo: IPostAccount) => {
     const { data } = await tokenClient.post(`/accounts/${userId}`, accntInfo);
 
-    return data;
+    return data.accountId;
   },
 };
 
@@ -269,11 +278,10 @@ export const goalApi = {
   postGoal: async (goalData: IPostGoal) => {
     const { data } = await tokenClient.post(`/goals`, goalData);
 
-    return data;
+    return data.goalId;
   },
-  getGoals: async () => {
+  getGoals: async (): Promise<ISearchGoals> => {
     const { data } = await tokenClient.get(`/goals`);
-
     // const data = {
     //   result: [
     //     {
@@ -343,11 +351,10 @@ export const goalApi = {
     //   ],
     // };
 
-    return data;
+    return data.result;
   },
   getGoalDetail: async (goalId: number) => {
     const { data } = await tokenClient.get(`/goals/${goalId}`);
-
     // const data = {
     //   goalDetail: {
     //     createdUserId: 2,
