@@ -42,7 +42,6 @@ const PageKR = (type: PageType) => {
 const Header = (props: HeaderProps, ref: Ref<HTMLDivElement>) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const [showHeader, setShowHeader] = useState<boolean>(false);
   const [showSearchBar, setShowSearchBar] = useState<boolean>(false);
   const handleSearch = () => {
     if (pathname !== '/goals/lookup') {
@@ -80,13 +79,6 @@ const Header = (props: HeaderProps, ref: Ref<HTMLDivElement>) => {
     }
 
     if (pathname !== '/goals/lookup') {
-      if (pathname === '/login' || pathname === '/pinnumber') {
-        setShowBeforeBtn(false);
-        setShowSearchBar(false);
-        setShowSearchIcons(false);
-        setShowChatIcons(false);
-        return;
-      }
       if (pathname === '/home') {
         setShowBeforeBtn(false);
         setShowSearchBar(false);

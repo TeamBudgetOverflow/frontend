@@ -5,7 +5,7 @@ import ProgressBar from '../../common/elem/ProgressBar';
 import InputBox from '../../common/elem/InputBox';
 import ValidateMsg from '../../common/elem/ValidateMsg';
 import TextButton from '../../common/elem/TextButton';
-import Alert from '../../common/alert/Alert';
+import Info from '../../common/alert/Info';
 
 import useTxtInput from '../../../hooks/useTxtInput';
 import { IValidateAccount } from '../../../interfaces/interfaces';
@@ -104,9 +104,9 @@ function AccountInfoInput({ goalIdHandler }: AccountInfoInputProps) {
   const savedPostGoal = useRecoilValue(postGoal);
   const handlePostGoal = async () => {
     try {
-      const accntId = await accountApi.createAutoAccount(id, { ...accnt, bankId: getBankId() });
+      const accountId = await accountApi.createAutoAccount(id, { ...accnt, bankId: getBankId() });
       setTimeout(() => setIsPosted(true), 2000);
-      const goalId = await goalApi.postGoal({ ...savedPostGoal, accntId: accntId });
+      const goalId = await goalApi.postGoal({ ...savedPostGoal, accountId: accountId });
       setTimeout(() => goalIdHandler(goalId), 3000);
     } catch (e) {
       alert(e);
@@ -173,29 +173,29 @@ function AccountInfoInput({ goalIdHandler }: AccountInfoInputProps) {
   if (isValidAccnt && !isPosted)
     return (
       <Wrapper>
-        <Alert>
+        <Info>
           {`${nickname}`}님의
           <br />
           계좌 연결이 완료되었습니다.
-        </Alert>
+        </Info>
       </Wrapper>
     );
 
   if (isValidAccnt && isPosted)
     return (
       <Wrapper>
-        <Alert>목표 생성이 완료되었습니다.</Alert>
+        <Info>목표 생성이 완료되었습니다.</Info>
       </Wrapper>
     );
 
   return (
     <Wrapper>
-      <Alert>
+      <Info>
         목표 생성이 실패했습니다.
         <br />
         다시 시도해주세요.
         <TextButton text='재시도' onClickHandler={handlePostGoal} />
-      </Alert>
+      </Info>
     </Wrapper>
   );
 }

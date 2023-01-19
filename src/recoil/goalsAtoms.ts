@@ -26,7 +26,7 @@ export const postGoal = atom<IPostGoal>({
     headCount: 1,
     isPrivate: false,
     isManual: false,
-    accntId: 0,
+    accountId: 0,
   },
   effects_UNSTABLE: [persistAtom],
 });

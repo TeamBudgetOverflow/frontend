@@ -15,8 +15,8 @@ interface AccountSelectProps {
 const AccountSelect = ({ accounts }: AccountSelectProps) => {
   const savedPostGoal = useRecoilValue(postGoal);
   const setPostGoal = useSetRecoilState(postGoal);
-  const handleSelect = (accntId: number) => {
-    setPostGoal({ ...savedPostGoal, accntId });
+  const handleSelect = (accountId: number) => {
+    setPostGoal({ ...savedPostGoal, accountId });
   };
 
   return (

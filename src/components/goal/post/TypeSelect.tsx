@@ -32,7 +32,7 @@ const TypeSelect = () => {
       headCount: 1,
       isPrivate: false,
       isManual: false,
-      accntId: 0,
+      accountId: 0,
     });
   }, []);
 

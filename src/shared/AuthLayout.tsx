@@ -1,11 +1,27 @@
-import React, { FunctionComponent, PropsWithChildren, useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import { useNavigate, useLocation, Outlet } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
 
 import Header from './Header';
 import Navigation from './Navigation';
 
-const Layout: FunctionComponent<PropsWithChildren> = ({ children }) => {
+import { userInfo } from '../recoil/userAtoms';
+
+const AuthLayout = () => {
+  const { isAccessToken, isRefreshToken } = useRecoilValue(userInfo);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!isAccessToken && isRefreshToken) {
+      navigate('/pinnumber');
+      return;
+    }
+    if (!isAccessToken && !isRefreshToken) {
+      navigate('/login');
+      return;
+    }
+  }, []);
+
   const { pathname } = useLocation();
   const headerRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
@@ -20,7 +36,9 @@ const Layout: FunctionComponent<PropsWithChildren> = ({ children }) => {
   return (
     <>
       <Header props='' ref={headerRef} />
-      <Body height={`${headerNavHeight}px`}>{children}</Body>
+      <Body height={`${headerNavHeight}px`}>
+        <Outlet />
+      </Body>
       <Navigation props='' ref={navRef} />
     </>
   );
@@ -34,4 +52,4 @@ const Body = styled.div<{ height: string }>`
   background-color: white;
 `;
 
-export default Layout;
+export default AuthLayout;

@@ -1,5 +1,5 @@
 export interface IUserProfile {
-  img: string;
+  image: string;
   nickname: string;
   description: string;
 }
@@ -70,7 +70,7 @@ export interface IPostGoal {
   headCount: number;
   isPrivate: boolean;
   isManual: boolean;
-  accntId: number;
+  accountId: number;
 }
 
 export interface IAccount {
@@ -141,11 +141,4 @@ export interface MyToken {
   tokenType: string;
   iat: number;
   exp: number;
-}
-
-export interface IUserInfo {
-  id: number;
-  isLogin: boolean;
-  isAccessToken: boolean;
-  isRefreshToken: boolean;
 }

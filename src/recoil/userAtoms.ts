@@ -1,5 +1,9 @@
 import { atom } from 'recoil';
+import { recoilPersist } from 'recoil-persist';
+
 import { IGoal } from '../interfaces/interfaces';
+
+const { persistAtom } = recoilPersist();
 
 export const userInfo = atom({
   key: 'userInfo',
@@ -9,12 +13,13 @@ export const userInfo = atom({
     isAccessToken: false,
     isRefreshToken: false,
   },
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const userProfile = atom({
   key: 'userProfile',
   default: {
-    img: '',
+    image: '',
     nickname: '',
     description: '',
   },

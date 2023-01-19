@@ -14,15 +14,12 @@ import { ISearchGoal } from '../interfaces/interfaces';
 
 const SearchGoals = () => {
   const location = useLocation();
-
   const setGoalsList = useSetRecoilState(groupGoals);
-
   const { isLoading: isLoadingGoals, data: searchGoals } = useQuery<Array<ISearchGoal>>('searchGoals', () =>
     goalApi.getGoalsByWord(location.search)
   );
 
   const searchGroupGoals = useRecoilValue(groupGoals);
-
   useEffect(() => {
     if (!searchGoals) return;
     setGoalsList(searchGoals);
