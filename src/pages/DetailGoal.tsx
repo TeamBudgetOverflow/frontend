@@ -43,7 +43,6 @@ const DetailGoal = () => {
     if (!goalDetailData) return;
     setGoalDetail(goalDetailData);
   }, [goalDetailData]);
-  console.log(goalDetails);
   const buttonSet = (userId: number) => {
     const findId = goalDetails?.members.findIndex((member) => member.userId === userId);
 
@@ -132,7 +131,7 @@ const DetailGoal = () => {
             ) : (
               <>
                 <SubTitle>참가자 {`${goalDetails.curCount} / ${goalDetails.headCount}`}</SubTitle>
-                <ParticipantList recruitMember={goalDetails.members} headCount={goalDetails.headCount} />
+                <ParticipantList recruitMember={goalDetails.members} />
               </>
             )}
           </BottomContent>

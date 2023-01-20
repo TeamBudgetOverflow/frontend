@@ -7,7 +7,7 @@ interface ProfileImgProps {
 }
 
 const ProfileImg = ({ url, size }: ProfileImgProps) => {
-  return <Img size={`${size}px`} src={url} />;
+  return <Img size={`${size}px`} src={!url ? require('../../../assets/img/default.png') : url} />;
 };
 
 const Img = styled.img<{ size: string }>`
