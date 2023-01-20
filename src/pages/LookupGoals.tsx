@@ -53,8 +53,13 @@ const LookupGoals = () => {
     });
   }, [goals]);
 
-  const goalCards = goals.map((goal) => <GroupGoalCard key={goal.goalId} goal={goal} />);
-  const impendingGoalCard = impendingGoals.map((goal) => <GroupGoalCardSmall key={goal.goalId} goal={goal} />);
+  const goalCards = goals
+    .filter((goal) => goal.headCount !== 1)
+    .map((goal) => <GroupGoalCard key={goal.goalId} goal={goal} />);
+  const impendingGoalCard = impendingGoals
+    .filter((goal) => goal.headCount !== 1)
+    .slice(0, 10)
+    .map((goal) => <GroupGoalCardSmall key={goal.goalId} goal={goal} />);
 
   return (
     <Wrapper>
