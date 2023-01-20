@@ -86,8 +86,7 @@ const LookupGoals = () => {
       </TopContent>
       <BottomContent>
         <TitleBox>
-          <SubTitle>전체 목표</SubTitle>
-          <Button>추천순</Button>
+          <SubTitle>목표</SubTitle>
         </TitleBox>
         {isLoadingGoals ? (
           <AlertWrapper>
@@ -127,7 +126,7 @@ const TopContent = styled.div`
   flex-direction: column;
   gap: 20px;
   width: 100%;
-  height: calc(35% - 30px);
+  height: calc(35% - 32px);
   border-bottom: 2px solid ${(props) => props.theme.gray200};
 `;
 
@@ -144,7 +143,8 @@ const SubTitle = styled.div`
 `;
 
 const Button = styled.div`
-  font: ${(props) => props.theme.captionC3};
+  font: ${(props) => props.theme.captionC2};
+  color: ${(props) => props.theme.primary900};
 `;
 
 const ImpendingGoalCards = styled.div`
