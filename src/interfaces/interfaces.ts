@@ -73,7 +73,6 @@ export interface IGoalDetail {
   goalId: number;
   nickname: string;
   title: string;
-  hashTag: Array<string>;
   emoji: string;
   amount: number;
   description: string;

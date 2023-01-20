@@ -38,7 +38,6 @@ export const goalDetail = atom<IGoalDetail>({
     goalId: 0,
     nickname: '',
     title: '',
-    hashTag: [''],
     emoji: '',
     description: '',
     hashTag: [],
