@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { IParticapantInfoProps } from '../../../../interfaces/interfaces';
+import { IMemeberInfo } from '../../../../interfaces/interfaces';
 import ProfileImg from '../../../common/elem/ProfileImg';
 
 // TODO: 참가자 달성률
-const GroupGoalParticipantCard = ({ nickname, img }: IParticapantInfoProps) => {
+const GroupGoalParticipantCard = ({ nickname, img }: IMemeberInfo) => {
   return (
     <GroupGoalParticipantCardWrapper>
       <PaticpantInfoWrapper>

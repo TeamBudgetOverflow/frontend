@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { IParticapantInfoProps } from '../../../../interfaces/interfaces';
+import { IMemeberInfo } from '../../../../interfaces/interfaces';
 import GroupGoalParticipantCard from './GroupGoalParticipantCard';
 
 interface IGoalParticipnatListProps {
-  recruitMember: Array<IParticapantInfoProps>;
+  recruitMember: Array<IMemeberInfo>;
   headCount: number;
 }
 
