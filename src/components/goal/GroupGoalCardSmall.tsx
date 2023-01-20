@@ -4,10 +4,12 @@ import styled from 'styled-components';
 import EmojiBox from '../common/elem/EmojiBox';
 
 import { ISearchGoal } from '../../interfaces/interfaces';
+import { useNavigate } from 'react-router-dom';
 
 const GroupGoalCardSmall = ({ goal }: { goal: ISearchGoal }) => {
+  const navigate = useNavigate();
   return (
-    <CardWrapper>
+    <CardWrapper onClick={() => navigate(`/goals/${goal.goalId}`)}>
       <EmojiBox unicode={goal.emoji} boxSize={72} emojiSize={72} showBg={false} />
       <TextWrapper>
         <Title>{goal.title}</Title>
