@@ -13,7 +13,7 @@ import { goalApi } from '../apis/client';
 
 import { groupGoals } from '../recoil/goalsAtoms';
 
-import { ISearchGoal, ISearchGoals } from '../interfaces/interfaces';
+import { ISearchGoal } from '../interfaces/interfaces';
 
 import { dDayCalculator } from '../utils/dDayCalculator';
 
@@ -25,7 +25,7 @@ const GroupGoals = () => {
     isLoading: isLoadingGoals,
     data: goalsData,
     isError,
-  } = useQuery<ISearchGoals>('getGoals', () =>
+  } = useQuery<Array<ISearchGoal>>('getGoals', () =>
     goalApi.getGoals().catch((e) => {
       if (e.status === 410) {
         logout();
@@ -39,14 +39,16 @@ const GroupGoals = () => {
   useEffect(() => {
     if (!goalsData) return;
 
-    setUserGoals(goalsData.result);
+    setUserGoals(goalsData);
   }, [goalsData]);
 
   useEffect(() => {
     setImpendingGoals(() => {
       const impendingGoals = [...goals];
 
-      const sorting = impendingGoals.sort((a, b) => dDayCalculator(a.startDate) - dDayCalculator(b.startDate));
+      const sorting = impendingGoals.sort(
+        (a, b) => dDayCalculator(new Date(a.startDate)) - dDayCalculator(new Date(b.startDate))
+      );
       return sorting;
     });
   }, [goals]);
