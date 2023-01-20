@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
+
+import jwtDecoder from 'jwt-decode';
 
 import { userAPI } from '../apis/client';
 import { userInfo } from '../recoil/userAtoms';
-
-import jwtDecoder from 'jwt-decode';
 
 import { MyToken } from '../interfaces/interfaces';
 
