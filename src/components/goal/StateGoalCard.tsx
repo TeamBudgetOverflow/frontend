@@ -9,6 +9,7 @@ import { dDayCalculator } from '../../utils/dDayCalculator';
 import { dateStringTranslator } from '../../utils/dateTranslator';
 
 import { IGoal } from '../../interfaces/interfaces';
+import EmojiBox from '../common/elem/EmojiBox';
 
 const StateGoalCard = ({ goal }: { goal: IGoal }) => {
   const navigate = useNavigate();
@@ -32,9 +33,7 @@ const StateGoalCard = ({ goal }: { goal: IGoal }) => {
         <TopLeftContent>
           <StateTag state={state} />
           <Content>
-            <IconWrapper>
-              <Icon />
-            </IconWrapper>
+            <EmojiBox unicode={goal.emoji} boxSize={40} emojiSize={20} />
             <TextContent>
               <Title>{goal.title}</Title>
               <Amount>{`${goal.amount.toLocaleString()}원`}</Amount>
@@ -102,17 +101,6 @@ const Content = styled.div`
 
 const TopRightContent = styled.div`
   float: right;
-`;
-
-const IconWrapper = styled.div`
-  padding: 5px 0;
-`;
-
-const Icon = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  background-color: ${(props) => props.theme.primary50};
 `;
 
 const TextContent = styled.div`
