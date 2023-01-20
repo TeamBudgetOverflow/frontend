@@ -43,7 +43,6 @@ const DetailGoal = () => {
     if (!goalDetailData) return;
     setGoalDetail(goalDetailData);
   }, [goalDetailData]);
-  console.log(goalDetails);
   const buttonSet = (userId: number) => {
     const findId = goalDetails?.members.findIndex((member) => member.userId === userId);
 
