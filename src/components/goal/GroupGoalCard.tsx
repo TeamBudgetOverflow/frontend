@@ -9,6 +9,7 @@ import { dDayCalculator } from '../../utils/dDayCalculator';
 import { dateStringTranslator } from '../../utils/dateTranslator';
 
 import { ISearchGoal } from '../../interfaces/interfaces';
+import EmojiBox from '../common/elem/EmojiBox';
 
 const GroupGoalCards = ({ goal }: { goal: ISearchGoal }) => {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ const GroupGoalCards = ({ goal }: { goal: ISearchGoal }) => {
           <StateTag state={state} />
           <Content>
             <IconWrapper>
-              <Icon />
+              <EmojiBox unicode={goal.emoji} boxSize={40} emojiSize={20} />
             </IconWrapper>
             <TextContent>
               <Title>{goal.title}</Title>
