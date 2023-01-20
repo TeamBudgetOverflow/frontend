@@ -31,25 +31,17 @@ export const postGoal = atom<IPostGoal>({
   effects_UNSTABLE: [persistAtom],
 });
 
-export const goalId = atom({
-  key: 'goalId',
-  default: {
-    id: 1,
-  },
-});
-
 export const goalDetail = atom<IGoalDetail>({
   key: 'goalDetail',
   default: {
-    createdUserId: 0,
-    id: 0,
+    userId: 0,
+    goalId: 0,
+    nickname: '',
     title: '',
     emoji: '',
     description: '',
-    isPrivate: false,
     hashTag: [],
     amount: 0,
-    attainment: 0,
     startDate: new Date(),
     endDate: new Date(),
     curCount: 0,

@@ -4,18 +4,18 @@ import { IMemeberInfo } from '../../../../interfaces/interfaces';
 import ProfileImg from '../../../common/elem/ProfileImg';
 
 // TODO: 참가자 달성률
-const GroupGoalParticipantCard = ({ nickname, img }: IMemeberInfo) => {
+const ParticipantCard = ({ nickname, img }: IMemeberInfo) => {
   return (
-    <GroupGoalParticipantCardWrapper>
+    <Wrapper>
       <PaticpantInfoWrapper>
         <ProfileImg url={img} size={25} />
         <Nickname>{nickname}</Nickname>
       </PaticpantInfoWrapper>
-    </GroupGoalParticipantCardWrapper>
+    </Wrapper>
   );
 };
 
-const GroupGoalParticipantCardWrapper = styled.div`
+const Wrapper = styled.div`
   width: 90%;
   height: 60px;
   border-radius: 16px;
@@ -40,4 +40,4 @@ const Nickname = styled.span`
   font: ${(props) => props.theme.paragraphsP3M};
 `;
 
-export default GroupGoalParticipantCard;
+export default ParticipantCard;

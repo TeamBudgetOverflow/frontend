@@ -69,15 +69,14 @@ export interface ISearchGoal {
 }
 
 export interface IGoalDetail {
-  createdUserId: number;
-  id: number;
+  userId: number;
+  goalId: number;
+  nickname: string;
   title: string;
   emoji: string;
-  description: string;
-  isPrivate: boolean;
-  hashTag: Array<string>;
   amount: number;
-  attainment: number;
+  description: string;
+  hashTag: Array<string>;
   startDate: Date;
   endDate: Date;
   curCount: number;

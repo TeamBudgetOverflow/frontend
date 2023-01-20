@@ -1,7 +1,8 @@
 import React from 'react';
 import { useMutation } from 'react-query';
 import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
+
+import TextButton from '../../common/elem/TextButton';
 
 import { goalApi } from '../../../apis/client';
 
@@ -14,15 +15,8 @@ const GoalDeleteButton = () => {
   const handleDeleteGoalButton = () => {
     mutate();
   };
-  return <DelelteButton onClick={() => handleDeleteGoalButton()}>삭제하기</DelelteButton>;
-};
 
-const DelelteButton = styled.button`
-  max-width: 370px;
-  width: 100%;
-  height: 51px;
-  border-radius: 8px;
-  padding: 12px 16.5px;
-`;
+  return <TextButton text='삭제하기' onClickHandler={handleDeleteGoalButton} />;
+};
 
 export default GoalDeleteButton;
