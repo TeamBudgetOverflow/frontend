@@ -12,11 +12,15 @@ const GroupGoalCardSmall = ({ goal }: { goal: ISearchGoal }) => {
     <CardWrapper onClick={() => navigate(`/goals/${goal.goalId}`)}>
       <EmojiBox unicode={goal.emoji} boxSize={72} emojiSize={72} showBg={false} />
       <TextWrapper>
-        <Title>{goal.title}</Title>
+        <Title>{goal.title.length > 7 ? `${goal.title.slice(0, 7)}...` : goal.title}</Title>
         <TagList>
-          {goal.hashTag.map((tag) => (
-            <Tag key={tag}>{`#${tag}`}</Tag>
-          ))}
+          {goal.hashTag.map((tag) => {
+            if (tag.length === 0) {
+              return <React.Fragment key={tag}></React.Fragment>;
+            }
+
+            return <Tag key={tag}>{`#${tag.length > 3 ? `${tag.slice(0, 3)}...` : tag}`}</Tag>;
+          })}
         </TagList>
       </TextWrapper>
     </CardWrapper>
@@ -24,7 +28,7 @@ const GroupGoalCardSmall = ({ goal }: { goal: ISearchGoal }) => {
 };
 
 const CardWrapper = styled.div`
-  padding: 8px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -47,6 +51,8 @@ const TextWrapper = styled.div`
 `;
 
 const Title = styled.p`
+  width: 100%;
+  text-align: center;
   font: ${(props) => props.theme.paragraphsP3M};
 `;
 
@@ -59,7 +65,7 @@ const TagList = styled.div`
 `;
 
 const Tag = styled.span`
-  font: ${(props) => props.theme.captionC3};
+  font: ${(props) => props.theme.captionC2};
   color: ${(props) => props.theme.primaryMain};
 `;
 
