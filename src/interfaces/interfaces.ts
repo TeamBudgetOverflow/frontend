@@ -87,7 +87,7 @@ export interface IGoalDetail {
 export interface IMemeberInfo {
   userId: number;
   nickname: string;
-  img: string;
+  image: string;
   attainment: number;
 }
 

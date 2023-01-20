@@ -1,37 +1,41 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { IMemeberInfo } from '../../../../interfaces/interfaces';
+
 import ProfileImg from '../../../common/elem/ProfileImg';
 
+import { IMemeberInfo } from '../../../../interfaces/interfaces';
+
 // TODO: 참가자 달성률
-const ParticipantCard = ({ nickname, img }: IMemeberInfo) => {
+const ParticipantCard = ({ userId, nickname, image, attainment }: IMemeberInfo) => {
+  const navigate = useNavigate();
+
   return (
-    <Wrapper>
+    <Wrapper onClick={() => navigate(`/users/${userId}`)}>
       <PaticpantInfoWrapper>
-        <ProfileImg url={img} size={25} />
+        <ProfileImg url={image} size={40} />
         <Nickname>{nickname}</Nickname>
       </PaticpantInfoWrapper>
+      <Attainment>{`${attainment}%`}</Attainment>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  width: 90%;
-  height: 60px;
-  border-radius: 16px;
-  flex: 0 0 auto;
-  background-color: beige;
+  padding: 10px 20px;
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
+  flex: 0 0 auto;
+  width: calc(100% - 40px);
+  border-radius: 16px;
+  background-color: ${(props) => props.theme.gray100};
 `;
 
 const PaticpantInfoWrapper = styled.div`
-  margin: 0px 20px;
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
   align-items: center;
   gap: 10px;
 `;
@@ -39,5 +43,7 @@ const PaticpantInfoWrapper = styled.div`
 const Nickname = styled.span`
   font: ${(props) => props.theme.paragraphsP3M};
 `;
+
+const Attainment = styled(Nickname)``;
 
 export default ParticipantCard;
