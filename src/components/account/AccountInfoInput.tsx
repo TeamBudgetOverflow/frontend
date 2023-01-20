@@ -133,7 +133,6 @@ function AccountInfoInput({ goalIdHandler }: AccountInfoInputProps) {
   const [postGoalErr, setPostGoalErr] = useState<boolean>(false);
   const handlePostGoal = async () => {
     try {
-      console.log(accntId);
       const goalId = await goalApi.postGoal({ ...savedPostGoal, accountId: accntId });
       setPostGoalErr(false);
       setTimeout(() => {
