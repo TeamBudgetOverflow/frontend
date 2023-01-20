@@ -8,8 +8,6 @@ import jwtDecoder from 'jwt-decode';
 import { userAPI } from '../apis/client';
 import { userInfo } from '../recoil/userAtoms';
 
-import jwtDecoder from 'jwt-decode';
-
 import { MyToken } from '../interfaces/interfaces';
 
 const PASSWORD_MAX_LENGTH = 6;
