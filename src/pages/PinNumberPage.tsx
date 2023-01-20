@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import jwtDecoder from 'jwt-decode';
@@ -17,63 +17,8 @@ const PASSWORD_MAX_LENGTH = 6;
 const PinNumberPage = () => {
   const numberInit = Array.from({ length: 10 }, (v, k) => k);
 
-  const { id: userId } = useRecoilValue(userInfo);
-  const { pinCode } = useRecoilValue(userPincode);
-
   const [numbers, setNumbers] = useState(numberInit);
   const [pinNumber, setPinNumber] = useState('');
-  const [pinCodeTry, setPinCodeTry] = useState(false);
-
-  useEffect(() => {
-    if (pinCodeTry === false && pinNumber.length === PASSWORD_MAX_LENGTH && accessToken !== null) {
-      setPinCodeAtom({ pinCode: pinNumber });
-      setPinCodeTry(true);
-      setPinNumber('');
-      return;
-    }
-    if (
-      pinCodeTry === true &&
-      pinCode === pinNumber &&
-      pinNumber.length === PASSWORD_MAX_LENGTH &&
-      accessToken !== null
-    ) {
-      postPinCodeMutate.mutate();
-      setPinCodeTry(false);
-      setPinNumber('');
-      navigate('/');
-      return;
-    }
-    if (pinNumber.length === PASSWORD_MAX_LENGTH && accessToken === null) {
-      postAccessTokenByPinCodeMutate.mutate();
-      navigate('/');
-      return;
-    }
-  }, [pinCode, pinCodeTry, pinNumber.length]);
-
-  const accessToken = localStorage.getItem('accessToken');
-  const refreshToken = localStorage.getItem('refreshToken');
-
-  const setUserInfo = useSetRecoilState(userInfo);
-
-  useEffect(() => {
-    if (accessToken !== null && refreshToken !== null) {
-      setUserInfo({
-        id: jwtDecoder<MyToken>(accessToken).userId,
-        isLogin: true,
-        isAccessToken: true,
-        isRefreshToken: true,
-      });
-    }
-
-    if (accessToken === null && refreshToken !== null) {
-      setUserInfo({
-        id: 0,
-        isLogin: false,
-        isAccessToken: false,
-        isRefreshToken: true,
-      });
-    }
-  }, [accessToken, refreshToken]);
 
   useEffect(() => {
     const numbers: number[] = [];
@@ -92,7 +37,6 @@ const PinNumberPage = () => {
   }, []);
 
   const handlePinNumberChange = (num: number) => {
-    console.log(pinNumber);
     setPinNumber(pinNumber + num.toString());
   };
 

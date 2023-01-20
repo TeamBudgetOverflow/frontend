@@ -124,7 +124,7 @@ const Header = (props: HeaderProps, ref: Ref<HTMLDivElement>) => {
 
   return (
     <HeaderLayout ref={ref}>
-      {pathname === '/home' ? <Logo size='small' /> : <></>}
+      {pathname === '/home' ? <Logo size={32} /> : <></>}
       <Button show={showBeforeBtn} onClick={handleSearch}>
         <Icon
           size={showBeforeBtn ? 32 : 0}

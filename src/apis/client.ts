@@ -32,7 +32,7 @@ tokenClient.interceptors.request.use((config) => {
 
 refreshClient.interceptors.request.use((config) => {
   config.headers = {
-    refreshToken: `${localStorage.getItem('refreshToken')}`,
+    authorization: `${localStorage.getItem('refreshToken')}`,
   };
 
   return config;
