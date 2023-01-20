@@ -49,7 +49,6 @@ const SelectAccnt = () => {
   }, [savedPostGoal]);
 
   const handlePostGoal = () => {
-    // TODO: post goal test
     goalApi.postGoal(savedPostGoal);
   };
 
