@@ -66,8 +66,8 @@ const PinNumberPage = () => {
         isAccessToken: true,
         isRefreshToken: true,
       });
-      // TODO: change to home page
-      navigate('/goals/post/type');
+
+      navigate('/home');
     } catch (e) {
       console.log('get access token error:', e);
       setUserInfo({
