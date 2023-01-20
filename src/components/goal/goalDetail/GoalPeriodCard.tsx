@@ -16,8 +16,10 @@ const GoalPeriodCard = ({ startDate, endDate }: GoalPeriodCard) => {
     <Wrapper>
       <GoalPeriodCardWrapper>
         <SubTitleSpan>기간</SubTitleSpan>
-        <PeriodWrapper>{`${dateStringTranslator(startDate)} - ${dateStringTranslator(endDate)}`}</PeriodWrapper>
-        <DdayTag dDay={dDayCalculator(endDate)} />
+        <PeriodWrapper>{`${dateStringTranslator(new Date(startDate))} - ${dateStringTranslator(
+          new Date(endDate)
+        )}`}</PeriodWrapper>
+        <DdayTag dDay={dDayCalculator(new Date(endDate))} />
       </GoalPeriodCardWrapper>
     </Wrapper>
   );

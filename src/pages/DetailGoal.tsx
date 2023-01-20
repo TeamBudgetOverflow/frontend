@@ -18,7 +18,7 @@ import { goalDetail, goalId } from '../recoil/goalsAtoms';
 
 import { goalApi } from '../apis/client';
 
-import { IGetGoalDetail } from '../interfaces/interfaces';
+import { IGoalDetail } from '../interfaces/interfaces';
 
 import { inProgressChecker, participantIdFinder, personalGoalChecker } from '../utils/detailGoalChecker';
 
@@ -26,20 +26,19 @@ const DetailGoal = () => {
   const { id: userId } = useRecoilValue(userInfo);
   const { id } = useRecoilValue(goalId);
 
-  const { isLoading: isLoading, data: goalDetailData } = useQuery<IGetGoalDetail>('goalDetail', () =>
+  const { isLoading: isLoading, data: goalDetailData } = useQuery<IGoalDetail>('goalDetail', () =>
     goalApi.getGoalDetail(id)
   );
-
   const setGoalDetail = useSetRecoilState(goalDetail);
   const goalDetails = useRecoilValue(goalDetail);
 
   useEffect(() => {
     if (!goalDetailData) return;
-    setGoalDetail(goalDetailData.goalDetail);
+    setGoalDetail(goalDetailData);
   }, [goalDetailData]);
 
   const buttonSet = (userId: number) => {
-    const findId = goalDetails?.recruitMember.findIndex((member) => member.userId === userId);
+    const findId = goalDetails?.members.findIndex((member) => member.userId === userId);
 
     if (userId === goalDetails.createdUserId) {
       return (
@@ -97,14 +96,14 @@ const DetailGoal = () => {
             emoji={goalDetails.emoji}
             startDate={goalDetails.startDate}
             headCount={goalDetails.headCount}
-            recruitCount={goalDetails.recruitCount}
+            recruitCount={goalDetails.curCount}
             amount={goalDetails.amount}
             attainment={goalDetails.attainment}
-            recruitMember={goalDetails.recruitMember}
+            recruitMember={goalDetails.members}
           />
           <GoalPeriodCard startDate={goalDetails.startDate} endDate={goalDetails.endDate} />
           <GoalDescCard description={goalDetails.description} />
-          {participantIdFinder(goalDetails.recruitMember, userId) ? (
+          {participantIdFinder(goalDetails.members, userId) ? (
             <>
               <MyGoalAccountInfoCard />
             </>
@@ -112,13 +111,13 @@ const DetailGoal = () => {
             <></>
           )}
 
-          {personalGoalChecker(goalDetails.recruitCount, goalDetails.headCount) ? (
+          {personalGoalChecker(goalDetails.curCount, goalDetails.headCount) ? (
             <>
               <PersonalGoalSpace></PersonalGoalSpace>
             </>
           ) : (
             <>
-              <GroupGoalParticipantList recruitMember={goalDetails.recruitMember} headCount={goalDetails.headCount} />
+              <GroupGoalParticipantList recruitMember={goalDetails.members} headCount={goalDetails.headCount} />
             </>
           )}
 

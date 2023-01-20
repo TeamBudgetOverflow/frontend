@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import C3TextBox from '../../common/elem/C3TextBox';
 import EmojiBox from '../../common/elem/EmojiBox';
 
-import { IParticapantInfoProps } from '../../../interfaces/interfaces';
+import { IMemeberInfo } from '../../../interfaces/interfaces';
 
 import { dateStringTranslator } from '../../../utils/dateTranslator';
 import { participantIdFinder } from '../../../utils/detailGoalChecker';
@@ -19,7 +19,7 @@ interface IGoalInfoCardProps {
   headCount: number;
   amount: number;
   attainment: number;
-  recruitMember: Array<IParticapantInfoProps>;
+  recruitMember: Array<IMemeberInfo>;
 }
 
 const GoalInfoCard = ({
@@ -53,7 +53,7 @@ const GoalInfoCard = ({
       ) : (
         <>
           {' '}
-          <StartDate>{`${dateStringTranslator(startDate)} 시작`}</StartDate>
+          <StartDate>{`${dateStringTranslator(new Date(startDate))} 시작`}</StartDate>
           <HeadCount>
             {recruitCount} / {headCount}
           </HeadCount>

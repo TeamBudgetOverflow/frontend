@@ -24,7 +24,7 @@ const MyGoalCard = ({ goal }: { goal: IGoal }) => {
           </TextContent>
         </TopLeftContent>
         <TopRightContent>
-          <DdayTag dDay={dDayCalculator(goal.endDate)} />
+          <DdayTag dDay={dDayCalculator(new Date(goal.endDate))} />
         </TopRightContent>
       </TopContent>
       <BottomContent>
