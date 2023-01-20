@@ -20,7 +20,7 @@ const AuthLayout = () => {
       navigate('/login');
       return;
     }
-  }, []);
+  }, [isAccessToken, isRefreshToken]);
 
   const { pathname } = useLocation();
   const headerRef = useRef<HTMLDivElement>(null);
