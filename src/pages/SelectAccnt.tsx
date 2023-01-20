@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import Info from '../components/common/alert/Info';
-import AccountSelect from '../components/goal/post/AccountSelect';
+import AccountSelect from '../components/account/AccountSelectSection';
 import TextButton from '../components/common/elem/TextButton';
 
 import { userInfo } from '../recoil/userAtoms';
@@ -14,8 +14,24 @@ import { IAccount } from '../interfaces/interfaces';
 
 import { accountApi, goalApi } from '../apis/client';
 import { useNavigate } from 'react-router-dom';
+import { accntInfo, selectedBankInfo } from '../recoil/accntAtoms';
 
 const SelectAccnt = () => {
+  const setSelectedBankInfo = useSetRecoilState(selectedBankInfo);
+  const setAccntInfo = useSetRecoilState(accntInfo);
+  useEffect(() => {
+    setSelectedBankInfo({
+      bankId: 0,
+      bankCode: '',
+      bankName: '',
+    });
+
+    setAccntInfo({
+      accntNo: '',
+      bankCode: '',
+    });
+  }, []);
+
   const savedPostGoal = useRecoilValue(postGoal);
   const { id } = useRecoilValue(userInfo);
   const [accounts, setAccounts] = useState<Array<IAccount>>([]);
@@ -33,7 +49,6 @@ const SelectAccnt = () => {
   }, [savedPostGoal]);
 
   const handlePostGoal = () => {
-    // TODO: post goal test
     goalApi.postGoal(savedPostGoal);
   };
 

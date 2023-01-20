@@ -20,7 +20,7 @@ const AuthLayout = () => {
       navigate('/login');
       return;
     }
-  }, []);
+  }, [isAccessToken, isRefreshToken]);
 
   const { pathname } = useLocation();
   const headerRef = useRef<HTMLDivElement>(null);
@@ -29,7 +29,8 @@ const AuthLayout = () => {
 
   useEffect(() => {
     if (!headerRef.current || !navRef.current) return;
-    if (pathname.includes('/goals/post')) return setHeaderNavHeight(headerRef.current.clientHeight);
+    if (pathname.includes('/goals/') && !pathname.includes('lookup'))
+      return setHeaderNavHeight(headerRef.current.clientHeight);
     setHeaderNavHeight(headerRef.current.clientHeight + navRef.current.clientHeight);
   }, [headerRef.current?.clientHeight, navRef.current?.clientHeight, pathname]);
 

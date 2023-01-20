@@ -15,38 +15,38 @@ const GoalPeriodCard = ({ startDate, endDate }: GoalPeriodCard) => {
   return (
     <Wrapper>
       <GoalPeriodCardWrapper>
-        <SubTitleSpan>기간</SubTitleSpan>
-        <PeriodWrapper>{`${dateStringTranslator(startDate)} - ${dateStringTranslator(endDate)}`}</PeriodWrapper>
-        <DdayTag dDay={dDayCalculator(endDate)} />
+        <SubTitle>기간</SubTitle>
+        <Period>{`${dateStringTranslator(new Date(startDate))} - ${dateStringTranslator(new Date(endDate))}`}</Period>
       </GoalPeriodCardWrapper>
+      <DdayTag dDay={dDayCalculator(new Date(endDate))} />
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  width: 90%;
-  height: 46px;
-  border-radius: 16px;
-  background-color: beige;
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  width: calc(100% - 40px);
+  border-radius: 16px;
+  border: 1px solid ${(props) => props.theme.gray300};
 `;
 
 const GoalPeriodCardWrapper = styled.div`
-  width: 100%;
-  height: 70%;
-  margin: 10px 20px;
   display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
+  gap: 20px;
 `;
 
-const SubTitleSpan = styled.div`
-  width: 15%;
+const SubTitle = styled.div`
   font: ${(props) => props.theme.captionC1};
+  color: ${(props) => props.theme.gray600};
 `;
 
-const PeriodWrapper = styled.div`
-  width: 70%;
-  padding-top: 3px;
+const Period = styled.div`
+  font: ${(props) => props.theme.paragraphsP3M};
 `;
 export default GoalPeriodCard;

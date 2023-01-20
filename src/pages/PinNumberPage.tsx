@@ -16,7 +16,7 @@ const PASSWORD_MAX_LENGTH = 6;
 
 // TODO: keypad 디자인이랑 똑같게
 // TODO: pinnumber 시간지나면 안보이게
-const PinNumberInputPage = () => {
+const PinNumberPage = () => {
   const numberInit = Array.from({ length: 10 }, (v, k) => k);
 
   const { id: userId } = useRecoilValue(userInfo);
@@ -124,8 +124,8 @@ const PinNumberInputPage = () => {
         isAccessToken: true,
         isRefreshToken: true,
       });
-      // TODO: change to home page
-      navigate('/goals/post/type');
+
+      navigate('/home');
     } catch (e) {
       console.log('get access token error:', e);
       setUserInfo({
@@ -217,4 +217,4 @@ const NumButtonFlex = styled.button`
   }
 `;
 
-export default PinNumberInputPage;
+export default PinNumberPage;

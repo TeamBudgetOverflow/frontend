@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import ProgressBar from '../../common/elem/ProgressBar';
-import InputBox from '../../common/elem/InputBox';
-import ValidateMsg from '../../common/elem/ValidateMsg';
-import TextButton from '../../common/elem/TextButton';
+import ProgressBar from '../common/elem/ProgressBar';
+import InputBox from '../common/elem/InputBox';
+import ValidateMsg from '../common/elem/ValidateMsg';
+import TextButton from '../common/elem/TextButton';
 
-import useTxtInput from '../../../hooks/useTxtInput';
+import useTxtInput from '../../hooks/useTxtInput';
 
-import { bankAPI } from '../../../apis/client';
+import { bankAPI } from '../../apis/client';
 import { useRecoilValue } from 'recoil';
-import { accntInfo } from '../../../recoil/accntAtoms';
+import { accntInfo } from '../../recoil/accntAtoms';
 
 interface AccountNoValidateProps {
   oriSeqNo: string;
@@ -33,9 +33,8 @@ const AccountNoValidate = ({ oriSeqNo, authHandler, accntNoEditHandler }: Accoun
   });
 
   const handleAuthAccnt = async (authString: string) => {
-    // TODO: test API request
     try {
-      // const { data } = await bankAPI.authAccnt({ oriSeqNo, authString });
+      const { data } = await bankAPI.authAccnt({ oriSeqNo, authString });
       authHandler(true);
     } catch (e) {
       alert(e);
