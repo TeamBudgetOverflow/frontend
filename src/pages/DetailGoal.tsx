@@ -131,7 +131,7 @@ const DetailGoal = () => {
             ) : (
               <>
                 <SubTitle>참가자 {`${goalDetails.curCount} / ${goalDetails.headCount}`}</SubTitle>
-                <ParticipantList recruitMember={goalDetails.members} headCount={goalDetails.headCount} />
+                <ParticipantList recruitMember={goalDetails.members} />
               </>
             )}
           </BottomContent>

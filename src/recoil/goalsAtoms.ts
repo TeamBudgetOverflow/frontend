@@ -46,7 +46,7 @@ export const goalDetail = atom<IGoalDetail>({
     endDate: new Date(),
     curCount: 0,
     headCount: 0,
-    members: [{ userId: 0, nickname: '', img: '', attainment: 0 }],
+    members: [{ userId: 0, nickname: '', image: '', attainment: 0 }],
   },
 });
 
