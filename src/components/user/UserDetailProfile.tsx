@@ -19,7 +19,7 @@ interface UserDetailProfileProps {
 const UserDetailProfile = ({ userId, successGoalsCnt, workingGoalsCnt }: UserDetailProfileProps) => {
   const { id } = useRecoilValue(userInfo);
   const [profile, setProfile] = useState<IUserProfile>({
-    img: '',
+    image: '',
     nickname: '',
     description: '',
   });
@@ -44,7 +44,7 @@ const UserDetailProfile = ({ userId, successGoalsCnt, workingGoalsCnt }: UserDet
     <Wrapper>
       <TopContent>
         <ProfileImg
-          url={profile?.img.length === 0 ? require('../../assets/img/default.png') : profile?.img}
+          url={profile?.image.length === 0 ? require('../../assets/img/default.png') : profile?.image}
           size={85}
         />
         <UserGoalsStaticList>

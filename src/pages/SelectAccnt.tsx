@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
-import Alert from '../components/common/alert/Alert';
+import Info from '../components/common/alert/Info';
 import AccountSelect from '../components/goal/post/AccountSelect';
 import TextButton from '../components/common/elem/TextButton';
 
 import { userInfo } from '../recoil/userAtoms';
-import { banksInfo } from '../recoil/accntAtoms';
 import { postGoal } from '../recoil/goalsAtoms';
 
 import { IAccount } from '../interfaces/interfaces';
-import { IBank } from '../interfaces/interfaces';
 
 import { accountApi, goalApi } from '../apis/client';
 import { useNavigate } from 'react-router-dom';
@@ -20,14 +18,6 @@ import { useNavigate } from 'react-router-dom';
 const SelectAccnt = () => {
   const savedPostGoal = useRecoilValue(postGoal);
   const { id } = useRecoilValue(userInfo);
-
-  const { data: banks } = useQuery<Array<IBank>>('getBanks', () => goalApi.getBanks());
-  const setBanksInfo = useSetRecoilState(banksInfo);
-  useEffect(() => {
-    if (!banks) return;
-    setBanksInfo(banks);
-  }, [banks]);
-
   const [accounts, setAccounts] = useState<Array<IAccount>>([]);
   const { isLoading: isLoadingAccounts, data } = useQuery<Array<IAccount>>('getAccounts', () =>
     accountApi.getAccounts(id)
@@ -39,7 +29,7 @@ const SelectAccnt = () => {
 
   const [isSelected, setIsSelected] = useState<boolean>(false);
   useEffect(() => {
-    if (savedPostGoal.accntId !== 0) setIsSelected(true);
+    if (savedPostGoal.accountId !== 0) setIsSelected(true);
   }, [savedPostGoal]);
 
   const handlePostGoal = () => {
@@ -53,11 +43,11 @@ const SelectAccnt = () => {
     <Wrapper>
       {accounts.length === 0 ? (
         <>
-          <Alert>
+          <Info>
             연결된 계좌가 없습니다.
             <br />
             계좌를 새로 연결하시겠습니까?
-          </Alert>
+          </Info>
           <TextButton text='다음' onClickHandler={() => navigate('/goals/post/account/post')} />
         </>
       ) : (

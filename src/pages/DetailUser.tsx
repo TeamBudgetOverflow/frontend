@@ -29,7 +29,7 @@ const DetailUser = () => {
   );
   const setUserGoals = useSetRecoilState(userGoals);
   const filterPrivateUserGoals = (userGoalsData: IGoals) => {
-    const filtered = userGoalsData.goals.filter((goal) => !goal.isPrivate);
+    const filtered = userGoalsData.result.filter((goal) => !goal.isPrivate);
     return filtered;
   };
   useEffect(() => {
@@ -38,7 +38,7 @@ const DetailUser = () => {
       const filteredGoals = filterPrivateUserGoals(userGoalsData);
       setUserGoals(filteredGoals);
     }
-    setUserGoals(userGoalsData.goals);
+    setUserGoals(userGoalsData.result);
   }, [userGoalsData]);
 
   const goals = useRecoilValue(userGoals);

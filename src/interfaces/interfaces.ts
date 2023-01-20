@@ -1,26 +1,51 @@
 export interface IUserProfile {
-  img: string;
+  image: string;
   nickname: string;
   description: string;
 }
 
 export interface IGoals {
-  goals: Array<IGoal>;
+  result: Array<IGoal>;
 }
 
 export interface IGoal {
-  id: number;
-  emoji: string;
-  title: string;
-  description: string;
-  isPrivate: boolean;
-  hashtag: Array<string>;
+  userId: number;
+  goalId: number;
+  nickname: string;
   amount: number;
   attainment: number;
+  curCount: number;
+  headCount: number;
   startDate: Date;
   endDate: Date;
-  headCount: number;
+  title: string;
+  hashtag: Array<string>;
+  emoji: string;
+  description: string;
+  createdAt: Date;
+  updatedAt: Date;
+  isPrivate: boolean;
+}
+
+export interface ISearchGoals {
+  result: Array<ISearchGoal>;
+}
+
+export interface ISearchGoal {
+  userId: number;
+  goalId: number;
+  nickname: string;
+  amount: number;
   curCount: number;
+  headCount: number;
+  startDate: Date;
+  endDate: Date;
+  title: string;
+  hashtag: Array<string>;
+  emoji: string;
+  description: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface IBank {
@@ -45,7 +70,7 @@ export interface IPostGoal {
   headCount: number;
   isPrivate: boolean;
   isManual: boolean;
-  accntId: number;
+  accountId: number;
 }
 
 export interface IAccount {
@@ -116,11 +141,4 @@ export interface MyToken {
   tokenType: string;
   iat: number;
   exp: number;
-}
-
-export interface IUserInfo {
-  id: number;
-  isLogin: boolean;
-  isAccessToken: boolean;
-  isRefreshToken: boolean;
 }

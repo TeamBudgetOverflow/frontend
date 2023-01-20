@@ -21,7 +21,7 @@ interface NavProps {
 const pathMenuConverter = (path: string) => {
   if (path.includes('/goals/lookup')) return Menu.lookup;
   if (path.includes('/users/')) return Menu.my;
-  if (path === '/') return Menu.home;
+  if (path === '/home') return Menu.home;
 
   return Menu.none;
 };
@@ -35,7 +35,7 @@ const Navigation = (props: NavProps, ref: Ref<HTMLDivElement>) => {
     switch (menu) {
       case Menu.home:
         setSelectedMenu(Menu.home);
-        return navigate('/');
+        return navigate('/home');
       case Menu.lookup:
         setSelectedMenu(Menu.lookup);
         return navigate('/goals/lookup');
@@ -49,6 +49,7 @@ const Navigation = (props: NavProps, ref: Ref<HTMLDivElement>) => {
   const { pathname } = useLocation();
   useEffect(() => {
     if (pathname.includes('/goals/post')) return setShow(false);
+    if (pathname === '/') return setShow(false);
     if (pathname === '/login') return setShow(false);
     if (pathname === '/pinnumber') return setShow(false);
     setShow(true);

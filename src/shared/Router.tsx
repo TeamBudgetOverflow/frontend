@@ -1,8 +1,10 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import Layout from './Layout';
+import PublicLayout from './PublicLayout';
+import RefreshLayout from './RefreshLayout';
+import AuthLayout from './AuthLayout';
+import Redirect from '../pages/Redirect';
 import Home from '../pages/Home';
 import LoginPage from '../pages/LoginPage';
 import PinNumberInputPage from '../pages/PinNumberInputPage';
@@ -19,43 +21,33 @@ import KakaoLogin from '../pages/KakaoLogin';
 import GoogleLogin from '../pages/GoogleLogin';
 import NaverLogin from '../pages/NaverLogin';
 
-import { userInfo } from '../recoil/userAtoms';
-
 const Router = () => {
-  const { isLogin, isAccessToken, isRefreshToken } = useRecoilValue(userInfo);
-
-  const tokenCheck = () => {
-    if (isLogin === true) {
-      return <Navigate to='/home' />;
-    } else if (isLogin === false && isAccessToken === false && isRefreshToken === true) {
-      return <Navigate to='/pinnumber' />;
-    } else if (isLogin === false && isAccessToken === false && isRefreshToken === false) {
-      return <Navigate to='/login' />;
-    }
-  };
-
   return (
     <BrowserRouter>
-      <Layout>
-        <Routes>
-          <Route path='/' element={tokenCheck()} />
-          <Route path='/home' element={isLogin ? <Home /> : <Navigate to='/login' />} />
-          <Route path='/login' element={!isLogin ? <LoginPage /> : <Navigate to='/home' />} />
+      <Routes>
+        <Route element={<PublicLayout />}>
+          <Route path='/login' element={<LoginPage />} />
           <Route path='/kakaologin' element={<KakaoLogin />} />
           <Route path='/naverlogin' element={<NaverLogin />} />
           <Route path='/googlelogin' element={<GoogleLogin />} />
+        </Route>
+        <Route element={<RefreshLayout />}>
           <Route path='/pinnumber' element={<PinNumberInputPage />} />
-          <Route path='/agreement' element={isLogin ? <AgreementOfCollectionPersonalInfo /> : <Navigate to='/' />} />
-          <Route path='/goals/post/type' element={isLogin ? <SelectType /> : <Navigate to='/' />} />
-          <Route path='/goals/post/data/:type' element={isLogin ? <PostGoal /> : <Navigate to='/' />} />
-          <Route path='/goals/post/account/choose' element={isLogin ? <SelectAccnt /> : <Navigate to='/' />} />
-          <Route path='/goals/post/account/post' element={isLogin ? <CreateAccnt /> : <Navigate to='/' />} />
-          <Route path='/goals/:id' element={isLogin ? <DetailGoal /> : <Navigate to='/' />} />
-          <Route path='/goals/lookup' element={isLogin ? <GroupGoals /> : <Navigate to='/' />} />
-          <Route path='/goals/lookup/search' element={isLogin ? <SearchGoals /> : <Navigate to='/' />} />
-          <Route path='/users/:id' element={isLogin ? <DetailUser /> : <Navigate to='/' />} />
-        </Routes>
-      </Layout>
+        </Route>
+        <Route element={<AuthLayout />}>
+          <Route path='/home' element={<Home />} />
+          <Route path='/agreement' element={<AgreementOfCollectionPersonalInfo />} />
+          <Route path='/goals/post/type' element={<SelectType />} />
+          <Route path='/goals/post/data/:type' element={<PostGoal />} />
+          <Route path='/goals/post/account/choose' element={<SelectAccnt />} />
+          <Route path='/goals/post/account/post' element={<CreateAccnt />} />
+          <Route path='/goals/:id' element={<DetailGoal />} />
+          <Route path='/goals/lookup' element={<GroupGoals />} />
+          <Route path='/goals/lookup/search' element={<SearchGoals />} />
+          <Route path='/users/:id' element={<DetailUser />} />
+        </Route>
+        <Route path='/' element={<Redirect />} />
+      </Routes>
     </BrowserRouter>
   );
 };

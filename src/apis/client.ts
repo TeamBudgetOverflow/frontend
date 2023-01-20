@@ -8,6 +8,8 @@ import {
   IPostGoal,
   IValidateAccount,
   IReqAuthAccout,
+  IGoal,
+  ISearchGoals,
 } from '../interfaces/interfaces';
 
 const BASE_URL = process.env.REACT_APP_API_ENDPOINT;
@@ -17,10 +19,12 @@ const noneTokenClient = axios.create({
   baseURL: BASE_URL,
   responseType: 'json',
   headers: {
+    'Cache-Control': 'no-cache',
     'Content-Type': 'application/json',
   },
 });
 const tokenClient = axios.create({ baseURL: BASE_URL });
+const refreshClient = axios.create({ baseURL: BASE_URL });
 const bankClient = axios.create({ baseURL: BANK_BASE_URL });
 bankClient.defaults.headers.common['Content-Type'] = 'application/json';
 bankClient.defaults.headers.common['user-id'] = process.env.REACT_APP_BANK_API_USER_ID;
@@ -28,7 +32,15 @@ bankClient.defaults.headers.common['Hkey'] = process.env.REACT_APP_BANK_API_HKEY
 
 tokenClient.interceptors.request.use((config) => {
   config.headers = {
-    Authorization: `${localStorage.getItem('accessToken')}`,
+    authorization: `${localStorage.getItem('accessToken')}`,
+  };
+
+  return config;
+});
+
+refreshClient.interceptors.request.use((config) => {
+  config.headers = {
+    refreshToken: `${localStorage.getItem('refreshToken')}`,
   };
 
   return config;
@@ -51,8 +63,9 @@ tokenClient.interceptors.response.use(
   (response) => {
     return response;
   },
-  async (error) => {
-    if (error.response?.status === 401) {
+  (error) => {
+    if (error.response?.status === 401 || error.response?.status === 410) {
+      localStorage.removeItem('accessToken');
       // TODO: 리프레시 토큰을 활용한 재인증 요청 api를 사용
     }
     const errorResponse = {
@@ -64,46 +77,43 @@ tokenClient.interceptors.response.use(
 );
 
 export const userAPI = {
-  getKakaoSignup: async (code: string | null) => {
+  getKakaoSignup: async (code: string) => {
     const { data } = await noneTokenClient.get('/users/auth/kakao?code=' + code);
 
     return data;
   },
 
-  getNaverSignup: async (code: string | null) => {
+  getNaverSignup: async (code: string) => {
     const { data } = await noneTokenClient.get(`/users/auth/naver?code=${code}`);
 
-    localStorage.setItem('accessToken', data.accessToken);
-    localStorage.setItem('refreshToken', data.refreshToken);
     return data;
   },
 
-  getGoogleSignup: async (code: string | null) => {
+  getGoogleSignup: async (code: string) => {
     const { data } = await noneTokenClient.get('/users/auth/google?code=' + code);
 
     return data;
   },
 
-  postPinCode: async (userId: number, pinCode: object) => {
-    const { data } = await tokenClient.post(`/users/${userId}/pincode`, pinCode);
+  postPinCode: async (userId: number, pinCode: string) => {
+    const { data } = await tokenClient.post(`/users/${userId}/pincode`, { pinCode: pinCode });
 
     return data;
   },
 
-  // TODO: 리프레신 토큰 전달
-  postAccessTokenByPinCode: async (pinCode: object) => {
-    const { data } = await tokenClient.post('/users/pinCode', pinCode);
+  postAccessTokenByPinCode: async (pinCode: string) => {
+    const { data } = await refreshClient.post('/users/pinCode', { pinCode: pinCode });
 
     return data;
   },
 
   getUserProfile: async (userId: number) => {
-    // const { data } = await tokenClient.get(`/users/${userId}`);
-    const data = {
-      img: '',
-      nickname: '유진',
-      description: '안녕하세요',
-    };
+    const { data } = await tokenClient.get(`/users/${userId}`);
+    // const data = {
+    //   img: '',
+    //   nickname: '유진',
+    //   description: '안녕하세요',
+    // };
     return data;
   },
 
@@ -210,7 +220,7 @@ export const userAPI = {
 
 export const accountApi = {
   getAccounts: async (userId: number): Promise<Array<IAccount>> => {
-    // const { data } = await tokenClient.get(`/accounts/${userId}`);
+    const { data } = await tokenClient.get(`/accounts/${userId}`);
     // const data = [
     //   {
     //     id: 1,
@@ -218,20 +228,19 @@ export const accountApi = {
     //     accntNo: '11011102012',
     //   },
     // ];
-
-    const data: Array<IAccount> = [];
+    // const data: Array<IAccount> = [];
 
     return data;
   },
-  createManualAccount: async (userId: number) => {
+  createManualAccount: async (userId: number): Promise<number> => {
     const { data } = await tokenClient.post(`/accounts/${userId}/manual`);
 
-    return data;
+    return data.accountId;
   },
   createAutoAccount: async (userId: number, accntInfo: IPostAccount) => {
     const { data } = await tokenClient.post(`/accounts/${userId}`, accntInfo);
 
-    return data;
+    return data.accountId;
   },
 };
 
@@ -269,16 +278,83 @@ export const goalApi = {
   postGoal: async (goalData: IPostGoal) => {
     const { data } = await tokenClient.post(`/goals`, goalData);
 
-    return data;
+    return data.goalId;
   },
-  getGoals: async () => {
+  getGoals: async (): Promise<ISearchGoals> => {
     const { data } = await tokenClient.get(`/goals`);
+    // const data = {
+    //   result: [
+    //     {
+    //       userId: 1,
+    //       goalId: 1,
+    //       nickname: '태근',
+    //       amount: 100000,
+    //       curCount: 1,
+    //       headCount: 10,
+    //       startDate: new Date('2023-01-18'),
+    //       endDate: new Date('2023-01-20'),
+    //       title: '생일선물1',
+    //       hashtag: ['생일선물', '소액모으기'],
+    //       emoji: '26f0-fe0f',
+    //       description: '친구 생일선물 구매비용 모으기',
+    //       createdAt: new Date('2023-01-05'),
+    //       updatedAt: new Date('2023-01-19'),
+    //     },
+    //     {
+    //       userId: 2,
+    //       goalId: 2,
+    //       nickname: '나래',
+    //       amount: 150000,
+    //       curCount: 3,
+    //       headCount: 10,
+    //       startDate: new Date('2023-01-27'),
+    //       endDate: new Date('2023-02-22'),
+    //       title: '생일선물2',
+    //       hashtag: ['생일선물', '소액모으기'],
+    //       emoji: '26f0-fe0f',
+    //       description: '친구 생일선물 구매비용 모으기',
+    //       createdAt: new Date('2023-01-10'),
+    //       updatedAt: new Date('2023-01-24'),
+    //     },
+    //     {
+    //       userId: 3,
+    //       goalId: 3,
+    //       nickname: '유진',
+    //       amount: 200000,
+    //       curCount: 10,
+    //       headCount: 10,
+    //       startDate: new Date('2023-01-24'),
+    //       endDate: new Date('2023-01-31'),
+    //       title: '생일선물3',
+    //       hashtag: ['생일선물', '소액모으기'],
+    //       emoji: '26f0-fe0f',
+    //       description: '친구 생일선물 구매비용 모으기',
+    //       createdAt: new Date('2023-01-20'),
+    //       updatedAt: new Date('2023-01-20'),
+    //     },
+    //     {
+    //       userId: 4,
+    //       goalId: 4,
+    //       nickname: '제승',
+    //       amount: 250000,
+    //       curCount: 1,
+    //       headCount: 10,
+    //       startDate: new Date('2023-01-25'),
+    //       endDate: new Date('2023-02-01'),
+    //       title: '생일선물4',
+    //       hashtag: ['생일선물', '소액모으기'],
+    //       emoji: '26f0-fe0f',
+    //       description: '친구 생일선물 구매비용 모으기',
+    //       createdAt: new Date('2023-01-19'),
+    //       updatedAt: new Date('2023-01-20'),
+    //     },
+    //   ],
+    // };
 
-    return data;
+    return data.result;
   },
   getGoalDetail: async (goalId: number) => {
     const { data } = await tokenClient.get(`/goals/${goalId}`);
-
     // const data = {
     //   goalDetail: {
     //     createdUserId: 2,
@@ -328,58 +404,70 @@ export const goalApi = {
   getGoalsByWord: async (query: string) => {
     const { data } = await tokenClient.get(`/goals/getgoals/search` + query);
     // const data = {
-    //   goals: [
+    //   result: [
     //     {
-    //       id: 1,
-    //       emoji: '26f0-fe0f',
-    //       title: '생일선물',
-    //       description: '친구 생일선물 구매비용 모으기',
-    //       isPrivate: false,
-    //       hashtag: ['생일선물', '소액모으기'],
+    //       userId:1
+    //       goalId:1,
+    //       nickname: '태근'
     //       amount: 100000,
-    //       attainment: 80,
-    //       startDate: new Date(),
+    //       curCount: 1,
+    //       headCount: 10,
+    //       startDate: new Date('2023-01-10'),
     //       endDate: new Date('2023-01-20'),
-    //       headCount: 1,
-    //     },
-    //     {
-    //       id: 2,
-    //       emoji: '26f0-fe0f',
-    //       title: 'test2',
-    //       description: 'test입니다2',
-    //       isPrivate: false,
+    //       title: '생일선물',
     //       hashtag: ['생일선물', '소액모으기'],
-    //       amount: 150000,
-    //       attainment: 80,
-    //       startDate: new Date(),
-    //       endDate: new Date('2023-02-15'),
-    //       headCount: 3,
+    //       emoji: '26f0-fe0f',
+    //       description: '친구 생일선물 구매비용 모으기',
+    //       createdAt: new Date('2023-01-05'),
+    //       updatedAt: new Date('2023-01-19'),
     //     },
     //     {
-    //       id: 3,
-    //       emoji: '26f0-fe0f',
-    //       title: 'test3',
-    //       description: 'test입니다3',
-    //       isPrivate: false,
-    //       hashtag: ['생일선물', '랄라'],
+    //       userId:2
+    //       goalId:2,
+    //       nickname: '나래'
     //       amount: 150000,
-    //       attainment: 80,
-    //       startDate: new Date(),
-    //       endDate: new Date('2023-03-10'),
-    //       headCount: 3,
+    //       curCount: 3,
+    //       headCount: 10,
+    //       startDate: new Date('2023-01-15'),
+    //       endDate: new Date('2023-01-22'),
+    //       title: '생일선물',
+    //       hashtag: ['생일선물', '소액모으기'],
+    //       emoji: '26f0-fe0f',
+    //       description: '친구 생일선물 구매비용 모으기',
+    //       createdAt: new Date('2023-01-10'),
+    //       updatedAt: new Date('2023-01-24'),
     //     },
     //     {
-    //       id: 4,
+    //       userId:3
+    //       goalId:3,
+    //       nickname: '유진'
+    //       amount: 200000,
+    //       curCount: 10,
+    //       headCount: 10,
+    //       startDate: new Date('2023-01-24'),
+    //       endDate: new Date('2023-01-31'),
+    //       title: '생일선물',
+    //       hashtag: ['생일선물', '소액모으기'],
     //       emoji: '26f0-fe0f',
-    //       title: 'test4',
-    //       description: 'test입니다4',
-    //       isPrivate: false,
-    //       hashtag: ['생일선물', '랄라'],
-    //       amount: 50000,
-    //       attainment: 20,
-    //       startDate: new Date(),
-    //       endDate: new Date('2023-04-10'),
-    //       headCount: 3,
+    //       description: '친구 생일선물 구매비용 모으기',
+    //       createdAt: new Date('2023-01-20'),
+    //       updatedAt: new Date('2023-01-20'),
+    //     },
+    //     {
+    //       userId:4
+    //       goalId:4,
+    //       nickname: '제승'
+    //       amount: 250000,
+    //       curCount: 1,
+    //       headCount: 10,
+    //       startDate: new Date('2023-01-25'),
+    //       endDate: new Date('2023-02-01'),
+    //       title: '생일선물',
+    //       hashtag: ['생일선물', '소액모으기'],
+    //       emoji: '26f0-fe0f',
+    //       description: '친구 생일선물 구매비용 모으기',
+    //       createdAt: new Date('2023-01-19'),
+    //       updatedAt: new Date('2023-01-20'),
     //     },
     //   ],
     // };

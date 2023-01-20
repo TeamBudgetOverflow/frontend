@@ -1,13 +1,9 @@
 import { atom } from 'recoil';
+import { recoilPersist } from 'recoil-persist';
 
 import { IGoal } from '../interfaces/interfaces';
 
-export const userPincode = atom({
-  key: 'pinCode',
-  default: {
-    pinCode: '',
-  },
-});
+const { persistAtom } = recoilPersist();
 
 export const userInfo = atom({
   key: 'userInfo',
@@ -17,12 +13,13 @@ export const userInfo = atom({
     isAccessToken: false,
     isRefreshToken: false,
   },
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const userProfile = atom({
   key: 'userProfile',
   default: {
-    img: '',
+    image: '',
     nickname: '',
     description: '',
   },
@@ -32,18 +29,22 @@ export const userGoals = atom<Array<IGoal>>({
   key: 'userGoals',
   default: [
     {
-      id: 0,
-      emoji: '',
-      title: '',
-      description: '',
-      isPrivate: false,
-      hashtag: [''],
+      userId: 0,
+      goalId: 0,
+      nickname: '',
       amount: 0,
       attainment: 0,
+      curCount: 0,
+      headCount: 0,
       startDate: new Date(),
       endDate: new Date(),
-      headCount: 0,
-      curCount: 0,
+      title: '',
+      hashtag: [''],
+      emoji: '',
+      description: '',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isPrivate: false,
     },
   ],
 });
