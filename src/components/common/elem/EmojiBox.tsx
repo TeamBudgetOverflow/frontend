@@ -12,7 +12,7 @@ interface Emoji {
 const EmojiBox = ({ unicode, boxSize, emojiSize, showBg = true }: Emoji) => {
   return (
     <Wrapper size={`${boxSize}px`} showBg={showBg}>
-      <Emoji unified={unicode} size={emojiSize} />
+      <Emoji unified={!unicode ? '26f0-fe0f' : unicode} size={emojiSize} />
     </Wrapper>
   );
 };
