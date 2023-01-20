@@ -51,7 +51,7 @@ const Navigation = (props: NavProps, ref: Ref<HTMLDivElement>) => {
     if (pathname.includes('/goals/') && !pathname.includes('lookup')) return setShow(false);
     setShow(true);
 
-    // handleMenuSelect(pathMenuConverter(pathname));
+    handleMenuSelect(pathMenuConverter(pathname));
   }, [pathname]);
   return (
     <Wrapper show={show} ref={ref}>
