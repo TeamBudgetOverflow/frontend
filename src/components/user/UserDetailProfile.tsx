@@ -43,10 +43,7 @@ const UserDetailProfile = ({ userId, successGoalsCnt, workingGoalsCnt }: UserDet
   return (
     <Wrapper>
       <TopContent>
-        <ProfileImg
-          url={profile?.image.length === 0 ? require('../../assets/img/default.png') : profile?.image}
-          size={85}
-        />
+        <ProfileImg url={profile?.image} size={85} />
         <UserGoalsStaticList>
           <UserGoalsStatic>
             <Info>{successGoalsCnt}</Info>
