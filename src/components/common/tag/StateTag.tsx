@@ -5,7 +5,7 @@ const StateTag = ({ state }: { state: 'working' | 'recruiting' }) => {
   return (
     <Tag>
       <StateCircle state={state} />
-      <Text state={state}>{state === 'working' ? '진행 예정' : '모집중'}</Text>
+      <Text state={state}>{state === 'working' ? '진행중' : '진행 예정'}</Text>
     </Tag>
   );
 };
