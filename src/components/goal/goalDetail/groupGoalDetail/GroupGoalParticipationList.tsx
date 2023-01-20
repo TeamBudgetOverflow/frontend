@@ -15,7 +15,7 @@ const GroupGoalParticipantList = ({ recruitMember, headCount }: IGoalParticipnat
       key={member.userId}
       userId={member.userId}
       nickname={member.nickname}
-      img={member.img}
+      image={member.image}
       attainment={member.attainment}
     />
   ));

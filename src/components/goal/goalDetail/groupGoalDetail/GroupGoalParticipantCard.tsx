@@ -4,11 +4,11 @@ import { IMemeberInfo } from '../../../../interfaces/interfaces';
 import ProfileImg from '../../../common/elem/ProfileImg';
 
 // TODO: 참가자 달성률
-const GroupGoalParticipantCard = ({ nickname, img }: IMemeberInfo) => {
+const GroupGoalParticipantCard = ({ nickname, image }: IMemeberInfo) => {
   return (
     <GroupGoalParticipantCardWrapper>
       <PaticpantInfoWrapper>
-        <ProfileImg url={img} size={25} />
+        <ProfileImg url={image} size={25} />
         <Nickname>{nickname}</Nickname>
       </PaticpantInfoWrapper>
     </GroupGoalParticipantCardWrapper>

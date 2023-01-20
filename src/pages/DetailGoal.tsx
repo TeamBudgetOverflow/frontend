@@ -14,7 +14,7 @@ import GroupGoalWithDrawButton from '../components/goal/goalDetail/groupGoalDeta
 import MyGoalAccountInfoCard from '../components/goal/goalDetail/myGoalDetail/MyGoalAccountInfoCard';
 
 import { userInfo } from '../recoil/userAtoms';
-import { goalDetail, goalId } from '../recoil/goalsAtoms';
+import { goalDetail } from '../recoil/goalsAtoms';
 
 import { goalApi } from '../apis/client';
 
@@ -23,13 +23,14 @@ import { IGoalDetail } from '../interfaces/interfaces';
 import useLogout from '../hooks/useLogout';
 
 import { inProgressChecker, participantIdFinder, personalGoalChecker } from '../utils/detailGoalChecker';
+import { useParams } from 'react-router-dom';
 
 const DetailGoal = () => {
   const { id: userId } = useRecoilValue(userInfo);
-  const { id } = useRecoilValue(goalId);
+  const { id } = useParams();
   const logout = useLogout();
   const { isLoading: isLoading, data: goalDetailData } = useQuery<IGoalDetail>('goalDetail', () =>
-    goalApi.getGoalDetail(id).catch((e) => {
+    goalApi.getGoalDetail(Number(id)).catch((e) => {
       if (e.status === 410) {
         logout();
       }
@@ -46,11 +47,11 @@ const DetailGoal = () => {
   const buttonSet = (userId: number) => {
     const findId = goalDetails?.members.findIndex((member) => member.userId === userId);
 
-    if (userId === goalDetails.createdUserId) {
+    if (userId === goalDetails.userId) {
       return (
         <GoalButtonSet>
           <GoalModifyButton />
-          {inProgressChecker(goalDetails.startDate, goalDetails.endDate) ? (
+          {inProgressChecker(new Date(goalDetails.startDate), new Date(goalDetails.endDate)) ? (
             <></>
           ) : (
             <>
@@ -61,7 +62,7 @@ const DetailGoal = () => {
       );
     }
 
-    if (userId !== goalDetails.createdUserId && findId !== -1) {
+    if (goalDetails.headCount !== 1 && userId !== goalDetails.userId && findId !== -1) {
       return (
         <GoalButtonSet>
           {inProgressChecker(goalDetails.startDate, goalDetails.endDate) ? (
@@ -75,10 +76,10 @@ const DetailGoal = () => {
       );
     }
 
-    if (userId !== goalDetails.createdUserId && findId === -1) {
+    if (goalDetails.headCount !== 1 && userId !== goalDetails.userId && findId === -1) {
       return (
         <GoalButtonSet>
-          {inProgressChecker(goalDetails.startDate, goalDetails.endDate) ? (
+          {inProgressChecker(new Date(goalDetails.startDate), new Date(goalDetails.endDate)) ? (
             <></>
           ) : (
             <>
