@@ -12,7 +12,7 @@ const NarrowGroupGoalCard = ({ goal }: { goal: ISearchGoal }) => {
       <TextWrapper>
         <Title>{goal.title}</Title>
         <TagList>
-          {goal.hashtag.map((tag) => (
+          {goal.hashTag.map((tag) => (
             <Tag key={tag}>{`#${tag}`}</Tag>
           ))}
         </TagList>
