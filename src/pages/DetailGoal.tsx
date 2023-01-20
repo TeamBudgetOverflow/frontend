@@ -20,14 +20,20 @@ import { goalApi } from '../apis/client';
 
 import { IGoalDetail } from '../interfaces/interfaces';
 
+import useLogout from '../hooks/useLogout';
+
 import { inProgressChecker, participantIdFinder, personalGoalChecker } from '../utils/detailGoalChecker';
 
 const DetailGoal = () => {
   const { id: userId } = useRecoilValue(userInfo);
   const { id } = useRecoilValue(goalId);
-
+  const logout = useLogout();
   const { isLoading: isLoading, data: goalDetailData } = useQuery<IGoalDetail>('goalDetail', () =>
-    goalApi.getGoalDetail(id)
+    goalApi.getGoalDetail(id).catch((e) => {
+      if (e.status === 410) {
+        logout();
+      }
+    })
   );
   const setGoalDetail = useSetRecoilState(goalDetail);
   const goalDetails = useRecoilValue(goalDetail);
