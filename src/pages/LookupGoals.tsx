@@ -127,7 +127,7 @@ const TopContent = styled.div`
   flex-direction: column;
   gap: 20px;
   width: 100%;
-  height: calc(35% - 20px);
+  height: calc(35% - 30px);
   border-bottom: 2px solid ${(props) => props.theme.gray200};
 `;
 
@@ -163,7 +163,7 @@ const BottomContent = styled.div`
   flex-direction: column;
   gap: 10px;
   width: 100%;
-  height: calc(65% - 40px);
+  height: calc(65% - 50px);
 `;
 
 const GoalCardsWrapper = styled.div`

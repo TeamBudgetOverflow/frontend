@@ -30,21 +30,19 @@ const GroupGoalCards = ({ goal }: { goal: ISearchGoal }) => {
   return (
     <Wrapper onClick={() => navigate(`/goals/${goal.goalId}`)}>
       <TopContent>
-        <TopLeftContent>
+        <HeadContent>
           <StateTag state={state} />
+          <DdayTag dDay={dDayCalculator(new Date(goal.endDate))} />
+        </HeadContent>
+        <BodyContent>
           <Content>
-            <IconWrapper>
-              <EmojiBox unicode={goal.emoji} boxSize={40} emojiSize={20} />
-            </IconWrapper>
+            <EmojiBox unicode={goal.emoji} boxSize={40} emojiSize={20} />
             <TextContent>
               <Title>{goal.title}</Title>
               <Amount>{`${goal.amount.toLocaleString()}원`}</Amount>
             </TextContent>
           </Content>
-        </TopLeftContent>
-        <TopRightContent>
-          <DdayTag dDay={dDayCalculator(new Date(goal.endDate))} />
-        </TopRightContent>
+        </BodyContent>
       </TopContent>
       <BottomContent>
         <ProgressInfo>
@@ -66,22 +64,27 @@ const Wrapper = styled.div`
   flex-direction: column;
   gap: 18px;
   border-radius: 16px;
-  background-color: ${(props) => props.theme.primary200};
+  border: 1px solid ${(props) => props.theme.gray300};
   :hover {
     cursor: pointer;
   }
 `;
 
 const TopContent = styled.div`
-  ::after {
-    content: '';
-    display: block;
-    clear: both;
-  }
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 `;
 
-const TopLeftContent = styled.div`
-  float: left;
+const HeadContent = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+`;
+
+const BodyContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -92,21 +95,6 @@ const Content = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 8px;
-`;
-
-const TopRightContent = styled.div`
-  float: right;
-`;
-
-const IconWrapper = styled.div`
-  padding: 5px 0;
-`;
-
-const Icon = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  background-color: ${(props) => props.theme.primary50};
 `;
 
 const TextContent = styled.div`
@@ -131,16 +119,15 @@ const BottomContent = styled.div`
 `;
 
 const RecruitState = styled.div`
-  font: ${(props) => props.theme.captionC3};
+  font: ${(props) => props.theme.captionC2};
 `;
+
 const ProgressInfo = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 `;
 
-const ProgressText = styled.div`
-  font: ${(props) => props.theme.captionC3};
-`;
+const ProgressText = styled(RecruitState)``;
 
 export default GroupGoalCards;
