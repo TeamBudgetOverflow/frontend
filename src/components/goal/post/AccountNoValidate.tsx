@@ -33,9 +33,8 @@ const AccountNoValidate = ({ oriSeqNo, authHandler, accntNoEditHandler }: Accoun
   });
 
   const handleAuthAccnt = async (authString: string) => {
-    // TODO: test API request
     try {
-      // const { data } = await bankAPI.authAccnt({ oriSeqNo, authString });
+      const { data } = await bankAPI.authAccnt({ oriSeqNo, authString });
       authHandler(true);
     } catch (e) {
       alert(e);
