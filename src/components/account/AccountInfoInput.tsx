@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-import ProgressBar from '../../common/elem/ProgressBar';
-import InputBox from '../../common/elem/InputBox';
-import ValidateMsg from '../../common/elem/ValidateMsg';
-import TextButton from '../../common/elem/TextButton';
-import Info from '../../common/alert/Info';
+import ProgressBar from '../common/elem/ProgressBar';
+import InputBox from '../common/elem/InputBox';
+import ValidateMsg from '../common/elem/ValidateMsg';
+import TextButton from '../common/elem/TextButton';
+import Info from '../common/alert/Info';
 
-import useTxtInput from '../../../hooks/useTxtInput';
-import { IValidateAccount } from '../../../interfaces/interfaces';
-import { accountApi, bankAPI, goalApi } from '../../../apis/client';
+import useTxtInput from '../../hooks/useTxtInput';
+import { IValidateAccount } from '../../interfaces/interfaces';
+import { accountApi, bankAPI, goalApi } from '../../apis/client';
 import { useRecoilValue } from 'recoil';
-import { accntInfo, banksInfo } from '../../../recoil/accntAtoms';
-import { userInfo, userProfile } from '../../../recoil/userAtoms';
-import { postGoal } from '../../../recoil/goalsAtoms';
+import { accntInfo, banksInfo } from '../../recoil/accntAtoms';
+import { userInfo, userProfile } from '../../recoil/userAtoms';
+import { postGoal } from '../../recoil/goalsAtoms';
 
 interface AccountInfoInputProps {
   goalIdHandler: (goalId: number) => void;

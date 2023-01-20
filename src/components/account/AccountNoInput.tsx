@@ -2,21 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
-import ProgressBar from '../../common/elem/ProgressBar';
-import InputBox from '../../common/elem/InputBox';
-import ValidateMsg from '../../common/elem/ValidateMsg';
-import OptionSelectBox from '../../common/elem/OptionSelectBox';
-import TextButton from '../../common/elem/TextButton';
-import ModalBox from '../../common/elem/ModalBox';
-import BankList from './BankList';
+import ProgressBar from '../common/elem/ProgressBar';
+import InputBox from '../common/elem/InputBox';
+import ValidateMsg from '../common/elem/ValidateMsg';
+import OptionSelectBox from '../common/elem/OptionSelectBox';
+import TextButton from '../common/elem/TextButton';
+import ModalBox from '../common/elem/ModalBox';
+import BankList from '../goal/post/BankList';
 
-import useTxtInput from '../../../hooks/useTxtInput';
+import useTxtInput from '../../hooks/useTxtInput';
 
-import { bankAPI } from '../../../apis/client';
+import { bankAPI } from '../../apis/client';
 
-import { IBank } from '../../../interfaces/interfaces';
+import { IBank } from '../../interfaces/interfaces';
 
-import { accntInfo, banksInfo, selectedBankInfo } from '../../../recoil/accntAtoms';
+import { accntInfo, banksInfo, selectedBankInfo } from '../../recoil/accntAtoms';
 
 interface AccountNoInputProps {
   authNoHandler: (oriSeqNo: string) => void;

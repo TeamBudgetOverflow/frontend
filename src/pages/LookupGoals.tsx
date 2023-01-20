@@ -3,7 +3,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 
-import NarrowGroupGoalCard from '../components/goal/NarrowGroupGoalCard';
+import GroupGoalCardSmall from '../components/goal/GroupGoalCardSmall';
 import GroupGoalCard from '../components/goal/GroupGoalCard';
 import Alert from '../components/common/alert/Alert';
 import LoadingMsg from '../components/common/elem/LoadingMsg';
@@ -19,7 +19,7 @@ import { dDayCalculator } from '../utils/dDayCalculator';
 
 import useLogout from '../hooks/useLogout';
 
-const GroupGoals = () => {
+const LookupGoals = () => {
   const logout = useLogout();
   const {
     isLoading: isLoadingGoals,
@@ -54,7 +54,7 @@ const GroupGoals = () => {
   }, [goals]);
 
   const goalCards = goals.map((goal) => <GroupGoalCard key={goal.goalId} goal={goal} />);
-  const impendingGoalCard = impendingGoals.map((goal) => <NarrowGroupGoalCard key={goal.goalId} goal={goal} />);
+  const impendingGoalCard = impendingGoals.map((goal) => <GroupGoalCardSmall key={goal.goalId} goal={goal} />);
 
   return (
     <Wrapper>
@@ -180,4 +180,4 @@ const AlertWrapper = styled.div`
   width: calc(100% - 44px);
 `;
 
-export default GroupGoals;
+export default LookupGoals;

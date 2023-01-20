@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-import AccountNoInput from '../components/goal/post/AccountNoInput';
-import AccountNoValidate from '../components/goal/post/AccountNoValidate';
-import AccountInfoInput from '../components/goal/post/AccountInfoInput';
+import AccountNoInput from '../components/account/AccountNoInput';
+import AccountNoValidate from '../components/account/AccountNoValidate';
+import AccountInfoInput from '../components/account/AccountInfoInput';
 import { useNavigate } from 'react-router-dom';
 
 const CreateAccnt = () => {

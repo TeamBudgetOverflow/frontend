@@ -5,7 +5,7 @@ import EmojiBox from '../common/elem/EmojiBox';
 
 import { ISearchGoal } from '../../interfaces/interfaces';
 
-const NarrowGroupGoalCard = ({ goal }: { goal: ISearchGoal }) => {
+const GroupGoalCardSmall = ({ goal }: { goal: ISearchGoal }) => {
   return (
     <CardWrapper>
       <EmojiBox unicode={goal.emoji} boxSize={72} emojiSize={72} showBg={false} />
@@ -61,4 +61,4 @@ const Tag = styled.span`
   color: ${(props) => props.theme.primaryMain};
 `;
 
-export default NarrowGroupGoalCard;
+export default GroupGoalCardSmall;
