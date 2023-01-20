@@ -12,7 +12,7 @@ import { IBank } from '../interfaces/interfaces';
 
 import { banksInfo } from '../recoil/accntAtoms';
 
-const PostGoal = () => {
+const CreateGoalData = () => {
   const { type } = useParams();
   const { data: banks } = useQuery<Array<IBank>>('getBanks', () => goalApi.getBanks());
   const setBanksInfo = useSetRecoilState(banksInfo);
@@ -39,4 +39,4 @@ const Wrapper = styled.div`
   background-color: white;
 `;
 
-export default PostGoal;
+export default CreateGoalData;

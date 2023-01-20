@@ -93,6 +93,13 @@ const Header = (props: HeaderProps, ref: Ref<HTMLDivElement>) => {
         setShowSearchIcons(false);
         return;
       }
+      if (pathname.includes('/goals/') && !pathname.includes('lookup') && !pathname.includes('post')) {
+        setShowBeforeBtn(true);
+        setShowSearchBar(false);
+        setShowChatIcons(true);
+        setShowSearchIcons(false);
+        return;
+      }
       if (pathname.includes('/users')) {
         setPageType(PageType.my);
         setShowBeforeBtn(false);

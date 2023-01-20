@@ -1,17 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 import { IMemeberInfo } from '../../../../interfaces/interfaces';
-import GroupGoalParticipantCard from './GroupGoalParticipantCard';
+import ParticipantCard from './ParticipantCard';
 
-interface IGoalParticipnatListProps {
+interface IParticipnatListProps {
   recruitMember: Array<IMemeberInfo>;
   headCount: number;
 }
 
 // TODO: 목표 참가자 달성률
-const GroupGoalParticipantList = ({ recruitMember, headCount }: IGoalParticipnatListProps) => {
+const ParticipantList = ({ recruitMember, headCount }: IParticipnatListProps) => {
   const recruitMembers = recruitMember.map((member) => (
-    <GroupGoalParticipantCard
+    <ParticipantCard
       key={member.userId}
       userId={member.userId}
       nickname={member.nickname}
@@ -21,18 +21,18 @@ const GroupGoalParticipantList = ({ recruitMember, headCount }: IGoalParticipnat
   ));
 
   return (
-    <GroupGoalParticipantListWrapper>
+    <Wrapper>
       <UpperLineWrapper>
         <ParticipantCount>
           참가자 {recruitMember.length} / {headCount}
         </ParticipantCount>
       </UpperLineWrapper>
       <ParticapantList>{recruitMembers}</ParticapantList>
-    </GroupGoalParticipantListWrapper>
+    </Wrapper>
   );
 };
 
-const GroupGoalParticipantListWrapper = styled.div`
+const Wrapper = styled.div`
   width: 100%;
   height: 305px;
   display: flex;
@@ -66,4 +66,4 @@ const ParticapantList = styled.div`
   overflow-y: auto;
 `;
 
-export default GroupGoalParticipantList;
+export default ParticipantList;

@@ -36,6 +36,17 @@ const SearchGoals = () => {
   );
 };
 
+const Wrapper = styled.div`
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: calc(100% - 10px);
+`;
+
 const GoalCardsWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -44,17 +55,6 @@ const GoalCardsWrapper = styled.div`
   gap: 20px;
   width: 100%;
   height: 100%;
-`;
-
-const Wrapper = styled.div`
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: 95%;
-  height: 80%;
 `;
 
 const LoadingMsg = styled.div`
