@@ -50,7 +50,7 @@ const DetailGoal = () => {
       return (
         <GoalButtonSet>
           <GoalModifyButton />
-          {inProgressChecker(goalDetails.startDate, goalDetails.endDate) ? (
+          {inProgressChecker(new Date(goalDetails.startDate), new Date(goalDetails.endDate)) ? (
             <></>
           ) : (
             <>
@@ -61,7 +61,7 @@ const DetailGoal = () => {
       );
     }
 
-    if (userId !== goalDetails.userId && findId !== -1) {
+    if (goalDetails.headCount !== 1 && userId !== goalDetails.userId && findId !== -1) {
       return (
         <GoalButtonSet>
           {inProgressChecker(goalDetails.startDate, goalDetails.endDate) ? (
@@ -75,10 +75,10 @@ const DetailGoal = () => {
       );
     }
 
-    if (userId !== goalDetails.userId && findId === -1) {
+    if (goalDetails.headCount !== 1 && userId !== goalDetails.userId && findId === -1) {
       return (
         <GoalButtonSet>
-          {inProgressChecker(goalDetails.startDate, goalDetails.endDate) ? (
+          {inProgressChecker(new Date(goalDetails.startDate), new Date(goalDetails.endDate)) ? (
             <></>
           ) : (
             <>
