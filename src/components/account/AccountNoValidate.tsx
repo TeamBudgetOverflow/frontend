@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import ProgressBar from '../../common/elem/ProgressBar';
-import InputBox from '../../common/elem/InputBox';
-import ValidateMsg from '../../common/elem/ValidateMsg';
-import TextButton from '../../common/elem/TextButton';
+import ProgressBar from '../common/elem/ProgressBar';
+import InputBox from '../common/elem/InputBox';
+import ValidateMsg from '../common/elem/ValidateMsg';
+import TextButton from '../common/elem/TextButton';
 
-import useTxtInput from '../../../hooks/useTxtInput';
+import useTxtInput from '../../hooks/useTxtInput';
 
-import { bankAPI } from '../../../apis/client';
+import { bankAPI } from '../../apis/client';
 import { useRecoilValue } from 'recoil';
-import { accntInfo } from '../../../recoil/accntAtoms';
+import { accntInfo } from '../../recoil/accntAtoms';
 
 interface AccountNoValidateProps {
   oriSeqNo: string;

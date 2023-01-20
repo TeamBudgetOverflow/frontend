@@ -32,7 +32,7 @@ const Redirect = () => {
   };
   useEffect(() => {
     checkToken();
-  }, []);
+  }, [accessToken, refreshToken]);
 
   const { isLogin, isAccessToken, isRefreshToken } = useRecoilValue(userInfo);
   const navigate = useNavigate();

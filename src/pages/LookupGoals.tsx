@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 
-import NarrowGroupGoalCard from '../components/goal/NarrowGroupGoalCard';
+import GroupGoalCardSmall from '../components/goal/GroupGoalCardSmall';
 import GroupGoalCard from '../components/goal/GroupGoalCard';
 import Alert from '../components/common/alert/Alert';
 import LoadingMsg from '../components/common/elem/LoadingMsg';
@@ -19,7 +19,7 @@ import { dDayCalculator } from '../utils/dDayCalculator';
 
 import useLogout from '../hooks/useLogout';
 
-const GroupGoals = () => {
+const LookupGoals = () => {
   const logout = useLogout();
   const {
     isLoading: isLoadingGoals,
@@ -54,7 +54,7 @@ const GroupGoals = () => {
   }, [goals]);
 
   const goalCards = goals.map((goal) => <GroupGoalCard key={goal.goalId} goal={goal} />);
-  const impendingGoalCard = impendingGoals.map((goal) => <NarrowGroupGoalCard key={goal.goalId} goal={goal} />);
+  const impendingGoalCard = impendingGoals.map((goal) => <GroupGoalCardSmall key={goal.goalId} goal={goal} />);
 
   return (
     <Wrapper>
@@ -79,7 +79,6 @@ const GroupGoals = () => {
           <ImpendingGoalCards>{impendingGoalCard}</ImpendingGoalCards>
         )}
       </TopContent>
-      <Line />
       <BottomContent>
         <TitleBox>
           <SubTitle>전체 목표</SubTitle>
@@ -109,20 +108,22 @@ const Wrapper = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  padding: 20px 0;
+  padding-top: 20px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 20px);
   overflow: hidden;
 `;
 
 const TopContent = styled.div`
+  padding-bottom: 20px;
   display: flex;
   flex-direction: column;
   gap: 20px;
   width: 100%;
+  height: calc(35% - 20px);
+  border-bottom: 2px solid ${(props) => props.theme.gray200};
 `;
 
 const TitleBox = styled.div`
@@ -147,31 +148,26 @@ const ImpendingGoalCards = styled.div`
   flex-direction: row;
   gap: 8px;
   flex-wrap: nowrap;
-  width: 100%;
+  width: calc(100% - 44px);
   overflow-x: auto;
 `;
 
-const Line = styled.div`
-  width: 100%;
-  height: 2px;
-  background-color: ${(props) => props.theme.gray200};
-`;
-
 const BottomContent = styled.div`
+  padding-top: 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 95%;
-  height: 65%;
+  width: 100%;
+  height: calc(65% - 40px);
 `;
 
 const GoalCardsWrapper = styled.div`
-  padding: 0 22px;
+  padding: 10px 22px;
   display: flex;
   flex-direction: column;
   gap: 8px;
   width: calc(100% - 44px);
-  height: 430px;
+  height: calc(100% - 20px);
   overflow-y: auto;
 `;
 
@@ -180,4 +176,4 @@ const AlertWrapper = styled.div`
   width: calc(100% - 44px);
 `;
 
-export default GroupGoals;
+export default LookupGoals;

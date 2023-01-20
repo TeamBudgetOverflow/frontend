@@ -8,40 +8,30 @@ interface GoalDescCardProps {
 const GoalDescCard = ({ description }: GoalDescCardProps) => {
   return (
     <Wrapper>
-      <GoalDescCardWrapper>
-        <SubTitleSpan>목표</SubTitleSpan>
-        <DescWrapper>{description}</DescWrapper>
-      </GoalDescCardWrapper>
+      <SubTitle>목표</SubTitle>
+      <Description>{description}</Description>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  width: 90%;
-  height: 46px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 20px;
+  width: calc(100% - 40px);
   border-radius: 16px;
-  background-color: beige;
-  display: flex;
-  align-items: center;
+  border: 1px solid ${(props) => props.theme.gray300};
 `;
 
-const GoalDescCardWrapper = styled.div`
-  width: 100%;
-  height: 70%;
-  margin: 10px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-`;
-
-const SubTitleSpan = styled.div`
-  width: 15%;
+const SubTitle = styled.div`
   font: ${(props) => props.theme.captionC1};
+  color: ${(props) => props.theme.gray600};
 `;
 
-const DescWrapper = styled.div`
-  width: 85%;
-  padding-top: 3px;
+const Description = styled.div`
+  font: ${(props) => props.theme.paragraphsP3M};
 `;
 
 export default GoalDescCard;

@@ -72,18 +72,16 @@ export interface IGoalDetail {
   userId: number;
   goalId: number;
   nickname: string;
-  amount: number;
-  curCount: number;
-  headCount: number;
-  startDate: Date;
-  endDate: Date;
   title: string;
   hashTag: Array<string>;
   emoji: string;
+  amount: number;
   description: string;
-  createdAt: Date;
-  updatedAt: Date;
-  attainment: number;
+  hashTag: Array<string>;
+  startDate: Date;
+  endDate: Date;
+  curCount: number;
+  headCount: number;
   members: Array<IMemeberInfo>;
 }
 

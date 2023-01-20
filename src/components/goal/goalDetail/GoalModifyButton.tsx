@@ -1,28 +1,14 @@
 import React from 'react';
-import styled from 'styled-components';
 
-// TODO : 공통 버튼 컴포넌트 리팩터링
-// TODO : 수정하기 페이지 이동
+import TextButton from '../../common/elem/TextButton';
+
 const GoalModifyButton = () => {
-  const handleModifyGoal = () => {
-    console.log('목표 수정');
+  const handleModify = () => {
+    // TODO : 수정하기 페이지 이동
+    console.log('수정 페이지 이동');
   };
-  return (
-    <ModifyButton
-      onClick={() => {
-        handleModifyGoal();
-      }}>
-      수정하기
-    </ModifyButton>
-  );
-};
 
-const ModifyButton = styled.button`
-  max-width: 370px;
-  width: 100%;
-  height: 51px;
-  border-radius: 8px;
-  padding: 12px 16.5px;
-`;
+  return <TextButton text='수정하기' onClickHandler={handleModify} />;
+};
 
 export default GoalModifyButton;

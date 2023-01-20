@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import TypeSelect from '../components/goal/post/TypeSelect';
+import TypeSelect from '../components/goal/post/TypeSelectSection';
 
 export enum GoalType {
   group,
@@ -9,13 +9,13 @@ export enum GoalType {
   none,
 }
 
-function SelectType() {
+const SelectGoalType = () => {
   return (
     <Wrapper>
       <TypeSelect />
     </Wrapper>
   );
-}
+};
 
 const Wrapper = styled.div`
   padding: 28px 22px 20px;
@@ -27,4 +27,4 @@ const Wrapper = styled.div`
   background-color: white;
 `;
 
-export default SelectType;
+export default SelectGoalType;

@@ -19,7 +19,7 @@ const useNumInput = ({ initValue, min, max, type }: useNumInputProps) => {
           setErrMsg(`${type} 최소값은 ${min.toLocaleString()} 원 입니다.`);
           return;
         case '인원':
-          setErrMsg(`${type} 최소값은 ${max} 명 입니다.`);
+          setErrMsg(`${type} 최소값은 ${min} 명 입니다.`);
           return;
       }
     }

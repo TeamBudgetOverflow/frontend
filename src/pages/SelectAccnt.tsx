@@ -4,7 +4,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import Info from '../components/common/alert/Info';
-import AccountSelect from '../components/goal/post/AccountSelect';
+import AccountSelect from '../components/account/AccountSelectSection';
 import TextButton from '../components/common/elem/TextButton';
 
 import { userInfo } from '../recoil/userAtoms';
@@ -49,7 +49,6 @@ const SelectAccnt = () => {
   }, [savedPostGoal]);
 
   const handlePostGoal = () => {
-    // TODO: post goal test
     goalApi.postGoal(savedPostGoal);
   };
 

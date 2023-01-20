@@ -2,11 +2,11 @@ import React from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
-import AccountInfoCard from '../../account/AccountInfoCard';
+import AccountInfoCard from './AccountInfoCard';
 
-import { postGoal } from '../../../recoil/goalsAtoms';
+import { postGoal } from '../../recoil/goalsAtoms';
 
-import { IAccount } from '../../../interfaces/interfaces';
+import { IAccount } from '../../interfaces/interfaces';
 
 interface AccountSelectProps {
   accounts: Array<IAccount>;
