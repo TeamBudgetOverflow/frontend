@@ -17,12 +17,21 @@ import { ISearchGoal, ISearchGoals } from '../interfaces/interfaces';
 
 import { dDayCalculator } from '../utils/dDayCalculator';
 
+import useLogout from '../hooks/useLogout';
+
 const GroupGoals = () => {
+  const logout = useLogout();
   const {
     isLoading: isLoadingGoals,
     data: goalsData,
     isError,
-  } = useQuery<ISearchGoals>('getGoals', () => goalApi.getGoals());
+  } = useQuery<ISearchGoals>('getGoals', () =>
+    goalApi.getGoals().catch((e) => {
+      if (e.status === 410) {
+        logout();
+      }
+    })
+  );
   const setUserGoals = useSetRecoilState(groupGoals);
   const goals = useRecoilValue(groupGoals);
   const [impendingGoals, setImpendingGoals] = useState<Array<ISearchGoal>>([...goals]);

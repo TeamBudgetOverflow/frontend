@@ -8,13 +8,9 @@ import {
   IPostGoal,
   IValidateAccount,
   IReqAuthAccout,
-  IGoal,
-  ISearchGoals,
 } from '../interfaces/interfaces';
 
 const BASE_URL = process.env.REACT_APP_API_ENDPOINT;
-const BANK_BASE_URL = process.env.REACT_APP_BANK_API_ENDPOINT;
-
 const noneTokenClient = axios.create({
   baseURL: BASE_URL,
   responseType: 'json',
@@ -25,10 +21,6 @@ const noneTokenClient = axios.create({
 });
 const tokenClient = axios.create({ baseURL: BASE_URL });
 const refreshClient = axios.create({ baseURL: BASE_URL });
-const bankClient = axios.create({ baseURL: BANK_BASE_URL });
-bankClient.defaults.headers.common['Content-Type'] = 'application/json';
-bankClient.defaults.headers.common['user-id'] = process.env.REACT_APP_BANK_API_USER_ID;
-bankClient.defaults.headers.common['Hkey'] = process.env.REACT_APP_BANK_API_HKEY;
 
 tokenClient.interceptors.request.use((config) => {
   config.headers = {
@@ -273,14 +265,14 @@ export const goalApi = {
     //   ],
     // };
 
-    return data.banks;
+    return data;
   },
   postGoal: async (goalData: IPostGoal) => {
     const { data } = await tokenClient.post(`/goals`, goalData);
 
     return data.goalId;
   },
-  getGoals: async (): Promise<ISearchGoals> => {
+  getGoals: async () => {
     const { data } = await tokenClient.get(`/goals`);
     // const data = {
     //   result: [
@@ -494,37 +486,67 @@ export const goalApi = {
   },
 };
 
+const BANK_USER_ID = process.env.REACT_APP_BANK_API_USER_ID;
+const BANK_HKEY = process.env.REACT_APP_BANK_API_HKEY;
+
 export const bankAPI = {
   reqAuthAccnt: async ({ bankCode, accntNo }: IReqAuthAccout) => {
-    const result = await bankClient.post('/hb0081000378', {
-      inBankCode: bankCode,
-      inAccount: accntNo,
-    });
+    const result = await axios.post(
+      '/hb0081000378',
+      {
+        inBankCode: bankCode,
+        inAccount: accntNo,
+      },
+      {
+        headers: {
+          'user-id': BANK_USER_ID,
+          HKey: BANK_HKEY,
+        },
+      }
+    );
 
     return result;
   },
   authAccnt: async ({ oriSeqNo, authString }: IAuthAccount) => {
-    const result = await bankClient.post('/hb0081000379', {
-      oriSeqNo: oriSeqNo,
-      inPrintContent: authString,
-    });
+    const result = await axios.post(
+      '/hb0081000379',
+      {
+        oriSeqNo: oriSeqNo,
+        inPrintContent: authString,
+      },
+      {
+        headers: {
+          'user-id': BANK_USER_ID,
+          HKey: BANK_HKEY,
+        },
+      }
+    );
     return result;
   },
   validateAccntInfo: async (accntInfo: IValidateAccount) => {
-    const result = await bankClient.post('/in0087000484', {
-      gubun: '01',
-      bankCd: accntInfo.bankCode,
-      loginMethod: 'ID',
-      userId: accntInfo.bankUserId,
-      userPw: accntInfo.bankUserPw,
-      acctNo: accntInfo.accntNo,
-      acctPw: accntInfo.accntPw,
-      signCert: '',
-      signPw: '',
-      curCd: '',
-      detailYN: 'N',
-      vndrCode: 'N',
-    });
+    const result = await axios.post(
+      '/in0087000484',
+      {
+        gubun: '01',
+        bankCd: accntInfo.bankCode,
+        loginMethod: 'ID',
+        userId: accntInfo.bankUserId,
+        userPw: accntInfo.bankUserPw,
+        acctNo: accntInfo.accntNo,
+        acctPw: accntInfo.accntPw,
+        signCert: '',
+        signPw: '',
+        curCd: '',
+        detailYN: 'N',
+        vndrCode: 'N',
+      },
+      {
+        headers: {
+          'user-id': BANK_USER_ID,
+          HKey: BANK_HKEY,
+        },
+      }
+    );
     return result;
   },
 };

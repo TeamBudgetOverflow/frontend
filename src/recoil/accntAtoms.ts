@@ -24,3 +24,12 @@ export const accntInfo = atom<IReqAuthAccout>({
     accntNo: '',
   },
 });
+
+export const selectedBankInfo = atom<IBank>({
+  key: 'selectedBankInfo',
+  default: {
+    bankId: 0,
+    bankCode: '',
+    bankName: '',
+  },
+});

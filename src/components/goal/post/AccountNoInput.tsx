@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import ProgressBar from '../../common/elem/ProgressBar';
@@ -16,7 +16,7 @@ import { bankAPI } from '../../../apis/client';
 
 import { IBank } from '../../../interfaces/interfaces';
 
-import { banksInfo } from '../../../recoil/accntAtoms';
+import { accntInfo, banksInfo, selectedBankInfo } from '../../../recoil/accntAtoms';
 
 interface AccountNoInputProps {
   authNoHandler: (oriSeqNo: string) => void;
@@ -24,13 +24,15 @@ interface AccountNoInputProps {
 }
 
 const AccountNoInput = ({ authNoHandler, authReqHandler }: AccountNoInputProps) => {
+  const savedSelectedBankInfo = useRecoilValue(selectedBankInfo);
+  const savedAccntInfo = useRecoilValue(accntInfo);
   const {
     value: accntNo,
     errMsg: accntNoErr,
     onChange: changeAccntNo,
     reset: resetAccntNo,
   } = useTxtInput({
-    initValue: '',
+    initValue: savedAccntInfo.accntNo,
     minLength: 11,
     maxLength: 14,
     type: '계좌번호',
@@ -42,7 +44,7 @@ const AccountNoInput = ({ authNoHandler, authReqHandler }: AccountNoInputProps) 
   const handleShowBanks = () => {
     setShowBanks(!showBanks);
   };
-  const [selectedBank, setSelectedBank] = useState<IBank>({ bankId: 0, bankCode: '', bankName: '' });
+  const [selectedBank, setSelectedBank] = useState<IBank>(savedSelectedBankInfo);
   const handleBankSelect = (bank: IBank) => {
     setSelectedBank(bank);
     setShowBanks(false);
@@ -60,12 +62,14 @@ const AccountNoInput = ({ authNoHandler, authReqHandler }: AccountNoInputProps) 
     validate();
   }, [accntNo, selectedBank]);
 
+  const setSelectedBankInfo = useSetRecoilState(selectedBankInfo);
+  const setAccntInfo = useSetRecoilState(accntInfo);
   const [isAuthRequested, setIsAuthRequested] = useState<boolean>(false);
   const handleReqAuthAccnt = async () => {
     try {
-      // TODO: test API request
       const { data } = await bankAPI.reqAuthAccnt({ bankCode: selectedBank.bankCode, accntNo: accntNo });
-      console.log('req auth response:', data);
+      // TEST DATA
+      // const data = { successYn: 'Y', oriSeqNo: '' };
       if (data.successYn === 'N') {
         throw new Error();
       }
@@ -73,9 +77,12 @@ const AccountNoInput = ({ authNoHandler, authReqHandler }: AccountNoInputProps) 
       setIsAuthRequested(true);
       authNoHandler(data.oriSeqNo);
     } catch (e) {
+      alert('인증 요청에 실패했습니다. 다시 시도해주세요');
       authReqHandler(false);
       setIsAuthRequested(false);
-      return alert('인증 요청에 실패했습니다. 다시 시도해주세요');
+    } finally {
+      setAccntInfo({ accntNo: accntNo, bankCode: selectedBank.bankCode });
+      setSelectedBank(selectedBank);
     }
   };
 

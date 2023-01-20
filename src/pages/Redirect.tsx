@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import Info from '../components/common/alert/Info';
@@ -8,6 +8,32 @@ import Info from '../components/common/alert/Info';
 import { userInfo } from '../recoil/userAtoms';
 
 const Redirect = () => {
+  const setUserInfo = useSetRecoilState(userInfo);
+  const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
+  const checkToken = () => {
+    if (!accessToken && refreshToken) {
+      setUserInfo({
+        id: 0,
+        isLogin: false,
+        isAccessToken: false,
+        isRefreshToken: true,
+      });
+    }
+
+    if (!accessToken && !refreshToken) {
+      setUserInfo({
+        id: 0,
+        isLogin: false,
+        isAccessToken: false,
+        isRefreshToken: false,
+      });
+    }
+  };
+  useEffect(() => {
+    checkToken();
+  }, []);
+
   const { isLogin, isAccessToken, isRefreshToken } = useRecoilValue(userInfo);
   const navigate = useNavigate();
   useEffect(() => {
@@ -21,7 +47,7 @@ const Redirect = () => {
       setTimeout(() => navigate('/login'), 3000);
       return;
     }
-  }, []);
+  }, [isLogin, isAccessToken, isRefreshToken]);
 
   return (
     <Wrapper>
@@ -43,13 +69,8 @@ const Redirect = () => {
 };
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
 `;
 
 export default Redirect;
