@@ -53,8 +53,13 @@ const LookupGoals = () => {
     });
   }, [goals]);
 
-  const goalCards = goals.map((goal) => <GroupGoalCard key={goal.goalId} goal={goal} />);
-  const impendingGoalCard = impendingGoals.map((goal) => <GroupGoalCardSmall key={goal.goalId} goal={goal} />);
+  const goalCards = goals
+    .filter((goal) => goal.headCount !== 1)
+    .map((goal) => <GroupGoalCard key={goal.goalId} goal={goal} />);
+  const impendingGoalCard = impendingGoals
+    .filter((goal) => goal.headCount !== 1)
+    .slice(0, 10)
+    .map((goal) => <GroupGoalCardSmall key={goal.goalId} goal={goal} />);
 
   return (
     <Wrapper>
@@ -81,8 +86,7 @@ const LookupGoals = () => {
       </TopContent>
       <BottomContent>
         <TitleBox>
-          <SubTitle>전체 목표</SubTitle>
-          <Button>추천순</Button>
+          <SubTitle>목표</SubTitle>
         </TitleBox>
         {isLoadingGoals ? (
           <AlertWrapper>
@@ -122,7 +126,7 @@ const TopContent = styled.div`
   flex-direction: column;
   gap: 20px;
   width: 100%;
-  height: calc(35% - 20px);
+  height: calc(35% - 22px);
   border-bottom: 2px solid ${(props) => props.theme.gray200};
 `;
 
@@ -139,7 +143,8 @@ const SubTitle = styled.div`
 `;
 
 const Button = styled.div`
-  font: ${(props) => props.theme.captionC3};
+  font: ${(props) => props.theme.captionC2};
+  color: ${(props) => props.theme.primary900};
 `;
 
 const ImpendingGoalCards = styled.div`
@@ -158,7 +163,7 @@ const BottomContent = styled.div`
   flex-direction: column;
   gap: 10px;
   width: 100%;
-  height: calc(65% - 40px);
+  height: calc(65% - 20px);
 `;
 
 const GoalCardsWrapper = styled.div`

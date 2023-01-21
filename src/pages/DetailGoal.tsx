@@ -50,7 +50,7 @@ const DetailGoal = () => {
       return (
         <GoalButtonSet>
           <GoalModifyButton />
-          {inProgressChecker(goalDetails.startDate, goalDetails.endDate) ? (
+          {inProgressChecker(new Date(goalDetails.startDate), new Date(goalDetails.endDate)) ? (
             <></>
           ) : (
             <>
@@ -61,7 +61,7 @@ const DetailGoal = () => {
       );
     }
 
-    if (userId !== goalDetails.userId && findId !== -1) {
+    if (goalDetails.headCount !== 1 && userId !== goalDetails.userId && findId !== -1) {
       return (
         <GoalButtonSet>
           {inProgressChecker(goalDetails.startDate, goalDetails.endDate) ? (
@@ -75,10 +75,10 @@ const DetailGoal = () => {
       );
     }
 
-    if (userId !== goalDetails.userId && findId === -1) {
+    if (goalDetails.headCount !== 1 && userId !== goalDetails.userId && findId === -1) {
       return (
         <GoalButtonSet>
-          {inProgressChecker(goalDetails.startDate, goalDetails.endDate) ? (
+          {inProgressChecker(new Date(goalDetails.startDate), new Date(goalDetails.endDate)) ? (
             <></>
           ) : (
             <>
@@ -116,7 +116,7 @@ const DetailGoal = () => {
               <>
                 <SubTitle>연결 계좌 정보</SubTitle>
                 <AccountInfoCard
-                  accntInfo={{ id: 0, bankId: 4, accntNo: '123412341234' }}
+                  accntInfo={{ accountId: 0, bankId: 4, acctNo: '123412341234' }}
                   selectHandler={() => {
                     console.log('계좌 설정 페이지');
                   }}

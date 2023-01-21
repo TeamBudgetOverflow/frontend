@@ -10,17 +10,21 @@ import Logo from '../components/common/elem/Logo';
 const LoginPage = () => {
   return (
     <Wrapper>
-      <LogoWrapper>
-        <Logo size={180} />
-        <LogoText>혼자?함께?! 재밌게 돈모으자!</LogoText>
-        <LogoText>커뮤니티형 종잣돈 만들기 챨-린지</LogoText>
-        <NameText>티클모아 태산</NameText>
-      </LogoWrapper>
-      <ButtonSetWrapper>
-        <KakaoSignupButton />
-        <NaverSignupButton />
-        <GoogleSignupButton />
-      </ButtonSetWrapper>
+      <ContentWrapper>
+        <LogoWrapper>
+          <Logo size={180} />
+          <TextWrapper>
+            <LogoText>혼자?함께?! 재밌게 돈모으자!</LogoText>
+            <LogoText>커뮤니티형 종잣돈 만들기 챨-린지</LogoText>
+            <NameText>티클모아 태산</NameText>
+          </TextWrapper>
+        </LogoWrapper>
+        <ButtonSetWrapper>
+          <KakaoSignupButton />
+          <NaverSignupButton />
+          <GoogleSignupButton />
+        </ButtonSetWrapper>
+      </ContentWrapper>
     </Wrapper>
   );
 };
@@ -30,38 +34,37 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
   height: 100%;
+`;
+
+const ContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+`;
+
+const LogoWrapper = styled(ContentWrapper)`
+  gap: 20px;
+`;
+
+const ButtonSetWrapper = styled(ContentWrapper)`
+  gap: 4px;
   width: 100%;
 `;
 
-const LogoWrapper = styled.div`
-  position: absolute;
-  top: 250px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ButtonSetWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 530px;
-  height: 50%;
-  width: 100%;
+const TextWrapper = styled(ContentWrapper)`
+  gap: 10px;
 `;
 
 const LogoText = styled.span`
-  margin: 4px;
-  font: ${(props) => props.theme.paragraphsP2M};
+  font: ${(props) => props.theme.captionC1};
 `;
 
 const NameText = styled.span`
-  margin: 10px;
-  font: ${(props) => props.theme.headingH2};
+  font: ${(props) => props.theme.headingH3};
+  color: ${(props) => props.theme.primary600};
 `;
 
 export default LoginPage;

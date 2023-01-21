@@ -54,15 +54,9 @@ const MyFilteredGoals = ({ isOwner, goals }: MyFilteredGoalsProps) => {
       const filtered = goals.filter((goal) => {
         switch (filterType) {
           case FilterType.success:
-            return (
-              new Date(goal.startDate).getTime() < new Date().getTime() &&
-              goal.attainment === 100
-            );
+            return new Date(goal.startDate).getTime() < new Date().getTime() && goal.attainment === 100;
           case FilterType.fail:
-            return (
-              new Date(goal.startDate).getTime() < new Date().getTime() &&
-              goal.attainment < 100
-            );
+            return new Date(goal.startDate).getTime() < new Date().getTime() && goal.attainment < 100;
           case FilterType.recruiting:
             return new Date(goal.startDate).getTime() > new Date().getTime();
           case FilterType.none:
@@ -87,14 +81,10 @@ const MyFilteredGoals = ({ isOwner, goals }: MyFilteredGoalsProps) => {
       const prevGoals = [...prev];
       prevGoals.sort((a, b) => {
         if (orderType === 'asc') {
-          return (
-            new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
-          );
+          return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
         }
 
-        return (
-          new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
-        );
+        return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
       });
       return prevGoals;
     });
@@ -104,17 +94,12 @@ const MyFilteredGoals = ({ isOwner, goals }: MyFilteredGoalsProps) => {
       <TopContent>
         <Content>
           <Total>{`전체 ${goals.length}개`}</Total>
-          <OrderButton onClick={handleOrderType}>
-            {orderType === 'desc' ? '최신순' : '과거순'}
-          </OrderButton>
+          <OrderButton onClick={handleOrderType}>{orderType === 'desc' ? '최신순' : '과거순'}</OrderButton>
         </Content>
         {isOwner ? (
           <FiltersBox>
             {filters.map((filter) => (
-              <FilterButton
-                key={filter}
-                selected={filterType === filter}
-                onClick={() => handleFilterType(filter)}>
+              <FilterButton key={filter} selected={filterType === filter} onClick={() => handleFilterType(filter)}>
                 {filterKR(filter)}
               </FilterButton>
             ))}
@@ -125,13 +110,9 @@ const MyFilteredGoals = ({ isOwner, goals }: MyFilteredGoalsProps) => {
       </TopContent>
       <BottomContent>
         {filteredGoals.length === 0 ? (
-          <EmptyInfo>{`아직 ${filterKR(
-            filterType
-          )} 목표가 없습니다`}</EmptyInfo>
+          <EmptyInfo>{`아직 ${filterKR(filterType)} 목표가 없습니다`}</EmptyInfo>
         ) : (
-          filteredGoals.map((goal, idx) => (
-            <StateGoalCard key={idx} goal={goal} />
-          ))
+          filteredGoals.map((goal, idx) => <StateGoalCard key={idx} goal={goal} />)
         )}
       </BottomContent>
     </Wrapper>
@@ -179,18 +160,17 @@ const FiltersBox = styled.div`
 const FilterButton = styled.div<{ selected: boolean }>`
   padding: 4px 10px;
   font: ${(props) => props.theme.captionC1};
-  border: ${(props) =>
-    props.selected ? `2px solid ${props.theme.primary900}` : ''};
+  border: ${(props) => (props.selected ? `2px solid ${props.theme.primary900}` : '')};
   border-radius: 8px;
   background-color: ${(props) => props.theme.primaryMain};
 `;
 
 const BottomContent = styled.div`
-  padding: 20px 0;
+  padding-top: 20px;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  height: 100%;
+  height: calc(100% - 20px);
   overflow-y: auto;
 `;
 

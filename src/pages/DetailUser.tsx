@@ -163,8 +163,8 @@ const Tab = styled.div<{ selected: boolean }>`
 `;
 
 const ContentBox = styled.div<{ tabHeight: number }>`
-  padding: 25px 22px;
-  height: ${(props) => `calc(100% - ${props.tabHeight + 50}px)`};
+  padding: 25px 22px 0;
+  height: ${(props) => `calc(100% - ${props.tabHeight + 25}px)`};
 `;
 
 export default DetailUser;

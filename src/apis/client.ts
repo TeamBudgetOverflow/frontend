@@ -480,7 +480,7 @@ export const goalApi = {
   },
 
   deleteGoal: async (goalId: string | undefined) => {
-    const response = await tokenClient.post(`/goals/${goalId}`);
+    const response = await tokenClient.delete(`/goals/${goalId}`);
 
     return response;
   },
