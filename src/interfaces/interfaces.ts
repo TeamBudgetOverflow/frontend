@@ -104,9 +104,9 @@ export interface IPostAuthAccnt {
 }
 
 export interface IAccount {
-  id: number;
+  accountId: number;
   bankId: number;
-  accntNo: string;
+  acctNo: string;
 }
 
 export interface IReqAuthAccout {

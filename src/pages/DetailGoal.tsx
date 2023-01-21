@@ -116,7 +116,7 @@ const DetailGoal = () => {
               <>
                 <SubTitle>연결 계좌 정보</SubTitle>
                 <AccountInfoCard
-                  accntInfo={{ id: 0, bankId: 4, accntNo: '123412341234' }}
+                  accntInfo={{ accountId: 0, bankId: 4, acctNo: '123412341234' }}
                   selectHandler={() => {
                     console.log('계좌 설정 페이지');
                   }}

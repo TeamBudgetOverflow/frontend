@@ -24,7 +24,7 @@ const AccountSelect = ({ accounts }: AccountSelectProps) => {
       <ContentWrapper>
         <SubTitle>연결된 계좌</SubTitle>
         {accounts.map((account) => (
-          <AccountInfoCard key={account.id} accntInfo={account} selectHandler={handleSelect} />
+          <AccountInfoCard key={account.accountId} accntInfo={account} selectHandler={handleSelect} />
         ))}
       </ContentWrapper>
     </Wrapper>

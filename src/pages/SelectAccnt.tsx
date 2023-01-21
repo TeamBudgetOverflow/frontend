@@ -40,7 +40,7 @@ const SelectAccnt = () => {
   );
   useEffect(() => {
     if (!data) return;
-    setAccounts(data);
+    setAccounts(data.filter((v) => v.bankId !== 2));
   }, [data]);
 
   const [isSelected, setIsSelected] = useState<boolean>(false);
