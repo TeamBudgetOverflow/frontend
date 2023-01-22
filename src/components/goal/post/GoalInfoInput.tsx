@@ -139,7 +139,7 @@ function GoalInfoInput({ isGroup }: GoalInfoInputProps) {
 
   useEffect(() => {
     validate();
-  }, [emoji, title, description, amount, headCount]);
+  }, [emoji, title, description, amount, headCount, titleErr, descriptionErr, amountErr, headCountErr]);
 
   const setPostGoal = useSetRecoilState(postGoal);
   const setPostGoalType = useSetRecoilState(postGoalType);
