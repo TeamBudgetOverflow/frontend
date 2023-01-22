@@ -76,7 +76,7 @@ export const userAPI = {
   },
 
   getNaverSignup: async (code: string) => {
-    const { data } = await noneTokenClient.get(`/users/auth/naver?code=${code}`);
+    const { data } = await noneTokenClient.post(`/users/auth/naver?code=${code}`);
 
     return data;
   },
