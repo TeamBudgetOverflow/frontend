@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { dDayCalculator } from '../../../utils/dDayCalculator';
 
-const DdayTag = ({ dDay }: { dDay: number }) => {
-  return <Tag>{`D-${dDay}`}</Tag>;
+const DdayTag = ({ targetDate }: { targetDate: Date }) => {
+  const [days, setDays] = useState<number>(0);
+  useEffect(() => {
+    setDays(dDayCalculator(targetDate));
+  }, [targetDate]);
+
+  return <Tag>{`D-${days === 0 ? 'day' : days}`}</Tag>;
 };
 
 const Tag = styled.div`
