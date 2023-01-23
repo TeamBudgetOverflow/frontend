@@ -11,41 +11,21 @@ import Alert from '../components/common/alert/Alert';
 import LoadingMsg from '../components/common/elem/LoadingMsg';
 import ErrorMsg from '../components/common/elem/ErrorMsg';
 
-import { userGoals, userInfo, userProfile } from '../recoil/userAtoms';
+import { userGoals, userId } from '../recoil/userAtoms';
 
 import { IGoals, IUserProfile } from '../interfaces/interfaces';
 
 import { userAPI } from '../apis/client';
-import useLogout from '../hooks/useLogout';
 
 const Home = () => {
-  const savedUserInfo = useRecoilValue(userInfo);
-  const logout = useLogout();
-  const { isLoading: isLoadingProfile, data: profile } = useQuery<IUserProfile>('userProfile', () =>
-    userAPI.getUserProfile(savedUserInfo.id).catch((e) => {
-      if (e.status === 410) {
-        logout();
-      }
-    })
-  );
-  const setUserProfile = useSetRecoilState(userProfile);
-
-  useEffect(() => {
-    if (!profile) return;
-    setUserProfile(profile);
-  }, [profile]);
+  const { id } = useRecoilValue(userId);
+  const { data: profile } = useQuery<IUserProfile>('userProfile', () => userAPI.getUserProfile(id));
 
   const {
     isLoading: isLoadingGoals,
     data: userGoalsData,
     isError,
-  } = useQuery<IGoals>('userGoals', () =>
-    userAPI.getUserGoals(savedUserInfo.id).catch((e) => {
-      if (e.status === 410) {
-        logout();
-      }
-    })
-  );
+  } = useQuery<IGoals>('userGoals', () => userAPI.getUserGoals(id));
   const setUserGoals = useSetRecoilState(userGoals);
   const goals = useRecoilValue(userGoals);
 
@@ -58,7 +38,7 @@ const Home = () => {
 
   return (
     <Wrapper>
-      <UserProfile />
+      {!profile ? <></> : <UserProfile profile={profile} />}
       <ContentWrapper>
         {isLoadingGoals ? (
           <Alert height={150} showBgColor={true}>

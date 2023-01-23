@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
-import { useQuery } from 'react-query';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import React from 'react';
+import { Navigate, useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 import GoalInfoCard from '../components/goal/goalDetail/GoalInfoCard';
@@ -13,131 +13,88 @@ import GoalDeleteButton from '../components/goal/goalDetail/GoalDeleteButton';
 import ParticipantList from '../components/goal/goalDetail/group/ParticipantList';
 import AccountInfoCard from '../components/account/AccountInfoCard';
 
-import { userInfo } from '../recoil/userAtoms';
-import { goalDetail } from '../recoil/goalsAtoms';
+import { userId } from '../recoil/userAtoms';
 
-import { goalApi } from '../apis/client';
+import useGoalDetailData from '../hooks/useGoalDetailData';
 
-import { IGoalDetail } from '../interfaces/interfaces';
-
-import useLogout from '../hooks/useLogout';
-
-import { inProgressChecker, participantIdFinder, personalGoalChecker } from '../utils/detailGoalChecker';
-import { useParams } from 'react-router-dom';
+const setButton = (
+  createdUserId: number,
+  loginUserId: number,
+  isWorking: boolean,
+  isGroup: boolean,
+  isMember: boolean
+) => {
+  if (loginUserId === createdUserId) {
+    return (
+      <GoalButtonSet>
+        <GoalModifyButton />
+        {isWorking ? <></> : <GoalDeleteButton />}
+      </GoalButtonSet>
+    );
+  } else if (isGroup && !isWorking) {
+    return <GoalButtonSet>{isMember ? <WithDrawButton /> : <JoinButton />}</GoalButtonSet>;
+  }
+};
 
 const DetailGoal = () => {
-  const { id: userId } = useRecoilValue(userInfo);
-  const { id } = useParams();
-  const logout = useLogout();
-  const { isLoading: isLoading, data: goalDetailData } = useQuery<IGoalDetail>('goalDetail', () =>
-    goalApi.getGoalDetail(Number(id)).catch((e) => {
-      if (e.status === 410) {
-        logout();
-      }
-    })
-  );
-  const setGoalDetail = useSetRecoilState(goalDetail);
-  const goalDetails = useRecoilValue(goalDetail);
+  const { id: loginUserId } = useRecoilValue(userId);
+  const { id: goalId } = useParams();
+  if (!goalId) return <Navigate to='/' />;
 
-  useEffect(() => {
-    if (!goalDetailData) return;
-    setGoalDetail(goalDetailData);
-  }, [goalDetailData]);
-  const buttonSet = (userId: number) => {
-    const findId = goalDetails?.members.findIndex((member) => member.userId === userId);
+  const {
+    isLoading,
+    isError,
+    data,
+    isGroupVal: isGroup,
+    isMemberVal: isMember,
+    isWorkingVal: isWorking,
+  } = useGoalDetailData({ loginUserId, goalId });
 
-    if (userId === goalDetails.userId) {
-      return (
-        <GoalButtonSet>
-          <GoalModifyButton />
-          {inProgressChecker(new Date(goalDetails.startDate), new Date(goalDetails.endDate)) ? (
-            <></>
-          ) : (
-            <>
-              <GoalDeleteButton />
-            </>
-          )}
-        </GoalButtonSet>
-      );
-    }
-
-    if (goalDetails.headCount !== 1 && userId !== goalDetails.userId && findId !== -1) {
-      return (
-        <GoalButtonSet>
-          {inProgressChecker(goalDetails.startDate, goalDetails.endDate) ? (
-            <></>
-          ) : (
-            <>
-              <WithDrawButton />
-            </>
-          )}
-        </GoalButtonSet>
-      );
-    }
-
-    if (goalDetails.headCount !== 1 && userId !== goalDetails.userId && findId === -1) {
-      return (
-        <GoalButtonSet>
-          {inProgressChecker(new Date(goalDetails.startDate), new Date(goalDetails.endDate)) ? (
-            <></>
-          ) : (
-            <>
-              <JoinButton />
-            </>
-          )}
-        </GoalButtonSet>
-      );
-    }
-  };
+  if (isLoading || !data) return <>Loading...</>;
+  if (isError) return <>Error</>;
 
   return (
     <Wrapper>
-      {isLoading ? (
-        <>Loading...</>
-      ) : (
-        <DetailGoalWrapper>
-          <TopContent>
-            <GoalInfoCard
-              userId={userId}
-              title={goalDetails.title}
-              emoji={goalDetails.emoji}
-              startDate={goalDetails.startDate}
-              headCount={goalDetails.headCount}
-              recruitCount={goalDetails.curCount}
-              amount={goalDetails.amount}
-              attainment={goalDetails.members.find((m) => m.userId === userId)?.attainment}
-              recruitMember={goalDetails.members}
-            />
-            <GoalPeriodCard startDate={goalDetails.startDate} endDate={goalDetails.endDate} />
-            <GoalDescCard description={goalDetails.description} />
-          </TopContent>
-          <BottomContent>
-            {participantIdFinder(goalDetails.members, userId) ? (
-              <>
-                <SubTitle>연결 계좌 정보</SubTitle>
-                <AccountInfoCard
-                  accntInfo={{ accountId: 0, bankId: 4, acctNo: '123412341234' }}
-                  selectHandler={() => {
-                    console.log('계좌 설정 페이지');
-                  }}
-                />
-              </>
-            ) : (
-              <></>
-            )}
-
-            {personalGoalChecker(goalDetails.curCount, goalDetails.headCount) ? (
-              <></>
-            ) : (
-              <>
-                <SubTitle>참가자 {`${goalDetails.curCount} / ${goalDetails.headCount}`}</SubTitle>
-                <ParticipantList recruitMember={goalDetails.members} />
-              </>
-            )}
-          </BottomContent>
-        </DetailGoalWrapper>
-      )}
-      {buttonSet(userId)}
+      <DetailGoalWrapper>
+        <TopContent>
+          <GoalInfoCard
+            emoji={data.emoji}
+            title={data.title}
+            amount={data.amount}
+            startDate={data.startDate}
+            curCount={data.curCount}
+            headCount={data.headCount}
+            isMember={isMember}
+            attainment={data.members.find((m) => m.userId === loginUserId)?.attainment}
+          />
+          <GoalPeriodCard startDate={data.startDate} endDate={data.endDate} />
+          <GoalDescCard description={data.description} />
+        </TopContent>
+        <BottomContent>
+          {isMember ? (
+            <>
+              <SubTitle>연결 계좌 정보</SubTitle>
+              <AccountInfoCard
+                accntInfo={{ accountId: 0, bankId: 4, acctNo: '123412341234' }}
+                selectHandler={() => {
+                  console.log('계좌 설정 페이지');
+                }}
+              />
+            </>
+          ) : (
+            <></>
+          )}
+          {isGroup ? (
+            <>
+              <SubTitle>참가자 {`${data.curCount} / ${data.headCount}`}</SubTitle>
+              <ParticipantList recruitMember={data.members} />
+            </>
+          ) : (
+            <></>
+          )}
+        </BottomContent>
+      </DetailGoalWrapper>
+      {setButton(data.userId, loginUserId, isWorking, isGroup, isMember)}
     </Wrapper>
   );
 };

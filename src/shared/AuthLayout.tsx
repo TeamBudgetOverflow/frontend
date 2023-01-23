@@ -1,26 +1,25 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import Header from './Header';
 import Navigation from './Navigation';
 
-import { userInfo } from '../recoil/userAtoms';
-
 const AuthLayout = () => {
-  const { isAccessToken, isRefreshToken } = useRecoilValue(userInfo);
+  const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
   const navigate = useNavigate();
   useEffect(() => {
-    if (!isAccessToken && isRefreshToken) {
+    if (!accessToken && refreshToken) {
       navigate('/pinnumber');
       return;
     }
-    if (!isAccessToken && !isRefreshToken) {
+    if (!accessToken && !refreshToken) {
       navigate('/login');
       return;
     }
-  }, [isAccessToken, isRefreshToken]);
+  }, [accessToken, refreshToken]);
 
   const { pathname } = useLocation();
   const headerRef = useRef<HTMLDivElement>(null);

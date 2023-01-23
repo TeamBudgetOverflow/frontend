@@ -1,57 +1,29 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import Info from '../components/common/alert/Info';
 
-import { userInfo } from '../recoil/userAtoms';
-
 const Redirect = () => {
-  const setUserInfo = useSetRecoilState(userInfo);
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
-  const checkToken = () => {
-    if (!accessToken && refreshToken) {
-      setUserInfo({
-        id: 0,
-        isLogin: false,
-        isAccessToken: false,
-        isRefreshToken: true,
-      });
-    }
-
-    if (!accessToken && !refreshToken) {
-      setUserInfo({
-        id: 0,
-        isLogin: false,
-        isAccessToken: false,
-        isRefreshToken: false,
-      });
-    }
-  };
-  useEffect(() => {
-    checkToken();
-  }, [accessToken, refreshToken]);
-
-  const { isLogin, isAccessToken, isRefreshToken } = useRecoilValue(userInfo);
   const navigate = useNavigate();
   useEffect(() => {
-    if (isLogin) {
+    if (accessToken && refreshToken) {
       navigate('/home');
       return;
-    } else if (!isAccessToken && isRefreshToken) {
+    } else if (!accessToken && refreshToken) {
       setTimeout(() => navigate('/pinnumber'), 3000);
       return;
-    } else if (!isAccessToken && !isRefreshToken) {
+    } else if (!accessToken && !refreshToken) {
       setTimeout(() => navigate('/login'), 3000);
       return;
     }
-  }, [isLogin, isAccessToken, isRefreshToken]);
+  }, [accessToken, refreshToken]);
 
   return (
     <Wrapper>
-      {!isRefreshToken ? (
+      {!refreshToken ? (
         <Info>
           로그인 정보가 만료되었습니다.
           <br />

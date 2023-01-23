@@ -5,34 +5,29 @@ import EmojiBox from '../../common/elem/EmojiBox';
 import ProgressBar from '../../common/elem/ProgressBar';
 import C3TextBox from '../../common/elem/C3TextBox';
 
-import { IMemeberInfo } from '../../../interfaces/interfaces';
-
 import { dateStringTranslator } from '../../../utils/dateTranslator';
-import { participantIdFinder } from '../../../utils/detailGoalChecker';
 import { setProgressState } from '../../../utils/progressState';
 
 interface IGoalInfoCardProps {
-  userId: number;
-  title: string;
   emoji: string;
-  startDate: Date;
-  recruitCount: number;
-  headCount: number;
+  title: string;
   amount: number;
+  startDate: Date;
+  curCount: number;
+  headCount: number;
+  isMember: boolean;
   attainment?: number;
-  recruitMember: Array<IMemeberInfo>;
 }
 
 const GoalInfoCard = ({
-  userId,
-  title,
   emoji,
-  startDate,
-  headCount,
-  recruitCount,
+  title,
   amount,
-  attainment = 0,
-  recruitMember,
+  startDate,
+  curCount,
+  headCount,
+  isMember,
+  attainment,
 }: IGoalInfoCardProps) => {
   return (
     <GoalInfoCardWrapper>
@@ -42,7 +37,7 @@ const GoalInfoCard = ({
       </TopContent>
       <BottomContent>
         <Amount>{amount.toLocaleString()} 원</Amount>
-        {participantIdFinder(recruitMember, userId) ? (
+        {isMember && attainment ? (
           <ProgressBarWrapper>
             <ProgressBar percentage={attainment} height={8} borderRadius={25} />
             <ProgressInfo>
@@ -52,10 +47,9 @@ const GoalInfoCard = ({
           </ProgressBarWrapper>
         ) : (
           <>
-            {' '}
             <StartDate>{`${dateStringTranslator(new Date(startDate))} 시작`}</StartDate>
             <HeadCount>
-              {recruitCount} / {headCount}
+              {curCount} / {headCount}
             </HeadCount>
           </>
         )}

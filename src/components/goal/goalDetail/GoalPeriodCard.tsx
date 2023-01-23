@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import DdayTag from '../../common/tag/DdayTag';
 
 import { dateStringTranslator } from '../../../utils/dateTranslator';
-import { dDayCalculator } from '../../../utils/dDayCalculator';
 
 interface GoalPeriodCard {
   startDate: Date;
@@ -18,7 +17,7 @@ const GoalPeriodCard = ({ startDate, endDate }: GoalPeriodCard) => {
         <SubTitle>기간</SubTitle>
         <Period>{`${dateStringTranslator(new Date(startDate))} - ${dateStringTranslator(new Date(endDate))}`}</Period>
       </GoalPeriodCardWrapper>
-      <DdayTag dDay={dDayCalculator(new Date(endDate))} />
+      <DdayTag targetDate={new Date(endDate)} />
     </Wrapper>
   );
 };

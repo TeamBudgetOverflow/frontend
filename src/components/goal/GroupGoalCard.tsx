@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import StateTag from '../common/tag/StateTag';
 import DdayTag from '../common/tag/DdayTag';
 
-import { dDayCalculator } from '../../utils/dDayCalculator';
 import { dateStringTranslator } from '../../utils/dateTranslator';
 
 import { ISearchGoal } from '../../interfaces/interfaces';
@@ -32,7 +31,7 @@ const GroupGoalCards = ({ goal }: { goal: ISearchGoal }) => {
       <TopContent>
         <HeadContent>
           <StateTag state={state} />
-          <DdayTag dDay={dDayCalculator(new Date(goal.endDate))} />
+          <DdayTag targetDate={new Date(goal.endDate)} />
         </HeadContent>
         <BodyContent>
           <Content>

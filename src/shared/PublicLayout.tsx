@@ -1,24 +1,23 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Outlet } from 'react-router';
-import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
-import { userInfo } from '../recoil/userAtoms';
-
 const PublicLayout = () => {
-  const { isLogin, isAccessToken, isRefreshToken } = useRecoilValue(userInfo);
   const navigate = useNavigate();
+  const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
+
   useEffect(() => {
-    if (isLogin) {
+    if (accessToken && refreshToken) {
       navigate('/home');
       return;
     }
-    if (!isAccessToken && isRefreshToken) {
+    if (!accessToken && refreshToken) {
       navigate('/pinnumber');
       return;
     }
-  }, []);
+  }, [accessToken, refreshToken]);
 
   return (
     <Wrapper>

@@ -7,12 +7,12 @@ import BadgeBox from '../common/elem/BadgeBox';
 
 import { userAPI } from '../../apis/client';
 
-import { userInfo } from '../../recoil/userAtoms';
+import { userId } from '../../recoil/userAtoms';
 
 import { IBadge } from '../../interfaces/interfaces';
 
 const MyFilteredBadges = () => {
-  const { id } = useRecoilValue(userInfo);
+  const { id } = useRecoilValue(userId);
   const [badges, setBadges] = useState<Array<IBadge>>([{ title: '뱃지', description: '' }]);
   const { isLoading, data } = useQuery<Array<IBadge>>('userBadges', () => userAPI.getUserBadges(id));
 

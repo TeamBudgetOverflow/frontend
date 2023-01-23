@@ -45,8 +45,8 @@ noneTokenClient.interceptors.response.use(
   (error) => {
     const errorResponse = {
       ...error.response.data,
-      status: error.response.status,
     };
+
     return Promise.reject(errorResponse);
   }
 );
@@ -56,14 +56,14 @@ tokenClient.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response?.status === 401 || error.response?.status === 410) {
+    if (error.response?.status === 401) {
       localStorage.removeItem('accessToken');
-      // TODO: 리프레시 토큰을 활용한 재인증 요청 api를 사용
     }
+
     const errorResponse = {
-      ...error.response.data,
       status: error.response.status,
     };
+
     return Promise.reject(errorResponse);
   }
 );
@@ -101,72 +101,13 @@ export const userAPI = {
 
   getUserProfile: async (userId: number) => {
     const { data } = await tokenClient.get(`/users/${userId}`);
-    // const data = {
-    //   img: '',
-    //   nickname: '유진',
-    //   description: '안녕하세요',
-    // };
+
     return data;
   },
 
   getUserGoals: async (userId: number) => {
     const { data } = await tokenClient.get(`/users/${userId}/goals`);
-    // const data = {
-    //   goals: [
-    //     {
-    //       id: 1,
-    //       emoji: '26f0-fe0f',
-    //       title: '생일선물',
-    //       description: '친구 생일선물 구매비용 모으기',
-    //       isPrivate: false,
-    //       hashtag: ['생일선물', '소액모으기'],
-    //       amount: 100000,
-    //       attainment: 80,
-    //       startDate: new Date(),
-    //       endDate: new Date('2023-01-20'),
-    //       headCount: 1,
-    //     },
-    //     {
-    //       id: 2,
-    //       emoji: '26f0-fe0f',
-    //       title: 'test2',
-    //       description: 'test입니다2',
-    //       isPrivate: false,
-    //       hashtag: ['생일선물', '소액모으기'],
-    //       amount: 150000,
-    //       attainment: 80,
-    //       startDate: new Date(),
-    //       endDate: new Date('2023-02-15'),
-    //       headCount: 3,
-    //     },
-    //     {
-    //       id: 3,
-    //       emoji: '26f0-fe0f',
-    //       title: 'test3',
-    //       description: 'test입니다3',
-    //       isPrivate: false,
-    //       hashtag: ['생일선물', '랄라'],
-    //       amount: 150000,
-    //       attainment: 80,
-    //       startDate: new Date(),
-    //       endDate: new Date('2023-03-10'),
-    //       headCount: 3,
-    //     },
-    //     {
-    //       id: 4,
-    //       emoji: '26f0-fe0f',
-    //       title: 'test4',
-    //       description: 'test입니다4',
-    //       isPrivate: false,
-    //       hashtag: ['생일선물', '랄라'],
-    //       amount: 50000,
-    //       attainment: 20,
-    //       startDate: new Date(),
-    //       endDate: new Date('2023-04-10'),
-    //       headCount: 3,
-    //     },
-    //   ],
-    // };
+
     return data;
   },
   getUserBadges: async (userId: number) => {
@@ -213,14 +154,6 @@ export const userAPI = {
 export const accountApi = {
   getAccounts: async (userId: number): Promise<Array<IAccount>> => {
     const { data } = await tokenClient.get(`/accounts/${userId}`);
-    // const data = [
-    //   {
-    //     id: 1,
-    //     bankId: 0,
-    //     accntNo: '11011102012',
-    //   },
-    // ];
-    // const data: Array<IAccount> = [];
 
     return data;
   },
@@ -239,31 +172,6 @@ export const accountApi = {
 export const goalApi = {
   getBanks: async (): Promise<Array<IBank>> => {
     const { data } = await tokenClient.get(`/banks`);
-    // const data = {
-    //   banks: [
-    //     { bankId: 0, bankCode: '088', bankName: '신한은행' },
-    //     { bankId: 1, bankCode: '088', bankName: '신한은행' },
-    //     { bankId: 2, bankCode: '088', bankName: '신한은행' },
-    //     { bankId: 3, bankCode: '088', bankName: '신한은행' },
-    //     { bankId: 4, bankCode: '088', bankName: '신한은행' },
-    //     { bankId: 5, bankCode: '088', bankName: '신한은행' },
-    //     { bankId: 6, bankCode: '088', bankName: '신한은행' },
-    //     { bankId: 7, bankCode: '088', bankName: '신한은행' },
-    //     { bankId: 8, bankCode: '088', bankName: '신한은행' },
-    //     { bankId: 9, bankCode: '088', bankName: '신한은행' },
-    //     { bankId: 10, bankCode: '088', bankName: '신한은행' },
-    //     { bankId: 11, bankCode: '088', bankName: '신한은행' },
-    //     { bankId: 12, bankCode: '088', bankName: '신한은행' },
-    //     { bankId: 13, bankCode: '088', bankName: '신한은행' },
-    //     { bankId: 14, bankCode: '088', bankName: '신한은행' },
-    //     { bankId: 15, bankCode: '088', bankName: '신한은행' },
-    //     { bankId: 16, bankCode: '088', bankName: '신한은행' },
-    //     { bankId: 17, bankCode: '088', bankName: '신한은행' },
-    //     { bankId: 18, bankCode: '088', bankName: '신한은행' },
-    //     { bankId: 19, bankCode: '088', bankName: '신한은행' },
-    //     { bankId: 20, bankCode: '088', bankName: '신한은행' },
-    //   ],
-    // };
 
     return data;
   },
@@ -274,195 +182,16 @@ export const goalApi = {
   },
   getGoals: async () => {
     const { data } = await tokenClient.get(`/goals`);
-    // const data = {
-    //   result: [
-    //     {
-    //       userId: 1,
-    //       goalId: 1,
-    //       nickname: '태근',
-    //       amount: 100000,
-    //       curCount: 1,
-    //       headCount: 10,
-    //       startDate: new Date('2023-01-18'),
-    //       endDate: new Date('2023-01-20'),
-    //       title: '생일선물1',
-    //       hashtag: ['생일선물', '소액모으기'],
-    //       emoji: '26f0-fe0f',
-    //       description: '친구 생일선물 구매비용 모으기',
-    //       createdAt: new Date('2023-01-05'),
-    //       updatedAt: new Date('2023-01-19'),
-    //     },
-    //     {
-    //       userId: 2,
-    //       goalId: 2,
-    //       nickname: '나래',
-    //       amount: 150000,
-    //       curCount: 3,
-    //       headCount: 10,
-    //       startDate: new Date('2023-01-27'),
-    //       endDate: new Date('2023-02-22'),
-    //       title: '생일선물2',
-    //       hashtag: ['생일선물', '소액모으기'],
-    //       emoji: '26f0-fe0f',
-    //       description: '친구 생일선물 구매비용 모으기',
-    //       createdAt: new Date('2023-01-10'),
-    //       updatedAt: new Date('2023-01-24'),
-    //     },
-    //     {
-    //       userId: 3,
-    //       goalId: 3,
-    //       nickname: '유진',
-    //       amount: 200000,
-    //       curCount: 10,
-    //       headCount: 10,
-    //       startDate: new Date('2023-01-24'),
-    //       endDate: new Date('2023-01-31'),
-    //       title: '생일선물3',
-    //       hashtag: ['생일선물', '소액모으기'],
-    //       emoji: '26f0-fe0f',
-    //       description: '친구 생일선물 구매비용 모으기',
-    //       createdAt: new Date('2023-01-20'),
-    //       updatedAt: new Date('2023-01-20'),
-    //     },
-    //     {
-    //       userId: 4,
-    //       goalId: 4,
-    //       nickname: '제승',
-    //       amount: 250000,
-    //       curCount: 1,
-    //       headCount: 10,
-    //       startDate: new Date('2023-01-25'),
-    //       endDate: new Date('2023-02-01'),
-    //       title: '생일선물4',
-    //       hashtag: ['생일선물', '소액모으기'],
-    //       emoji: '26f0-fe0f',
-    //       description: '친구 생일선물 구매비용 모으기',
-    //       createdAt: new Date('2023-01-19'),
-    //       updatedAt: new Date('2023-01-20'),
-    //     },
-    //   ],
-    // };
 
     return data.result;
   },
   getGoalDetail: async (goalId: number) => {
     const { data } = await tokenClient.get(`/goals/${goalId}`);
-    // const data = {
-    //   goalDetail: {
-    //     createdUserId: 2,
-    //     id: 1,
-    //     title: '생일선물',
-    //     emoji: '26f0-fe0f',
-    //     description: '친구 생일선물 구매비용 모으기',
-    //     isPrivate: false,
-    //     hashtag: ['생일선물', '소액모으기'],
-    //     amount: 100000,
-    //     attainment: 80,
-    //     startDate: new Date('2023-01-15'),
-    //     endDate: new Date('2023-01-16'),
-    //     recruitCount: 5,
-    //     headCount: 10,
-    //     recruitMember: [
-    //       { userId: 1, nickname: '태근', img: 'img.jpg', attainment: 80 },
-    //       { userId: 2, nickname: '유진', img: 'img2.jpg', attainment: 80 },
-    //       { userId: 3, nickname: '제승', img: 'img3.jpg', attainment: 80 },
-    //       { userId: 4, nickname: '수완', img: 'img4.jpg', attainment: 80 },
-    //       { userId: 5, nickname: '쥬향', img: 'img5.jpg', attainment: 80 },
-    //     ],
-    //   },
-    // };
-
-    // const data = {
-    //   goalDetail: {
-    //     createdUserId: 1,
-    //     id: 2,
-    //     title: '생일선물',
-    //     emoji: '26f0-fe0f',
-    //     description: '친구 생일선물 구매비용 모으기',
-    //     isPrivate: false,
-    //     hashtag: ['생일선물', '소액모으기'],
-    //     amount: 100000,
-    //     attainment: 80,
-    //     startDate: new Date('2023-01-15'),
-    //     endDate: new Date('2023-01-20'),
-    //     recruitCount: 1,
-    //     headCount: 1,
-    //     recruitMember: [{ userId: 1, nickname: '태근', img: 'img.jpg', attainment: 80 }],
-    //   },
-    // };
 
     return data.result[0];
   },
   getGoalsByWord: async (query: string) => {
     const { data } = await tokenClient.get(`/goals/getgoals/search` + query);
-    // const data = {
-    //   result: [
-    //     {
-    //       userId:1
-    //       goalId:1,
-    //       nickname: '태근'
-    //       amount: 100000,
-    //       curCount: 1,
-    //       headCount: 10,
-    //       startDate: new Date('2023-01-10'),
-    //       endDate: new Date('2023-01-20'),
-    //       title: '생일선물',
-    //       hashtag: ['생일선물', '소액모으기'],
-    //       emoji: '26f0-fe0f',
-    //       description: '친구 생일선물 구매비용 모으기',
-    //       createdAt: new Date('2023-01-05'),
-    //       updatedAt: new Date('2023-01-19'),
-    //     },
-    //     {
-    //       userId:2
-    //       goalId:2,
-    //       nickname: '나래'
-    //       amount: 150000,
-    //       curCount: 3,
-    //       headCount: 10,
-    //       startDate: new Date('2023-01-15'),
-    //       endDate: new Date('2023-01-22'),
-    //       title: '생일선물',
-    //       hashtag: ['생일선물', '소액모으기'],
-    //       emoji: '26f0-fe0f',
-    //       description: '친구 생일선물 구매비용 모으기',
-    //       createdAt: new Date('2023-01-10'),
-    //       updatedAt: new Date('2023-01-24'),
-    //     },
-    //     {
-    //       userId:3
-    //       goalId:3,
-    //       nickname: '유진'
-    //       amount: 200000,
-    //       curCount: 10,
-    //       headCount: 10,
-    //       startDate: new Date('2023-01-24'),
-    //       endDate: new Date('2023-01-31'),
-    //       title: '생일선물',
-    //       hashtag: ['생일선물', '소액모으기'],
-    //       emoji: '26f0-fe0f',
-    //       description: '친구 생일선물 구매비용 모으기',
-    //       createdAt: new Date('2023-01-20'),
-    //       updatedAt: new Date('2023-01-20'),
-    //     },
-    //     {
-    //       userId:4
-    //       goalId:4,
-    //       nickname: '제승'
-    //       amount: 250000,
-    //       curCount: 1,
-    //       headCount: 10,
-    //       startDate: new Date('2023-01-25'),
-    //       endDate: new Date('2023-02-01'),
-    //       title: '생일선물',
-    //       hashtag: ['생일선물', '소액모으기'],
-    //       emoji: '26f0-fe0f',
-    //       description: '친구 생일선물 구매비용 모으기',
-    //       createdAt: new Date('2023-01-19'),
-    //       updatedAt: new Date('2023-01-20'),
-    //     },
-    //   ],
-    // };
 
     return data;
   },
