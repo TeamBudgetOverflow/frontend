@@ -8,16 +8,16 @@ import { userAPI } from '../../apis/client';
 
 import { IUserProfile } from '../../interfaces/interfaces';
 
-import { userInfo, userProfile } from '../../recoil/userAtoms';
+import { userId, userProfile } from '../../recoil/userAtoms';
 
 interface UserDetailProfileProps {
-  userId: number;
+  id: number;
   successGoalsCnt: number;
   workingGoalsCnt: number;
 }
 
-const UserDetailProfile = ({ userId, successGoalsCnt, workingGoalsCnt }: UserDetailProfileProps) => {
-  const { id } = useRecoilValue(userInfo);
+const UserDetailProfile = ({ id, successGoalsCnt, workingGoalsCnt }: UserDetailProfileProps) => {
+  const { id: loginUserId } = useRecoilValue(userId);
   const [profile, setProfile] = useState<IUserProfile>({
     image: '',
     nickname: '',
@@ -26,10 +26,10 @@ const UserDetailProfile = ({ userId, successGoalsCnt, workingGoalsCnt }: UserDet
   const defaultProfile = useRecoilValue(userProfile);
 
   useEffect(() => {
-    if (userId !== id) {
+    if (loginUserId !== id) {
       async () => {
         try {
-          const resp = await userAPI.getUserProfile(userId);
+          const resp = await userAPI.getUserProfile(id);
           setProfile(resp);
         } catch (e) {
           alert(e);

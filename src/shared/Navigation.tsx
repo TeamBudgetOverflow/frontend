@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import Icon from '../components/common/elem/Icon';
 
-import { userInfo } from '../recoil/userAtoms';
+import { userId } from '../recoil/userAtoms';
 
 enum Menu {
   home,
@@ -28,7 +28,7 @@ const pathMenuConverter = (path: string) => {
 
 const Navigation = (props: NavProps, ref: Ref<HTMLDivElement>) => {
   const navigate = useNavigate();
-  const { id } = useRecoilValue(userInfo);
+  const { id } = useRecoilValue(userId);
 
   const [selectedMenu, setSelectedMenu] = useState<Menu>(Menu.home);
   const handleMenuSelect = (menu: Menu) => {

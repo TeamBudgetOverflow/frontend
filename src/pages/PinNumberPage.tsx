@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import jwtDecoder from 'jwt-decode';
 
 import { userAPI } from '../apis/client';
-import { userInfo } from '../recoil/userAtoms';
 
 import { MyToken } from '../interfaces/interfaces';
+import { userId } from '../recoil/userAtoms';
 
 const PASSWORD_MAX_LENGTH = 6;
 
@@ -54,28 +54,19 @@ const PinNumberPage = () => {
   //   userAPI.postAccessTokenByPinCode(pinNumber)
   // );
   const accessToken = localStorage.getItem('accessToken');
-  const setUserInfo = useSetRecoilState(userInfo);
+  const setUserId = useSetRecoilState(userId);
   const navigate = useNavigate();
   const getAccessToken = async () => {
     try {
       const data = await userAPI.postAccessTokenByPinCode(pinNumber);
       localStorage.setItem('accessToken', data.accessToken);
-      setUserInfo({
-        id: jwtDecoder<MyToken>(data.accessToken).userId,
-        isLogin: true,
-        isAccessToken: true,
-        isRefreshToken: true,
-      });
+      setUserId({ id: jwtDecoder<MyToken>(data.accessToken).userId });
 
       navigate('/home');
     } catch (e) {
       console.log('get access token error:', e);
-      setUserInfo({
-        id: 0,
-        isLogin: false,
-        isAccessToken: false,
-        isRefreshToken: true,
-      });
+      localStorage.removeItem('accessToken');
+      setUserId({ id: 0 });
     }
   };
 

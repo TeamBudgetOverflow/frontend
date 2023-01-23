@@ -5,13 +5,10 @@ import { IGoal } from '../interfaces/interfaces';
 
 const { persistAtom } = recoilPersist();
 
-export const userInfo = atom({
-  key: 'userInfo',
+export const userId = atom({
+  key: 'userId',
   default: {
     id: 0,
-    isLogin: false,
-    isAccessToken: false,
-    isRefreshToken: false,
   },
   effects_UNSTABLE: [persistAtom],
 });

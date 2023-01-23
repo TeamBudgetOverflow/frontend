@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 import ProgressBar from '../common/elem/ProgressBar';
@@ -8,11 +9,13 @@ import TextButton from '../common/elem/TextButton';
 import Info from '../common/alert/Info';
 
 import useTxtInput from '../../hooks/useTxtInput';
+
 import { IValidateAccount } from '../../interfaces/interfaces';
+
 import { accountApi, bankAPI, goalApi } from '../../apis/client';
-import { useRecoilValue } from 'recoil';
+
 import { accntInfo, banksInfo } from '../../recoil/accntAtoms';
-import { userInfo, userProfile } from '../../recoil/userAtoms';
+import { userId, userProfile } from '../../recoil/userAtoms';
 import { postGoal } from '../../recoil/goalsAtoms';
 
 interface AccountInfoInputProps {
@@ -24,7 +27,6 @@ function AccountInfoInput({ goalIdHandler }: AccountInfoInputProps) {
     value: accntPW,
     errMsg: accntPWErr,
     onChange: changeAccntPW,
-    reset: resetAccntPW,
   } = useTxtInput({
     initValue: '',
     minLength: 4,
@@ -36,7 +38,6 @@ function AccountInfoInput({ goalIdHandler }: AccountInfoInputProps) {
     value: bankUserId,
     errMsg: bankUserIdErr,
     onChange: changeBankUserId,
-    reset: resetBankUserId,
   } = useTxtInput({
     initValue: '',
     minLength: 1,
@@ -48,7 +49,6 @@ function AccountInfoInput({ goalIdHandler }: AccountInfoInputProps) {
     value: bankUserPW,
     errMsg: bankUserPWErr,
     onChange: changeBankUserPW,
-    reset: resetBankUserPW,
   } = useTxtInput({
     initValue: '',
     minLength: 1,
@@ -99,7 +99,7 @@ function AccountInfoInput({ goalIdHandler }: AccountInfoInputProps) {
     }
   };
 
-  const { id } = useRecoilValue(userInfo);
+  const { id } = useRecoilValue(userId);
   const banks = useRecoilValue(banksInfo);
   const getBankId = () => {
     const bank = banks.find((bank) => bank.bankCode === accnt.bankCode);

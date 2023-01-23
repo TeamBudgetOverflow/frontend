@@ -7,7 +7,7 @@ import Info from '../components/common/alert/Info';
 import AccountSelect from '../components/account/AccountSelectSection';
 import TextButton from '../components/common/elem/TextButton';
 
-import { userInfo } from '../recoil/userAtoms';
+import { userId } from '../recoil/userAtoms';
 import { postGoal } from '../recoil/goalsAtoms';
 
 import { IAccount } from '../interfaces/interfaces';
@@ -33,7 +33,7 @@ const SelectAccnt = () => {
   }, []);
 
   const savedPostGoal = useRecoilValue(postGoal);
-  const { id } = useRecoilValue(userInfo);
+  const { id } = useRecoilValue(userId);
   const [accounts, setAccounts] = useState<Array<IAccount>>([]);
   const { isLoading: isLoadingAccounts, data } = useQuery<Array<IAccount>>('getAccounts', () =>
     accountApi.getAccounts(id)

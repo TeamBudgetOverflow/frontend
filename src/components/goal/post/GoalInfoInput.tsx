@@ -20,7 +20,7 @@ import useNumInput from '../../../hooks/useNumInput';
 import { IHashTag } from '../../common/tag/HashTag';
 
 import { postGoal, postGoalType } from '../../../recoil/goalsAtoms';
-import { userInfo } from '../../../recoil/userAtoms';
+import { userId } from '../../../recoil/userAtoms';
 
 import { accountApi, goalApi } from '../../../apis/client';
 
@@ -146,7 +146,7 @@ function GoalInfoInput({ isGroup }: GoalInfoInputProps) {
   const navigate = useNavigate();
   const [isPosted, setIsPosted] = useState<boolean>(false);
   const [isPostError, setIsPostError] = useState<boolean>(false);
-  const { id } = useRecoilValue(userInfo);
+  const { id } = useRecoilValue(userId);
   const handlePostGoal = async () => {
     if (isManual) {
       try {

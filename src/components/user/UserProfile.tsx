@@ -1,14 +1,10 @@
 import React from 'react';
-import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
+import { IUserProfile } from '../../interfaces/interfaces';
 
 import ProfileImg from '../common/elem/ProfileImg';
 
-import { userProfile } from '../../recoil/userAtoms';
-
-const UserProfile = () => {
-  const profile = useRecoilValue(userProfile);
-
+const UserProfile = ({ profile }: { profile: IUserProfile }) => {
   return (
     <Wrapper>
       <ProfileImg size={52} url={profile.image} />
