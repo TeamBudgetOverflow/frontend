@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { useQuery } from 'react-query';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 import UserProfile from '../components/user/UserProfile';
@@ -11,36 +10,24 @@ import Alert from '../components/common/alert/Alert';
 import LoadingMsg from '../components/common/elem/LoadingMsg';
 import ErrorMsg from '../components/common/elem/ErrorMsg';
 
-import { userGoals, userId } from '../recoil/userAtoms';
+import { userId, userGoals, userProfile } from '../recoil/userAtoms';
 
-import { IGoals, IUserProfile } from '../interfaces/interfaces';
-
-import { userAPI } from '../apis/client';
+import useBanksData from '../hooks/useBanksData';
+import useUserData from '../hooks/useUserData';
 
 const Home = () => {
+  useBanksData();
   const { id } = useRecoilValue(userId);
-  const { data: profile } = useQuery<IUserProfile>('userProfile', () => userAPI.getUserProfile(id));
-
-  const {
-    isLoading: isLoadingGoals,
-    data: userGoalsData,
-    isError,
-  } = useQuery<IGoals>('userGoals', () => userAPI.getUserGoals(id));
-  const setUserGoals = useSetRecoilState(userGoals);
+  const { isLoading, isError } = useUserData({ loginUserId: id, getUserId: id });
+  const profile = useRecoilValue(userProfile);
   const goals = useRecoilValue(userGoals);
-
-  useEffect(() => {
-    if (!userGoalsData) return;
-    setUserGoals(userGoalsData.result);
-  }, [userGoalsData]);
-
   const navigate = useNavigate();
 
   return (
     <Wrapper>
-      {!profile ? <></> : <UserProfile profile={profile} />}
+      <UserProfile profile={profile} />
       <ContentWrapper>
-        {isLoadingGoals ? (
+        {isLoading ? (
           <Alert height={150} showBgColor={true}>
             <LoadingMsg />
           </Alert>
@@ -49,7 +36,13 @@ const Home = () => {
             <ErrorMsg />
           </Alert>
         ) : (
-          goals?.map((goal) => <MyGoalCard key={goal.goalId} goal={goal} />)
+          goals
+            .filter(
+              (goal) =>
+                new Date(goal.startDate).getTime() < new Date().getTime() &&
+                new Date(goal.endDate).getTime() > new Date().getTime()
+            )
+            .map((goal) => <MyGoalCard key={goal.goalId} goal={goal} />)
         )}
         <AddGoalBtn onClick={() => navigate('/goals/post/type')}>
           <IconWrapper>
