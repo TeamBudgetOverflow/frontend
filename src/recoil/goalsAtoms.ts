@@ -71,3 +71,8 @@ export const groupGoals = atom<Array<ISearchGoal>>({
     },
   ],
 });
+
+export const showSearchFilters = atom<boolean>({
+  key: 'showSearchFilters',
+  default: false,
+});

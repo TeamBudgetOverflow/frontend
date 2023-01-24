@@ -80,6 +80,7 @@ const HeaderLayout = styled.div`
 `;
 
 const SearchBarWrapper = styled.div`
+  z-index: 1;
   margin-left: 20px;
   width: 100%;
 `;
@@ -103,7 +104,7 @@ const PageNameWrapper = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 3;
+  z-index: 0;
   padding: 8px 22px;
   display: flex;
   flex-direction: row;
