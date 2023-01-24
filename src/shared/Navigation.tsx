@@ -1,4 +1,4 @@
-import React, { useState, forwardRef, Ref, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
@@ -14,10 +14,6 @@ enum Menu {
   none,
 }
 
-interface NavProps {
-  props: string;
-}
-
 const pathMenuConverter = (path: string) => {
   if (path.includes('/goals/lookup')) return Menu.lookup;
   if (path.includes('/users/')) return Menu.my;
@@ -26,7 +22,7 @@ const pathMenuConverter = (path: string) => {
   return Menu.none;
 };
 
-const Navigation = (props: NavProps, ref: Ref<HTMLDivElement>) => {
+const Navigation = () => {
   const navigate = useNavigate();
   const { id } = useRecoilValue(userInfo);
 
@@ -54,7 +50,7 @@ const Navigation = (props: NavProps, ref: Ref<HTMLDivElement>) => {
     handleMenuSelect(pathMenuConverter(pathname));
   }, [pathname]);
   return (
-    <Wrapper show={show} ref={ref}>
+    <Wrapper show={show}>
       <Button show={show} onClick={() => handleMenuSelect(Menu.home)}>
         <Icon
           size={show ? 24 : 0}
@@ -114,4 +110,4 @@ const Text = styled.div<{ show: boolean }>`
   visibility: ${(props) => (props.show ? '' : 'hidden')};
 `;
 
-export default forwardRef(Navigation);
+export default Navigation;
