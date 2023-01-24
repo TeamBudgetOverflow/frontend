@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import Header from './Header';
@@ -23,15 +22,15 @@ const AuthLayout = () => {
 
   const { pathname } = useLocation();
   const headerRef = useRef<HTMLDivElement>(null);
-  const navRef = useRef<HTMLDivElement>(null);
   const [headerNavHeight, setHeaderNavHeight] = useState<number>(0);
 
   useEffect(() => {
-    if (!headerRef.current || !navRef.current) return;
-    if (pathname.includes('/goals/') && !pathname.includes('lookup'))
+    if (!headerRef.current) return;
+    if (pathname.includes('/goals/') && !pathname.includes('lookup')) {
       return setHeaderNavHeight(headerRef.current.clientHeight);
-    setHeaderNavHeight(headerRef.current.clientHeight + navRef.current.clientHeight);
-  }, [headerRef.current?.clientHeight, navRef.current?.clientHeight, pathname]);
+    }
+    setHeaderNavHeight(headerRef.current.clientHeight + 88);
+  }, [headerRef.current?.clientHeight, pathname]);
 
   return (
     <>
@@ -39,7 +38,7 @@ const AuthLayout = () => {
       <Body height={`${headerNavHeight}px`}>
         <Outlet />
       </Body>
-      <Navigation props='' ref={navRef} />
+      <Navigation />
     </>
   );
 };
