@@ -1,25 +1,11 @@
-import React, { useEffect } from 'react';
-import { useQuery } from 'react-query';
-import { useSetRecoilState } from 'recoil';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import GoalInfoInput from '../components/goal/post/GoalInfoInput';
 
-import { goalApi } from '../apis/client';
-
-import { IBank } from '../interfaces/interfaces';
-
-import { banksInfo } from '../recoil/accntAtoms';
-
 const CreateGoalData = () => {
   const { type } = useParams();
-  const { data: banks } = useQuery<Array<IBank>>('getBanks', () => goalApi.getBanks());
-  const setBanksInfo = useSetRecoilState(banksInfo);
-  useEffect(() => {
-    if (!banks) return;
-    setBanksInfo(banks.slice(2, -1));
-  }, [banks]);
 
   return (
     <Wrapper>
