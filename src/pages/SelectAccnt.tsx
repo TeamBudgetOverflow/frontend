@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useQuery } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
@@ -7,13 +7,11 @@ import Info from '../components/common/alert/Info';
 import AccountSelect from '../components/account/AccountSelectSection';
 import TextButton from '../components/common/elem/TextButton';
 
-import { userId } from '../recoil/userAtoms';
+import useAccountsData from '../hooks/useAccountsData';
+
+import { goalApi } from '../apis/client';
+
 import { postGoal } from '../recoil/goalsAtoms';
-
-import { IAccount } from '../interfaces/interfaces';
-
-import { accountApi, goalApi } from '../apis/client';
-import { useNavigate } from 'react-router-dom';
 import { accntInfo, selectedBankInfo } from '../recoil/accntAtoms';
 
 const SelectAccnt = () => {
@@ -33,17 +31,13 @@ const SelectAccnt = () => {
   }, []);
 
   const savedPostGoal = useRecoilValue(postGoal);
-  const { id } = useRecoilValue(userId);
-  const [accounts, setAccounts] = useState<Array<IAccount>>([]);
-  const { isLoading: isLoadingAccounts, data } = useQuery<Array<IAccount>>('getAccounts', () =>
-    accountApi.getAccounts(id)
-  );
-  useEffect(() => {
-    if (!data) return;
-    setAccounts(data.filter((v) => v.bankId !== 2));
-  }, [data]);
+  const { isLoading, accounts, isError } = useAccountsData();
 
   const [isSelected, setIsSelected] = useState<boolean>(false);
+  const setPostGoal = useSetRecoilState(postGoal);
+  const handleSelectAccnt = (accountId: number) => {
+    setPostGoal({ ...savedPostGoal, accountId });
+  };
   useEffect(() => {
     if (savedPostGoal.accountId !== 0) setIsSelected(true);
   }, [savedPostGoal]);
@@ -54,6 +48,9 @@ const SelectAccnt = () => {
 
   const navigate = useNavigate();
 
+  if (isLoading || !accounts) return <>Loading...</>;
+  if (isError) return <>Error</>;
+
   return (
     <Wrapper>
       {accounts.length === 0 ? (
@@ -63,11 +60,11 @@ const SelectAccnt = () => {
             <br />
             계좌를 새로 연결하시겠습니까?
           </Info>
-          <TextButton text='다음' onClickHandler={() => navigate('/goals/post/account/post')} />
+          <TextButton text='다음' onClickHandler={() => navigate('/accounts/post')} />
         </>
       ) : (
         <>
-          <AccountSelect accounts={accounts} />
+          <AccountSelect accounts={accounts} accountSelectHandler={handleSelectAccnt} />
           <TextButton text='완료' onClickHandler={handlePostGoal} isDisabled={!isSelected} />
         </>
       )}

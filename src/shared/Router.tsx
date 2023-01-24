@@ -39,8 +39,8 @@ const Router = () => {
           <Route path='/agreement' element={<AgreementOfCollectionPersonalInfo />} />
           <Route path='/goals/post/type' element={<SelectGoalType />} />
           <Route path='/goals/post/data/:type' element={<CreateGoalData />} />
-          <Route path='/goals/post/account/choose' element={<SelectAccnt />} />
-          <Route path='/goals/post/account/post' element={<CreateAccnt />} />
+          <Route path='/accounts/choose' element={<SelectAccnt />} />
+          <Route path='/accounts/post' element={<CreateAccnt />} />
           <Route path='/goals/:id' element={<DetailGoal />} />
           <Route path='/goals/lookup' element={<LookupGoals />} />
           <Route path='/goals/lookup/search' element={<SearchGoals />} />

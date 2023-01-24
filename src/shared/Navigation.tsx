@@ -1,54 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
+import { Menu } from '../hooks/useNavigateState';
+
 import Icon from '../components/common/elem/Icon';
+
+import useNavigateState from '../hooks/useNavigateState';
 
 import { userId } from '../recoil/userAtoms';
 
-enum Menu {
-  home,
-  lookup,
-  my,
-  none,
-}
-
-const pathMenuConverter = (path: string) => {
-  if (path.includes('/goals/lookup')) return Menu.lookup;
-  if (path.includes('/users/')) return Menu.my;
-  if (path === '/home') return Menu.home;
-
-  return Menu.none;
-};
-
 const Navigation = () => {
-  const navigate = useNavigate();
   const { id } = useRecoilValue(userId);
-
-  const [selectedMenu, setSelectedMenu] = useState<Menu>(Menu.home);
-  const handleMenuSelect = (menu: Menu) => {
-    switch (menu) {
-      case Menu.home:
-        setSelectedMenu(Menu.home);
-        return navigate('/home');
-      case Menu.lookup:
-        setSelectedMenu(Menu.lookup);
-        return navigate('/goals/lookup');
-      case Menu.my:
-        setSelectedMenu(Menu.my);
-        return navigate(`/users/${id}`);
-    }
-  };
-
-  const [show, setShow] = useState<boolean>(true);
   const { pathname } = useLocation();
-  useEffect(() => {
-    if (pathname.includes('/goals/') && !pathname.includes('lookup')) return setShow(false);
-    setShow(true);
+  const { selectedMenu, show, handleMenuSelect } = useNavigateState({ pathname, userId: id });
 
-    handleMenuSelect(pathMenuConverter(pathname));
-  }, [pathname]);
   return (
     <Wrapper show={show}>
       <Button show={show} onClick={() => handleMenuSelect(Menu.home)}>

@@ -187,7 +187,8 @@ function GoalInfoInput({ isGroup }: GoalInfoInputProps) {
         isManual: isManual,
         accountId: 0,
       });
-      navigate('/goals/post/account/choose');
+
+      navigate('/accounts/choose');
     }
   };
 
