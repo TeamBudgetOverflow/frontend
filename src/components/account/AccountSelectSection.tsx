@@ -1,22 +1,18 @@
 import React from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import AccountInfoCard from './AccountInfoCard';
-
-import { postGoal } from '../../recoil/goalsAtoms';
 
 import { IAccount } from '../../interfaces/interfaces';
 
 interface AccountSelectProps {
   accounts: Array<IAccount>;
+  accountSelectHandler: (accountId: number) => void;
 }
 
-const AccountSelect = ({ accounts }: AccountSelectProps) => {
-  const savedPostGoal = useRecoilValue(postGoal);
-  const setPostGoal = useSetRecoilState(postGoal);
+const AccountSelect = ({ accounts, accountSelectHandler }: AccountSelectProps) => {
   const handleSelect = (accountId: number) => {
-    setPostGoal({ ...savedPostGoal, accountId });
+    accountSelectHandler(accountId);
   };
 
   return (
@@ -24,7 +20,11 @@ const AccountSelect = ({ accounts }: AccountSelectProps) => {
       <ContentWrapper>
         <SubTitle>연결된 계좌</SubTitle>
         {accounts.map((account) => (
-          <AccountInfoCard key={account.accountId} accntInfo={account} selectHandler={handleSelect} />
+          <AccountInfoCard
+            key={account.accountId}
+            accntInfo={account}
+            selectHandler={() => handleSelect(account.accountId)}
+          />
         ))}
       </ContentWrapper>
     </Wrapper>
