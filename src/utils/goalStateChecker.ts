@@ -12,8 +12,8 @@ export const isWorking = (startDate: Date, endDate: Date) => {
   return !(today > endDate.getTime() || today < startDate.getTime());
 };
 
-export const isGroup = (headCount: number, recruitCount: number) => {
-  return recruitCount !== 1 && headCount !== 1;
+export const isGroup = (headCount: number) => {
+  return headCount !== 1;
 };
 
 export const isMember = (userId: number, members: Array<IMemeberInfo>) => {
