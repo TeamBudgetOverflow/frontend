@@ -11,6 +11,22 @@ import useNavigateState from '../hooks/useNavigateState';
 
 import { userId } from '../recoil/userAtoms';
 
+enum Menu {
+  home,
+  lookup,
+  my,
+  none,
+}
+
+const pathMenuConverter = (path: string) => {
+  // TODO: search 추가
+  // if (path.includes('/goals/lookup')) return Menu.lookup;
+  if (path.includes('/users/')) return Menu.my;
+  if (path === '/home') return Menu.home;
+
+  return Menu.none;
+};
+
 const Navigation = () => {
   const { id } = useRecoilValue(userId);
   const { pathname } = useLocation();

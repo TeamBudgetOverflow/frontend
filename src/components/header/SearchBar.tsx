@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { searchBarOnFocusEvent } from '../../recoil/searchAtoms';
 
 import InputBox from '../common/elem/InputBox';
 
@@ -12,24 +10,24 @@ interface SearchBarProps {
 
 const SearchBar = ({ show }: SearchBarProps) => {
   const [searchKeyword, setSearchKeyword] = useState('');
+  const [onFocus, setOnFocus] = useState(false);
+
   const navigate = useNavigate();
   const handleSearchButton = (searchKeyword: string) => {
     navigate('/goals/lookup/search?search=' + searchKeyword);
     setSearchKeyword('');
   };
 
-  const handleOnKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.code === 'Enter' && searchKeyword) {
+  const handleOnKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.code === 'Enter' && searchKeyword) {
       handleSearchButton(searchKeyword);
     }
   };
 
-  const [onFocus, setOnFocus] = useState(false);
-
-  const setSearchBarOnFocusEvent = useSetRecoilState(searchBarOnFocusEvent);
-
   useEffect(() => {
-    setSearchBarOnFocusEvent(onFocus);
+    if (onFocus === true) {
+      navigate('goals/lookup/search');
+    }
   }, [onFocus]);
 
   return (
@@ -38,8 +36,10 @@ const SearchBar = ({ show }: SearchBarProps) => {
         <InputBox
           type='text'
           placeholder='검색어를 입력하세요'
-          onChangeHandler={(e) => setSearchKeyword(e.currentTarget.value)}
-          onKeyPressHandler={(e) => handleOnKeyPress(e)}
+          onChangeHandler={(event) => setSearchKeyword(event.currentTarget.value)}
+          onKeyPressHandler={(event) => handleOnKeyPress(event)}
+          onFocusHandler={() => setOnFocus(true)}
+          onBlurHandler={() => setOnFocus(false)}
           showBorder={false}
         />
       </SearchInputWrapper>

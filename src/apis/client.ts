@@ -202,9 +202,26 @@ export const goalApi = {
 
     return data.result[0];
   },
-  getGoalsByWord: async (query: string) => {
-    const { data } = await tokenClient.get(`/goals/getgoals/search` + query);
-
+  getGoalsByWord: async (query: string): Promise<Array<ISearchGoal>> => {
+    // const { data } = await tokenClient.get(`/goals/getgoals/search` + query);
+    const data = [
+      {
+        userId: 0,
+        goalId: 0,
+        nickname: 'test1',
+        amount: 100000,
+        curCount: 1,
+        headCount: 10,
+        startDate: new Date('2023-01-25'),
+        endDate: new Date('2023-01-27'),
+        title: 'testTitle',
+        hashTag: ['#test1', '#test2'],
+        emoji: 'emoji',
+        description: 'desc',
+        createdAt: new Date('2023-01-24'),
+        updatedAt: new Date('2023-01-25'),
+      },
+    ];
     return data;
   },
   joinGoal: async ({ goalId, accountId }: { goalId: number; accountId: number }) => {
