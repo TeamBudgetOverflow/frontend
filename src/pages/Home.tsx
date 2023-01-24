@@ -36,7 +36,13 @@ const Home = () => {
             <ErrorMsg />
           </Alert>
         ) : (
-          goals.map((goal) => <MyGoalCard key={goal.goalId} goal={goal} />)
+          goals
+            .filter(
+              (goal) =>
+                new Date(goal.startDate).getTime() < new Date().getTime() &&
+                new Date(goal.endDate).getTime() > new Date().getTime()
+            )
+            .map((goal) => <MyGoalCard key={goal.goalId} goal={goal} />)
         )}
         <AddGoalBtn onClick={() => navigate('/goals/post/type')}>
           <IconWrapper>
