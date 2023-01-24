@@ -42,10 +42,10 @@ const usePageName = ({ pathname }: { pathname: string }) => {
       case '/goals/post/data/group':
         setPageType(PageType.postGoal);
         break;
-      case '/goals/post/account/choose':
+      case '/accounts/choose':
         setPageType(PageType.selectAccnt);
         break;
-      case '/goals/post/account/post':
+      case '/accounts/post':
         setPageType(PageType.createAccnt);
         break;
       case '/goals/lookup':
