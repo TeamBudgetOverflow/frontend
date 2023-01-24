@@ -24,7 +24,7 @@ const useGoalDetailData = ({ loginUserId, goalId }: useGoalStateProps) => {
 
   useEffect(() => {
     if (!data) return;
-    setIsGroup(isGroup(data.headCount, data.curCount));
+    setIsGroup(isGroup(data.headCount));
     setIsMember(isMember(loginUserId, data.members));
     setIsWorking(isWorking(new Date(data.startDate), new Date(data.endDate)));
   }, [data]);

@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Logo from '../components/common/elem/Logo';
 import SearchBar from '../components/header/SearchBar';
 import Icon from '../components/common/elem/Icon';
+
 import useHeaderState from '../hooks/useHeaderState';
 import usePageName from '../hooks/usePageName';
 
