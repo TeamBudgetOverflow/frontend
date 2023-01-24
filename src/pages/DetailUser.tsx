@@ -9,7 +9,7 @@ import TextButton from '../components/common/elem/TextButton';
 import MyFilteredGoals from '../components/goal/MyFilteredGoals';
 import MyFilteredBadges from '../components/badge/MyFilteredBadges';
 
-import { userGoals, userInfo } from '../recoil/userAtoms';
+import { userGoals, userId } from '../recoil/userAtoms';
 
 import { IGoals } from '../interfaces/interfaces';
 
@@ -22,7 +22,7 @@ interface ITab {
 
 const DetailUser = () => {
   const { id } = useParams();
-  const { id: loginUserId } = useRecoilValue(userInfo);
+  const { id: loginUserId } = useRecoilValue(userId);
   if (!id) return <>잘못된 아이디 값입니다</>;
   const { isLoading: isLoadingGoals, data: userGoalsData } = useQuery<IGoals>('memberGoals', () =>
     userAPI.getUserGoals(Number(id))
@@ -94,7 +94,7 @@ const DetailUser = () => {
   return (
     <Wrapper>
       <TopContent ref={topContentRef}>
-        <UserDetailProfile userId={Number(id)} successGoalsCnt={successGoalsCnt} workingGoalsCnt={workingGoalsCnt} />
+        <UserDetailProfile id={Number(id)} successGoalsCnt={successGoalsCnt} workingGoalsCnt={workingGoalsCnt} />
         <BtnWrapper>
           <TextButton text='프로필 수정' onClickHandler={handleUserEdit} />
         </BtnWrapper>

@@ -8,7 +8,6 @@ import DdayTag from '../common/tag/DdayTag';
 
 import { IGoal } from '../../interfaces/interfaces';
 
-import { dDayCalculator } from '../../utils/dDayCalculator';
 import { setProgressState } from '../../utils/progressState';
 
 const MyGoalCard = ({ goal }: { goal: IGoal }) => {
@@ -24,7 +23,7 @@ const MyGoalCard = ({ goal }: { goal: IGoal }) => {
           </TextContent>
         </TopLeftContent>
         <TopRightContent>
-          <DdayTag dDay={dDayCalculator(new Date(goal.endDate))} />
+          <DdayTag targetDate={new Date(goal.endDate)} />
         </TopRightContent>
       </TopContent>
       <BottomContent>

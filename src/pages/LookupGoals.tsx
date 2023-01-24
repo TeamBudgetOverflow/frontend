@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
@@ -17,21 +17,12 @@ import { ISearchGoal } from '../interfaces/interfaces';
 
 import { dDayCalculator } from '../utils/dDayCalculator';
 
-import useLogout from '../hooks/useLogout';
-
 const LookupGoals = () => {
-  const logout = useLogout();
   const {
     isLoading: isLoadingGoals,
     data: goalsData,
     isError,
-  } = useQuery<Array<ISearchGoal>>('getGoals', () =>
-    goalApi.getGoals().catch((e) => {
-      if (e.status === 410) {
-        logout();
-      }
-    })
-  );
+  } = useQuery<Array<ISearchGoal>>('getGoals', () => goalApi.getGoals());
   const setUserGoals = useSetRecoilState(groupGoals);
   const goals = useRecoilValue(groupGoals);
   const [impendingGoals, setImpendingGoals] = useState<Array<ISearchGoal>>([...goals]);

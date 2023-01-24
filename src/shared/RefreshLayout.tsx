@@ -1,24 +1,22 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
 import { Outlet } from 'react-router';
 import styled from 'styled-components';
 
-import { userInfo } from '../recoil/userAtoms';
-
 const RefreshLayout = () => {
-  const { isLogin, isAccessToken, isRefreshToken } = useRecoilValue(userInfo);
   const navigate = useNavigate();
+  const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
   useEffect(() => {
-    if (isLogin) {
-      navigate('/goals/lookup');
+    if (accessToken && refreshToken) {
+      navigate('/home');
       return;
     }
-    if (!isAccessToken && !isRefreshToken) {
+    if (!accessToken && !refreshToken) {
       navigate('/login');
       return;
     }
-  }, []);
+  }, [accessToken, refreshToken]);
 
   return (
     <Wrapper>
