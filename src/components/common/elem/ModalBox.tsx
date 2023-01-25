@@ -1,8 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 
-import Icon from './Icon';
-
 interface ModalBoxProps {
   show: boolean;
   children: React.ReactNode;
@@ -25,7 +23,7 @@ const Wrapper = styled.div<{ show: boolean }>`
   z-index: 10;
   display: ${(props) => (props.show ? '' : 'none')};
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
 `;
 

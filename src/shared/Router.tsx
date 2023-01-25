@@ -14,8 +14,11 @@ import Home from '../pages/Home';
 import SelectGoalType from '../pages/SelectGoalType';
 import CreateGoalData from '../pages/CreateGoalData';
 import SelectAccnt from '../pages/SelectAccnt';
+import CreateAccntAuto from '../pages/CreateAccntAuto';
+import CreateAccntManual from '../pages/CreateAccntManual';
+import PostGoal from '../pages/PostGoal';
+import JoinGoal from '../pages/JoinGoal';
 import AgreementOfCollectionPersonalInfo from '../pages/AgreementOfCollectionPersonalInfo';
-import CreateAccnt from '../pages/CreateAccnt';
 import DetailGoal from '../pages/DetailGoal';
 import LookupGoals from '../pages/LookupGoals';
 import SearchGoals from '../pages/SearchGoals';
@@ -40,7 +43,12 @@ const Router = () => {
           <Route path='/goals/post/type' element={<SelectGoalType />} />
           <Route path='/goals/post/data/:type' element={<CreateGoalData />} />
           <Route path='/accounts/choose' element={<SelectAccnt />} />
-          <Route path='/accounts/post' element={<CreateAccnt />} />
+          <Route path='/goals/post/accounts/auto' element={<CreateAccntAuto />} />
+          <Route path='/goals/join/:goalId/accounts/auto' element={<CreateAccntAuto />} />
+          <Route path='/goals/post/accounts/manual' element={<CreateAccntManual />} />
+          <Route path='/goals/join/:goalId/accounts/manual' element={<CreateAccntManual />} />
+          <Route path='/goals/post/:accountId' element={<PostGoal />} />
+          <Route path='/goals/join/:goalId/accounts/:accountId' element={<JoinGoal />} />
           <Route path='/goals/:id' element={<DetailGoal />} />
           <Route path='/goals/lookup' element={<LookupGoals />} />
           <Route path='/goals/lookup/search' element={<SearchGoals />} />

@@ -1,16 +1,18 @@
 import React from 'react';
 import { useMutation } from 'react-query';
-import { useParams } from 'react-router-dom';
 
 import TextButton from '../../../common/elem/TextButton';
 
 import { goalApi } from '../../../../apis/client';
+import { useNavigate } from 'react-router-dom';
 
-const WithDrawButton = () => {
-  const param = useParams();
-
-  const { mutate } = useMutation('withDrawGoal', () => goalApi.withdrawGoal(param.id));
-
+const WithDrawButton = ({ goalId }: { goalId: number }) => {
+  const navigate = useNavigate();
+  const { mutate } = useMutation('withDrawGoal', () => goalApi.withdrawGoal(goalId), {
+    onSuccess: () => {
+      navigate(0);
+    },
+  });
   const handleWithdrawGoalButton = () => {
     mutate();
   };

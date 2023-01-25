@@ -8,21 +8,18 @@ import ValidateMsg from '../common/elem/ValidateMsg';
 import TextButton from '../common/elem/TextButton';
 import Info from '../common/alert/Info';
 
+import { userProfile } from '../../recoil/userAtoms';
+
 import useTxtInput from '../../hooks/useTxtInput';
-
-import { IValidateAccount } from '../../interfaces/interfaces';
-
-import { accountApi, bankAPI, goalApi } from '../../apis/client';
-
-import { accntInfo, banksInfo } from '../../recoil/accntAtoms';
-import { userId, userProfile } from '../../recoil/userAtoms';
-import { postGoal } from '../../recoil/goalsAtoms';
+import useAccntValidate from '../../hooks/useAccntValidate';
+import useBankId from '../../hooks/useBankId';
+import useAccntAutoPost from '../../hooks/useAccntAutoPost';
 
 interface AccountInfoInputProps {
-  goalIdHandler: (goalId: number) => void;
+  accountIdHandler: (accountId: number) => void;
 }
 
-function AccountInfoInput({ goalIdHandler }: AccountInfoInputProps) {
+function AccountInfoInput({ accountIdHandler }: AccountInfoInputProps) {
   const {
     value: accntPW,
     errMsg: accntPWErr,
@@ -66,89 +63,42 @@ function AccountInfoInput({ goalIdHandler }: AccountInfoInputProps) {
     setIsValid(true);
   }, [accntPWErr, bankUserIdErr, bankUserPWErr]);
 
-  const savedAccntInfo = useRecoilValue(accntInfo);
-  const [accnt, setAccnt] = useState<IValidateAccount>({
-    bankCode: savedAccntInfo.bankCode,
-    bankUserId: '',
-    bankUserPw: '',
-    accntNo: savedAccntInfo.accntNo,
-    accntPw: '',
-  });
   useEffect(() => {
-    setAccnt((prev) => {
-      return { ...prev, accntPw: accntPW, bankUserId: bankUserId, bankUserPw: bankUserPW };
-    });
-  }, [accntPW, bankUserId, bankUserPW]);
+    handleAccntPwChange(accntPW);
+  }, [accntPW]);
 
-  const [isValidAccnt, setIsValidAccnt] = useState<boolean>(false);
-  const handleAccntValidate = async () => {
-    try {
-      const { data } = await bankAPI.validateAccntInfo(accnt);
-      // TEST DATA
-      // const data = {
-      //   common: { errYn: 'N', errMsg: '' },
-      // };
-      if (data.common.errYn === 'Y') {
-        throw new Error(data.common.errMsg);
-      }
-      setIsValidAccnt(true);
-      handlePost();
-    } catch (e) {
-      alert(`validate accnt info error: ${e}`);
-      setIsValidAccnt(false);
-    }
-  };
+  useEffect(() => {
+    handleBankUserIdChange(bankUserId);
+  }, [bankUserId]);
 
-  const { id } = useRecoilValue(userId);
-  const banks = useRecoilValue(banksInfo);
-  const getBankId = () => {
-    const bank = banks.find((bank) => bank.bankCode === accnt.bankCode);
-    if (!bank) return 0;
-    return bank.bankId;
-  };
+  useEffect(() => {
+    handleBankUserPwChange(bankUserPW);
+  }, [bankUserPW]);
 
-  const handlePost = async () => {
-    await handlePostAccnt();
-    await handlePostGoal();
-  };
+  const { isValidAccnt, accnt, handleBankUserIdChange, handleBankUserPwChange, handleAccntPwChange, handleValidate } =
+    useAccntValidate();
+  const { bankId } = useBankId({ bankCode: accnt.bankCode });
+  const { isLoading, isError, accountId, handlePostAccount } = useAccntAutoPost({
+    acctInfo: {
+      bankId: bankId,
+      acctNo: accnt.accntNo,
+      acctPw: accnt.accntPw,
+      bankUserId: accnt.bankUserId,
+      bankUserPw: accnt.bankUserPw,
+    },
+  });
 
-  const [isAccntPosted, setIsAccntPosted] = useState<boolean>(false);
-  const [postAccntErr, setPostAccntErr] = useState<boolean>(false);
-  const [accntId, setAccntId] = useState<number>(0);
-  const savedPostGoal = useRecoilValue(postGoal);
-  const handlePostAccnt = async () => {
-    try {
-      const accountId = await accountApi.createAutoAccount(id, { ...accnt, bankId: getBankId() });
-      setAccntId(accountId);
-      setPostAccntErr(false);
-      setTimeout(() => setIsAccntPosted(true), 300);
-    } catch (e) {
-      alert(`post account error:${e}`);
-      setAccntId(0);
-      setPostAccntErr(true);
-      setIsAccntPosted(false);
-    }
-  };
-  const [isGoalPosted, setIsGoalPosted] = useState<boolean>(false);
-  const [postGoalErr, setPostGoalErr] = useState<boolean>(false);
-  const handlePostGoal = async () => {
-    try {
-      const goalId = await goalApi.postGoal({ ...savedPostGoal, accountId: accntId });
-      setPostGoalErr(false);
-      setTimeout(() => {
-        setIsGoalPosted(true);
-        goalIdHandler(goalId);
-      }, 300);
-    } catch (e) {
-      alert(`post goal error:${e}`);
-      setIsGoalPosted(false);
-      setPostGoalErr(true);
-    }
-  };
+  useEffect(() => {
+    if (isValidAccnt) handlePostAccount();
+  }, [isValidAccnt]);
+
+  useEffect(() => {
+    if (!isLoading && !isError && accountId) setTimeout(() => accountIdHandler(accountId), 2000);
+  }, [isLoading, isError, accountId]);
 
   const { nickname } = useRecoilValue(userProfile);
 
-  if (!isValidAccnt && !isAccntPosted && !isGoalPosted)
+  if (!isValidAccnt)
     return (
       <Wrapper>
         <ContentWrapper>
@@ -198,11 +148,18 @@ function AccountInfoInput({ goalIdHandler }: AccountInfoInputProps) {
             </ContentBox>
           </BottomContent>
         </ContentWrapper>
-        <TextButton text='계좌 연결하기' onClickHandler={handleAccntValidate} isDisabled={!isValid} />
+        <TextButton text='계좌 연결하기' onClickHandler={handleValidate} isDisabled={!isValid} />
       </Wrapper>
     );
 
-  if (isValidAccnt && !isAccntPosted && postAccntErr && !isGoalPosted && !postGoalErr)
+  if (isLoading)
+    return (
+      <Wrapper>
+        <Info>계좌를 등록 중입니다.</Info>
+      </Wrapper>
+    );
+
+  if (isError)
     return (
       <Wrapper>
         <Info>
@@ -213,37 +170,15 @@ function AccountInfoInput({ goalIdHandler }: AccountInfoInputProps) {
       </Wrapper>
     );
 
-  if (isValidAccnt && isAccntPosted && !postAccntErr && !isGoalPosted && postGoalErr)
-    return (
-      <Wrapper>
-        <Info>
-          목표 생성이 실패했습니다.
-          <br />
-          다시 시도해주세요.
-        </Info>
-        <TextButton text='재시도' onClickHandler={handlePostGoal} />
-      </Wrapper>
-    );
-
-  if (isValidAccnt && isAccntPosted && !postAccntErr && !isGoalPosted && !postGoalErr)
-    return (
-      <Wrapper>
-        <Info>
-          {`${nickname}`}님의
-          <br />
-          계좌 연결이 완료되었습니다.
-        </Info>
-      </Wrapper>
-    );
-
-  if (isValidAccnt && isAccntPosted && isGoalPosted)
-    return (
-      <Wrapper>
-        <Info>목표 생성이 완료되었습니다.</Info>
-      </Wrapper>
-    );
-
-  return <></>;
+  return (
+    <Wrapper>
+      <Info>
+        {`${nickname}`}님의
+        <br />
+        계좌 연결이 완료되었습니다.
+      </Info>
+    </Wrapper>
+  );
 }
 
 const Wrapper = styled.div`

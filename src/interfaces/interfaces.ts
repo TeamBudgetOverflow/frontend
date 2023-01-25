@@ -98,20 +98,39 @@ export interface IBank {
   bankName: string;
 }
 
-export interface IPostAuthAccnt {
-  oriSeqNo: string;
-  authString: string;
-}
-
 export interface IAccount {
   accountId: number;
   bankId: number;
   acctNo: string;
 }
 
-export interface IReqAuthAccout {
+export interface IPostAutoAccount {
+  userId: number;
+  acctInfo: IPostAccount;
+}
+
+export interface IPostAccount {
+  bankId: number;
+  bankUserId: string;
+  bankUserPw: string;
+  acctNo: string;
+  acctPw: string;
+}
+
+// bank
+export interface IReqAuthAccount {
   bankCode: string;
   accntNo: string;
+}
+
+export interface IReqAuthAccountResp {
+  replyCode: string;
+  successYn: string;
+  tradeTime: string;
+  inPrintContent: string;
+  svcCharge: string;
+  oriSeqNo: string;
+  tr_date: string;
 }
 
 export interface IAuthAccount {
@@ -127,12 +146,20 @@ export interface IValidateAccount {
   accntPw: string;
 }
 
-export interface IPostAccount {
-  bankId: number;
-  bankUserId: string;
-  bankUserPw: string;
-  accntNo: string;
-  accntPw: string;
+export interface IValidateAccountResp {
+  common: common;
+  data: data;
+}
+
+export interface common {
+  userTrNo: string;
+  hyphenTrNo: string;
+  errYn: string;
+  errMsg: string;
+}
+
+export interface data {
+  curBal: string;
 }
 
 // badge

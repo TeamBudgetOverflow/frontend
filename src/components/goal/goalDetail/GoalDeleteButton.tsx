@@ -1,16 +1,13 @@
 import React from 'react';
 import { useMutation } from 'react-query';
-import { useParams } from 'react-router-dom';
 
 import TextButton from '../../common/elem/TextButton';
 
 import { goalApi } from '../../../apis/client';
 
 // TODO : 공통 버튼 컴포넌트 리팩터링
-const GoalDeleteButton = () => {
-  const param = useParams();
-
-  const { mutate } = useMutation('deleteGoal', () => goalApi.deleteGoal(param.id));
+const GoalDeleteButton = ({ goalId }: { goalId: number }) => {
+  const { mutate } = useMutation('deleteGoal', () => goalApi.deleteGoal(goalId));
 
   const handleDeleteGoalButton = () => {
     mutate();

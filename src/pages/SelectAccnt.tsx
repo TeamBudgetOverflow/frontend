@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
@@ -49,7 +49,7 @@ const SelectAccnt = () => {
   const navigate = useNavigate();
 
   if (isLoading || !accounts) return <>Loading...</>;
-  if (isError) return <>Error</>;
+  if (isError) return <Navigate to='/' />;
 
   return (
     <Wrapper>
@@ -60,7 +60,7 @@ const SelectAccnt = () => {
             <br />
             계좌를 새로 연결하시겠습니까?
           </Info>
-          <TextButton text='다음' onClickHandler={() => navigate('/accounts/post')} />
+          <TextButton text='다음' onClickHandler={() => navigate('/goals/post/accounts/auto')} />
         </>
       ) : (
         <>
