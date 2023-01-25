@@ -100,9 +100,6 @@ const LookupGoals = () => {
 };
 
 const Wrapper = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
   padding-top: 20px;
   display: flex;
   flex-direction: column;
