@@ -140,3 +140,27 @@ export interface IBadge {
   title: string;
   description: string;
 }
+
+// filter condition
+export interface IFilterContionsStatus {
+  goalStatus: string;
+}
+export interface IFilterContionsAimingAmount {
+  aimingAmount: {
+    min: number;
+    max: number;
+  };
+}
+export interface IFilterContionsPeriod {
+  period: {
+    min: number;
+    max: number;
+  };
+}
+
+export interface IFilterContionsHeadCount {
+  headCount: {
+    min: number;
+    max: number;
+  };
+}

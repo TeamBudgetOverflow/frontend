@@ -4,17 +4,18 @@ import styled from 'styled-components';
 
 import RangeSlider from './rangeSlider/RangeSlider';
 
-import { filterConditionsPeriod } from '../../../recoil/searchAtoms';
+import { filterConditionsAimingAmount } from '../../../recoil/searchAtoms';
 
-const PeriodFilter = () => {
-  const { period } = useRecoilValue(filterConditionsPeriod);
+const AimingAmountFilter = () => {
+  const { aimingAmount } = useRecoilValue(filterConditionsAimingAmount);
+
   return (
     <Wrapper>
-      <SubTitle>진행기간</SubTitle>
+      <SubTitle>목표금액</SubTitle>
       <RangeIndicator>
-        {period.min} ~ {period.max} 일
+        {aimingAmount.min} ~ {aimingAmount.max} 원
       </RangeIndicator>
-      <RangeSlider min={1} max={7} type='period' />
+      <RangeSlider min={0} max={100000} type='aimingAmount' />
     </Wrapper>
   );
 };
@@ -35,4 +36,4 @@ const RangeIndicator = styled.div`
   font: ${(props) => props.theme.paragraphsP2M};
 `;
 
-export default PeriodFilter;
+export default AimingAmountFilter;
