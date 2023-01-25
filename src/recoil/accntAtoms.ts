@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 
-import { IBank, IReqAuthAccout } from '../interfaces/interfaces';
+import { IBank, IReqAuthAccount } from '../interfaces/interfaces';
 
 const { persistAtom } = recoilPersist();
 
@@ -17,7 +17,7 @@ export const banksInfo = atom<Array<IBank>>({
   effects_UNSTABLE: [persistAtom],
 });
 
-export const accntInfo = atom<IReqAuthAccout>({
+export const accntInfo = atom<IReqAuthAccount>({
   key: 'accntInfo',
   default: {
     bankCode: '',

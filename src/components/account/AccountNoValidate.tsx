@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import ProgressBar from '../common/elem/ProgressBar';
@@ -23,7 +23,6 @@ const AccountNoValidate = ({ oriSeqNo, authHandler, accntNoEditHandler }: Accoun
     value: authString,
     errMsg: authStringErr,
     onChange: changeAuthString,
-    reset: resetAuthString,
   } = useTxtInput({
     initValue: '',
     minLength: 4,

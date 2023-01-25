@@ -18,6 +18,7 @@ import { userId } from '../recoil/userAtoms';
 import useGoalDetailData from '../hooks/useGoalDetailData';
 
 const setButton = (
+  goalId: number,
   createdUserId: number,
   loginUserId: number,
   isWorking: boolean,
@@ -27,12 +28,14 @@ const setButton = (
   if (loginUserId === createdUserId) {
     return (
       <GoalButtonSet>
-        <GoalModifyButton />
-        {isWorking ? <></> : <GoalDeleteButton />}
+        <GoalModifyButton goalId={goalId} />
+        {isWorking ? <></> : <GoalDeleteButton goalId={goalId} />}
       </GoalButtonSet>
     );
   } else if (isGroup && !isWorking) {
-    return <GoalButtonSet>{isMember ? <WithDrawButton /> : <JoinButton />}</GoalButtonSet>;
+    return (
+      <GoalButtonSet>{isMember ? <WithDrawButton goalId={goalId} /> : <JoinButton goalId={goalId} />}</GoalButtonSet>
+    );
   }
 };
 
@@ -51,7 +54,7 @@ const DetailGoal = () => {
   } = useGoalDetailData({ loginUserId, goalId });
 
   if (isLoading || !data) return <>Loading...</>;
-  if (isError) return <>Error</>;
+  if (isError) return <Navigate to='/' />;
 
   return (
     <Wrapper>
@@ -77,7 +80,7 @@ const DetailGoal = () => {
               <AccountInfoCard
                 accntInfo={{ accountId: 0, bankId: 4, acctNo: '123412341234' }}
                 selectHandler={() => {
-                  console.log('계좌 설정 페이지');
+                  console.log('직접 입력 계좌 잔액 수정');
                 }}
               />
             </>
@@ -94,12 +97,13 @@ const DetailGoal = () => {
           )}
         </BottomContent>
       </DetailGoalWrapper>
-      {setButton(data.userId, loginUserId, isWorking, isGroup, isMember)}
+      {setButton(Number(goalId), data.userId, loginUserId, isWorking, isGroup, isMember)}
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
+  position: relative;
   padding: 20px 22px;
   display: flex;
   flex-direction: column;
@@ -114,6 +118,7 @@ const DetailGoalWrapper = styled.div`
   flex-direction: column;
   gap: 40px;
   width: 100%;
+
   height: 100%;
 `;
 

@@ -1,24 +1,19 @@
 import axios from 'axios';
 
 import {
-  IAuthAccount,
   IAccount,
-  IPostAccount,
+  IPostAutoAccount,
   IBank,
   IPostGoal,
+  IReqAuthAccount,
+  IReqAuthAccountResp,
+  IAuthAccount,
   IValidateAccount,
-  IReqAuthAccout,
+  IValidateAccountResp,
 } from '../interfaces/interfaces';
 
 const BASE_URL = process.env.REACT_APP_API_ENDPOINT;
-const noneTokenClient = axios.create({
-  baseURL: BASE_URL,
-  responseType: 'json',
-  headers: {
-    'Cache-Control': 'no-cache',
-    'Content-Type': 'application/json',
-  },
-});
+const noneTokenClient = axios.create({ baseURL: BASE_URL });
 const tokenClient = axios.create({ baseURL: BASE_URL });
 const refreshClient = axios.create({ baseURL: BASE_URL });
 
@@ -162,8 +157,8 @@ export const accountApi = {
 
     return data.accountId;
   },
-  createAutoAccount: async (userId: number, accntInfo: IPostAccount) => {
-    const { data } = await tokenClient.post(`/accounts/${userId}`, accntInfo);
+  createAutoAccount: async ({ userId, acctInfo }: IPostAutoAccount): Promise<number> => {
+    const { data } = await tokenClient.post(`/accounts/${userId}`, acctInfo);
 
     return data.accountId;
   },
@@ -195,20 +190,17 @@ export const goalApi = {
 
     return data;
   },
-
-  joinGoal: async (goalId: string | undefined) => {
-    const response = await tokenClient.post(`/goals/join/${goalId}`);
+  joinGoal: async ({ goalId, accountId }: { goalId: number; accountId: number }) => {
+    const response = await tokenClient.post(`/goals/join/${goalId}`, { accountId });
 
     return response;
   },
-
-  withdrawGoal: async (goalId: string | undefined) => {
+  withdrawGoal: async (goalId: number) => {
     const response = await tokenClient.post(`/goals/exit/${goalId}`);
 
     return response;
   },
-
-  deleteGoal: async (goalId: string | undefined) => {
+  deleteGoal: async (goalId: number) => {
     const response = await tokenClient.delete(`/goals/${goalId}`);
 
     return response;
@@ -219,7 +211,7 @@ const BANK_USER_ID = process.env.REACT_APP_BANK_API_USER_ID;
 const BANK_HKEY = process.env.REACT_APP_BANK_API_HKEY;
 
 export const bankAPI = {
-  reqAuthAccnt: async ({ bankCode, accntNo }: IReqAuthAccout) => {
+  reqAuthAccnt: async ({ bankCode, accntNo }: IReqAuthAccount): Promise<IReqAuthAccountResp> => {
     const result = await axios.post(
       '/hb0081000378',
       {
@@ -234,7 +226,7 @@ export const bankAPI = {
       }
     );
 
-    return result;
+    return result.data as IReqAuthAccountResp;
   },
   authAccnt: async ({ oriSeqNo, authString }: IAuthAccount) => {
     const result = await axios.post(
@@ -252,7 +244,7 @@ export const bankAPI = {
     );
     return result;
   },
-  validateAccntInfo: async (accntInfo: IValidateAccount) => {
+  validateAccntInfo: async (accntInfo: IValidateAccount): Promise<IValidateAccountResp> => {
     const result = await axios.post(
       '/in0087000484',
       {
@@ -276,7 +268,8 @@ export const bankAPI = {
         },
       }
     );
-    return result;
+
+    return result.data as IValidateAccountResp;
   },
 };
 
