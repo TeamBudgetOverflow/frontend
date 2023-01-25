@@ -1,20 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useLocation } from 'react-router-dom';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import GroupGoalCards from '../components/goal/GroupGoalCard';
 import LoadingMsg from '../components/common/elem/LoadingMsg';
-
-import { goalApi } from '../apis/client';
-
-import { ISearchGoal } from '../interfaces/interfaces';
 import Alert from '../components/common/alert/Alert';
 import ErrorMsg from '../components/common/elem/ErrorMsg';
 import ModalBox from '../components/common/elem/ModalBox';
 import SearchFilterSetter from '../components/goal/searchFilter/SearchFilterSetter';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+
+import { goalApi } from '../apis/client';
+
+import { ISearchGoal } from '../interfaces/interfaces';
+
 import { showSearchFilters } from '../recoil/goalsAtoms';
+import {
+  filterConditionsStatus,
+  filterConditionsAimingAmount,
+  filterConditionsPeriod,
+  filterConditionsHeadCount,
+} from '../recoil/searchAtoms';
+
+import { dateCalculator } from '../utils/dateTranslator';
 
 enum SearchFilterType {
   status,
@@ -51,9 +60,13 @@ const SearchGoals = () => {
 
   const [searchFilterType, setSearchFilterType] = useState<SearchFilterType>(SearchFilterType.none);
   const [searchStatus, setSearchStatus] = useState(false);
-  const [searchResults, setSearchResults] = useState<Array<ISearchGoal> | undefined>([]);
+  const [searchResults, setSearchResults] = useState<Array<ISearchGoal>>([]);
 
-  // const [showSearchFilters, setShowSearchFilters] = useState<boolean>(false);
+  const [filterdResultsStatus, setFilterdResultsStatus] = useState<Array<ISearchGoal>>([]);
+  const [filterdResultsAmount, setFilterdResultsAmount] = useState<Array<ISearchGoal>>([]);
+  const [filterdResultsPeriod, setFilterdResultsPeriod] = useState<Array<ISearchGoal>>([]);
+  const [filterdResultsHeadCount, setFilterdResultsHeadCount] = useState<Array<ISearchGoal>>([]);
+
   const showSearchFiltersModal = useRecoilValue(showSearchFilters);
   const setShowSearchFiltersModal = useSetRecoilState(showSearchFilters);
   const handleOnClickShowSearchFilters = () => {
@@ -71,18 +84,62 @@ const SearchGoals = () => {
     isLoading: isLoadingGoals,
     data: searchGoals,
     isError,
-  } = useQuery<Array<ISearchGoal>>('searchGoals', () => goalApi.getGoalsByWord(location.search), {
-    onSuccess: () => {
-      setSearchResults(searchGoals);
-      setSearchStatus(true);
-    },
-    onError: (err) => console.log(err),
-  });
+  } = useQuery<Array<ISearchGoal>>('searchGoals', () => goalApi.getGoalsByWord(location.search));
+
+  useEffect(() => {
+    if (!searchGoals) return;
+    setSearchResults([...searchGoals]);
+    setSearchStatus(true);
+  }, [searchGoals]);
+
+  const { goalStatus } = useRecoilValue(filterConditionsStatus);
+  const { aimingAmount } = useRecoilValue(filterConditionsAimingAmount);
+  const { period } = useRecoilValue(filterConditionsPeriod);
+  const { headCount } = useRecoilValue(filterConditionsHeadCount);
+
+  useEffect(() => {
+    if (goalStatus === '모집중') {
+      const searchResultsRecruiting = searchResults?.filter(
+        (result) => result.createdAt <= new Date() && result.startDate >= new Date()
+      );
+      setFilterdResultsStatus([...searchResultsRecruiting]);
+    } else if (goalStatus === '진행중') {
+      const searchResultsInProgress = searchResults?.filter(
+        (result) => result.startDate <= new Date() && result.endDate >= new Date()
+      );
+      setFilterdResultsStatus([...searchResultsInProgress]);
+    } else {
+      setFilterdResultsStatus([...searchResults]);
+    }
+  }, [goalStatus]);
+
+  useEffect(() => {
+    const searchResultsAimingAmount = searchResults?.filter(
+      (result) => result.amount <= aimingAmount.max && result.amount >= aimingAmount.min
+    );
+    setFilterdResultsAmount([...searchResultsAimingAmount]);
+  }, [aimingAmount]);
+
+  useEffect(() => {
+    const searchResultsPeriod = searchResults?.filter(
+      (result) =>
+        dateCalculator(result.startDate, result.endDate) <= period.max &&
+        dateCalculator(result.startDate, result.endDate) >= period.min
+    );
+    setFilterdResultsPeriod([...searchResultsPeriod]);
+  }, [period]);
+
+  useEffect(() => {
+    const searchResultsHeadCount = searchResults.filter(
+      (result) => result.headCount <= headCount.max && result.headCount >= headCount.min
+    );
+    setFilterdResultsHeadCount([...searchResultsHeadCount]);
+  }, [headCount]);
 
   return (
     <Wrapper>
       <TopContentWrapper>
-        <div>전체 20개</div>
+        <div>전체 {searchResults ? searchResults?.length : 0}개</div>
         <FiltersBox>
           {searchFilters.map((filter) => (
             <FilterButton
@@ -97,23 +154,33 @@ const SearchGoals = () => {
           ))}
         </FiltersBox>
       </TopContentWrapper>
-      <GoalCardsWrapper>
-        {isLoadingGoals ? (
-          <AlertWrapper>
-            <Alert height={150} showBgColor={true}>
-              <LoadingMsg />
-            </Alert>
-          </AlertWrapper>
-        ) : isError ? (
-          <AlertWrapper>
-            <Alert height={150} showBgColor={true}>
-              <ErrorMsg />
-            </Alert>
-          </AlertWrapper>
-        ) : (
-          searchResults?.map((goal) => <GroupGoalCards key={goal.goalId} goal={goal} />)
-        )}
-      </GoalCardsWrapper>
+      {searchStatus ? (
+        <>
+          <GoalCardsWrapper>
+            {isLoadingGoals ? (
+              <AlertWrapper>
+                <Alert height={150} showBgColor={true}>
+                  <LoadingMsg />
+                </Alert>
+              </AlertWrapper>
+            ) : isError ? (
+              <AlertWrapper>
+                <Alert height={150} showBgColor={true}>
+                  <ErrorMsg />
+                </Alert>
+              </AlertWrapper>
+            ) : (
+              searchResults?.map((goal) => <GroupGoalCards key={goal.goalId} goal={goal} />)
+              // .filter((result) => filterdResultsStatus?.includes(result))
+              // .filter((result) => filterdResultsAmount?.includes(result))
+              // .filter((result) => filterdResultsPeriod?.includes(result))
+              // .filter((result) => filterdResultsHeadCount?.includes(result))
+            )}
+          </GoalCardsWrapper>
+        </>
+      ) : (
+        <></>
+      )}
       <ModalBox show={showSearchFiltersModal}>
         <SearchFilterSetter />
       </ModalBox>

@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { showSearchFilters } from '../../../recoil/goalsAtoms';
+
 import Icon from '../../common/elem/Icon';
+import AimingAmountFilter from './AimingAmountFilter';
+import HeadCountFilter from './HeadCountFilter';
+import PeriodFilter from './PeriodFilter';
+import StatusFilter from './StatusFilter';
+
+import { showSearchFilters } from '../../../recoil/goalsAtoms';
 
 enum SearchFilterType {
   status,
@@ -37,6 +43,7 @@ const searchFilterKR = (filterType: SearchFilterType) => {
 const SearchFilterSetter = () => {
   const setShowSearchFiltersModal = useSetRecoilState(showSearchFilters);
   const [searchFilterType, setSearchFilterType] = useState<SearchFilterType>(SearchFilterType.none);
+
   return (
     <Wrapper>
       <TopWrapper>
@@ -55,6 +62,12 @@ const SearchFilterSetter = () => {
           />
         </Button>
       </TopWrapper>
+      <MiddleWrapper>
+        <StatusFilter />
+        <AimingAmountFilter />
+        <PeriodFilter />
+        <HeadCountFilter />
+      </MiddleWrapper>
     </Wrapper>
   );
 };
@@ -77,6 +90,7 @@ const TopWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  height: 100%;
 `;
 
 const FiltersBox = styled.div`
@@ -91,6 +105,15 @@ const FilterButton = styled.div<{ selected: boolean }>`
   font: ${(props) => (props.selected ? props.theme.paragraphsP1R : props.theme.paragraphsP3R)};
   border-radius: 8px;
   background-color: transparent;
+`;
+
+const MiddleWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
 `;
 
 export default SearchFilterSetter;
