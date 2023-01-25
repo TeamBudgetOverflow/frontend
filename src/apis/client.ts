@@ -196,7 +196,7 @@ export const goalApi = {
     return response;
   },
   withdrawGoal: async (goalId: number) => {
-    const response = await tokenClient.post(`/goals/exit/${goalId}`);
+    const response = await tokenClient.delete(`/goals/exit/${goalId}`);
 
     return response;
   },
