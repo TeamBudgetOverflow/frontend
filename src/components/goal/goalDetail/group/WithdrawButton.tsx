@@ -4,10 +4,15 @@ import { useMutation } from 'react-query';
 import TextButton from '../../../common/elem/TextButton';
 
 import { goalApi } from '../../../../apis/client';
+import { useNavigate } from 'react-router-dom';
 
 const WithDrawButton = ({ goalId }: { goalId: number }) => {
-  const { mutate } = useMutation('withDrawGoal', () => goalApi.withdrawGoal(goalId));
-
+  const navigate = useNavigate();
+  const { mutate } = useMutation('withDrawGoal', () => goalApi.withdrawGoal(goalId), {
+    onSuccess: () => {
+      navigate(0);
+    },
+  });
   const handleWithdrawGoalButton = () => {
     mutate();
   };
