@@ -43,7 +43,6 @@ function GoalInfoInput({ isGroup }: GoalInfoInputProps) {
     value: title,
     errMsg: titleErr,
     onChange: changeTitle,
-    reset: resetTitle,
   } = useTxtInput({
     initValue: savedPostGoal.title,
     minLength: 4,
@@ -55,7 +54,6 @@ function GoalInfoInput({ isGroup }: GoalInfoInputProps) {
     value: description,
     errMsg: descriptionErr,
     onChange: changeDescription,
-    reset: resetDescription,
   } = useTxtInput({
     initValue: savedPostGoal.description,
     minLength: 0,
@@ -67,7 +65,6 @@ function GoalInfoInput({ isGroup }: GoalInfoInputProps) {
     value: amount,
     errMsg: amountErr,
     onChange: changeAmount,
-    reset: resetAmount,
   } = useNumInput({ initValue: savedPostGoal.amount, min: 1000, max: 70000, type: '목표 금액' });
 
   const [tagList, setTagList] = useState<Array<IHashTag>>(
@@ -93,7 +90,6 @@ function GoalInfoInput({ isGroup }: GoalInfoInputProps) {
     value: headCount,
     errMsg: headCountErr,
     onChange: changeHeadCount,
-    reset: resetHeadCount,
   } = useNumInput({
     initValue: isGroup && savedPostGoal.headCount < 2 ? 2 : savedPostGoal.headCount,
     min: isGroup ? 2 : 1,
@@ -216,7 +212,7 @@ function GoalInfoInput({ isGroup }: GoalInfoInputProps) {
         <EmojiContentBox>
           <EmojiBox unicode={emoji} boxSize={80} emojiSize={40} />
           <Button onClick={handleShowEmojis}>
-            <Icon size={24} color={'primary400'} path='' />
+            <Icon width={24} height={24} color={'primary400'} path='' />
           </Button>
           <EmojiPickerWrapper show={showEmojis}>
             <EmojiPicker onEmojiClick={(emoji) => handleEmojiSelect(emoji)} />

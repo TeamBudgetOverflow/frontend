@@ -1,31 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+import EmojiBox from '../common/elem/EmojiBox';
 import StateTag from '../common/tag/StateTag';
 import DdayTag from '../common/tag/DdayTag';
 
 import { dateStringTranslator } from '../../utils/dateTranslator';
 
 import { ISearchGoal } from '../../interfaces/interfaces';
-import EmojiBox from '../common/elem/EmojiBox';
+
+import useGoalState, { GoalState } from '../../hooks/useGoalState';
 
 const GroupGoalCards = ({ goal }: { goal: ISearchGoal }) => {
   const navigate = useNavigate();
-  const [state, setState] = useState<'working' | 'recruiting'>('working');
-  const setGoalState = () => {
-    if (new Date(goal.startDate).getTime() <= new Date().getTime()) {
-      setState('working');
-      return;
-    }
-
-    setState('recruiting');
-  };
-
-  useEffect(() => {
-    setGoalState();
-  }, [goal]);
-
+  const { state } = useGoalState({ startDate: new Date(goal.startDate), endDate: new Date(goal.endDate) });
   return (
     <Wrapper onClick={() => navigate(`/goals/${goal.goalId}`)}>
       <TopContent>
@@ -46,11 +35,11 @@ const GroupGoalCards = ({ goal }: { goal: ISearchGoal }) => {
       <BottomContent>
         <ProgressInfo>
           <ProgressText>
-            {state === 'working'
+            {state !== GoalState.waiting
               ? `${dateStringTranslator(new Date(goal.endDate))} 자정 종료`
               : `${dateStringTranslator(new Date(goal.startDate))} 자정 시작`}
           </ProgressText>
-          {state === 'working' ? <></> : <RecruitState>{`${goal.curCount}/${goal.headCount}`}</RecruitState>}
+          {state !== GoalState.working ? <></> : <RecruitState>{`${goal.curCount}/${goal.headCount}`}</RecruitState>}
         </ProgressInfo>
       </BottomContent>
     </Wrapper>

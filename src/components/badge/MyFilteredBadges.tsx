@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 

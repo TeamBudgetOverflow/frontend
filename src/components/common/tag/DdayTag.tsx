@@ -8,6 +8,8 @@ const DdayTag = ({ targetDate }: { targetDate: Date }) => {
     setDays(dDayCalculator(targetDate));
   }, [targetDate]);
 
+  if (days < 0) return <></>;
+
   return <Tag>{`D-${days === 0 ? 'day' : days}`}</Tag>;
 };
 

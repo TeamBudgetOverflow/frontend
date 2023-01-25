@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
@@ -10,28 +10,36 @@ import Alert from '../components/common/alert/Alert';
 import LoadingMsg from '../components/common/elem/LoadingMsg';
 import ErrorMsg from '../components/common/elem/ErrorMsg';
 
-import { userId, userGoals, userProfile } from '../recoil/userAtoms';
+import { userId } from '../recoil/userAtoms';
 
 import useBanksData from '../hooks/useBanksData';
-import useUserData from '../hooks/useUserData';
+import useUserProfileData from '../hooks/useUserProfileData';
+import useUserGoalsData from '../hooks/useUserGoalsData';
 
 const Home = () => {
   useBanksData();
   const { id } = useRecoilValue(userId);
-  const { isLoading, isError } = useUserData({ loginUserId: id, getUserId: id });
-  const profile = useRecoilValue(userProfile);
-  const goals = useRecoilValue(userGoals);
+  const {
+    isLoading: isLoadingProfile,
+    isError: isErrorProfile,
+    profile,
+  } = useUserProfileData({
+    getUserId: Number(id),
+  });
+  const { isLoading: isLoadingGoals, isError: isErrorGoals, data: goals } = useUserGoalsData({ getUserId: Number(id) });
   const navigate = useNavigate();
+  if (isLoadingProfile || !profile) return <Wrapper>Loading...</Wrapper>;
+  if (isErrorProfile) return <Navigate to='/' />;
 
   return (
     <Wrapper>
       <UserProfile profile={profile} />
       <ContentWrapper>
-        {isLoading ? (
+        {isLoadingGoals || !goals ? (
           <Alert height={150} showBgColor={true}>
             <LoadingMsg />
           </Alert>
-        ) : isError ? (
+        ) : isErrorGoals ? (
           <Alert height={150} showBgColor={true}>
             <ErrorMsg />
           </Alert>
@@ -47,7 +55,8 @@ const Home = () => {
         <AddGoalBtn onClick={() => navigate('/goals/post/type')}>
           <IconWrapper>
             <Icon
-              size={20}
+              width={20}
+              height={20}
               color={'gray400'}
               path='M19.3333 11.3332H11.3333V19.3332H8.66663V11.3332H0.666626V8.6665H8.66663V0.666504H11.3333V8.6665H19.3333V11.3332Z'
             />
