@@ -33,18 +33,23 @@ const AuthLayout = () => {
   }, [headerRef.current?.clientHeight, pathname]);
 
   return (
-    <>
+    <Wrapper>
       <Header props='' ref={headerRef} />
       <Body height={`${headerNavHeight}px`}>
         <Outlet />
       </Body>
       <Navigation />
-    </>
+    </Wrapper>
   );
 };
 
-const Body = styled.div<{ height: string }>`
+const Wrapper = styled.div`
   position: relative;
+  width: 100vw;
+  height: 100vh;
+`;
+
+const Body = styled.div<{ height: string }>`
   width: 100%;
   height: ${(props) => `calc(100vh - ${props.height})`};
   overflow-y: auto;
