@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
+import EmojiPicker from 'emoji-picker-react';
 
 import EmojiBox from '../../common/elem/EmojiBox';
 import Icon from '../../common/elem/Icon';
@@ -10,41 +8,34 @@ import InputBox from '../../common/elem/InputBox';
 import ValidateMsg from '../../common/elem/ValidateMsg';
 import TagInputSection from './TagInputSection';
 import DateSelectSection, { GoalDate } from './goalInfo/DateSelectSection';
-import OptionSelectSection from './goalInfo/OptionSelectSection';
+import ToggleSelectBox from '../../common/elem/ToggleSelectBox';
 import TextButton from '../../common/elem/TextButton';
-import Info from '../../common/alert/Info';
 
 import useTxtInput from '../../../hooks/useTxtInput';
 import useNumInput from '../../../hooks/useNumInput';
 
-import { IHashTag } from '../../common/tag/HashTag';
+import useEmojiSelect from '../../../hooks/useEmojiSelect';
 
-import { postGoal, postGoalType } from '../../../recoil/goalsAtoms';
-import { userId } from '../../../recoil/userAtoms';
+import { IPostGoal } from '../../../interfaces/interfaces';
 
-import { accountApi, goalApi } from '../../../apis/client';
+import useTagInput from '../../../hooks/useTagInput';
+import useGoalInput from '../../../hooks/useGoalPostInput';
+import AccntToggle from '../modify/AccntToggle';
 
 interface GoalInfoInputProps {
   isGroup: boolean;
+  initVal: IPostGoal;
 }
 
-function GoalInfoInput({ isGroup }: GoalInfoInputProps) {
-  const savedPostGoal = useRecoilValue(postGoal);
-  const [showEmojis, setShowEmojis] = useState<boolean>(false);
-  const handleShowEmojis = () => {
-    setShowEmojis(!showEmojis);
-  };
-  const [emoji, setEmoji] = useState<string>(savedPostGoal.emoji);
-  const handleEmojiSelect = (emoji: EmojiClickData) => {
-    setEmoji(emoji.unified);
-  };
+function GoalInfoInput({ isGroup, initVal }: GoalInfoInputProps) {
+  const { showEmojis, emoji, handleShowEmojis, handleEmojiSelect } = useEmojiSelect({ initVal: initVal.emoji });
 
   const {
     value: title,
     errMsg: titleErr,
     onChange: changeTitle,
   } = useTxtInput({
-    initValue: savedPostGoal.title,
+    initValue: initVal.title,
     minLength: 4,
     maxLength: 25,
     type: '제목',
@@ -55,7 +46,7 @@ function GoalInfoInput({ isGroup }: GoalInfoInputProps) {
     errMsg: descriptionErr,
     onChange: changeDescription,
   } = useTxtInput({
-    initValue: savedPostGoal.description,
+    initValue: initVal.description,
     minLength: 0,
     maxLength: 255,
     type: '설명',
@@ -65,22 +56,13 @@ function GoalInfoInput({ isGroup }: GoalInfoInputProps) {
     value: amount,
     errMsg: amountErr,
     onChange: changeAmount,
-  } = useNumInput({ initValue: savedPostGoal.amount, min: 1000, max: 70000, type: '목표 금액' });
+  } = useNumInput({ initValue: initVal.amount, min: 1000, max: 70000, type: '목표 금액' });
 
-  const [tagList, setTagList] = useState<Array<IHashTag>>(
-    savedPostGoal.hashTag
-      ? [...savedPostGoal.hashTag].map((v) => {
-          return { content: v, bgColor: '#ccc' };
-        })
-      : []
-  );
-  const handleTagListChange = (tagList: Array<IHashTag>) => {
-    setTagList((prev) => [...prev, ...tagList]);
-  };
+  const { tagList, handleTagListChange } = useTagInput({ initVal: initVal.hashTag });
 
   const [goalDate, setGoalDate] = useState<GoalDate>({
-    startDate: savedPostGoal.startDate,
-    endDate: savedPostGoal.endDate,
+    startDate: initVal.startDate,
+    endDate: initVal.endDate,
   });
   const handleGoalDateChange = (dateInfo: GoalDate) => {
     setGoalDate(dateInfo);
@@ -91,7 +73,7 @@ function GoalInfoInput({ isGroup }: GoalInfoInputProps) {
     errMsg: headCountErr,
     onChange: changeHeadCount,
   } = useNumInput({
-    initValue: isGroup && savedPostGoal.headCount < 2 ? 2 : savedPostGoal.headCount,
+    initValue: isGroup && initVal.headCount < 2 ? 2 : initVal.headCount,
     min: isGroup ? 2 : 1,
     max: 100,
     type: '인원',
@@ -102,7 +84,7 @@ function GoalInfoInput({ isGroup }: GoalInfoInputProps) {
     setisManual(isTrue);
   };
 
-  const [isPrivate, setIsPrivate] = useState<boolean>(savedPostGoal.isPrivate);
+  const [isPrivate, setIsPrivate] = useState<boolean>(initVal.isPrivate);
   const handleSelectIsPrivate = (isTrue: boolean) => {
     setIsPrivate(isTrue);
   };
@@ -137,74 +119,22 @@ function GoalInfoInput({ isGroup }: GoalInfoInputProps) {
     validate();
   }, [emoji, title, description, amount, headCount, titleErr, descriptionErr, amountErr, headCountErr]);
 
-  const setPostGoal = useSetRecoilState(postGoal);
-  const setPostGoalType = useSetRecoilState(postGoalType);
-  const navigate = useNavigate();
-  const [isPosted, setIsPosted] = useState<boolean>(false);
-  const [isPostError, setIsPostError] = useState<boolean>(false);
-  const { id } = useRecoilValue(userId);
-  const handlePostGoal = async () => {
-    if (isManual) {
-      try {
-        const accountId = await accountApi.createManualAccount(id);
-        const goalId = await goalApi.postGoal({
-          emoji,
-          title,
-          description,
-          hashTag: [...tagList].map((v) => v.content),
-          amount,
-          startDate: goalDate.startDate,
-          endDate: goalDate.endDate,
-          headCount,
-          isPrivate,
-          isManual,
-          accountId,
-        });
-        setPostGoalType({ isGroup: false });
-        setTimeout(() => setIsPosted(true), 1000);
-        setIsPostError(false);
-        setTimeout(() => navigate(`/goals/${goalId}`, { replace: true }), 3000);
-      } catch (e) {
-        alert(e);
-        setIsPosted(false);
-        setIsPostError(true);
-      }
-    } else {
-      setPostGoal({
-        emoji: emoji,
-        title: title,
-        description: description,
-        hashTag: [...tagList].map((v) => v.content),
-        amount: amount,
-        startDate: goalDate.startDate,
-        endDate: goalDate.endDate,
-        headCount: headCount,
-        isPrivate: isPrivate,
-        isManual: isManual,
-        accountId: 0,
-      });
-
-      navigate('/accounts/choose');
-    }
-  };
-
-  if (isPosted)
-    return (
-      <Wrapper>
-        <Info>목표 생성이 완료되었습니다.</Info>
-      </Wrapper>
-    );
-
-  if (isPostError)
-    return (
-      <Wrapper>
-        <Info>
-          목표 생성이 실패했습니다.
-          <br />
-          다시 시도해주세요.
-        </Info>
-      </Wrapper>
-    );
+  const { handleSaveGoalInput } = useGoalInput({
+    type: 'post',
+    inputVal: {
+      emoji,
+      title,
+      description,
+      amount,
+      hashTag: tagList.map((tag) => tag.content),
+      startDate: goalDate.startDate,
+      endDate: goalDate.endDate,
+      headCount,
+      isPrivate: isPrivate,
+      isManual: isManual,
+      accountId: 0,
+    },
+  });
 
   return (
     <Wrapper>
@@ -245,7 +175,7 @@ function GoalInfoInput({ isGroup }: GoalInfoInputProps) {
           </InputWrapper>
           <ValidateMsg msg={descriptionErr} type='error' />
         </ContentBox>
-        <DateSelectSection isGroup={isGroup} dateSelectHandler={handleGoalDateChange} />
+        <DateSelectSection isGroup={isGroup} dateSelectHandler={handleGoalDateChange} isDisabled={false} />
         <ContentBox>
           <SubTitle>목표 금액</SubTitle>
           <RowContent>
@@ -272,22 +202,19 @@ function GoalInfoInput({ isGroup }: GoalInfoInputProps) {
         ) : (
           <></>
         )}
-        <OptionSelectSection
-          title='계좌 잔액 직접 입력'
-          description='계좌를 연결하지 않고 계좌 잔액을 직접 입력합니다.'
-          selectHandler={handleSelectisAuto}
-        />
+        <AccntToggle initVal={isManual} changeHandler={handleSelectisAuto} />
         {isGroup ? (
           <></>
         ) : (
-          <OptionSelectSection
+          <ToggleSelectBox
             title='비공개 목표'
             description='목표를 다른이들에게 공유하지 않고 나만 봅니다.'
+            initVal={isPrivate}
             selectHandler={handleSelectIsPrivate}
           />
         )}
       </ContentWrapper>
-      <TextButton text='목표 생성' onClickHandler={handlePostGoal} isDisabled={!isValid} />
+      <TextButton text={'목표 생성'} onClickHandler={handleSaveGoalInput} isDisabled={!isValid} />
     </Wrapper>
   );
 }

@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { dateISOStringDateTranslator } from '../utils/dateTranslator';
 interface useDateInputProps {
   startDate: Date;
+  initVal?: string;
   minDays: number;
   maxDays: number;
 }
 
-const useDateInput = ({ startDate, minDays, maxDays }: useDateInputProps) => {
+const useDateInput = ({ startDate, initVal, minDays, maxDays }: useDateInputProps) => {
   const getFutureDate = (startDate: Date, afterDays: number) => {
     const funtureDate = new Date().setDate(startDate.getDate() + afterDays);
     return dateISOStringDateTranslator(new Date(funtureDate));
@@ -15,7 +16,7 @@ const useDateInput = ({ startDate, minDays, maxDays }: useDateInputProps) => {
   const [start, setStart] = useState<Date>(startDate);
   const [minDate, setMinDate] = useState<string>(getFutureDate(startDate, minDays));
   const [maxDate, setMaxDate] = useState<string>(getFutureDate(startDate, maxDays));
-  const [value, setValue] = useState<string>(minDate);
+  const [value, setValue] = useState<string>(initVal ? initVal : minDate);
 
   const onChangeStartDate = (date: Date) => {
     setStart(date);

@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 
-import { IBank, IReqAuthAccount } from '../interfaces/interfaces';
+import { IAccount, IBank, IReqAuthAccount } from '../interfaces/interfaces';
 
 const { persistAtom } = recoilPersist();
 

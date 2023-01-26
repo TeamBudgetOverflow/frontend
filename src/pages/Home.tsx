@@ -13,38 +13,28 @@ import ErrorMsg from '../components/common/elem/ErrorMsg';
 import { userId } from '../recoil/userAtoms';
 
 import useBanksData from '../hooks/useBanksData';
-import useUserProfileData from '../hooks/useUserProfileData';
 import useUserGoalsData from '../hooks/useUserGoalsData';
 
 const Home = () => {
   useBanksData();
   const { id } = useRecoilValue(userId);
-  const {
-    isLoading: isLoadingProfile,
-    isError: isErrorProfile,
-    profile,
-  } = useUserProfileData({
-    getUserId: Number(id),
-  });
-  const { isLoading: isLoadingGoals, isError: isErrorGoals, data: goals } = useUserGoalsData({ getUserId: Number(id) });
+  const { isLoading, isError, data } = useUserGoalsData({ getUserId: Number(id) });
   const navigate = useNavigate();
-  if (isLoadingProfile || !profile) return <Wrapper>Loading...</Wrapper>;
-  if (isErrorProfile) return <Navigate to='/' />;
 
   return (
     <Wrapper>
-      <UserProfile profile={profile} />
+      <UserProfile />
       <ContentWrapper>
-        {isLoadingGoals || !goals ? (
-          <Alert height={150} showBgColor={true}>
+        {isLoading || !data ? (
+          <Alert showBgColor={true}>
             <LoadingMsg />
           </Alert>
-        ) : isErrorGoals ? (
-          <Alert height={150} showBgColor={true}>
+        ) : isError ? (
+          <Alert showBgColor={true}>
             <ErrorMsg />
           </Alert>
         ) : (
-          goals
+          data
             .filter(
               (goal) =>
                 new Date(goal.startDate).getTime() < new Date().getTime() &&

@@ -66,7 +66,7 @@ const GoalInfoCardWrapper = styled.div`
   padding: 20px;
   width: calc(100% - 40px);
   border-radius: 16px;
-  border: 1px solid ${(props) => props.theme.gray300};
+  background-color: white;
 `;
 
 const TopContent = styled.div`

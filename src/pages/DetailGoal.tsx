@@ -6,16 +6,18 @@ import styled from 'styled-components';
 import GoalInfoCard from '../components/goal/goalDetail/GoalInfoCard';
 import GoalPeriodCard from '../components/goal/goalDetail/GoalPeriodCard';
 import GoalDescCard from '../components/goal/goalDetail/GoalDescCard';
+import GoalAccountInfo from '../components/goal/goalDetail/GoalAccountInfo';
+import GoalBalanceCard from '../components/goal/goalDetail/GoalBalanceCard';
 import JoinButton from '../components/goal/goalDetail/group/JoinButton';
 import WithDrawButton from '../components/goal/goalDetail/group/WithdrawButton';
 import GoalModifyButton from '../components/goal/goalDetail/GoalModifyButton';
 import GoalDeleteButton from '../components/goal/goalDetail/GoalDeleteButton';
-import ParticipantList from '../components/goal/goalDetail/group/ParticipantList';
-import AccountInfoCard from '../components/account/AccountInfoCard';
+import ParticipantSection from '../components/goal/detail/ParticipantSection';
 
 import { userId } from '../recoil/userAtoms';
 
 import useGoalDetailData from '../hooks/useGoalDetailData';
+import useGoalState from '../hooks/useGoalState';
 
 const setButton = (
   goalId: number,
@@ -28,7 +30,7 @@ const setButton = (
   if (loginUserId === createdUserId) {
     return (
       <GoalButtonSet>
-        <GoalModifyButton goalId={goalId} />
+        <GoalModifyButton isGroup={isGroup} />
         {isWorking ? <></> : <GoalDeleteButton goalId={goalId} />}
       </GoalButtonSet>
     );
@@ -51,6 +53,8 @@ const DetailGoal = () => {
     isGroupVal: isGroup,
     isMemberVal: isMember,
     isWorkingVal: isWorking,
+    accountId,
+    balanceId,
   } = useGoalDetailData({ loginUserId, goalId });
 
   if (isLoading || !data) return <>Loading...</>;
@@ -72,26 +76,17 @@ const DetailGoal = () => {
           />
           <GoalPeriodCard startDate={data.startDate} endDate={data.endDate} />
           <GoalDescCard description={data.description} />
+          {isMember && isWorking ? <GoalBalanceCard balanceId={balanceId} accountId={accountId} /> : <></>}
         </TopContent>
         <BottomContent>
-          {isMember ? (
-            <>
-              <SubTitle>연결 계좌 정보</SubTitle>
-              <AccountInfoCard
-                accntInfo={{ accountId: 0, bankId: 4, acctNo: '123412341234' }}
-                selectHandler={() => {
-                  console.log('직접 입력 계좌 잔액 수정');
-                }}
-              />
-            </>
-          ) : (
-            <></>
-          )}
+          {isMember ? <GoalAccountInfo accountId={accountId} /> : <></>}
           {isGroup ? (
-            <>
-              <SubTitle>참가자 {`${data.curCount} / ${data.headCount}`}</SubTitle>
-              <ParticipantList recruitMember={data.members} />
-            </>
+            <ParticipantSection
+              createdUserId={data.userId}
+              curCount={data.curCount}
+              headCount={data.headCount}
+              members={data.members}
+            />
           ) : (
             <></>
           )}
@@ -111,6 +106,7 @@ const Wrapper = styled.div`
   align-items: center;
   width: calc(100% - 44px);
   height: calc(100% - 40px);
+  background-color: ${(props) => props.theme.gray100};
 `;
 
 const DetailGoalWrapper = styled.div`
@@ -132,10 +128,6 @@ const TopContent = styled.div`
 
 const BottomContent = styled(TopContent)`
   gap: 20px;
-`;
-
-const SubTitle = styled.div`
-  font: ${(props) => props.theme.paragraphsP3M};
 `;
 
 const GoalButtonSet = styled.div`

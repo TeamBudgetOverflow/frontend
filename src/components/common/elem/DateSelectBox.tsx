@@ -10,14 +10,7 @@ interface DateSelectBoxProps {
 }
 
 function DateSelectBox({ value, min, max, onChange }: DateSelectBoxProps) {
-  return (
-    <DateSelect
-      type='date'
-      value={value}
-      min={min}
-      max={max}
-      onChange={onChange}></DateSelect>
-  );
+  return <DateSelect type='date' value={value} min={min} max={max} onChange={onChange} />;
 }
 
 const DateSelect = styled.input`

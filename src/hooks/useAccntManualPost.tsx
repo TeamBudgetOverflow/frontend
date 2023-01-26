@@ -7,7 +7,7 @@ import { accountApi } from '../apis/client';
 import { useNavigate } from 'react-router-dom';
 
 interface useAccntManualPostProps {
-  type: 'join' | 'post';
+  type: string;
   goalId: number;
 }
 

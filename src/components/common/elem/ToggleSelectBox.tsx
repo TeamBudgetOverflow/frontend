@@ -4,11 +4,13 @@ import styled from 'styled-components';
 interface toggleSelectProps {
   title: string;
   description: string;
+  initVal: boolean;
+  isDisabled?: boolean;
   selectHandler: (isTrue: boolean) => void;
 }
 
-const ToggleSelectBox = ({ title, description, selectHandler }: toggleSelectProps) => {
-  const [isTrue, setIsTrue] = useState<boolean>(false);
+const ToggleSelectBox = ({ title, description, initVal, isDisabled, selectHandler }: toggleSelectProps) => {
+  const [isTrue, setIsTrue] = useState<boolean>(initVal);
   const handleToggle = () => {
     setIsTrue(!isTrue);
   };
@@ -25,7 +27,16 @@ const ToggleSelectBox = ({ title, description, selectHandler }: toggleSelectProp
       </LeftContent>
       <ToggleWrapper>
         <ToggleBar isTrue={isTrue} />
-        <ToggleKnob isTrue={isTrue} onClick={handleToggle} />
+        <ToggleKnob
+          isTrue={isTrue}
+          onClick={
+            isDisabled
+              ? () => {
+                  return;
+                }
+              : handleToggle
+          }
+        />
       </ToggleWrapper>
     </Wrapper>
   );

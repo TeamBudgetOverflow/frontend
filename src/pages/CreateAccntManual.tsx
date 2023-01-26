@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import Info from '../components/common/alert/Info';
@@ -7,15 +7,9 @@ import Info from '../components/common/alert/Info';
 import useAccntManualPost from '../hooks/useAccntManualPost';
 
 const CreateAccntManual = () => {
-  const { pathname } = useLocation();
-  const { goalId } = useParams();
-  if (!goalId) return <>잘못된 요청 값입니다</>;
+  const { type, goalId } = useParams();
+  if (!type || (!goalId && type === 'join')) return <>잘못된 요청 값입니다</>;
 
-  const [type, setType] = useState<'join' | 'post'>('join');
-  useEffect(() => {
-    if (pathname.includes('join')) return setType('join');
-    setType('post');
-  }, [pathname]);
   const { isLoading, isError, createManualAccnt } = useAccntManualPost({ type, goalId: Number(goalId) });
   useEffect(() => {
     createManualAccnt();
