@@ -6,31 +6,35 @@ import ProfileImg from '../../../common/elem/ProfileImg';
 
 import { IMemeberInfo } from '../../../../interfaces/interfaces';
 
-// TODO: 참가자 달성률
-const ParticipantCard = ({ userId, nickname, image, attainment }: IMemeberInfo) => {
+interface ParticipantCardProps {
+  type: 'creator' | 'participant';
+  info: IMemeberInfo;
+}
+
+const ParticipantCard = ({ type, info }: ParticipantCardProps) => {
   const navigate = useNavigate();
 
   return (
-    <Wrapper onClick={() => navigate(`/users/${userId}`)}>
-      <PaticpantInfoWrapper>
-        <ProfileImg url={image} size={40} />
-        <Nickname>{nickname}</Nickname>
+    <Wrapper>
+      <PaticpantInfoWrapper onClick={() => navigate(`/users/${info.userId}`)}>
+        <ProfileImg url={info.image} size={40} borderColor={type === 'creator' ? '#2bc470' : ''} />
+        <Nickname color={type === 'creator' ? '#2bc470' : ''}>{info.nickname}</Nickname>
       </PaticpantInfoWrapper>
-      <Attainment>{`${attainment}%`}</Attainment>
+      <Attainment color={type === 'creator' ? '#2bc470' : ''}>{`${info.attainment}%`}</Attainment>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  padding: 10px 20px;
+  padding: 10px 0;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   flex: 0 0 auto;
-  width: calc(100% - 40px);
+  width: 100%;
   border-radius: 16px;
-  background-color: ${(props) => props.theme.gray100};
+  background-color: white;
 `;
 
 const PaticpantInfoWrapper = styled.div`
@@ -40,8 +44,9 @@ const PaticpantInfoWrapper = styled.div`
   gap: 10px;
 `;
 
-const Nickname = styled.span`
+const Nickname = styled.span<{ color: string }>`
   font: ${(props) => props.theme.paragraphsP3M};
+  color: ${(props) => props.color};
 `;
 
 const Attainment = styled(Nickname)``;

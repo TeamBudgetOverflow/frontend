@@ -1,3 +1,8 @@
+// error response
+export interface Error {
+  status: number;
+}
+
 // user
 export interface IUserProfile {
   image: string;
@@ -51,6 +56,11 @@ export interface IPostGoal {
   accountId: number;
 }
 
+export interface IModifyGoal {
+  goalId: number;
+  goal: IPostGoal;
+}
+
 export interface ISearchGoal {
   userId: number;
   goalId: number;
@@ -71,6 +81,7 @@ export interface ISearchGoal {
 export interface IGoalDetail {
   userId: number;
   goalId: number;
+  isPrivate: boolean;
   nickname: string;
   title: string;
   emoji: string;
@@ -82,10 +93,14 @@ export interface IGoalDetail {
   curCount: number;
   headCount: number;
   members: Array<IMemeberInfo>;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface IMemeberInfo {
   userId: number;
+  accountId: number;
+  balanceId: number;
   nickname: string;
   image: string;
   attainment: number;
@@ -102,6 +117,7 @@ export interface IAccount {
   accountId: number;
   bankId: number;
   acctNo: string;
+  connected: boolean;
 }
 
 export interface IPostAutoAccount {
@@ -115,6 +131,16 @@ export interface IPostAccount {
   bankUserPw: string;
   acctNo: string;
   acctPw: string;
+}
+
+export interface IBalance {
+  userId: number;
+  accountId: number;
+}
+
+export interface IUpdateBalance {
+  balanceId: number;
+  value: number;
 }
 
 // bank
