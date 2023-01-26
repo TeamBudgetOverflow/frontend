@@ -10,7 +10,6 @@ export enum Menu {
 
 const pathMenuConverter = (path: string) => {
   if (path.includes('/goals/lookup')) return Menu.lookup;
-  if (path.includes('/users/')) return Menu.my;
   if (path === '/home') return Menu.home;
 
   return Menu.none;

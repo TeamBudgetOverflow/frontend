@@ -37,8 +37,6 @@ export default styled.button<
   border-color: ${({ borderColor }) => borderColor || 'black'};
   box-sizing: ${({ boxSizing }) => boxSizing};
   border-radius: ${({ borderRadius }) => borderRadius || '15px'};
-  border-bottom-left-radius: ${({ borderRadiusLeft }) => borderRadiusLeft};
-  border-bottom-right-radius: ${({ borderRadiusRight }) => borderRadiusRight};
 
   z-index: ${({ zIndex }) => zIndex};
   ${({ letterSpacing }) => letterSpacing && `letter-spacing : ${letterSpacing}`};
@@ -47,7 +45,7 @@ export default styled.button<
 
   font-size: ${({ fontSize }) => fontSize || '14px'};
   font-weight: ${({ fontWeight }) => fontWeight || '700'};
-  font-family: inherit;
+  font-family: SUIT;
   ${({ size }) => size && sizeList[size]};
   height: ${({ height }) => height || '55px'};
   line-height: ${({ lineHeight }) => lineHeight};

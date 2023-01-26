@@ -54,8 +54,13 @@ const usePageName = ({ pathname }: { pathname: string }) => {
       default:
         setPageType(PageType.none);
     }
+    if (pathname.includes('/edit')) {
+      setPageType(PageType.editProfile);
+      return;
+    }
     if (pathname.includes('/users')) {
       setPageType(PageType.my);
+      return;
     }
   }, [pathname]);
 
