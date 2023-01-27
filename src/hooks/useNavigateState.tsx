@@ -42,6 +42,7 @@ const useNavigateState = ({ pathname, userId }: useNavigateStateProps) => {
   useEffect(() => {
     if (pathname.includes('/goals/') && !pathname.includes('lookup')) return setShow(false);
     if (pathname.includes('/accounts')) return setShow(false);
+    if (pathname.includes('/chats')) return setShow(false);
 
     setShow(true);
     handleMenuSelect(pathMenuConverter(pathname));

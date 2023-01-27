@@ -26,7 +26,11 @@ const AuthLayout = () => {
 
   useEffect(() => {
     if (!headerRef.current) return;
-    if ((pathname.includes('/goals/') && !pathname.includes('lookup')) || pathname.includes('/accounts')) {
+    if (
+      (pathname.includes('/goals/') && !pathname.includes('lookup')) ||
+      pathname.includes('/accounts') ||
+      pathname.includes('/chats')
+    ) {
       return setHeaderNavHeight(headerRef.current.clientHeight);
     }
     setHeaderNavHeight(headerRef.current.clientHeight + 88);
