@@ -67,7 +67,8 @@ tokenClient.interceptors.response.use(
 
 export const userAPI = {
   getKakaoSignup: async (code: string) => {
-    const { data } = await noneTokenClient.get('/users/auth/kakao?code=' + code);
+    console.log(code);
+    const { data } = await noneTokenClient.post(`/users/auth/kakao?code=${code}`);
 
     return data;
   },
@@ -79,7 +80,7 @@ export const userAPI = {
   },
 
   getGoogleSignup: async (code: string) => {
-    const { data } = await noneTokenClient.get('/users/auth/google?code=' + code);
+    const { data } = await noneTokenClient.post(`/users/auth/google?code=${code}`);
 
     return data;
   },

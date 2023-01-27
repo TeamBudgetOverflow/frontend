@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import KakaoSignupButton from '../components/users/signup/KakaoSignupButton';
-import NaverSignupButton from '../components/users/signup/NaverSignupButton';
-import GoogleSignupButton from '../components/users/signup/GoogleSignupButton';
+import KakaoSignupButton from '../components/user/signup/KakaoSignupButton';
+import NaverSignupButton from '../components/user/signup/NaverSignupButton';
+import GoogleSignupButton from '../components/user/signup/GoogleSignupButton';
 import Logo from '../components/common/elem/Logo';
 
 // TODO: media query 설정
