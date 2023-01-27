@@ -1,9 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
-
-import Button from '../../common/elem/Button';
 
 import GoogleLogo from '../../../assets/icons/ico_Google_logo.svg';
+import TextButton from '../../common/elem/TextButton';
 
 // TODO: media query 설정
 // TODO: redirect uri, client id env 파일 설정
@@ -14,18 +12,9 @@ const GoogleSignupButton = () => {
 
   return (
     <>
-      <Button size='large' background='white' color='black' border='2px solid' onClick={handleGoogleSignup}>
-        <Img src={GoogleLogo} />
-        Google으로 계속하기
-      </Button>
+      <TextButton text='구글로 계속하기' onClickHandler={handleGoogleSignup} />
     </>
   );
 };
-
-const Img = styled.img`
-  width: 20px;
-  height: 20px;
-  margin: 0px 10px;
-`;
 
 export default GoogleSignupButton;

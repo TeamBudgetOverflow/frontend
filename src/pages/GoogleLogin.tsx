@@ -1,20 +1,40 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { noneTokenClient } from '../apis/client';
+import jwtDecoder from 'jwt-decode';
+
+import { userAPI } from '../apis/client';
+
+import { userId } from '../recoil/userAtoms';
+
+import { MyToken } from '../interfaces/interfaces';
 
 const GoogleLogin = () => {
+  const navigate = useNavigate();
   const code = new URL(window.location.href).searchParams.get('code');
 
-  useEffect(() => {
+  const setUserId = useSetRecoilState(userId);
+  const signup = async () => {
     try {
-      const response = async () => await noneTokenClient.get(`/api/users/auth/google?code=${code}`);
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  });
+      if (!code) return alert('잘못된 코드를 받았습니다.');
+      const data = await userAPI.getGoogleSignup(code);
+      localStorage.setItem('accessToken', data.accessToken);
+      localStorage.setItem('refreshToken', data.refreshToken);
 
-  return <Wrapper>구글으로 로그인 중입니다</Wrapper>;
+      setUserId({ id: jwtDecoder<MyToken>(data.accessToken).userId });
+      navigate('/home');
+    } catch (e) {
+      console.log('naver signup error:', e);
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+    }
+  };
+  useEffect(() => {
+    signup();
+  }, []);
+
+  return <Wrapper>구글로 로그인 중입니다</Wrapper>;
 };
 
 const Wrapper = styled.div`
