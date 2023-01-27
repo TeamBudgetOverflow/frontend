@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-// import randomcolor from 'randomcolor';
 
 import InputBox from '../../common/elem/InputBox';
 import Icon from '../../common/elem/Icon';
 import ValidateMsg from '../../common/elem/ValidateMsg';
 import C3TextBox from '../../common/elem/C3TextBox';
-import HashTag, { IHashTag } from '../../common/tag/HashTag';
+import HashTag from '../../common/tag/HashTag';
 
 import useTxtInput from '../../../hooks/useTxtInput';
 
 interface TagInputSectionProps {
-  changeTagListHandler: (tagList: Array<IHashTag>) => void;
+  changeTagListHandler: (tagList: Array<string>) => void;
 }
 
 const TagInputSection = ({ changeTagListHandler }: TagInputSectionProps) => {
@@ -27,7 +26,7 @@ const TagInputSection = ({ changeTagListHandler }: TagInputSectionProps) => {
     type: '해시태그',
   });
 
-  const [tagList, setTagList] = useState<Array<IHashTag>>([]);
+  const [tagList, setTagList] = useState<Array<string>>([]);
   const validateTag = (tagContent: string) => {
     if (tagContent.length === 0) {
       return alert('키워드를 입력해주세요.');
@@ -38,7 +37,7 @@ const TagInputSection = ({ changeTagListHandler }: TagInputSectionProps) => {
     }
 
     for (const t of tagList) {
-      if (t.content === tagContent) {
+      if (t === tagContent) {
         return alert('이미 추가된 해시태그입니다');
       }
     }
@@ -46,19 +45,12 @@ const TagInputSection = ({ changeTagListHandler }: TagInputSectionProps) => {
 
   const handleAddTag = () => {
     validateTag(tagContent);
-    setTagList((prev) => [
-      ...prev,
-      {
-        content: tagContent,
-        // bgColor: randomcolor({ luminosity: 'light' }),
-        bgColor: '#CCC',
-      },
-    ]);
+    setTagList((prev) => [...prev, tagContent]);
     resetTag();
   };
 
-  const handleDeleteTag = (tag: IHashTag) => {
-    setTagList((prev) => prev.filter((v) => v.content !== tag.content));
+  const handleDeleteTag = (tag: string) => {
+    setTagList((prev) => prev.filter((v) => v !== tag));
   };
 
   useEffect(() => {
@@ -70,21 +62,28 @@ const TagInputSection = ({ changeTagListHandler }: TagInputSectionProps) => {
       <SubTitle>해시태그</SubTitle>
       <RowContent>
         <InputWrapper>
-          <InputBox placeholder='키워드를 입력해 주세요' type='text' value={tagContent} onChangeHandler={changeTag} />
+          <InputBox
+            placeholder='+ 버튼으로 해시태그를 등록해 주세요'
+            type='text'
+            value={tagContent}
+            onChangeHandler={changeTag}
+          />
+          <IconButton onClick={handleAddTag}>
+            <Icon width={14} height={14} color='#2bc470' path='M14 8H8V14H6V8H0V6H6V0H8V6H14V8Z' />
+          </IconButton>
         </InputWrapper>
       </RowContent>
       <ValidateMsg msg={tagErr} type='error' />
-      {/* TODO: 추가된 해시 태그 목록 보여주기 */}
-      {/* <ContentBox>
+      <TagListRowContent>
+        <TagList>
+          {tagList.map((tag) => (
+            <HashTag key={tag} tag={tag} removeHandler={() => handleDeleteTag(tag)} />
+          ))}
+        </TagList>
         <TagInfo>
           <C3TextBox text={`${tagList.length}/10`} />
         </TagInfo>
-        <TagList>
-          {tagList.map((tag) => (
-            <HashTag key={tag.content} tag={tag} removeHandler={() => handleDeleteTag(tag)} />
-          ))}
-        </TagList>
-      </ContentBox> */}
+      </TagListRowContent>
     </ContentBox>
   );
 };
@@ -103,6 +102,7 @@ const SubTitle = styled.div`
 `;
 
 const InputWrapper = styled.div`
+  position: relative;
   width: 100%;
   height: 30px;
 `;
@@ -116,23 +116,31 @@ const RowContent = styled.div`
 `;
 
 const IconButton = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 30px;
-  height: 30px;
-  background-color: ${(props) => props.theme.secondary200};
+  width: 24px;
+  height: 24px;
+  border: 1px solid ${(props) => props.theme.primary400};
+  border-radius: 8px;
   :hover {
     cursor: pointer;
   }
+`;
+
+const TagListRowContent = styled(RowContent)`
+  gap: 10px;
 `;
 
 const TagList = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
   flex-wrap: nowrap;
   width: 100%;
   overflow-x: auto;
@@ -142,7 +150,6 @@ const TagInfo = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  width: 100%;
 `;
 
 export default TagInputSection;

@@ -21,6 +21,7 @@ import { IPostGoal } from '../../../interfaces/interfaces';
 import useTagInput from '../../../hooks/useTagInput';
 import useGoalInput from '../../../hooks/useGoalPostInput';
 import AccntToggle from '../modify/AccntToggle';
+import EmojiInput from '../input/EmojiInput';
 
 interface GoalInfoInputProps {
   isGroup: boolean;
@@ -28,7 +29,7 @@ interface GoalInfoInputProps {
 }
 
 function GoalInfoInput({ isGroup, initVal }: GoalInfoInputProps) {
-  const { showEmojis, emoji, handleShowEmojis, handleEmojiSelect } = useEmojiSelect({ initVal: initVal.emoji });
+  const [emoji, setEmoji] = useState<string>(initVal.emoji);
 
   const {
     value: title,
@@ -127,7 +128,7 @@ function GoalInfoInput({ isGroup, initVal }: GoalInfoInputProps) {
       title,
       description,
       amount,
-      hashTag: tagList.map((tag) => tag.content),
+      hashTag: tagList,
       startDate: goalDate.startDate,
       endDate: goalDate.endDate,
       headCount,
@@ -140,15 +141,7 @@ function GoalInfoInput({ isGroup, initVal }: GoalInfoInputProps) {
   return (
     <Wrapper>
       <ContentWrapper>
-        <EmojiContentBox>
-          <EmojiBox unicode={emoji} boxSize={80} emojiSize={40} />
-          <Button onClick={handleShowEmojis}>
-            <Icon width={24} height={24} color={'primary400'} path='' />
-          </Button>
-          <EmojiPickerWrapper show={showEmojis}>
-            <EmojiPicker onEmojiClick={(emoji) => handleEmojiSelect(emoji)} />
-          </EmojiPickerWrapper>
-        </EmojiContentBox>
+        <EmojiInput initVal={emoji} changeHandler={(emoji: string) => setEmoji(emoji)} />
         <ContentBox>
           <InputWrapper>
             <InputBox

@@ -60,7 +60,7 @@ const GoalDataInput = ({ goalId, isEditable, isGroup, initVal, createdAt }: Goal
       title,
       description,
       amount,
-      hashTag: tagList.map((tag) => tag.content),
+      hashTag: tagList,
       startDate,
       endDate,
       headCount,

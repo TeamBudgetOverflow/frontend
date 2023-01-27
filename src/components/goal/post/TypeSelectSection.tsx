@@ -41,10 +41,32 @@ const TypeSelect = () => {
     <Wrapper>
       <SelectBoxWrapper>
         <SelectBox selected={!isGroup} onClick={handleSelect}>
-          개인
+          <Content>
+            <Img
+              width='58px'
+              height='61px'
+              src={
+                !isGroup
+                  ? require('../../../assets/img/goal/personal_color.png')
+                  : require('../../../assets/img/goal/personal_gray.png')
+              }
+            />
+            <Text selected={!isGroup}>혼자하기</Text>
+          </Content>
         </SelectBox>
         <SelectBox selected={isGroup} onClick={handleSelect}>
-          그룹
+          <Content>
+            <Img
+              width='120px'
+              height='62px'
+              src={
+                isGroup
+                  ? require('../../../assets/img/goal/group_color.png')
+                  : require('../../../assets/img/goal/group_gray.png')
+              }
+            />
+            <Text selected={isGroup}>여럿이서 하기</Text>
+          </Content>
         </SelectBox>
       </SelectBoxWrapper>
       <ButtonWrapper>
@@ -80,8 +102,23 @@ const SelectBox = styled.div<{ selected: boolean }>`
   width: calc(50% - 5px);
   aspect-ratio: 1/1;
   border-radius: 16px;
-  color: white;
-  background-color: ${(props) => (props.selected ? props.theme.primaryMain : props.theme.primary100)};
+  border: ${(props) => (props.selected ? `2px solid ${props.theme.primary400}` : `2px solid ${props.theme.gray400}`)};
+`;
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+`;
+
+const Img = styled.img<{ width: string; height: string }>`
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
+`;
+
+const Text = styled.div<{ selected: boolean }>`
+  color: ${(props) => (props.selected ? props.theme.primary400 : props.theme.gray400)};
 `;
 
 const ButtonWrapper = styled.div`

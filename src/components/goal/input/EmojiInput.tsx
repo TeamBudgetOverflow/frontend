@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 import EmojiBox from '../../common/elem/EmojiBox';
-import Icon from '../../common/elem/Icon';
+import ImgEditBtn from '../../common/elem/btn/ImgEditBtn';
 import EmojiPicker from 'emoji-picker-react';
 
 import useEmojiSelect from '../../../hooks/useEmojiSelect';
@@ -20,10 +20,12 @@ function EmojiInput({ initVal, changeHandler }: EmojiInputProps) {
 
   return (
     <EmojiContentBox>
-      <EmojiBox unicode={emoji} boxSize={80} emojiSize={40} />
-      <Button onClick={handleShowEmojis}>
-        <Icon width={24} height={24} color={'primary400'} path='' />
-      </Button>
+      <BoxWrapper>
+        <EmojiBox unicode={emoji} boxSize={80} emojiSize={40} />
+        <BtnWrapper>
+          <ImgEditBtn btnSize={32} clickHandler={handleShowEmojis} />
+        </BtnWrapper>
+      </BoxWrapper>
       <EmojiPickerWrapper show={showEmojis}>
         <EmojiPicker onEmojiClick={(emoji) => handleEmojiSelect(emoji)} />
       </EmojiPickerWrapper>
@@ -40,10 +42,16 @@ const EmojiContentBox = styled.div`
   width: 100%;
 `;
 
-const Button = styled.div`
-  width: 24px;
-  height: 24px;
-  border: 1px solid black;
+const BoxWrapper = styled.div`
+  position: relative;
+  width: 80px;
+  height: 80px;
+`;
+
+const BtnWrapper = styled.div`
+  position: absolute;
+  bottom: 0;
+  right: -20px;
 `;
 
 const EmojiPickerWrapper = styled.div<{ show: boolean }>`
