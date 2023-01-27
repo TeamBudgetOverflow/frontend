@@ -1,10 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
 
-import Button from '../../common/elem/Button';
-import { Colors } from '../../../styles/colors';
-
-import KakaoLogo from '../../../assets/icons/ico_KakaoTalk_logo.svg';
+import TextButton from '../../common/elem/TextButton';
 
 // TODO: media query 설정
 // TODO: redirect uri, client id env 파일 설정
@@ -15,18 +11,9 @@ const KakaoSignupButton = () => {
 
   return (
     <>
-      <Button size='large' background={Colors.kakao} color='black' onClick={handleKakaoSignup}>
-        <Img src={KakaoLogo} />
-        Kakao talk으로 계속하기
-      </Button>
+      <TextButton text='카카오로 계속하기' onClickHandler={handleKakaoSignup} />
     </>
   );
 };
-
-const Img = styled.img`
-  width: 20px;
-  height: 20px;
-  margin: 0px 10px;
-`;
 
 export default KakaoSignupButton;
