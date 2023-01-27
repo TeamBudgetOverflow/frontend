@@ -7,14 +7,17 @@ import Button from '../components/common/elem/Button';
 import Icon from '../components/common/elem/Icon';
 import InputBox from '../components/common/elem/InputBox';
 import ProfileImg from '../components/common/elem/ProfileImg';
+import TextButton from '../components/common/elem/TextButton';
 
 import { userAPI } from '../apis/client';
 
 import useUserProfileData from '../hooks/useUserProfileData';
+import useS3ImageUpload from '../hooks/useS3ImageUpload';
 
 const EditUserProfile = () => {
   const ref = useRef<HTMLInputElement>(null);
   const { id } = useParams();
+  const { handleFileInput } = useS3ImageUpload();
   const { isLoading, isError, profile } = useUserProfileData({ getUserId: Number(id) });
 
   const [initialProfileImage, setInitialProfileImage] = useState<string>('');
@@ -42,8 +45,10 @@ const EditUserProfile = () => {
       alert('이미지가 너무 큽니다.');
       return;
     }
-    const imageSrc = URL.createObjectURL(uploadedFile);
-    setInitialProfileImage(imageSrc);
+
+    handleFileInput(uploadedFile, Number(id)).then((res) => {
+      setInitialProfileImage(res.Location);
+    });
   };
 
   const handleEditProfileImage = () => {
@@ -81,24 +86,24 @@ const EditUserProfile = () => {
             <input
               ref={ref}
               type='file'
-              name='fileInput'
+              name='profileImage'
               accept='image/jpeg, image/jpg, image/png image/gif'
               onChange={handleUploadedImageChange}
             />
           </ProfileImgInputWrapper>
+          <ImageUploaderButtonWrapper>
+            <Button borderRadius='50%' width='32px' height='32px' background='#E4E4E4' onClick={handleEditProfileImage}>
+              <Icon
+                width={18}
+                height={18}
+                color={'black'}
+                path={
+                  'M0 15.4601V18.5001C0 18.7801 0.22 19.0001 0.5 19.0001H3.54C3.67 19.0001 3.8 18.9501 3.89 18.8501L14.81 7.94006L11.06 4.19006L0.15 15.1001C0.0500001 15.2001 0 15.3201 0 15.4601ZM17.71 5.04006C18.1 4.65006 18.1 4.02006 17.71 3.63006L15.37 1.29006C14.98 0.900059 14.35 0.900059 13.96 1.29006L12.13 3.12006L15.88 6.87006L17.71 5.04006Z'
+                }
+              />
+            </Button>
+          </ImageUploaderButtonWrapper>
         </ProfileImgBox>
-        <ButtonWrapper>
-          <Button borderRadius='50%' width='32px' height='32px' background='#E4E4E4' onClick={handleEditProfileImage}>
-            <Icon
-              width={18}
-              height={18}
-              color={'black'}
-              path={
-                'M0 15.4601V18.5001C0 18.7801 0.22 19.0001 0.5 19.0001H3.54C3.67 19.0001 3.8 18.9501 3.89 18.8501L14.81 7.94006L11.06 4.19006L0.15 15.1001C0.0500001 15.2001 0 15.3201 0 15.4601ZM17.71 5.04006C18.1 4.65006 18.1 4.02006 17.71 3.63006L15.37 1.29006C14.98 0.900059 14.35 0.900059 13.96 1.29006L12.13 3.12006L15.88 6.87006L17.71 5.04006Z'
-              }
-            />
-          </Button>
-        </ButtonWrapper>
       </TopContent>
       <Form>
         <UserContentBox>
@@ -112,9 +117,7 @@ const EditUserProfile = () => {
           </LabelBox>
         </UserContentBox>
         <SubmitButtonWrapper>
-          <Button type='submit' onClick={handleEditProfileSubmit}>
-            프로필 수정 완료
-          </Button>
+          <TextButton text='프로필 수정 완료' onClickHandler={handleEditProfileSubmit} />
         </SubmitButtonWrapper>
       </Form>
     </Wrapper>
@@ -140,11 +143,14 @@ const TopContent = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 20%;
+  height: 30%;
 `;
 
 const ProfileImgBox = styled.div`
-  margin: 16px;
+  position: absolute;
+  width: 85px;
+  height: 85px;
+  top: 120px;
 `;
 
 const ProfileImgInputWrapper = styled.div`
@@ -153,11 +159,8 @@ const ProfileImgInputWrapper = styled.div`
   width: 0px;
 `;
 
-const ButtonWrapper = styled.div`
-  position: absolute;
+const ImageUploaderButtonWrapper = styled.div`
   z-index: 2;
-  left: 210px;
-  top: 130px;
 `;
 
 const UserContentBox = styled.div`
@@ -184,13 +187,13 @@ const Label = styled.div`
 `;
 
 const SubmitButtonWrapper = styled.div`
-  position: fixed;
+  position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
   width: 100%;
-  bottom: 100px;
+  top: 825px;
 `;
 
 export default EditUserProfile;
