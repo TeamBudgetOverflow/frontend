@@ -1,11 +1,12 @@
-import AWS from 'aws-sdk';
-import { useMutation, useQuery } from 'react-query';
+import { useState } from 'react';
+import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
+
+import AWS from 'aws-sdk';
 
 import { IUserProfile } from '../interfaces/interfaces';
 
 import { userAPI } from '../apis/client';
-import { useState } from 'react';
 
 const useUserProfileEdit = ({
   uploadFile,
@@ -41,23 +42,33 @@ const useUserProfileEdit = ({
     }
   );
 
-  const { mutate: ImageUpdate, data } = useMutation(
-    'postProfileImageS3',
-    () => userAPI.postProfileImageS3(uploadFile, getUserId),
-    {
-      onSuccess: (data) => {
-        console.log(data);
-        // setUploadImage(data);
-        setTimeout(() => profileUpdate(), 500);
-      },
-      onError: () => {
-        alert('프로필 사진이 업로드되지 않았습니다.');
-      },
-    }
-  );
-
   const handleEditProfileSubmit = () => {
-    ImageUpdate();
+    AWS.config.update({
+      region: process.env.REACT_APP_S3_REGION,
+      accessKeyId: process.env.REACT_APP_S3_ACCESS_KEY,
+      secretAccessKey: process.env.REACT_APP_S3_SECRET_KEY,
+    });
+
+    const upload = new AWS.S3.ManagedUpload({
+      params: {
+        Bucket: process.env.REACT_APP_S3_BUCKET_NAME as string,
+        Body: uploadFile,
+        ContentType: uploadFile.type,
+        Key: 'data/profile/' + getUserId + '.' + uploadFile.name.split('.').pop(),
+      },
+    });
+
+    upload
+      .promise()
+      .then((data) => {
+        setUploadImage(data.Location);
+        setTimeout(() => profileUpdate(), 500);
+        return;
+      })
+      .catch(() => {
+        alert('프로필 사진이 업로드되지 않았습니다.');
+        return;
+      });
   };
 
   return { handleEditProfileSubmit };

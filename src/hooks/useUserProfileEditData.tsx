@@ -1,31 +1,57 @@
-import { useState } from 'react';
-import { useQuery } from 'react-query';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import React, { useRef, useState } from 'react';
 
 import { IUserProfile } from '../interfaces/interfaces';
 
-import { userAPI } from '../apis/client';
+const useUserProfileEditData = ({ profile }: { profile: IUserProfile }) => {
+  const ref = useRef<HTMLInputElement>(null);
 
-import { userId } from '../recoil/userAtoms';
+  const [profileImage, setProfileImage] = useState<string>(profile.image);
+  const [profileNickName, setProfileNickName] = useState<string>(profile.nickname);
+  const [profileDesc, setProfileDesc] = useState<string>(profile.description);
+  const [uploadFile, setUploadFile] = useState<File>();
 
-const useUserProfileEditData = ({ getUserId }: { getUserId: number }) => {
-  const loginUserId = useRecoilValue(userId);
-  const isLoginUser = loginUserId === userId;
+  const handleUploadedImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
 
-  const [profileImage, setProfileImage] = useState<string>('');
-  const [profileNickName, setProfileNickName] = useState<string>('홍길동');
-  const [profileDesc, setProfileDesc] = useState<string>('아버지를 아버지라 부르지 못하고');
+    const uploadedFile = e.target.files[0];
+    if (uploadedFile?.type.indexOf('image/') === -1) {
+      alert('이미지를 첨부해주세요!');
+      return;
+    }
+    if (uploadedFile.size / (1024 * 1024) >= 4) {
+      alert('이미지가 너무 큽니다.');
+      return;
+    }
 
-  const { isLoading, isError } = useQuery<IUserProfile>('userProfile', () => userAPI.getUserProfile(getUserId), {
-    onSuccess: (data) => {
-      if (!isLoginUser) return;
-      setProfileImage(data.image);
-      setProfileNickName(data.nickname);
-      setProfileDesc(data.description);
-    },
-  });
+    const imageSrc = URL.createObjectURL(uploadedFile);
+    setUploadFile(uploadedFile);
+    setProfileImage(imageSrc);
+  };
 
-  return { isLoading, isError, profileImage, profileNickName, profileDesc };
+  const handleEditProfileImage = () => {
+    if (!ref.current) return;
+    ref.current.click();
+  };
+
+  const handleUserNickNameChange = (e: React.FormEvent<HTMLInputElement>) => {
+    setProfileNickName(e.currentTarget.value);
+  };
+
+  const handleUserDescChange = (e: React.FormEvent<HTMLInputElement>) => {
+    setProfileDesc(e.currentTarget.value);
+  };
+
+  return {
+    ref,
+    profileImage,
+    profileNickName,
+    profileDesc,
+    uploadFile,
+    handleUploadedImageChange,
+    handleEditProfileImage,
+    handleUserNickNameChange,
+    handleUserDescChange,
+  };
 };
 
 export default useUserProfileEditData;

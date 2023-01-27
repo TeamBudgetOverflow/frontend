@@ -1,5 +1,4 @@
 import axios from 'axios';
-import AWS from 'aws-sdk';
 
 import {
   IGoal,
@@ -149,33 +148,6 @@ export const userAPI = {
     const { data } = await tokenClient.patch(`/users/${userId}`, userProfile);
 
     return data;
-  },
-
-  postProfileImageS3: async (uploadFile: File, userId: number) => {
-    AWS.config.update({
-      region: process.env.REACT_APP_S3_REGION,
-      accessKeyId: process.env.REACT_APP_S3_ACCESS_KEY,
-      secretAccessKey: process.env.REACT_APP_S3_SECRET_KEY,
-    });
-
-    const upload = new AWS.S3.ManagedUpload({
-      params: {
-        Bucket: process.env.REACT_APP_S3_BUCKET_NAME as string,
-        Body: uploadFile,
-        ContentType: uploadFile.type,
-        Key: 'data/profile/' + userId + '.' + uploadFile.name.split('.').pop(),
-      },
-    });
-
-    upload
-      .promise()
-      .then((data) => {
-        console.log(data.Location);
-        return data.Location;
-      })
-      .catch((error) => {
-        return error;
-      });
   },
 };
 

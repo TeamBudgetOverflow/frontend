@@ -1,77 +1,47 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React from 'react';
+import { Navigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import Icon from '../components/common/elem/Icon';
 import InputBox from '../components/common/elem/InputBox';
 import ProfileImg from '../components/common/elem/ProfileImg';
 import TextButton from '../components/common/elem/TextButton';
-
 import useUserProfileData from '../hooks/useUserProfileData';
 import useUserProfileEdit from '../hooks/useUserProfileEdit';
+import useUserProfileEditData from '../hooks/useUserProfileEditData';
 
 const EditUserProfile = () => {
-  const ref = useRef<HTMLInputElement>(null);
   const { id } = useParams();
+  if (!id) return <>잘못된 아이디 값입니다</>;
 
   const { isLoading, isError, profile } = useUserProfileData({ getUserId: Number(id) });
 
-  const [initialProfileImage, setInitialProfileImage] = useState<string>('');
-  const [initialUserNickName, setInitialUserNickName] = useState<string>('홍길동');
-  const [initialUserDesc, setInitialUserDesc] = useState<string>('아버지를 아버지라 부르지 못하고');
-  const [uploadFile, setUploadFile] = useState<File>();
+  if (isLoading && !profile) return <>Loading...</>;
+  if (isError || !profile) return <Navigate to='/' />;
 
-  useEffect(() => {
-    if (isLoading && !profile) return;
-    if (isError || !profile) return;
-
-    setInitialProfileImage(profile.image);
-    setInitialUserNickName(profile.nickname);
-    setInitialUserDesc(profile.description);
-  }, [profile]);
-
-  const handleUploadedImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
-
-    const uploadedFile = e.target.files[0];
-    if (uploadedFile?.type.indexOf('image/') === -1) {
-      alert('이미지를 첨부해주세요!');
-      return;
-    }
-    if (uploadedFile.size / (1024 * 1024) >= 4) {
-      alert('이미지가 너무 큽니다.');
-      return;
-    }
-
-    const imageSrc = URL.createObjectURL(uploadedFile);
-    setUploadFile(uploadedFile);
-    setInitialProfileImage(imageSrc);
-  };
-
-  const handleEditProfileImage = () => {
-    if (!ref.current) return;
-    ref.current.click();
-  };
-
-  const handleUserNickNameChange = (e: React.FormEvent<HTMLInputElement>) => {
-    setInitialUserNickName(e.currentTarget.value);
-  };
-
-  const handleUserDescChange = (e: React.FormEvent<HTMLInputElement>) => {
-    setInitialUserDesc(e.currentTarget.value);
-  };
+  const {
+    ref,
+    profileImage,
+    profileNickName,
+    profileDesc,
+    uploadFile,
+    handleUploadedImageChange,
+    handleEditProfileImage,
+    handleUserDescChange,
+    handleUserNickNameChange,
+  } = useUserProfileEditData({ profile });
 
   const { handleEditProfileSubmit } = useUserProfileEdit({
     uploadFile: uploadFile as File,
     getUserId: Number(id),
-    userProfile: { image: initialProfileImage, nickname: initialUserNickName, description: initialUserDesc },
+    userProfile: { image: profileImage, nickname: profileNickName, description: profileDesc },
   });
 
   return (
     <Wrapper>
       <TopContent>
         <ProfileImgBox>
-          <ProfileImg url={initialProfileImage} size={85} />
+          <ProfileImg url={profileImage} size={85} />
           <ProfileImgInputWrapper>
             <input
               ref={ref}
@@ -99,11 +69,11 @@ const EditUserProfile = () => {
         <UserContentBox>
           <LabelBox>
             <Label>이름</Label>
-            <InputBox type='text' placeholder={initialUserNickName} onChangeHandler={handleUserNickNameChange} />
+            <InputBox type='text' placeholder={profileNickName} onChangeHandler={handleUserNickNameChange} />
           </LabelBox>
           <LabelBox>
             <Label>소개</Label>
-            <InputBox type='text' placeholder={initialUserDesc} onChangeHandler={handleUserDescChange} />
+            <InputBox type='text' placeholder={profileDesc} onChangeHandler={handleUserDescChange} />
           </LabelBox>
         </UserContentBox>
         <SubmitButtonWrapper>
