@@ -54,7 +54,18 @@ const JoinButton = ({ goalId }: { goalId: number }) => {
               <TextButton text='다음' onClickHandler={handleSelectOptionDone} />
             </>
           ) : (
-            <></>
+            <>
+              <Info>
+                최대 목표 개수만큼 진행 중이에요.
+                <br />
+                아쉽지만 다음에 함께해요.👋
+                <SubInfo>
+                  목표는 최대 10개까지 동시 진행할 수 있습니다.
+                  <br />
+                  현재 진행 중인 목표가 완료된 이후, 목표 생성 및 참여가 가능합니다.
+                </SubInfo>
+              </Info>
+            </>
           )}
         </Content>
       </ModalBox>
@@ -97,7 +108,14 @@ const Content = styled.div`
 `;
 
 const Info = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   word-break: keep-all;
+  font: ${(props) => props.theme.paragraphsP1M};
+`;
+
+const SubInfo = styled(Info)`
   font: ${(props) => props.theme.captionC1};
 `;
 
