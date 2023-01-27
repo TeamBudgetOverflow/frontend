@@ -9,7 +9,7 @@ export enum Menu {
 }
 
 const pathMenuConverter = (path: string) => {
-  if (path.includes('/goals/lookup')) return Menu.lookup;
+  // if (path.includes('/goals/lookup')) return Menu.lookup;
   if (path === '/home') return Menu.home;
   if (path.includes('/users') && !path.includes('/edit')) return Menu.my;
 
@@ -30,9 +30,9 @@ const useNavigateState = ({ pathname, userId }: useNavigateStateProps) => {
       case Menu.home:
         setSelectedMenu(Menu.home);
         return navigate('/home');
-      // case Menu.lookup:
-      //   setSelectedMenu(Menu.lookup);
-      //   // return navigate('/goals/lookup');
+      case Menu.lookup:
+        setSelectedMenu(Menu.lookup);
+        return navigate('/goals/lookup');
       case Menu.my:
         setSelectedMenu(Menu.my);
         return navigate(`/users/${userId}`);

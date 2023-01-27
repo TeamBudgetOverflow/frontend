@@ -9,31 +9,32 @@ import PeriodFilter from './PeriodFilter';
 import StatusFilter from './StatusFilter';
 
 import { showSearchFilters } from '../../../recoil/goalsAtoms';
+import useSearchFilterCoditionState from '../../../hooks/useSearchFilterCoditionState';
 
 enum SearchFilterType {
   status,
-  aimingAmount,
+  amount,
   period,
-  headCount,
+  member,
   none,
 }
 
 const searchFilters = [
   SearchFilterType.status,
-  SearchFilterType.aimingAmount,
+  SearchFilterType.amount,
   SearchFilterType.period,
-  SearchFilterType.headCount,
+  SearchFilterType.member,
 ];
 
 const searchFilterKR = (filterType: SearchFilterType) => {
   switch (filterType) {
     case SearchFilterType.status:
       return '진행상태';
-    case SearchFilterType.aimingAmount:
+    case SearchFilterType.amount:
       return '목표금액';
     case SearchFilterType.period:
       return '진행기간';
-    case SearchFilterType.headCount:
+    case SearchFilterType.member:
       return '모집인원';
     default:
       return '';

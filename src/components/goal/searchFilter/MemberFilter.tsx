@@ -14,7 +14,7 @@ const MemberFilter = () => {
       <RangeIndicator>
         {member.min} ~ {member.max} 명
       </RangeIndicator>
-      <RangeSlider min={1} max={10} type='headCount' />
+      <RangeSlider min={1} max={10} type='member' />
     </Wrapper>
   );
 };

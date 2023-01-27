@@ -15,7 +15,7 @@ const amountFilter = () => {
       <RangeIndicator>
         {amount.min} ~ {amount.max} 원
       </RangeIndicator>
-      <RangeSlider min={0} max={100000} type='aimingAmount' />
+      <RangeSlider min={0} max={100000} type='amount' />
     </Wrapper>
   );
 };

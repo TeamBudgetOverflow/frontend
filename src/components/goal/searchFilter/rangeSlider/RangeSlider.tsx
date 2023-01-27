@@ -6,7 +6,7 @@ import { filterConditionAmount, filterConditionMember, filterConditionPeriod } f
 import './rangeSlider.css';
 
 interface RangeSliderProps {
-  type: 'aimingAmount' | 'period' | 'headCount';
+  type: 'amount' | 'period' | 'member';
   min: number;
   max: number;
 }
@@ -57,7 +57,7 @@ const RangeSlider: FC<RangeSliderProps> = ({ type, min, max }) => {
 
     setMinVal(value);
 
-    if (type === 'aimingAmount') {
+    if (type === 'amount') {
       setAmountMinVal(value);
     }
 
@@ -65,7 +65,7 @@ const RangeSlider: FC<RangeSliderProps> = ({ type, min, max }) => {
       setPeriodMinVal(value);
     }
 
-    if (type === 'headCount') {
+    if (type === 'member') {
       setHeadCountMinVal(value);
     }
 
@@ -77,7 +77,7 @@ const RangeSlider: FC<RangeSliderProps> = ({ type, min, max }) => {
 
     setMaxVal(value);
 
-    if (type === 'aimingAmount') {
+    if (type === 'amount') {
       setAmountMaxVal(value);
     }
 
@@ -85,7 +85,7 @@ const RangeSlider: FC<RangeSliderProps> = ({ type, min, max }) => {
       setPeriodMaxVal(value);
     }
 
-    if (type === 'headCount') {
+    if (type === 'member') {
       setHeadCountMaxVal(value);
     }
 
