@@ -24,13 +24,13 @@ const Redirect = () => {
   return (
     <Wrapper>
       {!refreshToken ? (
-        <Info>
+        <Info type=''>
           로그인 정보가 만료되었습니다.
           <br />
           로그인 화면으로 이동합니다.
         </Info>
       ) : (
-        <Info>
+        <Info type=''>
           로그인이 만료되었습니다.
           <br />
           핀번호를 다시 입력해주세요.

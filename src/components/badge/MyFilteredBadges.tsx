@@ -26,7 +26,7 @@ const MyFilteredBadges = () => {
   return (
     <Wrapper>
       {isLoading || !badges ? (
-        <Alert showBgColor={true}>
+        <Alert height='100%' showBgColor={true}>
           <LoadingMsg />
         </Alert>
       ) : (

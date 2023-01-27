@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Navigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+import Alert from '../common/alert/Alert';
+import LoadingMsg from '../common/elem/LoadingMsg';
+import ErrorMsg from '../common/elem/ErrorMsg';
 import StateGoalCard from './StateGoalCard';
 import Icon from '../common/elem/Icon';
 import ModalBox from '../common/elem/ModalBox';
@@ -39,9 +41,6 @@ const MyFilteredGoals = ({ isLoading, isError, goals }: MyFilteredGoalsProps) =>
   const handleFilterModal = () => {
     setShowFilters(!showFilters);
   };
-
-  if (isLoading) return <>Loading...</>;
-  if (isError) return <>Error</>;
 
   const { filterType, orderType, filtered, handleFilterType, handleOrderType } = useGoalsFilter({ goals });
 
@@ -82,10 +81,22 @@ const MyFilteredGoals = ({ isLoading, isError, goals }: MyFilteredGoalsProps) =>
         )}
       </TopContent>
       <BottomContent>
-        {filtered.length === 0 ? (
-          <EmptyInfo>{`아직 ${filterKR(filterType)} 목표가 없습니다`}</EmptyInfo>
+        {isLoading ? (
+          <Alert height='100%' showBgColor={true}>
+            <LoadingMsg />
+          </Alert>
+        ) : isError ? (
+          <Alert height='100%' showBgColor={true}>
+            <ErrorMsg />
+          </Alert>
         ) : (
-          filtered.map((goal, idx) => <StateGoalCard key={idx} goal={goal} />)
+          <>
+            {filtered.length === 0 ? (
+              <EmptyInfo>{`아직 ${filterKR(filterType)} 목표가 없습니다`}</EmptyInfo>
+            ) : (
+              filtered.map((goal, idx) => <StateGoalCard key={idx} goal={goal} />)
+            )}
+          </>
         )}
       </BottomContent>
       <ModalBox show={showFilters}>

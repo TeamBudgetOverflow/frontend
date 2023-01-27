@@ -23,12 +23,12 @@ const useAccntAuth = ({ accntNo, bank, oriSeqNoHandler, authReqHandler }: useAcc
           throw new Error();
         }
         authReqHandler(true);
-        setIsAuthRequested(true);
+        setTimeout(() => setIsAuthRequested(true), 2500);
         oriSeqNoHandler(data.oriSeqNo);
       },
       onError: () => {
         authReqHandler(false);
-        setIsAuthRequested(false);
+        setIsAuthRequested(true);
       },
     }
   );
