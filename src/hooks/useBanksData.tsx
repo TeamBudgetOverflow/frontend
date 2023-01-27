@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { useQuery } from 'react-query';
 
@@ -9,12 +9,19 @@ import { goalApi } from '../apis/client';
 import { banksInfo } from '../recoil/accntAtoms';
 
 function useBanksData() {
-  const { data: banksData } = useQuery<Array<IBank>>('getBanks', () => goalApi.getBanks());
   const setBanksInfo = useSetRecoilState(banksInfo);
-  useEffect(() => {
-    if (!banksData) return;
-    setBanksInfo(banksData.slice(2, -1));
-  }, [banksData]);
+  const navigate = useNavigate();
+  useQuery<Array<IBank>>('getBanks', () => goalApi.getBanks(), {
+    select: (data) => data.slice(2, -1),
+    onSuccess: (data) => {
+      setBanksInfo(data);
+    },
+    onError: (e) => {
+      if (e === 401) {
+        navigate('/', { replace: true });
+      }
+    },
+  });
 
   return;
 }

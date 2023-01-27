@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
@@ -67,7 +66,7 @@ const AccountNoInput = ({ oriSeqNoHandler, authReqHandler }: AccountNoInputProps
   });
 
   if (isLoading) return <>Loading...</>;
-  if (isError) return <Navigate to='/' />;
+  if (isError) return <>Error</>;
 
   return (
     <Wrapper>

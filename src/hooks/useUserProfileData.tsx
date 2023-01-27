@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
@@ -12,6 +12,7 @@ const useUserProfileData = ({ getUserId }: { getUserId: number }) => {
   const loginUserId = useRecoilValue(userId);
   const isLoginUser = loginUserId === userId;
   const setUserProfile = useSetRecoilState(userProfile);
+  const navigate = useNavigate();
   const {
     isLoading,
     isError,
@@ -20,6 +21,11 @@ const useUserProfileData = ({ getUserId }: { getUserId: number }) => {
     onSuccess: (data) => {
       if (!isLoginUser) return;
       setUserProfile(data);
+    },
+    onError: (e) => {
+      if (e === 401) {
+        navigate('/', { replace: true });
+      }
     },
   });
 

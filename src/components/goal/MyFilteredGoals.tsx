@@ -41,7 +41,7 @@ const MyFilteredGoals = ({ isLoading, isError, goals }: MyFilteredGoalsProps) =>
   };
 
   if (isLoading) return <>Loading...</>;
-  if (isError) return <Navigate to='/' />;
+  if (isError) return <>Error</>;
 
   const { filterType, orderType, filtered, handleFilterType, handleOrderType } = useGoalsFilter({ goals });
 

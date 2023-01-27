@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { useQuery } from 'react-query';
 
@@ -27,6 +28,7 @@ const useGoalDetailData = ({ loginUserId, goalId }: useGoalStateProps) => {
   const [accountId, setAccountId] = useState<number>(0);
   const [balanceId, setBalanceId] = useState<number>(0);
   const setGoalDetail = useSetRecoilState(goalDetail);
+  const navigate = useNavigate();
   const { isLoading, data, isError } = useQuery<IGoalDetail>('goalDetail', () => fetchGoalDetail(goalId), {
     onSuccess: (data) => {
       setGoalDetail(data);
@@ -35,6 +37,11 @@ const useGoalDetailData = ({ loginUserId, goalId }: useGoalStateProps) => {
       setIsWorking(isWorking(new Date(data.startDate), new Date(data.endDate)));
       setAccountId(accountIdFinder(data.members, loginUserId));
       setBalanceId(balanceIdFinder(data.members, loginUserId));
+    },
+    onError: (e) => {
+      if (e === 401) {
+        navigate('/', { replace: true });
+      }
     },
   });
 

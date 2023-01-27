@@ -1,5 +1,4 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import ProfileImg from '../common/elem/ProfileImg';
@@ -17,7 +16,7 @@ const UserDetailProfile = ({ id, totalCnt, successCnt, workingCnt }: UserDetailP
   const { isLoading, isError, profile } = useUserProfileData({ getUserId: id });
 
   if (isLoading && !profile) return <>Loading...</>;
-  if (isError || !profile) return <Navigate to='/' />;
+  if (isError || !profile) return <>Error</>;
 
   return (
     <Wrapper>
