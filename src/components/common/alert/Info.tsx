@@ -5,7 +5,7 @@ import Icon from '../elem/Icon';
 import LoadingIcon from '../elem/LoadingIcon';
 
 interface InfoProps {
-  type: 'loading' | 'error' | 'accntSuccess' | 'goalSuccess' | 'success' | '';
+  type: 'loading' | 'error' | 'accntSuccess' | 'goalSuccess' | 'success' | 'prepare' | '';
   children: React.ReactNode;
 }
 
@@ -29,6 +29,8 @@ const Info: FunctionComponent<InfoProps> = ({ type, children }: InfoProps) => {
         return <Img width='334px' height='124px' src={require('../../../assets/icons/goalSuccess.png')} />;
       case 'success':
         return <Img width='80px' height='80px' src={require('../../../assets/icons/success.png')} />;
+      case 'prepare':
+        return <Img width='135px' height='129px' src={require('../../../assets/icons/prepare.png')} />;
       default:
         return <></>;
     }
