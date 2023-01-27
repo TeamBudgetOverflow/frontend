@@ -105,7 +105,7 @@ const EditUserProfile = () => {
           </ImageUploaderButtonWrapper>
         </ProfileImgBox>
       </TopContent>
-      <Form>
+      <MiddleWrapper>
         <UserContentBox>
           <LabelBox>
             <Label>이름</Label>
@@ -119,7 +119,7 @@ const EditUserProfile = () => {
         <SubmitButtonWrapper>
           <TextButton text='프로필 수정 완료' onClickHandler={handleEditProfileSubmit} />
         </SubmitButtonWrapper>
-      </Form>
+      </MiddleWrapper>
     </Wrapper>
   );
 };
@@ -127,30 +127,29 @@ const EditUserProfile = () => {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
   height: 100%;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
+  padding: 20px;
 `;
 
 const TopContent = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  height: 30%;
+  height: 15%;
+`;
+
+const MiddleWrapper = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 `;
 
 const ProfileImgBox = styled.div`
-  position: absolute;
   width: 85px;
   height: 85px;
-  top: 120px;
 `;
 
 const ProfileImgInputWrapper = styled.div`
@@ -160,6 +159,9 @@ const ProfileImgInputWrapper = styled.div`
 `;
 
 const ImageUploaderButtonWrapper = styled.div`
+  position: relative;
+  bottom: 40px;
+  left: 50px;
   z-index: 2;
 `;
 
@@ -169,7 +171,7 @@ const UserContentBox = styled.div`
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  height: 70%;
+  height: 100%;
   gap: 20px;
 `;
 
@@ -179,7 +181,7 @@ const LabelBox = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   gap: 10px;
-  width: 90%;
+  width: 100%;
 `;
 
 const Label = styled.div`
@@ -187,13 +189,10 @@ const Label = styled.div`
 `;
 
 const SubmitButtonWrapper = styled.div`
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
   width: 100%;
-  top: 825px;
+  position: absolute;
+  bottom: 0px;
+  padding: 20px 22px;
 `;
 
 export default EditUserProfile;

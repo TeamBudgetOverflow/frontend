@@ -25,10 +25,7 @@ const AuthNoNavigationLayout = () => {
 
   useEffect(() => {
     if (!headerRef.current) return;
-    if ((pathname.includes('/goals/') && !pathname.includes('lookup')) || pathname.includes('/accounts')) {
-      return setHeaderNavHeight(headerRef.current.clientHeight);
-    }
-    setHeaderNavHeight(headerRef.current.clientHeight + 88);
+    setHeaderNavHeight(headerRef.current.clientHeight + 20);
   }, [headerRef.current?.clientHeight, pathname]);
 
   return (

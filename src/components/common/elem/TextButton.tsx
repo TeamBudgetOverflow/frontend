@@ -20,6 +20,7 @@ const TextButton = ({ text, bgColor, onClickHandler, isDisabled }: TextButtonPro
 
 const Button = styled.button<{ bgColor?: string; disable?: boolean }>`
   width: 100%;
+  height: 51px;
   display: flex;
   flex-direction: row;
   justify-content: center;
