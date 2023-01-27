@@ -28,6 +28,10 @@ const AlertWrapper = styled.div<{ height?: string }>`
 
 const AlertBox = styled.div<{ showBgColor: boolean; height?: string }>`
   padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: ${(props) => props.height};
   border-radius: 16px;

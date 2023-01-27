@@ -18,14 +18,14 @@ const PostGoal = () => {
   if (isLoading)
     return (
       <Wrapper>
-        <Info>목표 생성 중 입니다.</Info>
+        <Info type='loading'>목표 생성 중 입니다.</Info>
       </Wrapper>
     );
 
   if (isError)
     return (
       <Wrapper>
-        <Info>
+        <Info type='error'>
           목표 생성이 실패했습니다.
           <br />
           다시 시도해주세요.
@@ -36,7 +36,7 @@ const PostGoal = () => {
 
   return (
     <Wrapper>
-      <Info>목표 생성이 완료되었습니다.</Info>
+      <Info type='goalSuccess'>목표 생성이 완료되었습니다.</Info>
     </Wrapper>
   );
 };

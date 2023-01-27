@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
+import InfoLoading from '../components/common/alert/InfoLoading';
+import InfoError from '../components/common/alert/InfoError';
 import Info from '../components/common/alert/Info';
 import AccountSelect from '../components/account/AccountSelectSection';
 import TextButton from '../components/common/elem/TextButton';
@@ -49,8 +51,8 @@ const SelectAccnt = () => {
 
   const navigate = useNavigate();
 
-  if (isLoading || !accounts) return <>Loading...</>;
-  if (isError) return <>Error</>;
+  if (isLoading && !accounts) return <InfoLoading />;
+  if (isError && !accounts) return <InfoError />;
 
   return (
     <Wrapper>
@@ -58,7 +60,7 @@ const SelectAccnt = () => {
         <>
           {isAutoAccountAddable(accounts) ? (
             <>
-              <Info>
+              <Info type=''>
                 사용 가능한 계좌가 없습니다.
                 <br />
                 계좌를 새로 연결하시겠습니까?
@@ -66,7 +68,7 @@ const SelectAccnt = () => {
               <TextButton text='다음' onClickHandler={() => navigate('/goals/post/accounts/auto')} />
             </>
           ) : (
-            <Info>최대 연결 가능 계좌 개수는 1개입니다</Info>
+            <Info type='error'>최대 연결 가능 계좌 개수는 1개입니다</Info>
           )}
         </>
       ) : (

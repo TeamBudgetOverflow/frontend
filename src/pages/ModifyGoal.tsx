@@ -3,31 +3,32 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import Info from '../components/common/alert/Info';
-import LoadingIcon from '../components/common/elem/LoadingIcon';
+import InfoLoading from '../components/common/alert/InfoLoading';
 import TextButton from '../components/common/elem/TextButton';
 
 import useGoalModify from '../hooks/useGoalModify';
 
 const ModifyGoal = () => {
   const { id } = useParams();
-  if (!id) return <>잘못된 요청 값입니다</>;
+  if (!id)
+    return (
+      <Wrapper>
+        <Info type='error'>잘못된 요청값 입니다.</Info>
+      </Wrapper>
+    );
+
   const { isLoading, isError, handleModifyGoal } = useGoalModify({ goalId: Number(id) });
 
   useEffect(() => {
     handleModifyGoal();
   }, []);
 
-  if (isLoading)
-    return (
-      <LoadingWrapper>
-        <LoadingIcon size={50} color='#2bc470' />
-      </LoadingWrapper>
-    );
+  if (isLoading) return <InfoLoading />;
 
   if (isError)
     return (
       <Wrapper>
-        <Info>
+        <Info type='error'>
           목표 수정이 실패했습니다.
           <br />
           다시 시도해주세요.
@@ -45,11 +46,6 @@ const Wrapper = styled.div`
   justify-content: space-between;
   width: calc(100% - 44px);
   height: calc(100% - 40px);
-`;
-
-const LoadingWrapper = styled(Wrapper)`
-  justify-content: center;
-  align-items: center;
 `;
 
 export default ModifyGoal;

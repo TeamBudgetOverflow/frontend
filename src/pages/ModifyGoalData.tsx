@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
+import InfoLoading from '../components/common/alert/InfoLoading';
+import InfoError from '../components/common/alert/InfoError';
 import GoalAccountInfo from '../components/goal/goalDetail/GoalAccountInfo';
 import GoalDataInput from '../components/goal/modify/GoalDataInput';
 
@@ -27,8 +29,8 @@ const ModifyGoalData = () => {
     endDate: new Date(savedGoalDetail.endDate),
   });
 
-  if (isLoading) return <>Loading...</>;
-  if (isError) return <>Error</>;
+  if (isLoading) return <InfoLoading />;
+  if (isError) return <InfoError />;
 
   return (
     <Wrapper>
