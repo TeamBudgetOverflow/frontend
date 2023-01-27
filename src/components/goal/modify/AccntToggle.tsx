@@ -4,7 +4,7 @@ import useAccountsData from '../../../hooks/useAccountsData';
 import ToggleSelectBox from '../../common/elem/ToggleSelectBox';
 import ValidateMsg from '../../common/elem/ValidateMsg';
 
-import { isManualAccntAddable } from '../../../utils/accountInfoChecker';
+import { isManualAccountAddable } from '../../../utils/accountInfoChecker';
 
 interface AccntToggleProps {
   initVal: boolean;
@@ -36,7 +36,7 @@ const AccntToggle = ({ initVal, changeHandler }: AccntToggleProps) => {
         // isDisabled={!isManualAccntAddable(accounts)}
       />
       {isError ? <ValidateMsg msg='계좌 정보 조회를 실패했습니다.' type='error' /> : <></>}
-      {isManual && !isManualAccntAddable(accounts) ? (
+      {isManual && !isManualAccountAddable(accounts) ? (
         <ValidateMsg msg='직접 입력 목표는 최대 10개까지 관리할 수 있습니다.' type='error' />
       ) : (
         <></>
