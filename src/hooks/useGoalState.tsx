@@ -12,7 +12,7 @@ function useGoalState({ startDate, endDate }: { startDate: Date; endDate: Date }
     if (startDate.getTime() > new Date().getTime()) setState(GoalState.waiting);
     else if (endDate.getTime() > new Date().getTime()) setState(GoalState.working);
     else setState(GoalState.done);
-  }, []);
+  }, [startDate, endDate]);
 
   return { state };
 }
