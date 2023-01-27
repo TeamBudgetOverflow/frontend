@@ -10,8 +10,8 @@ export enum Menu {
 
 const pathMenuConverter = (path: string) => {
   if (path.includes('/goals/lookup')) return Menu.lookup;
-  if (path.includes('/users/')) return Menu.my;
   if (path === '/home') return Menu.home;
+  if (path.includes('/users') && !path.includes('/edit')) return Menu.my;
 
   return Menu.none;
 };
@@ -42,6 +42,7 @@ const useNavigateState = ({ pathname, userId }: useNavigateStateProps) => {
   useEffect(() => {
     if (pathname.includes('/goals/') && !pathname.includes('lookup')) return setShow(false);
     if (pathname.includes('/accounts')) return setShow(false);
+    if (pathname.includes('/users/edit')) return setShow(false);
     if (pathname.includes('/chats')) return setShow(false);
 
     setShow(true);

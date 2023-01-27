@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import UserDetailProfile from '../components/user/UserDetailProfile';
@@ -10,6 +10,7 @@ import UserDetailTab from '../components/user/UserDetailTabSection';
 
 const DetailUser = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   if (!id) return <>잘못된 아이디 값입니다</>;
 
   // TODO: get user badges data
@@ -23,7 +24,7 @@ const DetailUser = () => {
   } = useUserGoalsData({ getUserId: Number(id) });
 
   const handleUserEdit = () => {
-    console.log('edit user');
+    navigate(`/users/edit/${id}`);
   };
 
   return (

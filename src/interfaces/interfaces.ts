@@ -10,6 +10,11 @@ export interface IUserProfile {
   description: string;
 }
 
+export interface IUpdateUserProfile {
+  userId: number;
+  userProfile: IUserProfile;
+}
+
 // token
 export interface MyToken {
   userId: number;

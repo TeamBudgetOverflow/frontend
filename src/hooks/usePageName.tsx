@@ -23,7 +23,7 @@ const PageKR = (type: PageType) => {
     case PageType.my:
       return '마이페이지';
     case PageType.editProfile:
-      return '프로필 편집';
+      return '프로필 수정';
     default:
       return '';
   }
@@ -54,8 +54,13 @@ const usePageName = ({ pathname }: { pathname: string }) => {
       default:
         setPageType(PageType.none);
     }
+    if (pathname.includes('/edit')) {
+      setPageType(PageType.editProfile);
+      return;
+    }
     if (pathname.includes('/users')) {
       setPageType(PageType.my);
+      return;
     }
   }, [pathname]);
 
