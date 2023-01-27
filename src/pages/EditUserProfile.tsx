@@ -1,5 +1,4 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { useMutation } from 'react-query';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -9,20 +8,19 @@ import InputBox from '../components/common/elem/InputBox';
 import ProfileImg from '../components/common/elem/ProfileImg';
 import TextButton from '../components/common/elem/TextButton';
 
-import { userAPI } from '../apis/client';
-
 import useUserProfileData from '../hooks/useUserProfileData';
-import useS3ImageUpload from '../hooks/useS3ImageUpload';
+import useUserProfileEdit from '../hooks/useUserProfileEdit';
 
 const EditUserProfile = () => {
   const ref = useRef<HTMLInputElement>(null);
   const { id } = useParams();
-  const { handleFileInput } = useS3ImageUpload();
+
   const { isLoading, isError, profile } = useUserProfileData({ getUserId: Number(id) });
 
   const [initialProfileImage, setInitialProfileImage] = useState<string>('');
   const [initialUserNickName, setInitialUserNickName] = useState<string>('홍길동');
   const [initialUserDesc, setInitialUserDesc] = useState<string>('아버지를 아버지라 부르지 못하고');
+  const [uploadFile, setUploadFile] = useState<File>();
 
   useEffect(() => {
     if (isLoading && !profile) return;
@@ -46,9 +44,9 @@ const EditUserProfile = () => {
       return;
     }
 
-    handleFileInput(uploadedFile, Number(id)).then((res) => {
-      setInitialProfileImage(res.Location);
-    });
+    const imageSrc = URL.createObjectURL(uploadedFile);
+    setUploadFile(uploadedFile);
+    setInitialProfileImage(imageSrc);
   };
 
   const handleEditProfileImage = () => {
@@ -64,18 +62,11 @@ const EditUserProfile = () => {
     setInitialUserDesc(e.currentTarget.value);
   };
 
-  const { mutate } = useMutation('postEditUserProfile', () =>
-    userAPI.patchEditUserProfile(Number(id), {
-      image: initialProfileImage,
-      nickname: initialUserNickName,
-      description: initialUserDesc,
-    })
-  );
-
-  const handleEditProfileSubmit = () => {
-    event?.preventDefault();
-    mutate();
-  };
+  const { handleEditProfileSubmit } = useUserProfileEdit({
+    uploadFile: uploadFile as File,
+    getUserId: Number(id),
+    userProfile: { image: initialProfileImage, nickname: initialUserNickName, description: initialUserDesc },
+  });
 
   return (
     <Wrapper>
