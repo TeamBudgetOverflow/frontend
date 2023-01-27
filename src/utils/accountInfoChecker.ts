@@ -33,6 +33,6 @@ export const availManualAccountFinder = (accounts: Array<IAccount>): Array<IAcco
   return accounts.filter((accnt) => accnt.bankId === 2 && !accnt.connected);
 };
 
-export const isManualAccntAddable = (accounts: Array<IAccount>): boolean => {
-  return accounts.filter((accnt) => accnt.bankId === 2).length < 10;
+export const isManualAccountAddable = (accounts: Array<IAccount>): boolean => {
+  return accounts.filter((accnt) => accnt.bankId === 2).length < 10 || availManualAccountFinder(accounts).length > 0;
 };
