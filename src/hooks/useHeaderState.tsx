@@ -13,7 +13,7 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
 
   const [showChatBtn, setShowChatBtn] = useState<boolean>(false);
   const handleChatClick = () => {
-    console.log('채팅 페이지로 이동');
+    navigate('/chats');
   };
 
   const [showPrevBtn, setShowPrevBtn] = useState<boolean>(false);
@@ -27,33 +27,43 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
     setShowPrevBtn(false);
   };
 
+  const showPrevOnly = () => {
+    setShowPrevBtn(true);
+    setShowSearchBar(false);
+    setShowSearchBtn(false);
+    setShowChatBtn(false);
+  };
+
+  const showChatOnly = () => {
+    setShowPrevBtn(false);
+    setShowSearchBar(false);
+    setShowSearchBtn(false);
+    setShowChatBtn(true);
+  };
+
   useEffect(() => {
     if (pathname === '/home') {
-      setShowPrevBtn(false);
-      setShowSearchBar(false);
-      setShowSearchBtn(false);
-      setShowChatBtn(true);
-      return;
-    }
-    if (pathname.includes('/goals/post')) {
-      setShowPrevBtn(true);
-      setShowSearchBar(false);
-      setShowSearchBtn(false);
-      setShowChatBtn(false);
-      return;
-    }
-    if (pathname.includes('/goals/') && !pathname.includes('lookup') && !pathname.includes('post')) {
-      setShowPrevBtn(true);
-      setShowSearchBar(false);
-      setShowSearchBtn(false);
-      setShowChatBtn(true);
+      showChatOnly();
       return;
     }
     if (pathname.includes('/users')) {
-      setShowPrevBtn(false);
-      setShowSearchBar(false);
-      setShowSearchBtn(false);
-      setShowChatBtn(true);
+      showChatOnly();
+      return;
+    }
+    if (pathname.includes('/goals/post')) {
+      showPrevOnly();
+      return;
+    }
+    if (pathname.includes('/accounts')) {
+      showPrevOnly();
+      return;
+    }
+    if (pathname.includes('/goals/') && !pathname.includes('lookup') && !pathname.includes('post')) {
+      showPrevOnly();
+      return;
+    }
+    if (pathname.includes('/chats')) {
+      showPrevOnly();
       return;
     }
 

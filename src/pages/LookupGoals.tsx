@@ -61,13 +61,13 @@ const LookupGoals = () => {
         </TitleBox>
         {isLoadingGoals ? (
           <AlertWrapper>
-            <Alert height={150} showBgColor={true}>
+            <Alert showBgColor={true}>
               <LoadingMsg />
             </Alert>
           </AlertWrapper>
         ) : isError ? (
           <AlertWrapper>
-            <Alert height={150} showBgColor={true}>
+            <Alert showBgColor={true}>
               <ErrorMsg />
             </Alert>
           </AlertWrapper>
@@ -81,13 +81,13 @@ const LookupGoals = () => {
         </TitleBox>
         {isLoadingGoals ? (
           <AlertWrapper>
-            <Alert height={150} showBgColor={true}>
+            <Alert showBgColor={true}>
               <LoadingMsg />
             </Alert>
           </AlertWrapper>
         ) : isError ? (
           <AlertWrapper>
-            <Alert height={150} showBgColor={true}>
+            <Alert showBgColor={true}>
               <ErrorMsg />
             </Alert>
           </AlertWrapper>
@@ -100,9 +100,6 @@ const LookupGoals = () => {
 };
 
 const Wrapper = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
   padding-top: 20px;
   display: flex;
   flex-direction: column;

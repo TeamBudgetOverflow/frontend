@@ -36,6 +36,7 @@ export const goalDetail = atom<IGoalDetail>({
   default: {
     userId: 0,
     goalId: 0,
+    isPrivate: false,
     nickname: '',
     title: '',
     emoji: '',
@@ -46,7 +47,9 @@ export const goalDetail = atom<IGoalDetail>({
     endDate: new Date(),
     curCount: 0,
     headCount: 0,
-    members: [{ userId: 0, nickname: '', image: '', attainment: 0 }],
+    members: [{ userId: 0, nickname: '', image: '', attainment: 0, accountId: 0, balanceId: 0 }],
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
 });
 

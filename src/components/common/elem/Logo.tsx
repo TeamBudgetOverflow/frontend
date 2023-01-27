@@ -1,9 +1,5 @@
 import React from 'react';
 
-// type sizeType = {
-//   [key: string]: number;
-// };
-
 type LogoProps = {
   size: number;
 };

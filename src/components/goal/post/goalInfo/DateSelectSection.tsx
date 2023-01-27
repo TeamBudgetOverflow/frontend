@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 import DateSelectBox from '../../../common/elem/DateSelectBox';
@@ -8,6 +8,7 @@ import { dateStringTranslatorWithPoint } from '../../../../utils/dateTranslator'
 
 interface DateSelectSectionProps {
   isGroup: boolean;
+  isDisabled: boolean;
   dateSelectHandler: (dateInfo: GoalDate) => void;
 }
 
@@ -16,7 +17,7 @@ export interface GoalDate {
   endDate: Date;
 }
 
-const DateSelectSection = ({ isGroup, dateSelectHandler }: DateSelectSectionProps) => {
+const DateSelectSection = ({ isGroup, isDisabled, dateSelectHandler }: DateSelectSectionProps) => {
   const {
     minDate: minRecruitEndDate,
     maxDate: maxRecruitEndDate,

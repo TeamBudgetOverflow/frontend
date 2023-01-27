@@ -1,11 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 import { useQuery } from 'react-query';
 
 import { IGoalDetail } from '../interfaces/interfaces';
 
 import { goalApi } from '../apis/client';
 
-import { isGroup, isMember, isWorking } from '../utils/goalStateChecker';
+import { isGroup, isMember, isWorking } from '../utils/goalInfoChecker';
+import { accountIdFinder, balanceIdFinder } from '../utils/accountInfoChecker';
+
+import { goalDetail } from '../recoil/goalsAtoms';
 
 interface useGoalStateProps {
   loginUserId: number;
@@ -20,16 +25,27 @@ const useGoalDetailData = ({ loginUserId, goalId }: useGoalStateProps) => {
   const [isGroupVal, setIsGroup] = useState<boolean>(false);
   const [isMemberVal, setIsMember] = useState<boolean>(false);
   const [isWorkingVal, setIsWorking] = useState<boolean>(false);
-  const { isLoading, data, isError } = useQuery<IGoalDetail>('goalDetail', () => fetchGoalDetail(goalId));
+  const [accountId, setAccountId] = useState<number>(0);
+  const [balanceId, setBalanceId] = useState<number>(0);
+  const setGoalDetail = useSetRecoilState(goalDetail);
+  const navigate = useNavigate();
+  const { isLoading, data, isError } = useQuery<IGoalDetail>('goalDetail', () => fetchGoalDetail(goalId), {
+    onSuccess: (data) => {
+      setGoalDetail(data);
+      setIsGroup(isGroup(data.headCount));
+      setIsMember(isMember(loginUserId, data.members));
+      setIsWorking(isWorking(new Date(data.startDate), new Date(data.endDate)));
+      setAccountId(accountIdFinder(data.members, loginUserId));
+      setBalanceId(balanceIdFinder(data.members, loginUserId));
+    },
+    onError: (e) => {
+      if (e === 401) {
+        navigate('/', { replace: true });
+      }
+    },
+  });
 
-  useEffect(() => {
-    if (!data) return;
-    setIsGroup(isGroup(data.headCount, data.curCount));
-    setIsMember(isMember(loginUserId, data.members));
-    setIsWorking(isWorking(new Date(data.startDate), new Date(data.endDate)));
-  }, [data]);
-
-  return { isLoading, isError, data, isGroupVal, isMemberVal, isWorkingVal };
+  return { isLoading, isError, data, isGroupVal, isMemberVal, isWorkingVal, accountId, balanceId };
 };
 
 export default useGoalDetailData;

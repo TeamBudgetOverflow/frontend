@@ -16,13 +16,7 @@ interface useInputProps {
   regExp?: RegExp;
 }
 
-const useTxtInput = ({
-  initValue,
-  minLength,
-  maxLength,
-  type,
-  regExp,
-}: useInputProps) => {
+const useTxtInput = ({ initValue, minLength, maxLength, type, regExp }: useInputProps) => {
   const [value, setValue] = useState(initValue);
   const [errMsg, setErrMsg] = useState('');
 

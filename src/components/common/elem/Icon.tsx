@@ -2,22 +2,23 @@ import React from 'react';
 import styled from 'styled-components';
 
 interface IconProps {
-  size: number;
+  width: number;
+  height: number;
   color: string;
   path: string;
 }
 
-const Icon = ({ size, color, path }: IconProps) => {
+const Icon = ({ width, height, color, path }: IconProps) => {
   return (
-    <SVGIcon size={`${size}px`} viewBox={`0 0 ${size} ${size}`}>
+    <SVGIcon width={`${width}px`} height={`${height}px`} viewBox={`0 0 ${width} ${height}`}>
       <Path color={color} d={path} fillRule='evenodd' clipRule='evenodd' />
     </SVGIcon>
   );
 };
 
-const SVGIcon = styled.svg<{ size: string }>`
-  width: ${(props) => props.size};
-  height: ${(props) => props.size};
+const SVGIcon = styled.svg<{ width: string; height: string }>`
+  width: ${(props) => props.width};
+  height: ${(props) => props.height};
 `;
 
 const Path = styled.path<{ color: string }>`
@@ -29,6 +30,8 @@ const Path = styled.path<{ color: string }>`
         return props.theme.gray400;
       case 'black':
         return 'black';
+      case 'white':
+        return 'white';
       default:
         return props.theme.secondary900;
     }

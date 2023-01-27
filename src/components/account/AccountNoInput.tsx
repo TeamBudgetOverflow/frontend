@@ -11,26 +11,23 @@ import ModalBox from '../common/elem/ModalBox';
 import BankList from '../goal/post/BankList';
 
 import useTxtInput from '../../hooks/useTxtInput';
-
-import { bankAPI } from '../../apis/client';
-
-import { IBank } from '../../interfaces/interfaces';
+import useBankSelect from '../../hooks/useBankSelect';
+import useAccntAuth from '../../hooks/useAccntAuth';
 
 import { accntInfo, banksInfo, selectedBankInfo } from '../../recoil/accntAtoms';
 
 interface AccountNoInputProps {
-  authNoHandler: (oriSeqNo: string) => void;
+  oriSeqNoHandler: (oriSeqNo: string) => void;
   authReqHandler: (result: boolean) => void;
 }
 
-const AccountNoInput = ({ authNoHandler, authReqHandler }: AccountNoInputProps) => {
+const AccountNoInput = ({ oriSeqNoHandler, authReqHandler }: AccountNoInputProps) => {
   const savedSelectedBankInfo = useRecoilValue(selectedBankInfo);
   const savedAccntInfo = useRecoilValue(accntInfo);
   const {
     value: accntNo,
     errMsg: accntNoErr,
     onChange: changeAccntNo,
-    reset: resetAccntNo,
   } = useTxtInput({
     initValue: savedAccntInfo.accntNo,
     minLength: 11,
@@ -40,15 +37,9 @@ const AccountNoInput = ({ authNoHandler, authReqHandler }: AccountNoInputProps) 
   });
 
   const banks = useRecoilValue(banksInfo);
-  const [showBanks, setShowBanks] = useState<boolean>(false);
-  const handleShowBanks = () => {
-    setShowBanks(!showBanks);
-  };
-  const [selectedBank, setSelectedBank] = useState<IBank>(savedSelectedBankInfo);
-  const handleBankSelect = (bank: IBank) => {
-    setSelectedBank(bank);
-    setShowBanks(false);
-  };
+  const { showBanks, selectedBank, handleShowBanks, handleBankSelect } = useBankSelect({
+    initVal: savedSelectedBankInfo,
+  });
 
   const [isValid, setIsValid] = useState<boolean>(false);
   const validate = () => {
@@ -57,34 +48,25 @@ const AccountNoInput = ({ authNoHandler, authReqHandler }: AccountNoInputProps) 
 
     setIsValid(true);
   };
-
   useEffect(() => {
     validate();
   }, [accntNo, selectedBank]);
-
-  const setSelectedBankInfo = useSetRecoilState(selectedBankInfo);
   const setAccntInfo = useSetRecoilState(accntInfo);
-  const [isAuthRequested, setIsAuthRequested] = useState<boolean>(false);
-  const handleReqAuthAccnt = async () => {
-    try {
-      const { data } = await bankAPI.reqAuthAccnt({ bankCode: selectedBank.bankCode, accntNo: accntNo });
-      // TEST DATA
-      // const data = { successYn: 'Y', oriSeqNo: '' };
-      if (data.successYn === 'N') {
-        throw new Error();
-      }
-      authReqHandler(true);
-      setIsAuthRequested(true);
-      authNoHandler(data.oriSeqNo);
-    } catch (e) {
-      alert('인증 요청에 실패했습니다. 다시 시도해주세요');
-      authReqHandler(false);
-      setIsAuthRequested(false);
-    } finally {
+  useEffect(() => {
+    if (isValid) {
       setAccntInfo({ accntNo: accntNo, bankCode: selectedBank.bankCode });
-      setSelectedBank(selectedBank);
     }
-  };
+  }, [isValid]);
+
+  const { isLoading, isError, isAuthRequested, handleReqAuthAccnt } = useAccntAuth({
+    accntNo,
+    bank: selectedBank,
+    oriSeqNoHandler,
+    authReqHandler,
+  });
+
+  if (isLoading) return <>Loading...</>;
+  if (isError) return <>Error</>;
 
   return (
     <Wrapper>

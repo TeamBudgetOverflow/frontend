@@ -1,9 +1,10 @@
 import { IMemeberInfo } from '../interfaces/interfaces';
 
-export const participantIdFinder = (recruitMember: Array<IMemeberInfo>, userId: number) => {
-  const participantId = recruitMember.find((member) => member.userId === userId)?.userId;
+export const participantFinder = (members: Array<IMemeberInfo>, userId: number) => {
+  const found = members.find((member) => member.userId === userId);
+  const participant = !found ? { userId: 0, accountId: 0, nickname: '', image: '', attainment: 0 } : found;
 
-  return participantId;
+  return participant;
 };
 
 export const isWorking = (startDate: Date, endDate: Date) => {
@@ -12,8 +13,8 @@ export const isWorking = (startDate: Date, endDate: Date) => {
   return !(today > endDate.getTime() || today < startDate.getTime());
 };
 
-export const isGroup = (headCount: number, recruitCount: number) => {
-  return recruitCount !== 1 && headCount !== 1;
+export const isGroup = (headCount: number) => {
+  return headCount !== 1;
 };
 
 export const isMember = (userId: number, members: Array<IMemeberInfo>) => {

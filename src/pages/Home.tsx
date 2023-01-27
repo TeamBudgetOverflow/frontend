@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
@@ -10,33 +10,31 @@ import Alert from '../components/common/alert/Alert';
 import LoadingMsg from '../components/common/elem/LoadingMsg';
 import ErrorMsg from '../components/common/elem/ErrorMsg';
 
-import { userId, userGoals, userProfile } from '../recoil/userAtoms';
+import { userId } from '../recoil/userAtoms';
 
 import useBanksData from '../hooks/useBanksData';
-import useUserData from '../hooks/useUserData';
+import useUserGoalsData from '../hooks/useUserGoalsData';
 
 const Home = () => {
   useBanksData();
   const { id } = useRecoilValue(userId);
-  const { isLoading, isError } = useUserData({ loginUserId: id, getUserId: id });
-  const profile = useRecoilValue(userProfile);
-  const goals = useRecoilValue(userGoals);
+  const { isLoading, isError, data } = useUserGoalsData({ getUserId: Number(id) });
   const navigate = useNavigate();
 
   return (
     <Wrapper>
-      <UserProfile profile={profile} />
+      <UserProfile />
       <ContentWrapper>
-        {isLoading ? (
-          <Alert height={150} showBgColor={true}>
+        {isLoading || !data ? (
+          <Alert showBgColor={true}>
             <LoadingMsg />
           </Alert>
         ) : isError ? (
-          <Alert height={150} showBgColor={true}>
+          <Alert showBgColor={true}>
             <ErrorMsg />
           </Alert>
         ) : (
-          goals
+          data
             .filter(
               (goal) =>
                 new Date(goal.startDate).getTime() < new Date().getTime() &&
@@ -47,7 +45,8 @@ const Home = () => {
         <AddGoalBtn onClick={() => navigate('/goals/post/type')}>
           <IconWrapper>
             <Icon
-              size={20}
+              width={20}
+              height={20}
               color={'gray400'}
               path='M19.3333 11.3332H11.3333V19.3332H8.66663V11.3332H0.666626V8.6665H8.66663V0.666504H11.3333V8.6665H19.3333V11.3332Z'
             />

@@ -23,7 +23,7 @@ const PageKR = (type: PageType) => {
     case PageType.my:
       return '마이페이지';
     case PageType.editProfile:
-      return '프로필 편집';
+      return '프로필 수정';
     default:
       return '';
   }
@@ -42,10 +42,10 @@ const usePageName = ({ pathname }: { pathname: string }) => {
       case '/goals/post/data/group':
         setPageType(PageType.postGoal);
         break;
-      case '/goals/post/account/choose':
+      case '/accounts/choose':
         setPageType(PageType.selectAccnt);
         break;
-      case '/goals/post/account/post':
+      case '/accounts/post':
         setPageType(PageType.createAccnt);
         break;
       case '/goals/lookup':
@@ -54,8 +54,13 @@ const usePageName = ({ pathname }: { pathname: string }) => {
       default:
         setPageType(PageType.none);
     }
+    if (pathname.includes('/edit')) {
+      setPageType(PageType.editProfile);
+      return;
+    }
     if (pathname.includes('/users')) {
       setPageType(PageType.my);
+      return;
     }
   }, [pathname]);
 

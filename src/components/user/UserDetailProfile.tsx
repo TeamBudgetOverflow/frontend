@@ -1,56 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
+import React from 'react';
 import styled from 'styled-components';
 
 import ProfileImg from '../common/elem/ProfileImg';
 
-import { userAPI } from '../../apis/client';
-
-import { IUserProfile } from '../../interfaces/interfaces';
-
-import { userId, userProfile } from '../../recoil/userAtoms';
+import useUserProfileData from '../../hooks/useUserProfileData';
 
 interface UserDetailProfileProps {
   id: number;
-  successGoalsCnt: number;
-  workingGoalsCnt: number;
+  totalCnt: number;
+  successCnt: number;
+  workingCnt: number;
 }
 
-const UserDetailProfile = ({ id, successGoalsCnt, workingGoalsCnt }: UserDetailProfileProps) => {
-  const { id: loginUserId } = useRecoilValue(userId);
-  const [profile, setProfile] = useState<IUserProfile>({
-    image: '',
-    nickname: '',
-    description: '',
-  });
-  const defaultProfile = useRecoilValue(userProfile);
+const UserDetailProfile = ({ id, totalCnt, successCnt, workingCnt }: UserDetailProfileProps) => {
+  const { isLoading, isError, profile } = useUserProfileData({ getUserId: id });
 
-  useEffect(() => {
-    if (loginUserId !== id) {
-      async () => {
-        try {
-          const resp = await userAPI.getUserProfile(id);
-          setProfile(resp);
-        } catch (e) {
-          alert(e);
-        }
-      };
-    }
-
-    setProfile(defaultProfile);
-  }, [userId, id, defaultProfile]);
+  if (isLoading && !profile) return <>Loading...</>;
+  if (isError || !profile) return <>Error</>;
 
   return (
     <Wrapper>
       <TopContent>
-        <ProfileImg url={profile?.image} size={85} />
+        <ProfileImg url={profile.image} size={85} />
         <UserGoalsStaticList>
           <UserGoalsStatic>
-            <Info>{successGoalsCnt}</Info>
+            <Info>{Math.trunc(totalCnt / 10) <= 0 ? `0${totalCnt}` : totalCnt}</Info>
+            <Label>전체 목표</Label>
+          </UserGoalsStatic>
+          <UserGoalsStatic>
+            <Info>{Math.trunc(successCnt / 10) <= 0 ? `0${successCnt}` : successCnt}</Info>
             <Label>성공한 목표</Label>
           </UserGoalsStatic>
           <UserGoalsStatic>
-            <Info>{workingGoalsCnt}</Info>
+            <Info>{Math.trunc(workingCnt / 10) <= 0 ? `0${workingCnt}` : workingCnt}</Info>
             <Label>진행중 목표</Label>
           </UserGoalsStatic>
         </UserGoalsStaticList>
@@ -68,13 +50,15 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  width: calc(100% - 44px);
+  height: calc(100% - 20px);
 `;
 
 const TopContent = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   align-items: center;
-  gap: 120px;
 `;
 
 const UserInfo = styled.div`
@@ -93,10 +77,9 @@ const Description = styled.div`
 `;
 
 const UserGoalsStaticList = styled.div`
-  padding: 30px 10px 30px 0;
   display: flex;
   flex-direction: row;
-  gap: 40px;
+  gap: 20px;
 `;
 
 const UserGoalsStatic = styled.div`

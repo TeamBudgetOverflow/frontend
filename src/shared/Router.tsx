@@ -14,12 +14,19 @@ import Home from '../pages/Home';
 import SelectGoalType from '../pages/SelectGoalType';
 import CreateGoalData from '../pages/CreateGoalData';
 import SelectAccnt from '../pages/SelectAccnt';
+import CreateAccntAuto from '../pages/CreateAccntAuto';
+import CreateAccntManual from '../pages/CreateAccntManual';
+import PostGoal from '../pages/PostGoal';
+import JoinGoal from '../pages/JoinGoal';
 import AgreementOfCollectionPersonalInfo from '../pages/AgreementOfCollectionPersonalInfo';
-import CreateAccnt from '../pages/CreateAccnt';
 import DetailGoal from '../pages/DetailGoal';
+import ModifyGoalData from '../pages/ModifyGoalData';
+import ModifyGoal from '../pages/ModifyGoal';
 import LookupGoals from '../pages/LookupGoals';
 import SearchGoals from '../pages/SearchGoals';
 import DetailUser from '../pages/DetailUser';
+import EditUserProfile from '../pages/EditUserProfile';
+import Prepare from '../pages/Prepare';
 
 const Router = () => {
   return (
@@ -39,12 +46,20 @@ const Router = () => {
           <Route path='/agreement' element={<AgreementOfCollectionPersonalInfo />} />
           <Route path='/goals/post/type' element={<SelectGoalType />} />
           <Route path='/goals/post/data/:type' element={<CreateGoalData />} />
-          <Route path='/goals/post/account/choose' element={<SelectAccnt />} />
-          <Route path='/goals/post/account/post' element={<CreateAccnt />} />
+          <Route path='/accounts/choose' element={<SelectAccnt />} />
+          <Route path='/goals/post/accounts/auto' element={<CreateAccntAuto />} />
+          <Route path='/goals/:type/:goalId/accounts/auto' element={<CreateAccntAuto />} />
+          <Route path='/goals/:type/:goalId/accounts/manual' element={<CreateAccntManual />} />
+          <Route path='/goals/post/:accountId' element={<PostGoal />} />
+          <Route path='/goals/join/:goalId/accounts/:accountId' element={<JoinGoal />} />
           <Route path='/goals/:id' element={<DetailGoal />} />
+          <Route path='/goals/:id/modify/data/:type' element={<ModifyGoalData />} />
+          <Route path='/goals/:id/modify' element={<ModifyGoal />} />
           <Route path='/goals/lookup' element={<LookupGoals />} />
           <Route path='/goals/lookup/search' element={<SearchGoals />} />
           <Route path='/users/:id' element={<DetailUser />} />
+          <Route path='/users/edit/:id' element={<EditUserProfile />} />
+          <Route path='/chats' element={<Prepare />} />
         </Route>
         <Route path='/' element={<Redirect />} />
       </Routes>

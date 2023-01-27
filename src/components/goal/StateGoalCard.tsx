@@ -1,30 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+import EmojiBox from '../common/elem/EmojiBox';
 import StateTag from '../common/tag/StateTag';
 import DdayTag from '../common/tag/DdayTag';
 
 import { dateStringTranslator } from '../../utils/dateTranslator';
 
 import { IGoal } from '../../interfaces/interfaces';
-import EmojiBox from '../common/elem/EmojiBox';
+
+import useGoalState, { GoalState } from '../../hooks/useGoalState';
+import ProgressBar from '../common/elem/ProgressBar';
 
 const StateGoalCard = ({ goal }: { goal: IGoal }) => {
   const navigate = useNavigate();
-  const [state, setState] = useState<'working' | 'recruiting'>('working');
-  const setGoalState = () => {
-    if (new Date(goal.startDate).getTime() <= new Date().getTime()) {
-      setState('working');
-      return;
-    }
-
-    setState('recruiting');
-  };
-
-  useEffect(() => {
-    setGoalState();
-  }, [goal]);
+  const { state } = useGoalState({ startDate: new Date(goal.startDate), endDate: new Date(goal.endDate) });
 
   return (
     <Wrapper onClick={() => navigate(`/goals/${goal.goalId}`)}>
@@ -40,24 +31,22 @@ const StateGoalCard = ({ goal }: { goal: IGoal }) => {
           </Content>
         </TopLeftContent>
         <TopRightContent>
-          <DdayTag targetDate={new Date(goal.endDate)} />
+          {state !== GoalState.done ? <DdayTag targetDate={new Date(goal.endDate)} /> : <></>}
         </TopRightContent>
       </TopContent>
       <BottomContent>
-        {state === 'working' ? (
-          <ProgressBarWrapper>
-            <ProgressBar width={`${goal.attainment}%`} />
-          </ProgressBarWrapper>
+        {state !== GoalState.waiting ? (
+          <ProgressBar percentage={goal.attainment} height={8} borderRadius={25} />
         ) : (
           <></>
         )}
         <ProgressInfo>
           <ProgressText>
-            {state === 'working'
+            {state !== GoalState.waiting
               ? `${dateStringTranslator(new Date(goal.endDate))} 자정 종료`
               : `${dateStringTranslator(new Date(goal.startDate))} 자정 시작`}
           </ProgressText>
-          {state === 'working' ? <ProgressText>{`${goal.attainment}%`}</ProgressText> : <></>}
+          {state !== GoalState.waiting ? <ProgressText>{`${goal.attainment}%`}</ProgressText> : <></>}
         </ProgressInfo>
       </BottomContent>
     </Wrapper>
@@ -70,7 +59,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   gap: 18px;
   border-radius: 16px;
-  background-color: ${(props) => props.theme.primary200};
+  background-color: white;
   :hover {
     cursor: pointer;
   }
@@ -121,24 +110,6 @@ const BottomContent = styled.div`
   flex-direction: column;
   gap: 4px;
   width: 100%;
-`;
-
-const ProgressBarWrapper = styled.div`
-  position: relative;
-  width: 100%;
-  height: 8px;
-  border-radius: 25px;
-  background-color: ${(props) => props.theme.primary50};
-`;
-
-const ProgressBar = styled.div<{ width: string }>`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: ${(props) => props.width};
-  height: 8px;
-  border-radius: 25px;
-  background-color: ${(props) => props.theme.primary900};
 `;
 
 const ProgressInfo = styled.div`

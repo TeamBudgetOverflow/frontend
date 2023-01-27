@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-interface optionSelectSectionProps {
+interface toggleSelectProps {
   title: string;
   description: string;
+  initVal: boolean;
+  isDisabled?: boolean;
   selectHandler: (isTrue: boolean) => void;
 }
 
-const OptionSelectSection = ({ title, description, selectHandler }: optionSelectSectionProps) => {
-  const [isTrue, setIsTrue] = useState<boolean>(false);
+const ToggleSelectBox = ({ title, description, initVal, isDisabled, selectHandler }: toggleSelectProps) => {
+  const [isTrue, setIsTrue] = useState<boolean>(initVal);
   const handleToggle = () => {
     setIsTrue(!isTrue);
   };
@@ -25,7 +27,16 @@ const OptionSelectSection = ({ title, description, selectHandler }: optionSelect
       </LeftContent>
       <ToggleWrapper>
         <ToggleBar isTrue={isTrue} />
-        <ToggleKnob isTrue={isTrue} onClick={handleToggle} />
+        <ToggleKnob
+          isTrue={isTrue}
+          onClick={
+            isDisabled
+              ? () => {
+                  return;
+                }
+              : handleToggle
+          }
+        />
       </ToggleWrapper>
     </Wrapper>
   );
@@ -81,4 +92,4 @@ const ToggleKnob = styled.div<{ isTrue: boolean }>`
   transition: left 0.3s;
 `;
 
-export default OptionSelectSection;
+export default ToggleSelectBox;

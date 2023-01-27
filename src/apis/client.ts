@@ -1,25 +1,25 @@
 import axios from 'axios';
 
 import {
-  IAuthAccount,
+  IGoal,
   IAccount,
-  IPostAccount,
+  IPostAutoAccount,
   IBank,
   IPostGoal,
+  IReqAuthAccount,
+  IReqAuthAccountResp,
+  IAuthAccount,
   IValidateAccount,
-  IReqAuthAccout,
+  IValidateAccountResp,
+  IUpdateBalance,
+  IModifyGoal,
+  IBalance,
+  IUserProfile,
   ISearchGoal,
 } from '../interfaces/interfaces';
 
 const BASE_URL = process.env.REACT_APP_API_ENDPOINT;
-const noneTokenClient = axios.create({
-  baseURL: BASE_URL,
-  responseType: 'json',
-  headers: {
-    'Cache-Control': 'no-cache',
-    'Content-Type': 'application/json',
-  },
-});
+const noneTokenClient = axios.create({ baseURL: BASE_URL });
 const tokenClient = axios.create({ baseURL: BASE_URL });
 const refreshClient = axios.create({ baseURL: BASE_URL });
 
@@ -61,11 +61,7 @@ tokenClient.interceptors.response.use(
       localStorage.removeItem('accessToken');
     }
 
-    const errorResponse = {
-      status: error.response.status,
-    };
-
-    return Promise.reject(errorResponse);
+    return Promise.reject(error.response.status);
   }
 );
 
@@ -99,17 +95,15 @@ export const userAPI = {
 
     return data;
   },
-
   getUserProfile: async (userId: number) => {
     const { data } = await tokenClient.get(`/users/${userId}`);
 
     return data;
   },
-
-  getUserGoals: async (userId: number) => {
+  getUserGoals: async (userId: number): Promise<Array<IGoal>> => {
     const { data } = await tokenClient.get(`/users/${userId}/goals`);
 
-    return data;
+    return data.result;
   },
   getUserBadges: async (userId: number) => {
     const { data } = await tokenClient.get(`/users/${userId}/badges`);
@@ -150,23 +144,39 @@ export const userAPI = {
     // ];
     return data;
   },
+
+  patchEditUserProfile: async (userId: number, userProfile: IUserProfile) => {
+    const { data } = await tokenClient.patch(`/users/${userId}`, userProfile);
+
+    return data;
+  },
 };
 
 export const accountApi = {
   getAccounts: async (userId: number): Promise<Array<IAccount>> => {
     const { data } = await tokenClient.get(`/accounts/${userId}`);
 
-    return data;
+    return data.data;
   },
   createManualAccount: async (userId: number): Promise<number> => {
     const { data } = await tokenClient.post(`/accounts/${userId}/manual`);
 
     return data.accountId;
   },
-  createAutoAccount: async (userId: number, accntInfo: IPostAccount) => {
-    const { data } = await tokenClient.post(`/accounts/${userId}`, accntInfo);
+  createAutoAccount: async ({ userId, acctInfo }: IPostAutoAccount): Promise<number> => {
+    const { data } = await tokenClient.post(`/accounts/${userId}`, acctInfo);
 
     return data.accountId;
+  },
+  getAccountBalance: async ({ userId, accountId }: IBalance) => {
+    const { data } = await tokenClient.get(`/accounts/${accountId}/users/${userId}/balance`);
+
+    return data.balance;
+  },
+  updateAccountBalance: async ({ balanceId, value }: IUpdateBalance) => {
+    const { data } = await tokenClient.put(`/accounts/balance/${balanceId}`, { value });
+
+    return data;
   },
 };
 
@@ -245,20 +255,22 @@ export const goalApi = {
     ];
     return data;
   },
-
-  joinGoal: async (goalId: string | undefined) => {
-    const response = await tokenClient.post(`/goals/join/${goalId}`);
-
-    return response;
-  },
-
-  withdrawGoal: async (goalId: string | undefined) => {
-    const response = await tokenClient.post(`/goals/exit/${goalId}`);
+  joinGoal: async ({ goalId, accountId }: { goalId: number; accountId: number }) => {
+    const response = await tokenClient.post(`/goals/join/${goalId}`, { accountId });
 
     return response;
   },
+  withdrawGoal: async (goalId: number) => {
+    const response = await tokenClient.delete(`/goals/exit/${goalId}`);
 
-  deleteGoal: async (goalId: string | undefined) => {
+    return response;
+  },
+  modifyGoal: async ({ goalId, goal }: IModifyGoal) => {
+    const response = await tokenClient.put(`/goals/${goalId}`, goal);
+
+    return response;
+  },
+  deleteGoal: async (goalId: number) => {
     const response = await tokenClient.delete(`/goals/${goalId}`);
 
     return response;
@@ -269,7 +281,7 @@ const BANK_USER_ID = process.env.REACT_APP_BANK_API_USER_ID;
 const BANK_HKEY = process.env.REACT_APP_BANK_API_HKEY;
 
 export const bankAPI = {
-  reqAuthAccnt: async ({ bankCode, accntNo }: IReqAuthAccout) => {
+  reqAuthAccnt: async ({ bankCode, accntNo }: IReqAuthAccount): Promise<IReqAuthAccountResp> => {
     const result = await axios.post(
       '/hb0081000378',
       {
@@ -284,7 +296,7 @@ export const bankAPI = {
       }
     );
 
-    return result;
+    return result.data as IReqAuthAccountResp;
   },
   authAccnt: async ({ oriSeqNo, authString }: IAuthAccount) => {
     const result = await axios.post(
@@ -302,7 +314,7 @@ export const bankAPI = {
     );
     return result;
   },
-  validateAccntInfo: async (accntInfo: IValidateAccount) => {
+  validateAccntInfo: async (accntInfo: IValidateAccount): Promise<IValidateAccountResp> => {
     const result = await axios.post(
       '/in0087000484',
       {
@@ -326,7 +338,8 @@ export const bankAPI = {
         },
       }
     );
-    return result;
+
+    return result.data as IValidateAccountResp;
   },
 };
 

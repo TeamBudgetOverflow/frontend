@@ -1,3 +1,8 @@
+// error response
+export interface Error {
+  status: number;
+}
+
 // user
 export interface IUserProfile {
   image: string;
@@ -51,6 +56,11 @@ export interface IPostGoal {
   accountId: number;
 }
 
+export interface IModifyGoal {
+  goalId: number;
+  goal: IPostGoal;
+}
+
 export interface ISearchGoal {
   userId: number;
   goalId: number;
@@ -71,6 +81,7 @@ export interface ISearchGoal {
 export interface IGoalDetail {
   userId: number;
   goalId: number;
+  isPrivate: boolean;
   nickname: string;
   title: string;
   emoji: string;
@@ -82,10 +93,14 @@ export interface IGoalDetail {
   curCount: number;
   headCount: number;
   members: Array<IMemeberInfo>;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface IMemeberInfo {
   userId: number;
+  accountId: number;
+  balanceId: number;
   nickname: string;
   image: string;
   attainment: number;
@@ -98,20 +113,50 @@ export interface IBank {
   bankName: string;
 }
 
-export interface IPostAuthAccnt {
-  oriSeqNo: string;
-  authString: string;
-}
-
 export interface IAccount {
   accountId: number;
   bankId: number;
   acctNo: string;
+  connected: boolean;
 }
 
-export interface IReqAuthAccout {
+export interface IPostAutoAccount {
+  userId: number;
+  acctInfo: IPostAccount;
+}
+
+export interface IPostAccount {
+  bankId: number;
+  bankUserId: string;
+  bankUserPw: string;
+  acctNo: string;
+  acctPw: string;
+}
+
+export interface IBalance {
+  userId: number;
+  accountId: number;
+}
+
+export interface IUpdateBalance {
+  balanceId: number;
+  value: number;
+}
+
+// bank
+export interface IReqAuthAccount {
   bankCode: string;
   accntNo: string;
+}
+
+export interface IReqAuthAccountResp {
+  replyCode: string;
+  successYn: string;
+  tradeTime: string;
+  inPrintContent: string;
+  svcCharge: string;
+  oriSeqNo: string;
+  tr_date: string;
 }
 
 export interface IAuthAccount {
@@ -127,12 +172,20 @@ export interface IValidateAccount {
   accntPw: string;
 }
 
-export interface IPostAccount {
-  bankId: number;
-  bankUserId: string;
-  bankUserPw: string;
-  accntNo: string;
-  accntPw: string;
+export interface IValidateAccountResp {
+  common: common;
+  data: data;
+}
+
+export interface common {
+  userTrNo: string;
+  hyphenTrNo: string;
+  errYn: string;
+  errMsg: string;
+}
+
+export interface data {
+  curBal: string;
 }
 
 // badge

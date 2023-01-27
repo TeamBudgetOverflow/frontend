@@ -1,11 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import TextButton from '../../common/elem/TextButton';
 
-const GoalModifyButton = () => {
+const GoalModifyButton = ({ isGroup }: { isGroup: boolean }) => {
+  const navigate = useNavigate();
   const handleModify = () => {
-    // TODO : 수정하기 페이지 이동
-    console.log('수정 페이지 이동');
+    navigate(`modify/data/${isGroup ? 'group' : 'personal'}`);
   };
 
   return <TextButton text='수정하기' onClickHandler={handleModify} />;
