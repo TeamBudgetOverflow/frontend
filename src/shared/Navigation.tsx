@@ -11,13 +11,6 @@ import useNavigateState from '../hooks/useNavigateState';
 
 import { userId } from '../recoil/userAtoms';
 
-enum Menu {
-  home,
-  lookup,
-  my,
-  none,
-}
-
 const pathMenuConverter = (path: string) => {
   // TODO: search 추가
   // if (path.includes('/goals/lookup')) return Menu.lookup;

@@ -200,24 +200,25 @@ export interface IBadge {
 }
 
 // filter condition
-export interface IFilterContionsStatus {
-  goalStatus: string;
+export interface IFilterConditionStatus {
+  status: string;
 }
-export interface IFilterContionsAimingAmount {
-  aimingAmount: {
+
+export interface IFilterConditionAmount {
+  amount: {
     min: number;
     max: number;
   };
 }
-export interface IFilterContionsPeriod {
+export interface IFilterConditionPeriod {
   period: {
     min: number;
     max: number;
   };
 }
 
-export interface IFilterContionsHeadCount {
-  headCount: {
+export interface IFilterConditionMember {
+  member: {
     min: number;
     max: number;
   };

@@ -1,9 +1,9 @@
 import { atom } from 'recoil';
 import {
-  IFilterContionsAimingAmount,
-  IFilterContionsHeadCount,
-  IFilterContionsPeriod,
-  IFilterContionsStatus,
+  IFilterConditionAmount,
+  IFilterConditionMember,
+  IFilterConditionPeriod,
+  IFilterConditionStatus,
 } from '../interfaces/interfaces';
 
 export const searchBarOnFocusEvent = atom({
@@ -11,24 +11,24 @@ export const searchBarOnFocusEvent = atom({
   default: false,
 });
 
-export const filterConditionsStatus = atom<IFilterContionsStatus>({
+export const filterConditionStatus = atom<IFilterConditionStatus>({
   key: 'filterConditonsStatus',
   default: {
-    goalStatus: '',
+    status: '',
   },
 });
 
-export const filterConditionsAimingAmount = atom<IFilterContionsAimingAmount>({
+export const filterConditionAmount = atom<IFilterConditionAmount>({
   key: 'filterConditonsAimingAmount',
   default: {
-    aimingAmount: {
+    amount: {
       min: 0,
       max: 0,
     },
   },
 });
 
-export const filterConditionsPeriod = atom<IFilterContionsPeriod>({
+export const filterConditionPeriod = atom<IFilterConditionPeriod>({
   key: 'filterConditonsPeriod',
   default: {
     period: {
@@ -38,10 +38,10 @@ export const filterConditionsPeriod = atom<IFilterContionsPeriod>({
   },
 });
 
-export const filterConditionsHeadCount = atom<IFilterContionsHeadCount>({
+export const filterConditionMember = atom<IFilterConditionMember>({
   key: 'filterConditionsHeadCount',
   default: {
-    headCount: {
+    member: {
       min: 0,
       max: 0,
     },

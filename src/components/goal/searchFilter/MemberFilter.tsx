@@ -4,18 +4,17 @@ import styled from 'styled-components';
 
 import RangeSlider from './rangeSlider/RangeSlider';
 
-import { filterConditionsAimingAmount } from '../../../recoil/searchAtoms';
+import { filterConditionMember } from '../../../recoil/searchAtoms';
 
-const AimingAmountFilter = () => {
-  const { aimingAmount } = useRecoilValue(filterConditionsAimingAmount);
-
+const MemberFilter = () => {
+  const { member } = useRecoilValue(filterConditionMember);
   return (
     <Wrapper>
-      <SubTitle>목표금액</SubTitle>
+      <SubTitle>모집인원</SubTitle>
       <RangeIndicator>
-        {aimingAmount.min} ~ {aimingAmount.max} 원
+        {member.min} ~ {member.max} 명
       </RangeIndicator>
-      <RangeSlider min={0} max={100000} type='aimingAmount' />
+      <RangeSlider min={1} max={10} type='headCount' />
     </Wrapper>
   );
 };
@@ -36,4 +35,4 @@ const RangeIndicator = styled.div`
   font: ${(props) => props.theme.paragraphsP2M};
 `;
 
-export default AimingAmountFilter;
+export default MemberFilter;

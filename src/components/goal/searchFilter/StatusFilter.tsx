@@ -4,15 +4,15 @@ import styled from 'styled-components';
 
 import RadioSelectBox from '../../common/elem/RadioSelectBox';
 
-import { filterConditionsStatus } from '../../../recoil/searchAtoms';
+import { filterConditionStatus } from '../../../recoil/searchAtoms';
 
 const StatusFilter = () => {
   const statusArr = ['전체', '진행중', '모집중'];
 
-  const setFilterContions = useSetRecoilState(filterConditionsStatus);
+  const setFilterConditions = useSetRecoilState(filterConditionStatus);
 
   const handleStatusRadioSelect = (event: string) => {
-    setFilterContions({ goalStatus: event });
+    setFilterConditions({ status: event });
   };
 
   return (
