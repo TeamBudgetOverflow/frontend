@@ -20,6 +20,7 @@ export const userProfile = atom({
     nickname: '',
     description: '',
   },
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const userGoals = atom<Array<IGoal>>({
