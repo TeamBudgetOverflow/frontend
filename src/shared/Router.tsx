@@ -20,6 +20,8 @@ import PostGoal from '../pages/PostGoal';
 import JoinGoal from '../pages/JoinGoal';
 import AgreementOfCollectionPersonalInfo from '../pages/AgreementOfCollectionPersonalInfo';
 import DetailGoal from '../pages/DetailGoal';
+import ModifyGoalData from '../pages/ModifyGoalData';
+import ModifyGoal from '../pages/ModifyGoal';
 import LookupGoals from '../pages/LookupGoals';
 import SearchGoals from '../pages/SearchGoals';
 import DetailUser from '../pages/DetailUser';
@@ -46,12 +48,13 @@ const Router = () => {
           <Route path='/goals/post/data/:type' element={<CreateGoalData />} />
           <Route path='/accounts/choose' element={<SelectAccnt />} />
           <Route path='/goals/post/accounts/auto' element={<CreateAccntAuto />} />
-          <Route path='/goals/join/:goalId/accounts/auto' element={<CreateAccntAuto />} />
-          <Route path='/goals/post/accounts/manual' element={<CreateAccntManual />} />
-          <Route path='/goals/join/:goalId/accounts/manual' element={<CreateAccntManual />} />
+          <Route path='/goals/:type/:goalId/accounts/auto' element={<CreateAccntAuto />} />
+          <Route path='/goals/:type/:goalId/accounts/manual' element={<CreateAccntManual />} />
           <Route path='/goals/post/:accountId' element={<PostGoal />} />
           <Route path='/goals/join/:goalId/accounts/:accountId' element={<JoinGoal />} />
           <Route path='/goals/:id' element={<DetailGoal />} />
+          <Route path='/goals/:id/modify/data/:type' element={<ModifyGoalData />} />
+          <Route path='/goals/:id/modify' element={<ModifyGoal />} />
           <Route path='/goals/lookup' element={<LookupGoals />} />
           <Route path='/goals/lookup/search' element={<SearchGoals />} />
           <Route path='/users/:id' element={<DetailUser />} />

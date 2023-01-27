@@ -30,7 +30,7 @@ const Wrapper = styled.div`
   padding: 10px 20px;
   width: calc(100% - 40px);
   border-radius: 16px;
-  border: 1px solid ${(props) => props.theme.gray300};
+  background-color: white;
 `;
 
 const GoalPeriodCardWrapper = styled.div`

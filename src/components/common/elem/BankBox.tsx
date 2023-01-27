@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import BankIcons from './BankIcons';
+
 interface BankBoxProps {
   id: number;
   name: string;
@@ -10,7 +12,7 @@ interface BankBoxProps {
 function BankBox({ id, name, selectHandler }: BankBoxProps) {
   return (
     <Bank onClick={() => selectHandler(id)}>
-      <Img></Img>
+      <BankIcons size={40} name={name} />
       <Name>{name.length > 4 ? name.slice(0, 4) : name}</Name>
     </Bank>
   );

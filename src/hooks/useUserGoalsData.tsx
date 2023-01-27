@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useQuery } from 'react-query';
 
@@ -28,6 +29,7 @@ const useUserGoalsData = ({ getUserId }: { getUserId: number }) => {
   const [totalCnt, setTotalCnt] = useState<number>(0);
   const [successCnt, setSuccessCnt] = useState<number>(0);
   const [workingCnt, setWorkingCnt] = useState<number>(0);
+  const navigate = useNavigate();
   const { isLoading, isError, data } = useQuery<Array<IGoal>>('userGoals', () => userAPI.getUserGoals(getUserId), {
     onSuccess: (data) => {
       if (!isLoginUser) {
@@ -42,6 +44,12 @@ const useUserGoalsData = ({ getUserId }: { getUserId: number }) => {
       setSuccessCnt(getSuccessCnt(data));
       setWorkingCnt(getWorkingCnt(data));
       setTotalCnt(getTotalCnt(data));
+    },
+    onError: (e) => {
+      console.log('get user goals error:', e);
+      if (e === 401) {
+        navigate('/');
+      }
     },
   });
 

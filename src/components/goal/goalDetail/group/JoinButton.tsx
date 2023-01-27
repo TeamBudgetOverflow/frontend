@@ -8,13 +8,12 @@ import CloseIconBtn from '../../../common/elem/btn/CloseIconBtn';
 import ToggleSelectBox from '../../../common/elem/ToggleSelectBox';
 import AccountSelect from '../../../account/AccountSelectSection';
 
-// import { IAccount } from '../../../../interfaces/interfaces';
-
 import useAccountsData from '../../../../hooks/useAccountsData';
 import useJoinGoalModal from '../../../../hooks/useJoinGoalModal';
 
 const JoinButton = ({ goalId }: { goalId: number }) => {
   const { isLoading, accounts, isError } = useAccountsData();
+
   const {
     showOption,
     showAccounts,
@@ -39,6 +38,7 @@ const JoinButton = ({ goalId }: { goalId: number }) => {
           <ToggleSelectBox
             title='계좌 잔액 직접 입력'
             description='계좌를 연결하지 않고 계좌 잔액을 직접 입력합니다.'
+            initVal={false}
             selectHandler={handleSelectOption}
           />
           <TextButton text='다음' onClickHandler={handleSelectOptionDone} />

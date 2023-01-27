@@ -11,6 +11,7 @@ import { dateStringTranslator } from '../../utils/dateTranslator';
 import { IGoal } from '../../interfaces/interfaces';
 
 import useGoalState, { GoalState } from '../../hooks/useGoalState';
+import ProgressBar from '../common/elem/ProgressBar';
 
 const StateGoalCard = ({ goal }: { goal: IGoal }) => {
   const navigate = useNavigate();
@@ -35,9 +36,7 @@ const StateGoalCard = ({ goal }: { goal: IGoal }) => {
       </TopContent>
       <BottomContent>
         {state !== GoalState.waiting ? (
-          <ProgressBarWrapper>
-            <ProgressBar width={`${goal.attainment}%`} />
-          </ProgressBarWrapper>
+          <ProgressBar percentage={goal.attainment} height={8} borderRadius={25} />
         ) : (
           <></>
         )}
@@ -111,24 +110,6 @@ const BottomContent = styled.div`
   flex-direction: column;
   gap: 4px;
   width: 100%;
-`;
-
-const ProgressBarWrapper = styled.div`
-  position: relative;
-  width: 100%;
-  height: 8px;
-  border-radius: 25px;
-  background-color: ${(props) => props.theme.primary50};
-`;
-
-const ProgressBar = styled.div<{ width: string }>`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: ${(props) => props.width};
-  height: 8px;
-  border-radius: 25px;
-  background-color: ${(props) => props.theme.primary900};
 `;
 
 const ProgressInfo = styled.div`

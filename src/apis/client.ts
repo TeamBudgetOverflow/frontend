@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import {
+  IGoal,
   IAccount,
   IPostAutoAccount,
   IBank,
@@ -10,6 +11,9 @@ import {
   IAuthAccount,
   IValidateAccount,
   IValidateAccountResp,
+  IUpdateBalance,
+  IModifyGoal,
+  IBalance,
   IUserProfile,
 } from '../interfaces/interfaces';
 
@@ -56,11 +60,7 @@ tokenClient.interceptors.response.use(
       localStorage.removeItem('accessToken');
     }
 
-    const errorResponse = {
-      status: error.response.status,
-    };
-
-    return Promise.reject(errorResponse);
+    return Promise.reject(error.response.status);
   }
 );
 
@@ -94,17 +94,15 @@ export const userAPI = {
 
     return data;
   },
-
   getUserProfile: async (userId: number) => {
     const { data } = await tokenClient.get(`/users/${userId}`);
 
     return data;
   },
-
-  getUserGoals: async (userId: number) => {
+  getUserGoals: async (userId: number): Promise<Array<IGoal>> => {
     const { data } = await tokenClient.get(`/users/${userId}/goals`);
 
-    return data;
+    return data.result;
   },
   getUserBadges: async (userId: number) => {
     const { data } = await tokenClient.get(`/users/${userId}/badges`);
@@ -157,7 +155,7 @@ export const accountApi = {
   getAccounts: async (userId: number): Promise<Array<IAccount>> => {
     const { data } = await tokenClient.get(`/accounts/${userId}`);
 
-    return data;
+    return data.data;
   },
   createManualAccount: async (userId: number): Promise<number> => {
     const { data } = await tokenClient.post(`/accounts/${userId}/manual`);
@@ -168,6 +166,16 @@ export const accountApi = {
     const { data } = await tokenClient.post(`/accounts/${userId}`, acctInfo);
 
     return data.accountId;
+  },
+  getAccountBalance: async ({ userId, accountId }: IBalance) => {
+    const { data } = await tokenClient.get(`/accounts/${accountId}/users/${userId}/balance`);
+
+    return data.balance;
+  },
+  updateAccountBalance: async ({ balanceId, value }: IUpdateBalance) => {
+    const { data } = await tokenClient.put(`/accounts/balance/${balanceId}`, { value });
+
+    return data;
   },
 };
 
@@ -204,6 +212,11 @@ export const goalApi = {
   },
   withdrawGoal: async (goalId: number) => {
     const response = await tokenClient.delete(`/goals/exit/${goalId}`);
+
+    return response;
+  },
+  modifyGoal: async ({ goalId, goal }: IModifyGoal) => {
+    const response = await tokenClient.put(`/goals/${goalId}`, goal);
 
     return response;
   },

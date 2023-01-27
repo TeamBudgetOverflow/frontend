@@ -1,9 +1,10 @@
 import { IMemeberInfo } from '../interfaces/interfaces';
 
-export const participantIdFinder = (recruitMember: Array<IMemeberInfo>, userId: number) => {
-  const participantId = recruitMember.find((member) => member.userId === userId)?.userId;
+export const participantFinder = (members: Array<IMemeberInfo>, userId: number) => {
+  const found = members.find((member) => member.userId === userId);
+  const participant = !found ? { userId: 0, accountId: 0, nickname: '', image: '', attainment: 0 } : found;
 
-  return participantId;
+  return participant;
 };
 
 export const isWorking = (startDate: Date, endDate: Date) => {

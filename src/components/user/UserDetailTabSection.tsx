@@ -40,7 +40,7 @@ const UserDetailTab = ({
       </TabList>
       <ContentBox>
         {isLoadingGoals || !goals ? (
-          <Alert height={150} showBgColor={true}>
+          <Alert showBgColor={true}>
             <LoadingMsg />
           </Alert>
         ) : (

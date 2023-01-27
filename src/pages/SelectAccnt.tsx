@@ -13,6 +13,7 @@ import { goalApi } from '../apis/client';
 
 import { postGoal } from '../recoil/goalsAtoms';
 import { accntInfo, selectedBankInfo } from '../recoil/accntAtoms';
+import { availAutoAccountFinder, isAutoAccountAddable } from '../utils/accountInfoChecker';
 
 const SelectAccnt = () => {
   const setSelectedBankInfo = useSetRecoilState(selectedBankInfo);
@@ -31,7 +32,7 @@ const SelectAccnt = () => {
   }, []);
 
   const savedPostGoal = useRecoilValue(postGoal);
-  const { isLoading, accounts, isError } = useAccountsData();
+  const { isLoading, isError, accounts } = useAccountsData();
 
   const [isSelected, setIsSelected] = useState<boolean>(false);
   const setPostGoal = useSetRecoilState(postGoal);
@@ -53,18 +54,27 @@ const SelectAccnt = () => {
 
   return (
     <Wrapper>
-      {accounts.length === 0 ? (
+      {availAutoAccountFinder(accounts).length === 0 ? (
         <>
-          <Info>
-            연결된 계좌가 없습니다.
-            <br />
-            계좌를 새로 연결하시겠습니까?
-          </Info>
-          <TextButton text='다음' onClickHandler={() => navigate('/goals/post/accounts/auto')} />
+          {isAutoAccountAddable(accounts) ? (
+            <>
+              <Info>
+                사용 가능한 계좌가 없습니다.
+                <br />
+                계좌를 새로 연결하시겠습니까?
+              </Info>
+              <TextButton text='다음' onClickHandler={() => navigate('/goals/post/accounts/auto')} />
+            </>
+          ) : (
+            <Info>최대 연결 가능 계좌 개수는 1개입니다</Info>
+          )}
         </>
       ) : (
         <>
-          <AccountSelect accounts={accounts} accountSelectHandler={handleSelectAccnt} />
+          <AccountSelect
+            accounts={accounts.filter((accnt) => accnt.bankId !== 2 && !accnt.connected)}
+            accountSelectHandler={handleSelectAccnt}
+          />
           <TextButton text='완료' onClickHandler={handlePostGoal} isDisabled={!isSelected} />
         </>
       )}

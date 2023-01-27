@@ -1,21 +1,30 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { useRecoilValue } from 'recoil';
 
+import { accountApi } from '../apis/client';
+
 import { userId } from '../recoil/userAtoms';
 
-import { accountApi } from '../apis/client';
+import { IAccount } from '../interfaces/interfaces';
 
 const useAccountsData = () => {
   const { id: loginUserId } = useRecoilValue(userId);
-  const {
-    isLoading,
-    data: accounts,
-    isError,
-  } = useQuery('getAccounts', () => accountApi.getAccounts(loginUserId), {
-    select: (data) => data.filter((v) => v.bankId !== 2),
+  const [accounts, setAccounts] = useState<Array<IAccount>>([]);
+  const navigate = useNavigate();
+  const { isLoading, isError } = useQuery<Array<IAccount>>('getAccounts', () => accountApi.getAccounts(loginUserId), {
+    onSuccess: (data) => {
+      setAccounts(data);
+    },
+    onError: (e) => {
+      if (e === 401) {
+        navigate('/', { replace: true });
+      }
+    },
   });
 
-  return { isLoading, accounts, isError };
+  return { isLoading, isError, accounts };
 };
 
 export default useAccountsData;
