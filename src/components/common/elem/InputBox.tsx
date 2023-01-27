@@ -54,13 +54,13 @@ const Wrapper = styled.div`
 `;
 
 const Input = styled.input<{ showBorder: boolean }>`
-  padding: 0;
+  padding: 3px 0;
   width: 100%;
   height: 100%;
   border: none;
   border-bottom: ${(props) => (props.showBorder ? '1px solid black' : '')};
   font: ${(props) => props.theme.paragraphsP3R};
-  color: ${(props) => props.theme.gray600};
+  color: black;
   background-color: transparent;
   :focus {
     outline: none;
