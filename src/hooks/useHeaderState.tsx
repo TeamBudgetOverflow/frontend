@@ -13,7 +13,7 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
 
   const [showChatBtn, setShowChatBtn] = useState<boolean>(false);
   const handleChatClick = () => {
-    console.log('채팅 페이지로 이동');
+    navigate('/chats');
   };
 
   const [showPrevBtn, setShowPrevBtn] = useState<boolean>(false);
@@ -59,6 +59,10 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
       return;
     }
     if (pathname.includes('/goals/') && !pathname.includes('lookup') && !pathname.includes('post')) {
+      showPrevOnly();
+      return;
+    }
+    if (pathname.includes('/chats')) {
       showPrevOnly();
       return;
     }

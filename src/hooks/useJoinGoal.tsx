@@ -11,7 +11,12 @@ const useJoinGoal = ({ goalId }: { goalId: number }) => {
     isError,
   } = useMutation('joinGoal', goalApi.joinGoal, {
     onSuccess: () => {
-      setTimeout(() => navigate(`/goals/${goalId}`));
+      setTimeout(() => navigate(`/goals/${goalId}`), 2000);
+    },
+    onError: (e) => {
+      if (e === 401) {
+        navigate('/', { replace: true });
+      }
     },
   });
 

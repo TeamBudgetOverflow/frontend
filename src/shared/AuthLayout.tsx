@@ -26,7 +26,11 @@ const AuthLayout = () => {
 
   useEffect(() => {
     if (!headerRef.current) return;
-    if ((pathname.includes('/goals/') && !pathname.includes('lookup')) || pathname.includes('/accounts')) {
+    if (
+      (pathname.includes('/goals/') && !pathname.includes('lookup')) ||
+      pathname.includes('/accounts') ||
+      pathname.includes('/chats')
+    ) {
       return setHeaderNavHeight(headerRef.current.clientHeight);
     }
     setHeaderNavHeight(headerRef.current.clientHeight + 88);
@@ -47,12 +51,12 @@ const Wrapper = styled.div`
   position: relative;
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
 `;
 
 const Body = styled.div<{ height: string }>`
   width: 100%;
   height: ${(props) => `calc(100vh - ${props.height})`};
-  overflow-y: auto;
   background-color: white;
 `;
 

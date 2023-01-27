@@ -28,6 +28,11 @@ const useAccntManualPost = ({ type, goalId }: useAccntManualPostProps) => {
         setTimeout(() => navigate(`/goals/post/${data}`, { replace: true }), 2000);
       }
     },
+    onError: (e) => {
+      if (e === 401) {
+        navigate('/', { replace: true });
+      }
+    },
   });
 
   return { isLoading, isError, createManualAccnt };

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import TextButton from '../../../common/elem/TextButton';
@@ -27,7 +26,7 @@ const JoinButton = ({ goalId }: { goalId: number }) => {
   } = useJoinGoalModal({ goalId });
 
   if (isLoading || !accounts) return <>Loading...</>;
-  if (isError) return <Navigate to='/' />;
+  if (isError) return <>Error</>;
 
   return (
     <>

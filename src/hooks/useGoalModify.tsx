@@ -29,6 +29,11 @@ const useGoalModify = ({ goalId }: { goalId: number }) => {
 
       setTimeout(() => navigate(`/goals/${goalId}`, { replace: true }), 2000);
     },
+    onError: (e) => {
+      if (e === 401) {
+        navigate('/', { replace: true });
+      }
+    },
   });
 
   const savedPostGoal = useRecoilValue(postGoal);

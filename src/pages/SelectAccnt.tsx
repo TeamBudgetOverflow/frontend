@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
@@ -50,7 +50,7 @@ const SelectAccnt = () => {
   const navigate = useNavigate();
 
   if (isLoading || !accounts) return <>Loading...</>;
-  if (isError) return <Navigate to='/' />;
+  if (isError) return <>Error</>;
 
   return (
     <Wrapper>

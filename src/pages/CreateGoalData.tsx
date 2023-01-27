@@ -25,7 +25,6 @@ const Wrapper = styled.div`
   flex-direction: column;
   width: calc(100% - 44px);
   height: calc(100% - 48px);
-  overflow-y: auto;
   background-color: white;
 `;
 

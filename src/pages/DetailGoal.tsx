@@ -17,7 +17,6 @@ import ParticipantSection from '../components/goal/detail/ParticipantSection';
 import { userId } from '../recoil/userAtoms';
 
 import useGoalDetailData from '../hooks/useGoalDetailData';
-import useGoalState from '../hooks/useGoalState';
 
 const setButton = (
   goalId: number,
@@ -58,7 +57,7 @@ const DetailGoal = () => {
   } = useGoalDetailData({ loginUserId, goalId });
 
   if (isLoading || !data) return <>Loading...</>;
-  if (isError) return <Navigate to='/' />;
+  if (isError) return <>Error</>;
 
   return (
     <Wrapper>
@@ -112,9 +111,8 @@ const Wrapper = styled.div`
 const DetailGoalWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 20px;
   width: 100%;
-
   height: 100%;
 `;
 
@@ -123,11 +121,11 @@ const TopContent = styled.div`
   flex-direction: column;
   gap: 4px;
   width: 100%;
-  height: 100%;
 `;
 
 const BottomContent = styled(TopContent)`
   gap: 20px;
+  overflow-y: hidden;
 `;
 
 const GoalButtonSet = styled.div`

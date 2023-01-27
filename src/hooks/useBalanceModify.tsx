@@ -22,16 +22,21 @@ const useBalanceModify = ({ balanceId, accountId }: { balanceId: number; account
 
   const { id: loginUserId } = useRecoilValue(userId);
   const [balance, setBalance] = useState<number>(0);
-  const {
-    isLoading: isLoadingData,
-    isError: isErrorData,
-    refetch,
-  } = useQuery('accountBalance', () => accountApi.getAccountBalance({ userId: loginUserId, accountId }), {
-    onSuccess: (data) => {
-      setInputVal(data);
-      setBalance(data);
-    },
-  });
+  const { isLoading: isLoadingData, isError: isErrorData } = useQuery(
+    'accountBalance',
+    () => accountApi.getAccountBalance({ userId: loginUserId, accountId }),
+    {
+      onSuccess: (data) => {
+        setInputVal(data);
+        setBalance(data);
+      },
+      onError: (e) => {
+        if (e === 401) {
+          navigate('/', { replace: true });
+        }
+      },
+    }
+  );
 
   const navigate = useNavigate();
   const {
@@ -42,7 +47,11 @@ const useBalanceModify = ({ balanceId, accountId }: { balanceId: number; account
     onSuccess: () => {
       handleModifyInput(false);
       navigate(0);
-      // refetch();
+    },
+    onError: (e) => {
+      if (e === 401) {
+        navigate('/', { replace: true });
+      }
     },
   });
   const handleBalanceModify = () => {

@@ -5,7 +5,6 @@ import DateSelectBox from '../../../common/elem/DateSelectBox';
 
 import useDateInput from '../../../../hooks/useDateInput';
 import { dateStringTranslatorWithPoint } from '../../../../utils/dateTranslator';
-import DateInput from '../../input/DateInput';
 
 interface DateSelectSectionProps {
   isGroup: boolean;
