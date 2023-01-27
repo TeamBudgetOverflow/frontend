@@ -53,7 +53,7 @@ const TopContent = styled.div`
 `;
 
 const SubTitle = styled.div`
-  font: ${(props) => props.theme.paragraphsP1};
+  font: ${(props) => props.theme.paragraphsP1M};
 `;
 
 const Button = styled.div`
