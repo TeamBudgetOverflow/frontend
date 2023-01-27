@@ -40,6 +40,7 @@ const GoalDataInput = ({ goalId, isEditable, isGroup, initVal, createdAt }: Goal
     setEndDate(date);
   };
 
+  // TODO: 실계좌 기능 오픈
   const [isManual, setIsManual] = useState<boolean>(initVal.isManual);
 
   const [isPrivate, setIsPrivate] = useState<boolean>(initVal.isPrivate);
@@ -100,7 +101,7 @@ const GoalDataInput = ({ goalId, isEditable, isGroup, initVal, createdAt }: Goal
         {isGroup ? (
           <DateInput
             title='모집 기간'
-            startDate={createdAt}
+            startDate={new Date(createdAt)}
             initVal={dateISOStringDateTranslator(startDate)}
             min={1}
             max={3}
@@ -147,7 +148,6 @@ const GoalDataInput = ({ goalId, isEditable, isGroup, initVal, createdAt }: Goal
         ) : (
           <></>
         )}
-
         {isGroup ? (
           <></>
         ) : (
