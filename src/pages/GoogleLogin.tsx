@@ -25,7 +25,7 @@ const GoogleLogin = () => {
       setUserId({ id: jwtDecoder<MyToken>(data.accessToken).userId });
       navigate('/home');
     } catch (e) {
-      console.log('naver signup error:', e);
+      console.log('google signup error:', e);
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
     }

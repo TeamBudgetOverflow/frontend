@@ -3,8 +3,6 @@ import React from 'react';
 import NaverLogo from '../../../assets/icons/ico_Naver_logo.png';
 import TextButton from '../../common/elem/TextButton';
 
-// TODO: media query 설정
-// TODO: redirect uri, client id env 파일 설정
 const NaverSignupButton = () => {
   // TODO: state 추후 변경 필요
   const naverStateString = 'test';
