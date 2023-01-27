@@ -46,8 +46,12 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
       showChatOnly();
       return;
     }
-    if (pathname.includes('/users')) {
+    if (pathname.includes('/users') && !pathname.includes('/edit')) {
       showChatOnly();
+      return;
+    }
+    if (pathname.includes('/edit')) {
+      showPrevOnly();
       return;
     }
     if (pathname.includes('/goals/post')) {

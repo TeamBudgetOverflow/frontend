@@ -9,8 +9,8 @@ import { userAPI } from '../apis/client';
 import { userId, userProfile } from '../recoil/userAtoms';
 
 const useUserProfileData = ({ getUserId }: { getUserId: number }) => {
-  const loginUserId = useRecoilValue(userId);
-  const isLoginUser = loginUserId === userId;
+  const { id: loginUserId } = useRecoilValue(userId);
+  const isLoginUser = loginUserId === getUserId;
   const setUserProfile = useSetRecoilState(userProfile);
   const navigate = useNavigate();
   const {

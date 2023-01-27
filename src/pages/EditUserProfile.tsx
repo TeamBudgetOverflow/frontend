@@ -1,47 +1,41 @@
 import React from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 import Icon from '../components/common/elem/Icon';
 import InputBox from '../components/common/elem/InputBox';
 import ProfileImg from '../components/common/elem/ProfileImg';
 import TextButton from '../components/common/elem/TextButton';
-import useUserProfileData from '../hooks/useUserProfileData';
-import useUserProfileEdit from '../hooks/useUserProfileEdit';
-import useUserProfileEditData from '../hooks/useUserProfileEditData';
+import useUserProfileModify from '../hooks/useUserProfileModify';
+import useUserProfileModifyInput from '../hooks/useUserProfileModifyInput';
+
+import { userId, userProfile } from '../recoil/userAtoms';
 
 const EditUserProfile = () => {
-  const { id } = useParams();
-  if (!id) return <>잘못된 아이디 값입니다</>;
-
-  const { isLoading, isError, profile } = useUserProfileData({ getUserId: Number(id) });
-
-  if (isLoading && !profile) return <>Loading...</>;
-  if (isError || !profile) return <Navigate to='/' />;
-
+  const savedUserProfile = useRecoilValue(userProfile);
   const {
     ref,
-    profileImage,
-    profileNickName,
-    profileDesc,
+    imgURL,
+    nickname,
+    description,
     uploadFile,
     handleUploadedImageChange,
     handleEditProfileImage,
-    handleUserDescChange,
-    handleUserNickNameChange,
-  } = useUserProfileEditData({ profile });
+    handleDescriptionChange,
+    handleNicknameChange,
+  } = useUserProfileModifyInput({ profile: savedUserProfile });
 
-  const { handleEditProfileSubmit } = useUserProfileEdit({
-    uploadFile: uploadFile as File,
-    getUserId: Number(id),
-    userProfile: { image: profileImage, nickname: profileNickName, description: profileDesc },
+  const { id } = useRecoilValue(userId);
+  const { handleProfileModify } = useUserProfileModify({
+    userId: id,
+    userProfile: { image: imgURL, nickname: nickname, description: description },
   });
 
   return (
     <Wrapper>
       <TopContent>
         <ProfileImgBox>
-          <ProfileImg url={profileImage} size={85} />
+          <ProfileImg url={imgURL} size={85} />
           <ProfileImgInputWrapper>
             <input
               ref={ref}
@@ -64,47 +58,48 @@ const EditUserProfile = () => {
             </ImageUploaderButton>
           </ImageUploaderButtonWrapper>
         </ProfileImgBox>
-      </TopContent>
-      <MiddleWrapper>
         <UserContentBox>
           <LabelBox>
             <Label>이름</Label>
-            <InputBox type='text' placeholder={profileNickName} onChangeHandler={handleUserNickNameChange} />
+            <InputBox
+              type='text'
+              placeholder='닉네임을 입력해주세요'
+              value={nickname}
+              onChangeHandler={handleNicknameChange}
+            />
           </LabelBox>
           <LabelBox>
             <Label>소개</Label>
-            <InputBox type='text' placeholder={profileDesc} onChangeHandler={handleUserDescChange} />
+            <InputBox
+              type='text'
+              placeholder='내용을 입력해주세요'
+              value={description}
+              onChangeHandler={handleDescriptionChange}
+            />
           </LabelBox>
         </UserContentBox>
-        <SubmitButtonWrapper>
-          <TextButton text='프로필 수정 완료' onClickHandler={handleEditProfileSubmit} />
-        </SubmitButtonWrapper>
-      </MiddleWrapper>
+      </TopContent>
+      <TextButton text='프로필 수정 완료' onClickHandler={() => handleProfileModify(uploadFile)} />
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
+  padding: 20px 22px;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  padding: 20px;
+  align-items: center;
+  justify-content: space-between;
+  width: calc(100% - 44px);
+  height: calc(100% - 40px);
 `;
 
 const TopContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 15%;
-`;
-
-const MiddleWrapper = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  gap: 20px;
   width: 100%;
-  height: 100%;
 `;
 
 const ProfileImgBox = styled.div`
@@ -113,9 +108,9 @@ const ProfileImgBox = styled.div`
 `;
 
 const ProfileImgInputWrapper = styled.div`
+  width: 0px;
   height: 0px;
   overflow: hidden;
-  width: 0px;
 `;
 
 const ImageUploaderButtonWrapper = styled.div`
@@ -153,13 +148,7 @@ const LabelBox = styled.div`
 
 const Label = styled.div`
   font: ${(props) => props.theme.captionC1};
-`;
-
-const SubmitButtonWrapper = styled.div`
-  width: 100%;
-  position: absolute;
-  bottom: 0px;
-  padding: 20px 22px;
+  color: ${(props) => props.theme.gray600};
 `;
 
 export default EditUserProfile;

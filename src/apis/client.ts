@@ -15,6 +15,7 @@ import {
   IModifyGoal,
   IBalance,
   IUserProfile,
+  IUpdateUserProfile,
   ISearchGoal,
 } from '../interfaces/interfaces';
 
@@ -145,7 +146,7 @@ export const userAPI = {
     return data;
   },
 
-  patchEditUserProfile: async (userId: number, userProfile: IUserProfile) => {
+  patchEditUserProfile: async ({ userId, userProfile }: IUpdateUserProfile) => {
     const { data } = await tokenClient.patch(`/users/${userId}`, userProfile);
 
     return data;
