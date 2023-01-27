@@ -47,12 +47,12 @@ const Wrapper = styled.div`
   position: relative;
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
 `;
 
 const Body = styled.div<{ height: string }>`
   width: 100%;
   height: ${(props) => `calc(100vh - ${props.height})`};
-  overflow-y: auto;
   background-color: white;
 `;
 

@@ -111,9 +111,8 @@ const Wrapper = styled.div`
 const DetailGoalWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 20px;
   width: 100%;
-
   height: 100%;
 `;
 
@@ -122,11 +121,11 @@ const TopContent = styled.div`
   flex-direction: column;
   gap: 4px;
   width: 100%;
-  height: 100%;
 `;
 
 const BottomContent = styled(TopContent)`
   gap: 20px;
+  overflow-y: hidden;
 `;
 
 const GoalButtonSet = styled.div`
