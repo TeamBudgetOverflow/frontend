@@ -25,6 +25,7 @@ import ModifyGoal from '../pages/ModifyGoal';
 import LookupGoals from '../pages/LookupGoals';
 import SearchGoals from '../pages/SearchGoals';
 import DetailUser from '../pages/DetailUser';
+import EditUserProfile from '../pages/EditUserProfile';
 import Prepare from '../pages/Prepare';
 
 const Router = () => {
@@ -57,6 +58,7 @@ const Router = () => {
           <Route path='/goals/lookup' element={<LookupGoals />} />
           <Route path='/goals/lookup/search' element={<SearchGoals />} />
           <Route path='/users/:id' element={<DetailUser />} />
+          <Route path='/users/edit/:id' element={<EditUserProfile />} />
           <Route path='/chats' element={<Prepare />} />
         </Route>
         <Route path='/' element={<Redirect />} />

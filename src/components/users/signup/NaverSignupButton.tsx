@@ -1,10 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
 
-import Button from '../../common/elem/Button';
-import { Colors } from '../../../styles/colors';
-
-import NaverLogo from '../../../assets/icons/ico_Naver_logo.png';
+import TextButton from '../../common/elem/TextButton';
 
 // TODO: media query 설정
 // TODO: redirect uri, client id env 파일 설정
@@ -18,18 +14,9 @@ const NaverSignupButton = () => {
 
   return (
     <>
-      <Button size='large' background={Colors.naver} color='white' onClick={handleNaverSignup}>
-        <Img src={NaverLogo} />
-        NAVER로 계속하기
-      </Button>
+      <TextButton text='네이버로 계속하기' onClickHandler={handleNaverSignup} />
     </>
   );
 };
-
-const Img = styled.img`
-  width: 20px;
-  height: 20px;
-  margin: 0px 10px;
-`;
 
 export default NaverSignupButton;

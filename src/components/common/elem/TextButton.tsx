@@ -20,6 +20,7 @@ const TextButton = ({ text, bgColor, onClickHandler, isDisabled }: TextButtonPro
 
 const Button = styled.button<{ bgColor?: string; disable?: boolean }>`
   width: 100%;
+  height: 51px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -35,7 +36,7 @@ const Button = styled.button<{ bgColor?: string; disable?: boolean }>`
 
 const TextWrapper = styled.div<{ bgColor?: string; disable?: boolean }>`
   padding: 10px 0;
-  font: ${(props) => props.theme.paragraphP3M};
+  font: ${(props) => props.theme.paragraphP2M};
   color: ${(props) => (props.disable ? 'black' : props.bgColor === 'gray' ? 'black' : 'white')};
 `;
 
