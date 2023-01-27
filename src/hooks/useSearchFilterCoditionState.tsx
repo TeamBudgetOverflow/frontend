@@ -53,11 +53,11 @@ const useSearchFilterCoditionState = () => {
     setMemberFilter({ min, max });
   };
 
-  const [orderType, setOrderType] = useState<'asc' | 'desc'>('asc');
+  const [orderType, setOrderType] = useState<'ASC' | 'DESC'>('DESC');
   const handleOrderType = () => {
     setOrderType((prev) => {
-      if (prev === 'asc') return 'desc';
-      return 'asc';
+      if (prev === 'ASC') return 'DESC';
+      return 'ASC';
     });
   };
 

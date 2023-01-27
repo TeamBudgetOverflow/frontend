@@ -9,12 +9,12 @@ interface SearchBarProps {
 }
 
 const SearchBar = ({ show }: SearchBarProps) => {
-  const [searchKeyword, setSearchKeyword] = useState('');
-  const [onFocus, setOnFocus] = useState(false);
-
   const navigate = useNavigate();
+  const [onFocus, setOnFocus] = useState(false);
+  const [searchKeyword, setSearchKeyword] = useState('');
+
   const handleSearchButton = (searchKeyword: string) => {
-    navigate('/goals/lookup/search?search=' + searchKeyword);
+    navigate(`/goals/lookup/search?search=${searchKeyword}`);
     setSearchKeyword('');
   };
 

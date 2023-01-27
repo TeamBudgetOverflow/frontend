@@ -24,31 +24,33 @@ import { showSearchFilters } from '../recoil/goalsAtoms';
 // } from '../recoil/searchAtoms';
 
 import { dateCalculator } from '../utils/dateTranslator';
+import useSearchFilteredData from '../hooks/useSearchFilteredData';
+import useSearchFilterCoditionState from '../hooks/useSearchFilterCoditionState';
 
 enum SearchFilterType {
   status,
-  goalAmount,
+  amount,
   period,
-  headCount,
+  member,
   none,
 }
 
 const searchFilters = [
   SearchFilterType.status,
-  SearchFilterType.goalAmount,
+  SearchFilterType.amount,
   SearchFilterType.period,
-  SearchFilterType.headCount,
+  SearchFilterType.member,
 ];
 
 const searchFilterKR = (filterType: SearchFilterType) => {
   switch (filterType) {
     case SearchFilterType.status:
       return '진행상태';
-    case SearchFilterType.goalAmount:
+    case SearchFilterType.amount:
       return '목표금액';
     case SearchFilterType.period:
       return '진행기간';
-    case SearchFilterType.headCount:
+    case SearchFilterType.member:
       return '모집인원';
     default:
       return '';
@@ -56,16 +58,12 @@ const searchFilterKR = (filterType: SearchFilterType) => {
 };
 
 const SearchGoals = () => {
-  const location = useLocation();
-
   const [searchFilterType, setSearchFilterType] = useState<SearchFilterType>(SearchFilterType.none);
-  const [searchStatus, setSearchStatus] = useState(false);
-  const [searchResults, setSearchResults] = useState<Array<ISearchGoal>>([]);
 
-  const [filterdResultsStatus, setFilterdResultsStatus] = useState<Array<ISearchGoal>>([]);
-  const [filterdResultsAmount, setFilterdResultsAmount] = useState<Array<ISearchGoal>>([]);
-  const [filterdResultsPeriod, setFilterdResultsPeriod] = useState<Array<ISearchGoal>>([]);
-  const [filterdResultsHeadCount, setFilterdResultsHeadCount] = useState<Array<ISearchGoal>>([]);
+  const location = useLocation();
+  const searchKeyword = location.search.split('=')[1];
+
+  const { isLoading, data } = useSearchFilteredData(searchKeyword, sorted, min, max, orderd, status);
 
   const showSearchFiltersModal = useRecoilValue(showSearchFilters);
   const setShowSearchFiltersModal = useSetRecoilState(showSearchFilters);
@@ -73,24 +71,16 @@ const SearchGoals = () => {
     setShowSearchFiltersModal(!showSearchFiltersModal);
   };
 
-  const handleSearchFilterType = (type: SearchFilterType) => {
-    setSearchFilterType((prev) => {
-      if (prev === type) return SearchFilterType.none;
-      return type;
-    });
-  };
-
   return (
     <Wrapper>
       <TopContentWrapper>
-        <div>전체 {searchResults ? searchResults?.length : 0}개</div>
+        <div>전체 {isLoading ? data?.length : 0}개</div>
         <FiltersBox>
           {searchFilters.map((filter) => (
             <FilterButton
               key={filter}
               selected={searchFilterType === filter}
               onClick={() => {
-                handleSearchFilterType(filter);
                 handleOnClickShowSearchFilters();
               }}>
               {searchFilterKR(filter)}
@@ -98,11 +88,11 @@ const SearchGoals = () => {
           ))}
         </FiltersBox>
       </TopContentWrapper>
-      {searchStatus ? (
+      {isLoading ? (
         <>
           <GoalCardsWrapper>
             {
-              searchResults?.map((goal) => (
+              data?.map((goal) => (
                 <GroupGoalCards key={goal.goalId} goal={goal} />
               ))
               // .filter((result) => filterdResultsStatus?.includes(result))
