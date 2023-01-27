@@ -79,10 +79,11 @@ function GoalInfoInput({ isGroup, initVal }: GoalInfoInputProps) {
     type: '인원',
   });
 
-  const [isManual, setisManual] = useState<boolean>(false);
-  const handleSelectisAuto = (isTrue: boolean) => {
-    setisManual(isTrue);
-  };
+  // TODO: 실계좌 기능 오픈
+  const [isManual, setisManual] = useState<boolean>(true);
+  // const handleSelectisAuto = (isTrue: boolean) => {
+  //   setisManual(isTrue);
+  // };
 
   const [isPrivate, setIsPrivate] = useState<boolean>(initVal.isPrivate);
   const handleSelectIsPrivate = (isTrue: boolean) => {
@@ -202,7 +203,8 @@ function GoalInfoInput({ isGroup, initVal }: GoalInfoInputProps) {
         ) : (
           <></>
         )}
-        <AccntToggle initVal={isManual} changeHandler={handleSelectisAuto} />
+        {/* TODO: 실계좌 기능 오픈 */}
+        {/* <AccntToggle initVal={isManual} changeHandler={handleSelectisAuto} /> */}
         {isGroup ? (
           <></>
         ) : (
