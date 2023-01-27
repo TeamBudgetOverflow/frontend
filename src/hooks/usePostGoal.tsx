@@ -14,7 +14,7 @@ const usePostGoal = ({ accountId }: { accountId: number }) => {
     () => goalApi.postGoal({ ...savedPostGoal, accountId }),
     {
       onSuccess: (data) => {
-        setTimeout(() => navigate(`/goals/${data}`), 2000);
+        setTimeout(() => navigate(`/goals/${data}`, { replace: true }), 2000);
       },
       onError: (e) => {
         if (e === 401) {
