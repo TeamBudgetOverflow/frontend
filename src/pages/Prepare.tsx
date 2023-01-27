@@ -6,7 +6,7 @@ import Info from '../components/common/alert/Info';
 const Prepare = () => {
   return (
     <Wrapper>
-      <Info>서비스 준비 중입니다.</Info>
+      <Info type='prepare'>서비스 준비 중입니다.</Info>
     </Wrapper>
   );
 };
