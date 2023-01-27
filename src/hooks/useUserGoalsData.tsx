@@ -46,9 +46,8 @@ const useUserGoalsData = ({ getUserId }: { getUserId: number }) => {
       setTotalCnt(getTotalCnt(data));
     },
     onError: (e) => {
-      console.log('get user goals error:', e);
       if (e === 401) {
-        navigate('/');
+        navigate('/', { replace: true });
       }
     },
   });

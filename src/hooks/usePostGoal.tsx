@@ -16,6 +16,11 @@ const usePostGoal = ({ accountId }: { accountId: number }) => {
       onSuccess: (data) => {
         setTimeout(() => navigate(`/goals/${data}`), 2000);
       },
+      onError: (e) => {
+        if (e === 401) {
+          navigate('/', { replace: true });
+        }
+      },
     }
   );
   const handlePostGoal = () => {
