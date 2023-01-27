@@ -30,9 +30,9 @@ const useNavigateState = ({ pathname, userId }: useNavigateStateProps) => {
       case Menu.home:
         setSelectedMenu(Menu.home);
         return navigate('/home');
-      case Menu.lookup:
-        setSelectedMenu(Menu.lookup);
-        return navigate('/goals/lookup');
+      // case Menu.lookup:
+      //   setSelectedMenu(Menu.lookup);
+      //   // return navigate('/goals/lookup');
       case Menu.my:
         setSelectedMenu(Menu.my);
         return navigate(`/users/${userId}`);
