@@ -4,10 +4,10 @@ import styled from 'styled-components';
 
 import RangeSlider from './rangeSlider/RangeSlider';
 
-import { filterConditionsPeriod } from '../../../recoil/searchAtoms';
+import { filterConditionPeriod } from '../../../recoil/searchAtoms';
 
 const PeriodFilter = () => {
-  const { period } = useRecoilValue(filterConditionsPeriod);
+  const { period } = useRecoilValue(filterConditionPeriod);
   return (
     <Wrapper>
       <SubTitle>진행기간</SubTitle>

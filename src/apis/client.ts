@@ -202,8 +202,16 @@ export const goalApi = {
 
     return data.result[0];
   },
-  getGoalsByWord: async (keyword: string): Promise<Array<ISearchGoal>> => {
-    const { data } = await tokenClient.get(`/goals/getgoals/search=${keyword}`);
+  getGoalsByWord: async (
+    keyword: string,
+    sorted: string,
+    min: number,
+    max: number,
+    orderd: string
+  ): Promise<Array<ISearchGoal>> => {
+    const { data } = await tokenClient.get(
+      `/goals/search?keyword=${keyword}&sortby=${sorted}&min=${min}&max=${max}&orderby=${orderd}`
+    );
     // const data = [
     //   {
     //     userId: 0,

@@ -16,12 +16,12 @@ import { goalApi } from '../apis/client';
 import { ISearchGoal } from '../interfaces/interfaces';
 
 import { showSearchFilters } from '../recoil/goalsAtoms';
-import {
-  filterConditionsStatus,
-  filterConditionsAimingAmount,
-  filterConditionsPeriod,
-  filterConditionsHeadCount,
-} from '../recoil/searchAtoms';
+// import {
+//   filterConditionStatus,
+//   filterConditionAmount,
+//   filterConditionPeriod,
+//   filterConditionMember,
+// } from '../recoil/searchAtoms';
 
 import { dateCalculator } from '../utils/dateTranslator';
 
@@ -80,18 +80,6 @@ const SearchGoals = () => {
     });
   };
 
-  const {
-    isLoading: isLoadingGoals,
-    data: searchGoals,
-    isError,
-  } = useQuery<Array<ISearchGoal>>('searchGoals', () => goalApi.getGoalsByWord(location.search));
-
-  useEffect(() => {
-    if (!searchGoals) return;
-    setSearchResults([...searchGoals]);
-    setSearchStatus(true);
-  }, [searchGoals]);
-
   return (
     <Wrapper>
       <TopContentWrapper>
@@ -113,25 +101,15 @@ const SearchGoals = () => {
       {searchStatus ? (
         <>
           <GoalCardsWrapper>
-            {isLoadingGoals ? (
-              <AlertWrapper>
-                <Alert height={150} showBgColor={true}>
-                  <LoadingMsg />
-                </Alert>
-              </AlertWrapper>
-            ) : isError ? (
-              <AlertWrapper>
-                <Alert height={150} showBgColor={true}>
-                  <ErrorMsg />
-                </Alert>
-              </AlertWrapper>
-            ) : (
-              searchResults?.map((goal) => <GroupGoalCards key={goal.goalId} goal={goal} />)
+            {
+              searchResults?.map((goal) => (
+                <GroupGoalCards key={goal.goalId} goal={goal} />
+              ))
               // .filter((result) => filterdResultsStatus?.includes(result))
               // .filter((result) => filterdResultsAmount?.includes(result))
               // .filter((result) => filterdResultsPeriod?.includes(result))
               // .filter((result) => filterdResultsHeadCount?.includes(result))
-            )}
+            }
           </GoalCardsWrapper>
         </>
       ) : (
