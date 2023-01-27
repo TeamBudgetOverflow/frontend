@@ -29,7 +29,8 @@ const AuthLayout = () => {
     if (
       (pathname.includes('/goals/') && !pathname.includes('lookup')) ||
       pathname.includes('/accounts') ||
-      pathname.includes('/chats')
+      pathname.includes('/chats') ||
+      pathname.includes('/users/edit')
     ) {
       return setHeaderNavHeight(headerRef.current.clientHeight);
     }

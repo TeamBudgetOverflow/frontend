@@ -15,6 +15,7 @@ import {
   IModifyGoal,
   IBalance,
   IUserProfile,
+  IUpdateUserProfile,
 } from '../interfaces/interfaces';
 
 const BASE_URL = process.env.REACT_APP_API_ENDPOINT;
@@ -144,7 +145,7 @@ export const userAPI = {
     return data;
   },
 
-  patchEditUserProfile: async (userId: number, userProfile: IUserProfile) => {
+  patchEditUserProfile: async ({ userId, userProfile }: IUpdateUserProfile) => {
     const { data } = await tokenClient.patch(`/users/${userId}`, userProfile);
 
     return data;

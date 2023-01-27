@@ -2,12 +2,12 @@ import React, { useRef, useState } from 'react';
 
 import { IUserProfile } from '../interfaces/interfaces';
 
-const useUserProfileEditData = ({ profile }: { profile: IUserProfile }) => {
+const useUserProfileModifyInput = ({ profile }: { profile: IUserProfile }) => {
   const ref = useRef<HTMLInputElement>(null);
 
-  const [profileImage, setProfileImage] = useState<string>(profile.image);
-  const [profileNickName, setProfileNickName] = useState<string>(profile.nickname);
-  const [profileDesc, setProfileDesc] = useState<string>(profile.description);
+  const [imgURL, setImgURL] = useState<string>(profile.image);
+  const [nickname, setNickname] = useState<string>(profile.nickname);
+  const [description, setDescription] = useState<string>(profile.description);
   const [uploadFile, setUploadFile] = useState<File>();
 
   const handleUploadedImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,7 +25,7 @@ const useUserProfileEditData = ({ profile }: { profile: IUserProfile }) => {
 
     const imageSrc = URL.createObjectURL(uploadedFile);
     setUploadFile(uploadedFile);
-    setProfileImage(imageSrc);
+    setImgURL(imageSrc);
   };
 
   const handleEditProfileImage = () => {
@@ -33,25 +33,25 @@ const useUserProfileEditData = ({ profile }: { profile: IUserProfile }) => {
     ref.current.click();
   };
 
-  const handleUserNickNameChange = (e: React.FormEvent<HTMLInputElement>) => {
-    setProfileNickName(e.currentTarget.value);
+  const handleNicknameChange = (e: React.FormEvent<HTMLInputElement>) => {
+    setNickname(e.currentTarget.value);
   };
 
-  const handleUserDescChange = (e: React.FormEvent<HTMLInputElement>) => {
-    setProfileDesc(e.currentTarget.value);
+  const handleDescriptionChange = (e: React.FormEvent<HTMLInputElement>) => {
+    setDescription(e.currentTarget.value);
   };
 
   return {
     ref,
-    profileImage,
-    profileNickName,
-    profileDesc,
+    imgURL,
+    nickname,
+    description,
     uploadFile,
     handleUploadedImageChange,
     handleEditProfileImage,
-    handleUserNickNameChange,
-    handleUserDescChange,
+    handleNicknameChange,
+    handleDescriptionChange,
   };
 };
 
-export default useUserProfileEditData;
+export default useUserProfileModifyInput;
