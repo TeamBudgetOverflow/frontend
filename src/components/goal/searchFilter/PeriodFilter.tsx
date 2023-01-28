@@ -1,19 +1,13 @@
 import React from 'react';
-import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 import RangeSlider from './rangeSlider/RangeSlider';
 
-import { filterConditionPeriod } from '../../../recoil/searchAtoms';
-
 const PeriodFilter = () => {
-  const { period } = useRecoilValue(filterConditionPeriod);
   return (
     <Wrapper>
       <SubTitle>진행기간</SubTitle>
-      <RangeIndicator>
-        {period.min} ~ {period.max} 일
-      </RangeIndicator>
+      <RangeIndicator>0 ~ 7 일</RangeIndicator>
       <RangeSlider min={1} max={7} type='period' />
     </Wrapper>
   );

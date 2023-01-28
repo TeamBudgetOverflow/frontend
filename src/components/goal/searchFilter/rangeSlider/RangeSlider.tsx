@@ -1,7 +1,4 @@
 import React, { ChangeEvent, FC, useCallback, useEffect, useState, useRef } from 'react';
-import { useSetRecoilState } from 'recoil';
-
-import { filterConditionAmount, filterConditionMember, filterConditionPeriod } from '../../../../recoil/searchAtoms';
 
 import './rangeSlider.css';
 
@@ -91,22 +88,6 @@ const RangeSlider: FC<RangeSliderProps> = ({ type, min, max }) => {
 
     maxValRef.current = value;
   };
-
-  const setFilterConditionAimingAmount = useSetRecoilState(filterConditionAmount);
-  const setFilterConditionPeriod = useSetRecoilState(filterConditionPeriod);
-  const setFilterConditionHeadCount = useSetRecoilState(filterConditionMember);
-
-  useEffect(() => {
-    setFilterConditionAimingAmount({ amount: { min: amountMinVal, max: amountMaxVal } });
-  }, [amountMinVal, amountMaxVal]);
-
-  useEffect(() => {
-    setFilterConditionPeriod({ period: { min: periodMinVal, max: periodMaxVal } });
-  }, [periodMinVal, periodMaxVal]);
-
-  useEffect(() => {
-    setFilterConditionHeadCount({ member: { min: headCountMinVal, max: headCountMaxVal } });
-  }, [headCountMinVal, headCountMaxVal]);
 
   return (
     <div className='container'>

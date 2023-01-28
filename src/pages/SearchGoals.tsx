@@ -11,7 +11,7 @@ import Info from '../components/common/alert/Info';
 import { showSearchFilters } from '../recoil/goalsAtoms';
 
 import useSearchFilteredData from '../hooks/useSearchFilteredData';
-import useSearchFilterCoditionState from '../hooks/useSearchFilterCoditionState';
+import useSearchFilterCoditionState from '../hooks/useSearchFilterState';
 import Alert from '../components/common/alert/Alert';
 import LoadingMsg from '../components/common/elem/LoadingMsg';
 import ErrorMsg from '../components/common/elem/ErrorMsg';
@@ -50,20 +50,29 @@ const SearchGoals = () => {
   const [searchFilterType, setSearchFilterType] = useState<SearchFilterType>(SearchFilterType.none);
 
   const { search } = useLocation();
-  const searchKeyword = search.split('=')[1];
+  const keyword = search.split('=')[1];
 
-  const { filterSorted, filterOrdered, filterStatus, pageNumber, filterRangeMax, filterRangeMin } =
-    useSearchFilterCoditionState();
-
-  const { isLoading, isError, data } = useSearchFilteredData(
-    searchKeyword,
+  const {
     filterSorted,
+    filterOrdered,
     filterRangeMin,
     filterRangeMax,
-    filterOrdered,
     filterStatus,
-    pageNumber
-  );
+    pageNumber,
+    handlePageNumberChange,
+  } = useSearchFilterCoditionState();
+
+  const { isLoading, isError, data } = useSearchFilteredData({
+    queries: {
+      keyword: keyword,
+      sorted: filterSorted,
+      orderd: filterOrdered,
+      min: filterRangeMin,
+      max: filterRangeMax,
+      status: filterStatus,
+      page: pageNumber,
+    },
+  });
 
   const showSearchFiltersModal = useRecoilValue(showSearchFilters);
   const setShowSearchFiltersModal = useSetRecoilState(showSearchFilters);

@@ -1,19 +1,13 @@
 import React from 'react';
-import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 import RangeSlider from './rangeSlider/RangeSlider';
 
-import { filterConditionMember } from '../../../recoil/searchAtoms';
-
 const MemberFilter = () => {
-  const { member } = useRecoilValue(filterConditionMember);
   return (
     <Wrapper>
       <SubTitle>모집인원</SubTitle>
-      <RangeIndicator>
-        {member.min} ~ {member.max} 명
-      </RangeIndicator>
+      <RangeIndicator>0 ~ 10 명</RangeIndicator>
       <RangeSlider min={1} max={10} type='member' />
     </Wrapper>
   );

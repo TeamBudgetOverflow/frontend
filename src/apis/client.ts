@@ -16,10 +16,8 @@ import {
   IBalance,
   IUserProfile,
   IUpdateUserProfile,
-  ISearchFilterOrdered,
-  ISearchFilterSorted,
-  ISearchFilterStatus,
   ISearchGoalResult,
+  ISearchFilterQueriesType,
 } from '../interfaces/interfaces';
 
 const BASE_URL = process.env.REACT_APP_API_ENDPOINT;
@@ -206,68 +204,11 @@ export const goalApi = {
 
     return data.result[0];
   },
-  getGoalsByWord: async (
-    keyword: string,
-    sorted: ISearchFilterSorted,
-    min: number,
-    max: number,
-    orderd: ISearchFilterOrdered,
-    status: ISearchFilterStatus,
-    page: number
-  ): Promise<ISearchGoalResult> => {
+  getGoalsByWord: async ({ queries }: ISearchFilterQueriesType): Promise<ISearchGoalResult> => {
     const { data } = await tokenClient.get(
-      `/goals/search?keyword=${keyword}&sortby=${sorted.sorted}&min=${min}&max=${max}&orderby=${orderd.ordered}&status=${status.status}&page=${page}`
+      `/goals/search?keyword=${queries.keyword}&sortby=${queries.sorted.sortby}&min=${queries.min}&max=${queries.max}&orderby=${queries.orderd.orderby}&status=${queries.status.status}&page=${queries.page}`
     );
-    // const data = [
-    //   {
-    //     userId: 0,
-    //     goalId: 0,
-    //     nickname: 'test1',
-    //     amount: 100000,
-    //     curCount: 1,
-    //     headCount: 10,
-    //     startDate: new Date('2023-01-25'),
-    //     endDate: new Date('2023-01-27'),
-    //     title: 'testTitle1',
-    //     hashTag: ['#test1', '#test2'],
-    //     emoji: 'emoji',
-    //     description: 'desc',
-    //     createdAt: new Date('2023-01-24'),
-    //     updatedAt: new Date('2023-01-25'),
-    //   },
-    //   {
-    //     userId: 1,
-    //     goalId: 1,
-    //     nickname: 'test2',
-    //     amount: 30000,
-    //     curCount: 1,
-    //     headCount: 10,
-    //     startDate: new Date('2023-01-26'),
-    //     endDate: new Date('2023-01-29'),
-    //     title: 'testTitle2',
-    //     hashTag: ['#test1', '#test2'],
-    //     emoji: 'emoji',
-    //     description: 'desc',
-    //     createdAt: new Date('2023-01-25'),
-    //     updatedAt: new Date('2023-01-26'),
-    //   },
-    //   {
-    //     userId: 2,
-    //     goalId: 2,
-    //     nickname: 'test3',
-    //     amount: 50000,
-    //     curCount: 1,
-    //     headCount: 5,
-    //     startDate: new Date('2023-01-23'),
-    //     endDate: new Date('2023-01-30'),
-    //     title: 'testTitle3',
-    //     hashTag: ['#test1', '#test2'],
-    //     emoji: 'emoji',
-    //     description: 'desc',
-    //     createdAt: new Date('2023-01-25'),
-    //     updatedAt: new Date('2023-01-26'),
-    //   },
-    // ];
+
     return data;
   },
   joinGoal: async ({ goalId, accountId }: { goalId: number; accountId: number }) => {
