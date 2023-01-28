@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 import styled from 'styled-components';
+import useSearchKeyword from '../../hooks/useSearchKeyword';
 
 import InputBox from '../common/elem/InputBox';
 
@@ -9,26 +9,7 @@ interface SearchBarProps {
 }
 
 const SearchBar = ({ show }: SearchBarProps) => {
-  const navigate = useNavigate();
-  const [onFocus, setOnFocus] = useState(false);
-  const [searchKeyword, setSearchKeyword] = useState('');
-
-  const handleSearchButton = (searchKeyword: string) => {
-    setSearchKeyword('');
-    navigate(`/goals/lookup/search?search=${searchKeyword}`);
-  };
-
-  const handleOnKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (event.code === 'Enter' && searchKeyword) {
-      handleSearchButton(searchKeyword);
-    }
-  };
-
-  useEffect(() => {
-    if (onFocus === true) {
-      navigate('goals/lookup/search');
-    }
-  }, [onFocus]);
+  const { searchKeyword, setOnFocus, handleOnKeyPress, setSearchKeyword } = useSearchKeyword();
 
   return (
     <SearchBarLayout show={show}>

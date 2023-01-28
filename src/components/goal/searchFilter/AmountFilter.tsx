@@ -1,20 +1,13 @@
 import React from 'react';
-import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 import RangeSlider from './rangeSlider/RangeSlider';
 
-import { filterConditionAmount } from '../../../recoil/searchAtoms';
-
 const amountFilter = () => {
-  const { amount } = useRecoilValue(filterConditionAmount);
-
   return (
     <Wrapper>
       <SubTitle>목표금액</SubTitle>
-      <RangeIndicator>
-        {amount.min} ~ {amount.max} 원
-      </RangeIndicator>
+      <RangeIndicator>0 ~ 100000 원</RangeIndicator>
       <RangeSlider min={0} max={100000} type='amount' />
     </Wrapper>
   );

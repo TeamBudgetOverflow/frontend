@@ -1,19 +1,19 @@
 import { useState } from 'react';
-import { ISearchFilterOrdered, ISearchFilterSorted, ISearchFilterStatus } from '../interfaces/interfaces';
+import { ISearchFilterOrderType, ISearchFilterSortType, ISearchFilterStatusType } from '../interfaces/interfaces';
 
-const useSearchFilterCoditionState = () => {
-  const [filterSorted, setFilterSorted] = useState<ISearchFilterSorted>({ sorted: null });
-  const handleFilterSortedChange = (sorted: ISearchFilterSorted) => {
+const useSearchFilterState = () => {
+  const [filterSorted, setFilterSorted] = useState<ISearchFilterSortType>({ sortby: null });
+  const handleFilterSortedChange = (sorted: ISearchFilterSortType) => {
     setFilterSorted(sorted);
   };
 
-  const [filterOrdered, setFilterOrdered] = useState<ISearchFilterOrdered>({ ordered: 'DESC' });
-  const handleFilterOrderedChange = (ordered: ISearchFilterOrdered) => {
+  const [filterOrdered, setFilterOrdered] = useState<ISearchFilterOrderType>({ orderby: 'DESC' });
+  const handleFilterOrderedChange = (ordered: ISearchFilterOrderType) => {
     setFilterOrdered(ordered);
   };
 
-  const [filterStatus, setFilterStatus] = useState<ISearchFilterStatus>({ status: 'total' });
-  const handleFilterStatusChange = (filterStatus: ISearchFilterStatus) => {
+  const [filterStatus, setFilterStatus] = useState<ISearchFilterStatusType>({ status: 'total' });
+  const handleFilterStatusChange = (filterStatus: ISearchFilterStatusType) => {
     setFilterStatus(filterStatus);
   };
 
@@ -35,10 +35,10 @@ const useSearchFilterCoditionState = () => {
   return {
     filterSorted,
     filterOrdered,
+    filterRangeMin,
+    filterRangeMax,
     filterStatus,
     pageNumber,
-    filterRangeMax,
-    filterRangeMin,
     handleFilterSortedChange,
     handleFilterOrderedChange,
     handleFilterStatusChange,
@@ -48,4 +48,4 @@ const useSearchFilterCoditionState = () => {
   };
 };
 
-export default useSearchFilterCoditionState;
+export default useSearchFilterState;

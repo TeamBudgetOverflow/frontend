@@ -204,34 +204,26 @@ export interface IBadge {
 }
 
 // filter condition
-export interface IFilterConditionAmount {
-  amount: {
-    min: number;
-    max: number;
-  };
-}
-export interface IFilterConditionPeriod {
-  period: {
-    min: number;
-    max: number;
-  };
+export interface ISearchFilterSortType {
+  sortby: 'amount' | 'period' | 'member' | null;
 }
 
-export interface IFilterConditionMember {
-  member: {
-    min: number;
-    max: number;
-  };
+export interface ISearchFilterOrderType {
+  orderby: 'ASC' | 'DESC';
 }
 
-export interface ISearchFilterSorted {
-  sorted: 'amount' | 'period' | 'member' | null;
-}
-
-export interface ISearchFilterOrdered {
-  ordered: 'ASC' | 'DESC';
-}
-
-export interface ISearchFilterStatus {
+export interface ISearchFilterStatusType {
   status: 'total' | 'recruit' | 'proceeding';
+}
+
+export interface ISearchFilterQueriesType {
+  queries: {
+    keyword: string;
+    sorted: ISearchFilterSortType;
+    min: number;
+    max: number;
+    orderd: ISearchFilterOrderType;
+    status: ISearchFilterStatusType;
+    page: number;
+  };
 }

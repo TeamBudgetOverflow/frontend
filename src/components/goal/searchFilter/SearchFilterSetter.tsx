@@ -9,7 +9,7 @@ import PeriodFilter from './PeriodFilter';
 import StatusFilter from './StatusFilter';
 
 import { showSearchFilters } from '../../../recoil/goalsAtoms';
-import useSearchFilterCoditionState from '../../../hooks/useSearchFilterCoditionState';
+import useSearchFilterCoditionState from '../../../hooks/useSearchFilterState';
 
 enum SearchFilterType {
   status,
