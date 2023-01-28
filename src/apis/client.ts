@@ -211,7 +211,7 @@ export const goalApi = {
     status: string
   ): Promise<Array<ISearchGoal>> => {
     const { data } = await tokenClient.get(
-      `/goals/search?keyword=${keyword}&sortby=${sorted}&min=${min}&max=${max}&orderby=${orderd}&status=${status}`
+      `/goals/search?keyword=${keyword}&sortby=${sorted}&min=${min}&max=${max}&orderby=${orderd}&status=${status}&page=1`
     );
     // const data = [
     //   {
