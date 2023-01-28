@@ -63,6 +63,12 @@ const SearchGoals = () => {
   const location = useLocation();
   const searchKeyword = location.search.split('=')[1];
 
+  const sorted = 'period';
+  const max = 100;
+  const min = 0;
+  const orderd = 'DESC';
+  const status = 'total';
+
   const { isLoading, data } = useSearchFilteredData(searchKeyword, sorted, min, max, orderd, status);
 
   const showSearchFiltersModal = useRecoilValue(showSearchFilters);
