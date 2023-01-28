@@ -1,78 +1,50 @@
 import { useState } from 'react';
-
-enum StatusType {
-  total,
-  recrut,
-  proceeding,
-}
-
-interface IAmountFilter {
-  min: number;
-  max: number;
-}
-
-interface IPeriodFilter {
-  min: number;
-  max: number;
-}
-
-interface IPeriodFilter {
-  min: number;
-  max: number;
-}
+import { ISearchFilterOrdered, ISearchFilterSorted, ISearchFilterStatus } from '../interfaces/interfaces';
 
 const useSearchFilterCoditionState = () => {
-  const [statusFilter, setStatusFilter] = useState<StatusType>(StatusType.total);
-  const handleStatusFilterType = (statusFilter: StatusType) => {
-    setStatusFilter(statusFilter);
+  const [filterSorted, setFilterSorted] = useState<ISearchFilterSorted>({ sorted: null });
+  const handleFilterSortedChange = (sorted: ISearchFilterSorted) => {
+    setFilterSorted(sorted);
   };
 
-  const StatusKR = (statusFilter: StatusType) => {
-    switch (statusFilter) {
-      case StatusType.recrut:
-        return '모집중';
-      case StatusType.proceeding:
-        return '진행중';
-      default:
-        return '전체';
-    }
+  const [filterOrdered, setFilterOrdered] = useState<ISearchFilterOrdered>({ ordered: 'DESC' });
+  const handleFilterOrderedChange = (ordered: ISearchFilterOrdered) => {
+    setFilterOrdered(ordered);
   };
 
-  const [amountFilter, setAmountFilter] = useState<IAmountFilter>({ min: 0, max: 0 });
-  const handleAmountFilter = (min: number, max: number) => {
-    setAmountFilter({ min, max });
+  const [filterStatus, setFilterStatus] = useState<ISearchFilterStatus>({ status: 'total' });
+  const handleFilterStatusChange = (filterStatus: ISearchFilterStatus) => {
+    setFilterStatus(filterStatus);
   };
 
-  const [periodFilter, setPeriodFilter] = useState<IPeriodFilter>({ min: 0, max: 0 });
-  const handlePeriodFilter = (min: number, max: number) => {
-    setPeriodFilter({ min, max });
+  const [filterRangeMin, setFilterRangeMin] = useState<number>(0);
+  const handleRangeMinChange = (min: number) => {
+    setFilterRangeMin(min);
   };
 
-  const [memberFilter, setMemberFilter] = useState<IPeriodFilter>({ min: 0, max: 0 });
-  const handleMemberFilter = (min: number, max: number) => {
-    setMemberFilter({ min, max });
+  const [filterRangeMax, setFilterRangeMax] = useState<number>(0);
+  const handleRangeMaxChange = (max: number) => {
+    setFilterRangeMax(max);
   };
 
-  const [orderType, setOrderType] = useState<'ASC' | 'DESC'>('DESC');
-  const handleOrderType = () => {
-    setOrderType((prev) => {
-      if (prev === 'ASC') return 'DESC';
-      return 'ASC';
-    });
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const handlePageNumberChange = (page: number) => {
+    setPageNumber(page);
   };
 
   return {
-    statusFilter,
-    amountFilter,
-    periodFilter,
-    memberFilter,
-    orderType,
-    StatusKR,
-    handleStatusFilterType,
-    handleAmountFilter,
-    handlePeriodFilter,
-    handleMemberFilter,
-    handleOrderType,
+    filterSorted,
+    filterOrdered,
+    filterStatus,
+    pageNumber,
+    filterRangeMax,
+    filterRangeMin,
+    handleFilterSortedChange,
+    handleFilterOrderedChange,
+    handleFilterStatusChange,
+    handleRangeMinChange,
+    handleRangeMaxChange,
+    handlePageNumberChange,
   };
 };
 

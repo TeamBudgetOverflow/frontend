@@ -45,6 +45,15 @@ const SearchFilterSetter = () => {
   const setShowSearchFiltersModal = useSetRecoilState(showSearchFilters);
   const [searchFilterType, setSearchFilterType] = useState<SearchFilterType>(SearchFilterType.none);
 
+  const {
+    handleFilterSortedChange,
+    handleFilterOrderedChange,
+    handleFilterStatusChange,
+    handleRangeMinChange,
+    handleRangeMaxChange,
+    handlePageNumberChange,
+  } = useSearchFilterCoditionState();
+
   return (
     <Wrapper>
       <TopWrapper>

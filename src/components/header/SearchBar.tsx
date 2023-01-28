@@ -14,8 +14,8 @@ const SearchBar = ({ show }: SearchBarProps) => {
   const [searchKeyword, setSearchKeyword] = useState('');
 
   const handleSearchButton = (searchKeyword: string) => {
-    navigate(`/goals/lookup/search?search=${searchKeyword}`);
     setSearchKeyword('');
+    navigate(`/goals/lookup/search?search=${searchKeyword}`);
   };
 
   const handleOnKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -35,11 +35,11 @@ const SearchBar = ({ show }: SearchBarProps) => {
       <SearchInputWrapper show={show}>
         <InputBox
           type='text'
+          value={searchKeyword}
           placeholder='검색어를 입력하세요'
           onChangeHandler={(event) => setSearchKeyword(event.currentTarget.value)}
-          onKeyPressHandler={(event) => handleOnKeyPress(event)}
+          onKeyPressHandler={handleOnKeyPress}
           onFocusHandler={() => setOnFocus(true)}
-          onBlurHandler={() => setOnFocus(false)}
           showBorder={false}
         />
       </SearchInputWrapper>

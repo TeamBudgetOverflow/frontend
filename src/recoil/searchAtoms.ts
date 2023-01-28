@@ -3,7 +3,7 @@ import {
   IFilterConditionAmount,
   IFilterConditionMember,
   IFilterConditionPeriod,
-  IFilterConditionStatus,
+  ISearchFilterStatus,
 } from '../interfaces/interfaces';
 
 export const searchBarOnFocusEvent = atom({
@@ -11,10 +11,10 @@ export const searchBarOnFocusEvent = atom({
   default: false,
 });
 
-export const filterConditionStatus = atom<IFilterConditionStatus>({
+export const filterConditionStatus = atom({
   key: 'filterConditonsStatus',
   default: {
-    status: '',
+    status: 'total',
   },
 });
 

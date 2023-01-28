@@ -66,6 +66,10 @@ export interface IModifyGoal {
   goal: IPostGoal;
 }
 
+export interface ISearchGoalResult {
+  result: Array<ISearchGoal>;
+}
+
 export interface ISearchGoal {
   userId: number;
   goalId: number;
@@ -200,10 +204,6 @@ export interface IBadge {
 }
 
 // filter condition
-export interface IFilterConditionStatus {
-  status: string;
-}
-
 export interface IFilterConditionAmount {
   amount: {
     min: number;
@@ -222,4 +222,16 @@ export interface IFilterConditionMember {
     min: number;
     max: number;
   };
+}
+
+export interface ISearchFilterSorted {
+  sorted: 'amount' | 'period' | 'member' | null;
+}
+
+export interface ISearchFilterOrdered {
+  ordered: 'ASC' | 'DESC';
+}
+
+export interface ISearchFilterStatus {
+  status: 'total' | 'recruit' | 'proceeding';
 }
