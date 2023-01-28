@@ -1,31 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import GroupGoalCards from '../components/goal/GroupGoalCard';
-import LoadingMsg from '../components/common/elem/LoadingMsg';
-import Alert from '../components/common/alert/Alert';
-import ErrorMsg from '../components/common/elem/ErrorMsg';
 import ModalBox from '../components/common/elem/ModalBox';
 import SearchFilterSetter from '../components/goal/searchFilter/SearchFilterSetter';
-
-import { goalApi } from '../apis/client';
-
-import { ISearchGoal } from '../interfaces/interfaces';
+import Info from '../components/common/alert/Info';
 
 import { showSearchFilters } from '../recoil/goalsAtoms';
-// import {
-//   filterConditionStatus,
-//   filterConditionAmount,
-//   filterConditionPeriod,
-//   filterConditionMember,
-// } from '../recoil/searchAtoms';
 
-import { dateCalculator } from '../utils/dateTranslator';
 import useSearchFilteredData from '../hooks/useSearchFilteredData';
 import useSearchFilterCoditionState from '../hooks/useSearchFilterCoditionState';
+import Alert from '../components/common/alert/Alert';
+import LoadingMsg from '../components/common/elem/LoadingMsg';
+import ErrorMsg from '../components/common/elem/ErrorMsg';
 
 enum SearchFilterType {
   status,
@@ -60,16 +49,21 @@ const searchFilterKR = (filterType: SearchFilterType) => {
 const SearchGoals = () => {
   const [searchFilterType, setSearchFilterType] = useState<SearchFilterType>(SearchFilterType.none);
 
-  const location = useLocation();
-  const searchKeyword = location.search.split('=')[1];
+  const { search } = useLocation();
+  const searchKeyword = search.split('=')[1];
 
-  const sorted = 'period';
-  const max = 100;
-  const min = 0;
-  const orderd = 'DESC';
-  const status = 'total';
+  const { filterSorted, filterOrdered, filterStatus, pageNumber, filterRangeMax, filterRangeMin } =
+    useSearchFilterCoditionState();
 
-  const { isLoading, data } = useSearchFilteredData(searchKeyword, sorted, min, max, orderd, status);
+  const { isLoading, isError, data } = useSearchFilteredData(
+    searchKeyword,
+    filterSorted,
+    filterRangeMin,
+    filterRangeMax,
+    filterOrdered,
+    filterStatus,
+    pageNumber
+  );
 
   const showSearchFiltersModal = useRecoilValue(showSearchFilters);
   const setShowSearchFiltersModal = useSetRecoilState(showSearchFilters);
@@ -77,10 +71,28 @@ const SearchGoals = () => {
     setShowSearchFiltersModal(!showSearchFiltersModal);
   };
 
+  if (isLoading)
+    return (
+      <Wrapper>
+        <Info type='loading'>목표를 검색 중 입니다.</Info>
+      </Wrapper>
+    );
+
+  if (isError)
+    return (
+      <Wrapper>
+        <Info type='error'>
+          목표 검색에 실패했습니다.
+          <br />
+          다시 시도해주세요.
+        </Info>
+      </Wrapper>
+    );
+
   return (
     <Wrapper>
       <TopContentWrapper>
-        <div>전체 {isLoading ? data?.length : 0}개</div>
+        <div>전체 {data ? data.result.length : 0}개</div>
         <FiltersBox>
           {searchFilters.map((filter) => (
             <FilterButton
@@ -94,23 +106,21 @@ const SearchGoals = () => {
           ))}
         </FiltersBox>
       </TopContentWrapper>
-      {isLoading ? (
-        <>
-          <GoalCardsWrapper>
-            {
-              data?.map((goal) => (
-                <GroupGoalCards key={goal.goalId} goal={goal} />
-              ))
-              // .filter((result) => filterdResultsStatus?.includes(result))
-              // .filter((result) => filterdResultsAmount?.includes(result))
-              // .filter((result) => filterdResultsPeriod?.includes(result))
-              // .filter((result) => filterdResultsHeadCount?.includes(result))
-            }
-          </GoalCardsWrapper>
-        </>
-      ) : (
-        <></>
-      )}
+
+      <GoalCardsWrapper>
+        {isLoading || !data ? (
+          <Alert showBgColor={true}>
+            <LoadingMsg />
+          </Alert>
+        ) : isError ? (
+          <Alert showBgColor={true}>
+            <ErrorMsg />
+          </Alert>
+        ) : (
+          data.result.map((goal) => <GroupGoalCards key={goal.goalId} goal={goal} />)
+        )}
+      </GoalCardsWrapper>
+
       <ModalBox show={showSearchFiltersModal}>
         <SearchFilterSetter />
       </ModalBox>
@@ -158,11 +168,6 @@ const GoalCardsWrapper = styled.div`
   gap: 20px;
   width: 100%;
   height: 100%;
-`;
-
-const AlertWrapper = styled.div`
-  padding: 0 22px;
-  width: calc(100% - 44px);
 `;
 
 export default SearchGoals;

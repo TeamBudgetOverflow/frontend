@@ -16,7 +16,10 @@ import {
   IBalance,
   IUserProfile,
   IUpdateUserProfile,
-  ISearchGoal,
+  ISearchFilterOrdered,
+  ISearchFilterSorted,
+  ISearchFilterStatus,
+  ISearchGoalResult,
 } from '../interfaces/interfaces';
 
 const BASE_URL = process.env.REACT_APP_API_ENDPOINT;
@@ -205,14 +208,15 @@ export const goalApi = {
   },
   getGoalsByWord: async (
     keyword: string,
-    sorted: string,
+    sorted: ISearchFilterSorted,
     min: number,
     max: number,
-    orderd: string,
-    status: string
-  ): Promise<Array<ISearchGoal>> => {
+    orderd: ISearchFilterOrdered,
+    status: ISearchFilterStatus,
+    page: number
+  ): Promise<ISearchGoalResult> => {
     const { data } = await tokenClient.get(
-      `/goals/search?keyword=${keyword}&sortby=${sorted}&min=${min}&max=${max}&orderby=${orderd}&status=${status}&page=1`
+      `/goals/search?keyword=${keyword}&sortby=${sorted.sorted}&min=${min}&max=${max}&orderby=${orderd.ordered}&status=${status.status}&page=${page}`
     );
     // const data = [
     //   {

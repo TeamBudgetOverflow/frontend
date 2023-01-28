@@ -1,34 +1,32 @@
 import { useQuery } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 import { goalApi } from '../apis/client';
+import {
+  ISearchFilterOrdered,
+  ISearchFilterSorted,
+  ISearchFilterStatus,
+  ISearchGoalResult,
+} from '../interfaces/interfaces';
 
 const useSearchFilteredData = (
-  keyword: string,
-  sorted: string,
+  searchKeyword: string,
+  sorted: ISearchFilterSorted,
   max: number,
   min: number,
-  orderd: string,
-  status: string
+  orderd: ISearchFilterOrdered,
+  status: ISearchFilterStatus,
+  page: number
 ) => {
-  const checkKeyword = (keyword: string) => {
-    const checkKR = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+  const navigate = useNavigate();
 
-    if (keyword.match(checkKR)) {
-      const encodedKeyword = encodeURI(keyword);
-      return encodedKeyword;
-    } else {
-      return keyword;
-    }
-  };
-
-  const { isLoading, isError, data } = useQuery(
+  const { isLoading, isError, data } = useQuery<ISearchGoalResult>(
     'getSearchResult',
-    () => goalApi.getGoalsByWord(checkKeyword(keyword), sorted, max, min, orderd, status),
+    () => goalApi.getGoalsByWord(searchKeyword, sorted, max, min, orderd, status, page),
     {
-      onSuccess: (data) => {
-        return data;
-      },
-      onError: () => {
-        alert('목표를 검색할 수 없습니다.');
+      onError: (e) => {
+        if (e === 401) {
+          navigate('/', { replace: true });
+        }
       },
     }
   );
