@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 
 const useJoinGoalModal = ({ goalId }: { goalId: number }) => {
   const [showOption, setShowOption] = useState<boolean>(false);
-  const [isManual, setIsManual] = useState<boolean>(false);
+  // TODO: 실계좌 기능 오픈
+  const [isManual, setIsManual] = useState<boolean>(true);
   const handleSelectOption = (isTrue: boolean) => {
     setIsManual(isTrue);
   };

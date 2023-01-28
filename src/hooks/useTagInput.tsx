@@ -1,17 +1,9 @@
 import { useState } from 'react';
 
-import { IHashTag } from '../components/common/tag/HashTag';
-
 const useTagInput = ({ initVal }: { initVal: Array<string> }) => {
-  const [tagList, setTagList] = useState<Array<IHashTag>>(
-    initVal
-      ? [...initVal].map((v) => {
-          return { content: v, bgColor: '#ccc' };
-        })
-      : []
-  );
+  const [tagList, setTagList] = useState<Array<string>>(initVal);
 
-  const handleTagListChange = (tagList: Array<IHashTag>) => {
+  const handleTagListChange = (tagList: Array<string>) => {
     setTagList((prev) => [...prev, ...tagList]);
   };
 

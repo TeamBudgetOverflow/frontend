@@ -28,12 +28,14 @@ const Path = styled.path<{ color: string }>`
         return props.theme.primary400;
       case 'gray400':
         return props.theme.gray400;
+      case 'secondary400':
+        return props.theme.secondary400;
       case 'black':
         return 'black';
       case 'white':
         return 'white';
       default:
-        return props.theme.secondary900;
+        return props.color;
     }
   }};
 `;

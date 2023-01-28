@@ -3,6 +3,8 @@ import { Navigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
+import InfoError from '../components/common/alert/InfoError';
+import InfoLoading from '../components/common/alert/InfoLoading';
 import GoalInfoCard from '../components/goal/goalDetail/GoalInfoCard';
 import GoalPeriodCard from '../components/goal/goalDetail/GoalPeriodCard';
 import GoalDescCard from '../components/goal/goalDetail/GoalDescCard';
@@ -56,8 +58,8 @@ const DetailGoal = () => {
     balanceId,
   } = useGoalDetailData({ loginUserId, goalId });
 
-  if (isLoading || !data) return <>Loading...</>;
-  if (isError) return <>Error</>;
+  if (isLoading && !data) return <InfoLoading />;
+  if (isError || !data) return <InfoError />;
 
   return (
     <Wrapper>

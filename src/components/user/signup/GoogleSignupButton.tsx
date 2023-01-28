@@ -1,5 +1,6 @@
 import React from 'react';
 
+import GoogleLogo from '../../../assets/icons/ico_Google_logo.svg';
 import TextButton from '../../common/elem/TextButton';
 
 const GoogleSignupButton = () => {

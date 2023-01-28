@@ -74,7 +74,6 @@ function AccountInfoInput({ accountIdHandler }: AccountInfoInputProps) {
   useEffect(() => {
     handleBankUserPwChange(bankUserPW);
   }, [bankUserPW]);
-
   const { isValidAccnt, accnt, handleBankUserIdChange, handleBankUserPwChange, handleAccntPwChange, handleValidate } =
     useAccntValidate();
   const { bankId } = useBankId({ bankCode: accnt.bankCode });
@@ -155,24 +154,25 @@ function AccountInfoInput({ accountIdHandler }: AccountInfoInputProps) {
   if (isLoading)
     return (
       <Wrapper>
-        <Info>계좌를 등록 중입니다.</Info>
+        <Info type='loading'>계좌를 등록 중입니다.</Info>
       </Wrapper>
     );
 
   if (isError)
     return (
       <Wrapper>
-        <Info>
+        <Info type='error'>
           계좌 등록에 문제가 발생했습니다.
           <br />
           다시 시도해주세요.
         </Info>
+        <TextButton text='재시도' onClickHandler={handlePostAccount} />
       </Wrapper>
     );
 
   return (
     <Wrapper>
-      <Info>
+      <Info type='accntSuccess'>
         {`${nickname}`}님의
         <br />
         계좌 연결이 완료되었습니다.

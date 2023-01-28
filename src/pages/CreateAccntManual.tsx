@@ -18,14 +18,14 @@ const CreateAccntManual = () => {
   if (isLoading)
     return (
       <Wrapper>
-        <Info>직접 입력 계좌 정보 확인 중 입니다.</Info>
+        <Info type='loading'>직접 입력 목표 정보 확인 중 입니다.</Info>
       </Wrapper>
     );
 
   if (isError)
     return (
       <Wrapper>
-        <Info>
+        <Info type='error'>
           직접 입력 계좌 생성이 실패했습니다.
           <br />
           다시 시도해주세요.
@@ -35,7 +35,7 @@ const CreateAccntManual = () => {
 
   return (
     <Wrapper>
-      <Info>직접 입력 계좌가 연결되었습니다.</Info>
+      <Info type='accntSuccess'>직접 입력 계좌가 연결되었습니다.</Info>
     </Wrapper>
   );
 };

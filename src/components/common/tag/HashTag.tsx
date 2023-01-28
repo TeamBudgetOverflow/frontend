@@ -4,28 +4,23 @@ import styled from 'styled-components';
 import Icon from '../elem/Icon';
 
 interface HashTagProps {
-  tag: IHashTag;
-  removeHandler?: (tag: IHashTag) => void;
+  tag: string;
+  removeHandler?: (tag: string) => void;
 }
 
-export interface IHashTag {
-  content: string;
-  bgColor: string;
-}
-
-const HashTag = React.memo(function HashTag({ tag: { content, bgColor }, removeHandler }: HashTagProps) {
+const HashTag = React.memo(function HashTag({ tag, removeHandler }: HashTagProps) {
   return (
-    <Tag bgColor={bgColor}>
-      {`#${content}`}
+    <Tag>
+      {`#${tag}`}
       {!removeHandler ? (
         <></>
       ) : (
-        <DeleteButton onClick={() => removeHandler({ content, bgColor })}>
+        <DeleteButton onClick={() => removeHandler(tag)}>
           <Icon
-            width={12}
-            height={12}
-            color={'gray400'}
-            path='M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z'
+            width={10}
+            height={10}
+            color={'#ccc'}
+            path='M9.77816 0.229428C9.48237 -0.0663631 9.00455 -0.0663631 8.70876 0.229428L5 3.9306L1.29124 0.221843C0.99545 -0.0739477 0.517634 -0.0739477 0.221843 0.221843C-0.0739477 0.517634 -0.0739477 0.99545 0.221843 1.29124L3.9306 5L0.221843 8.70876C-0.0739477 9.00455 -0.0739477 9.48237 0.221843 9.77816C0.517634 10.0739 0.99545 10.0739 1.29124 9.77816L5 6.0694L8.70876 9.77816C9.00455 10.0739 9.48237 10.0739 9.77816 9.77816C10.0739 9.48237 10.0739 9.00455 9.77816 8.70876L6.0694 5L9.77816 1.29124C10.0664 1.00303 10.0664 0.517634 9.77816 0.229428Z'
           />
         </DeleteButton>
       )}
@@ -33,16 +28,15 @@ const HashTag = React.memo(function HashTag({ tag: { content, bgColor }, removeH
   );
 });
 
-const Tag = styled.div<{ bgColor: string }>`
-  padding: 12px;
+const Tag = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 5px;
   flex: 0 0 auto;
   font: ${(props) => props.theme.captionC2};
+  color: ${(props) => props.theme.primary400};
   border-radius: 16px;
-  background-color: ${(props) => props.bgColor};
 `;
 
 const DeleteButton = styled.div`

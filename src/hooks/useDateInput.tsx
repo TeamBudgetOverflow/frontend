@@ -32,7 +32,7 @@ const useDateInput = ({ startDate, initVal, minDays, maxDays }: useDateInputProp
   }, [start]);
 
   useEffect(() => {
-    setValue(minDate);
+    if (!initVal) setValue(minDate);
   }, [minDate]);
 
   return { minDate, maxDate, start, value, onChangeStartDate, onChangeEndDate };
