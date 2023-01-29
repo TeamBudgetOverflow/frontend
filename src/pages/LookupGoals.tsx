@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { useQuery } from 'react-query';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import GroupGoalCardSmall from '../components/goal/GroupGoalCardSmall';
@@ -9,40 +7,47 @@ import Alert from '../components/common/alert/Alert';
 import LoadingMsg from '../components/common/elem/LoadingMsg';
 import ErrorMsg from '../components/common/elem/ErrorMsg';
 
-import { goalApi } from '../apis/client';
-
-import { groupGoals } from '../recoil/goalsAtoms';
-
-import { ISearchGoal } from '../interfaces/interfaces';
-
-import { dDayCalculator } from '../utils/dDayCalculator';
+import useInfiniteScroll from '../hooks/useInfiniteScroll';
+import useGoalLookupData from '../hooks/useGoalLookupData';
 
 const LookupGoals = () => {
-  const {
-    isLoading: isLoadingGoals,
-    data: goalsData,
-    isError,
-  } = useQuery<Array<ISearchGoal>>('getGoals', () => goalApi.getGoals());
-  const setUserGoals = useSetRecoilState(groupGoals);
-  const goals = useRecoilValue(groupGoals);
-  const [impendingGoals, setImpendingGoals] = useState<Array<ISearchGoal>>([...goals]);
+  const [page, setPage] = useState(1);
+  const preventRef = useRef(true); //중복 실행 방지
+  const obsRef = useRef(null); //observer Element
+  const endRef = useRef(false); //모든 글 로드 확인
+
+  const { isLoading, isError, refetch, goals, impendingGoals } = useGoalLookupData(page);
 
   useEffect(() => {
-    if (!goalsData) return;
-
-    setUserGoals(goalsData);
-  }, [goalsData]);
+    const observer = new IntersectionObserver(obsHandler, { threshold: 0.5 });
+    if (obsRef.current) {
+      observer.observe(obsRef.current);
+    }
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
-    setImpendingGoals(() => {
-      const impendingGoals = [...goals];
+    console.log(page);
+    refetch();
+  }, [page]);
 
-      const sorting = impendingGoals.sort(
-        (a, b) => dDayCalculator(new Date(a.startDate)) - dDayCalculator(new Date(b.startDate))
-      );
-      return sorting;
-    });
-  }, [goals]);
+  const obsHandler = (entries: any) => {
+    //옵저버 콜백함수
+    if (entries[0].isIntersecting && preventRef.current) {
+      //옵저버 중복 실행 방지
+      preventRef.current = false; //옵저버 중복 실행 방지
+      setPage((prev) => prev + 1); //페이지 값 증가
+    }
+  };
+
+  // const { isEnd, pageNum } = useInfiniteScroll({ handleOnScrollEndEvent: refetch });
+
+  // useEffect(() => {
+  //   setPage(pageNum);
+  //   refetch();
+  // }, [pageNum]);
 
   const goalCards = goals
     .filter((goal) => goal.headCount !== 1)
@@ -59,7 +64,7 @@ const LookupGoals = () => {
           <SubTitle>마감임박 목표</SubTitle>
           <Button>모두보기</Button>
         </TitleBox>
-        {isLoadingGoals ? (
+        {isLoading ? (
           <AlertWrapper>
             <Alert showBgColor={true}>
               <LoadingMsg />
@@ -79,7 +84,7 @@ const LookupGoals = () => {
         <TitleBox>
           <SubTitle>목표</SubTitle>
         </TitleBox>
-        {isLoadingGoals ? (
+        {isLoading ? (
           <AlertWrapper>
             <Alert showBgColor={true}>
               <LoadingMsg />
@@ -92,7 +97,12 @@ const LookupGoals = () => {
             </Alert>
           </AlertWrapper>
         ) : (
-          <GoalCardsWrapper>{goalCards}</GoalCardsWrapper>
+          <GoalCardsWrapper>
+            {goalCards}
+            <div ref={obsRef} style={{ height: '10vh' }}>
+              로딩중입니다.
+            </div>
+          </GoalCardsWrapper>
         )}
       </BottomContent>
     </Wrapper>

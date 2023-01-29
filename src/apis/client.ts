@@ -194,8 +194,8 @@ export const goalApi = {
 
     return data.goalId;
   },
-  getGoals: async () => {
-    const { data } = await tokenClient.get(`/goals`);
+  getGoals: async (page: number) => {
+    const { data } = await tokenClient.get(`/goals?&page=${page}`);
 
     return data.result;
   },

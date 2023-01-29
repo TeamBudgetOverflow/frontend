@@ -56,23 +56,28 @@ export const goalDetail = atom<IGoalDetail>({
 export const groupGoals = atom<Array<ISearchGoal>>({
   key: 'groupGoals',
   default: [
-    {
-      userId: 0,
-      goalId: 0,
-      nickname: '',
-      amount: 0,
-      curCount: 0,
-      headCount: 0,
-      startDate: new Date(),
-      endDate: new Date(),
-      title: '',
-      hashTag: [],
-      emoji: '',
-      description: '',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
+    // {
+    //   userId: 0,
+    //   goalId: 0,
+    //   nickname: '',
+    //   amount: 0,
+    //   curCount: 0,
+    //   headCount: 0,
+    //   startDate: new Date(),
+    //   endDate: new Date(),
+    //   title: '',
+    //   hashTag: [],
+    //   emoji: '',
+    //   description: '',
+    //   createdAt: new Date(),
+    //   updatedAt: new Date(),
+    // },
   ],
+});
+
+export const impendingGroupGoals = atom<Array<ISearchGoal>>({
+  key: 'impendingGoals',
+  default: [],
 });
 
 export const showSearchFilters = atom<boolean>({
