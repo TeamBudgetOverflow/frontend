@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import GroupGoalCardSmall from '../components/goal/GroupGoalCardSmall';
@@ -7,47 +7,39 @@ import Alert from '../components/common/alert/Alert';
 import LoadingMsg from '../components/common/elem/LoadingMsg';
 import ErrorMsg from '../components/common/elem/ErrorMsg';
 
-import useInfiniteScroll from '../hooks/useInfiniteScroll';
 import useGoalLookupData from '../hooks/useGoalLookupData';
+import useIntersectionObserver from '../hooks/useIntersectionObserver';
 
 const LookupGoals = () => {
   const [page, setPage] = useState(1);
-  const preventRef = useRef(true); //중복 실행 방지
-  const obsRef = useRef(null); //observer Element
-  const endRef = useRef(false); //모든 글 로드 확인
+  const [isLoaded, setIsLoad] = useState(false);
 
   const { isLoading, isError, refetch, goals, impendingGoals } = useGoalLookupData(page);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(obsHandler, { threshold: 0.5 });
-    if (obsRef.current) {
-      observer.observe(obsRef.current);
-    }
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+  const onIntersect: IntersectionObserverCallback = ([entry], observer) => {
+    if (entry.isIntersecting && !isLoaded) {
+      observer.unobserve(entry.target);
 
-  useEffect(() => {
-    console.log(page);
-    refetch();
-  }, [page]);
-
-  const obsHandler = (entries: any) => {
-    //옵저버 콜백함수
-    if (entries[0].isIntersecting && preventRef.current) {
-      //옵저버 중복 실행 방지
-      preventRef.current = false; //옵저버 중복 실행 방지
-      setPage((prev) => prev + 1); //페이지 값 증가
+      getGoals();
+      observer.observe(entry.target);
     }
   };
 
-  // const { isEnd, pageNum } = useInfiniteScroll({ handleOnScrollEndEvent: refetch });
+  const getGoals = async () => {
+    setIsLoad(true);
+    setPage((prev) => prev + 1);
 
-  // useEffect(() => {
-  //   setPage(pageNum);
-  //   refetch();
-  // }, [pageNum]);
+    await refetch();
+
+    setIsLoad(false);
+  };
+
+  const { setTarget } = useIntersectionObserver({
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.5,
+    onIntersect,
+  });
 
   const goalCards = goals
     .filter((goal) => goal.headCount !== 1)
@@ -99,9 +91,8 @@ const LookupGoals = () => {
         ) : (
           <GoalCardsWrapper>
             {goalCards}
-            <div ref={obsRef} style={{ height: '10vh' }}>
-              로딩중입니다.
-            </div>
+
+            <div ref={setTarget}>{isLoaded ? <ScrollMsg>데이터를 불러오고 있는 중입니다.</ScrollMsg> : <></>}</div>
           </GoalCardsWrapper>
         )}
       </BottomContent>
@@ -177,6 +168,20 @@ const GoalCardsWrapper = styled.div`
 const AlertWrapper = styled.div`
   padding: 0 22px;
   width: calc(100% - 44px);
+`;
+
+const ScrollMsg = styled.div`
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  max-height: 160px;
+  width: 100%;
+  border-radius: 16px;
+  background-color: white;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
 `;
 
 export default LookupGoals;
