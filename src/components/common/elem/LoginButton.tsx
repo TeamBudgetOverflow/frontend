@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+
 import NaverLogo from '../../../assets/icons/ico_Naver_logo.png';
 import KakaoLogo from '../../../assets/icons/ico_KakaoTalk_logo.svg';
 import GoogleLogo from '../../../assets/icons/ico_Google_logo.svg';

@@ -67,7 +67,6 @@ tokenClient.interceptors.response.use(
 
 export const userAPI = {
   getKakaoSignup: async (code: string) => {
-    console.log(code);
     const { data } = await noneTokenClient.post(`/users/auth/kakao?code=${code}`);
 
     return data;

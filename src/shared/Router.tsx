@@ -38,7 +38,6 @@ const Router = () => {
           <Route path='/kakaologin' element={<KakaoLogin />} />
           <Route path='/naverlogin' element={<NaverLogin />} />
           <Route path='/googlelogin' element={<GoogleLogin />} />
-          <Route path='/welcome' element={<WelcomePage />} />
         </Route>
         <Route element={<RefreshLayout />}>
           <Route path='/pinnumber' element={<PinNumberPage />} />
@@ -63,6 +62,7 @@ const Router = () => {
           <Route path='/users/edit/:id' element={<EditUserProfile />} />
           <Route path='/chats' element={<Prepare />} />
         </Route>
+        <Route path='/welcome' element={<WelcomePage />} />
         <Route path='/' element={<Redirect />} />
       </Routes>
     </BrowserRouter>

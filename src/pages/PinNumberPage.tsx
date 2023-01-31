@@ -1,130 +1,39 @@
-import React, { useEffect, useState } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import React, { useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
-import jwtDecoder from 'jwt-decode';
-
-import { userAPI } from '../apis/client';
-
-import { MyToken } from '../interfaces/interfaces';
-import { userId } from '../recoil/userAtoms';
 import Logo from '../components/common/elem/Logo';
 import RadioInput from '../components/common/elem/RadioInput';
-import { useQuery } from 'react-query';
-import CongratePage from './WelcomePage';
 
-const PASSWORD_MAX_LENGTH = 6;
+import { userId } from '../recoil/userAtoms';
 
-// TODO: keypad 디자인이랑 똑같게
+import usePinNumberKeypad from '../hooks/usePinNumberKeypad';
+import usePinNumberSignupPost from '../hooks/usePinNumberSignupPost';
+import usePinNumberRepost from '../hooks/usePinNumberRepost';
+
 const PinNumberPage = () => {
   const { id } = useRecoilValue(userId);
+  const PASSWORD_MAX_LENGTH = 6;
   const accessToken = localStorage.getItem('accessToken');
-  const numberInit = Array.from({ length: 10 }, (v, k) => k);
 
-  const [numbers, setNumbers] = useState(numberInit);
-  const [pinNumber1, setPinNumber1] = useState('');
-  const [pinNumber2, setPinNumber2] = useState('');
+  const { numbers, pinNumber1, pinNumber2, loginPinNumber, erasePinNumberOne, inputNums } = usePinNumberKeypad({
+    PASSWORD_MAX_LENGTH,
+    accessToken,
+  });
 
-  const [loginPinNumber, setLoginPinNumber] = useState('');
+  const { refetch: refetchPinNumber } = usePinNumberSignupPost({
+    id,
+    pinNumber2,
+  });
 
-  const [isCheck, setIsCheck] = useState(false);
-  console.log(pinNumber1);
-  console.log(pinNumber2);
-
-  useEffect(() => {
-    const numbers: number[] = [];
-    for (let i = 0; i < 10; i++) {
-      numbers.push(i);
-    }
-
-    const shuffleNums: number[] = [];
-    for (let n = 0; n < 10; n++) {
-      const index = Math.floor(Math.random() * numbers.length); // 0 ~ 8까지의 인덱스 번호
-      shuffleNums.push(numbers[index]);
-      numbers.splice(index, 1);
-    }
-
-    setNumbers(shuffleNums);
-  }, [isCheck]);
-
-  useEffect(() => {
-    if (pinNumber1.length === PASSWORD_MAX_LENGTH) {
-      setIsCheck(true);
-    }
-  }, [pinNumber1]);
-
-  const handlePinNumberChange = (num: number) => {
-    if (accessToken === null) {
-      setLoginPinNumber(loginPinNumber + num.toString());
-    }
-    if (accessToken && pinNumber1.length !== PASSWORD_MAX_LENGTH) {
-      setPinNumber1(pinNumber1 + num.toString());
-    } else {
-      setPinNumber2(pinNumber2 + num.toString());
-    }
-  };
-
-  const erasePinNumberOne = () => {
-    if (pinNumber1.length !== 0) {
-      setPinNumber1(pinNumber1.slice(0, pinNumber1.length === 0 ? 0 : pinNumber1.length - 1));
-    }
-    if (pinNumber2.length !== 0) {
-      setPinNumber2(pinNumber2.slice(0, pinNumber2.length === 0 ? 0 : pinNumber2.length - 1));
-    }
-    if (loginPinNumber.length !== 0) {
-      setLoginPinNumber(loginPinNumber.slice(0, loginPinNumber.length === 0 ? 0 : loginPinNumber.length - 1));
-    }
-  };
-
-  const inputNums = (nums: number) => () => {
-    handlePinNumberChange(nums);
-  };
-
-  // TODO: use react query mutate
-  // const postPinCodeMutate = useMutation('postPinCode', () => userAPI.postPinCode(savedUserInfo.id, pinNumber));
-  // const { data, isLoading, mutate } = useMutation('postAccessTokenByPinCode', () =>
-  //   userAPI.postAccessTokenByPinCode(pinNumber)
-  // );
-
-  const setUserId = useSetRecoilState(userId);
-  const navigate = useNavigate();
-  const getAccessToken = async () => {
-    try {
-      const data = await userAPI.postAccessTokenByPinCode(pinNumber2);
-      localStorage.setItem('accessToken', data.accessToken);
-      setUserId({ id: jwtDecoder<MyToken>(data.accessToken).userId });
-
-      navigate('/home');
-    } catch (e) {
-      console.log('get access token error:', e);
-      localStorage.removeItem('accessToken');
-      setUserId({ id: 0 });
-    }
-  };
-
-  const { refetch } = useQuery(
-    'postPinCode',
-    () => {
-      userAPI.postPinCode(id, pinNumber1);
-    },
-    {
-      enabled: false,
-      onSuccess: () => {
-        return <CongratePage />;
-      },
-      onError: (error) => {
-        alert(error);
-      },
-    }
-  );
+  const { getAccessToken } = usePinNumberRepost(loginPinNumber);
 
   useEffect(() => {
     if (loginPinNumber.length === PASSWORD_MAX_LENGTH && accessToken === null) {
       getAccessToken();
     }
     if (pinNumber2.length === PASSWORD_MAX_LENGTH && pinNumber2 === pinNumber1 && accessToken !== null) {
-      refetch();
+      refetchPinNumber();
     }
   }, [pinNumber1, pinNumber2, accessToken]);
 
@@ -199,15 +108,6 @@ const RadioInputWrapper = styled.div`
   justify-content: center;
   gap: 20px;
 `;
-
-// const InputWrapper = styled.div`
-//   width: 100%;
-//   height: 60px;
-//   display: flex;
-//   flex-direction: row;
-//   justify-content: center;
-//   align-items: center;
-// `;
 
 const PinNumInputContainer = styled.input`
   display: none;
