@@ -9,9 +9,8 @@ import Icon from '../common/elem/Icon';
 import ModalBox from '../common/elem/ModalBox';
 import CloseIconBtn from '../common/elem/btn/CloseIconBtn';
 
+import useUserGoalsData from '../../hooks/useUserGoalsData';
 import useGoalsFilter, { FilterType } from '../../hooks/useGoalsFilter';
-
-import { IGoal } from '../../interfaces/interfaces';
 
 const filters = [FilterType.success, FilterType.fail, FilterType.waiting, FilterType.working];
 
@@ -30,25 +29,21 @@ const filterKR = (filterType: FilterType) => {
   }
 };
 
-interface MyFilteredGoalsProps {
-  isLoading: boolean;
-  isError: boolean;
-  goals: Array<IGoal>;
-}
-
-const MyFilteredGoals = ({ isLoading, isError, goals }: MyFilteredGoalsProps) => {
+const MyFilteredGoals = ({ userId }: { userId: number }) => {
   const [showFilters, setShowFilters] = useState<boolean>(false);
   const handleFilterModal = () => {
     setShowFilters(!showFilters);
   };
 
-  const { filterType, orderType, filtered, handleFilterType, handleOrderType } = useGoalsFilter({ goals });
+  const { isLoading, isError, filterType, orderType, filtered, handleFilterType, handleOrderType } = useGoalsFilter({
+    userId,
+  });
 
   return (
     <Wrapper>
       <TopContent>
         <Content>
-          <Total>{`전체 ${goals.length}개`}</Total>
+          <Total>{`전체 ${filtered.length}개`}</Total>
           <BtnWrapper>
             <FilterButton onClick={handleFilterModal}>
               <Label>필터</Label>
