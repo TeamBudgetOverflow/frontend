@@ -1,7 +1,5 @@
 import React from 'react';
-
-import GoogleLogo from '../../../assets/icons/ico_Google_logo.svg';
-import TextButton from '../../common/elem/TextButton';
+import LoginButton from '../../common/elem/LoginButton';
 
 const GoogleSignupButton = () => {
   const handleGoogleSignup = () => {
@@ -10,7 +8,7 @@ const GoogleSignupButton = () => {
 
   return (
     <>
-      <TextButton text='구글로 계속하기' onClickHandler={handleGoogleSignup} />
+      <LoginButton method='google' text='구글로 계속하기' onClickHandler={handleGoogleSignup} />
     </>
   );
 };

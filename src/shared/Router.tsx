@@ -27,12 +27,14 @@ import SearchGoals from '../pages/SearchGoals';
 import DetailUser from '../pages/DetailUser';
 import EditUserProfile from '../pages/EditUserProfile';
 import Prepare from '../pages/Prepare';
+import SplashPage from '../pages/SplashPage';
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<PublicLayout />}>
+          <Route path='/landing' element={<SplashPage />} />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/kakaologin' element={<KakaoLogin />} />
           <Route path='/naverlogin' element={<NaverLogin />} />

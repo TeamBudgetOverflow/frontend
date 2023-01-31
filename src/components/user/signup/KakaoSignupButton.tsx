@@ -1,6 +1,6 @@
 import React from 'react';
+import LoginButton from '../../common/elem/LoginButton';
 
-import KakaoLogo from '../../../assets/icons/ico_KakaoTalk_logo.svg';
 import TextButton from '../../common/elem/TextButton';
 
 const KakaoSignupButton = () => {
@@ -10,7 +10,7 @@ const KakaoSignupButton = () => {
 
   return (
     <>
-      <TextButton text='카카오로 계속하기' onClickHandler={handleKakaoSignup} />
+      <LoginButton method='kakao' text='카카오로 계속하기' onClickHandler={handleKakaoSignup} />
     </>
   );
 };
