@@ -15,10 +15,10 @@ import {
   IModifyGoal,
   IBalance,
   IUpdateUserProfile,
+  IUserBadge,
   ISearchFilter,
   ISearchGoal,
   ISearchGoalResult,
-  IUserBadge,
 } from '../interfaces/interfaces';
 
 const BASE_URL = process.env.REACT_APP_API_ENDPOINT;

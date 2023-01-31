@@ -13,15 +13,7 @@ const DetailUser = () => {
   const navigate = useNavigate();
   if (!id) return <>잘못된 아이디 값입니다</>;
 
-  // TODO: get user badges data
-  const {
-    isLoading: isLoadingGoals,
-    isError: isErrorGoals,
-    totalCnt,
-    successCnt,
-    workingCnt,
-    data: goals,
-  } = useUserGoalsData({ getUserId: Number(id) });
+  const { totalCnt, successCnt, workingCnt } = useUserGoalsData({ getUserId: Number(id) });
 
   const handleUserEdit = () => {
     navigate(`/users/edit/${id}`);
@@ -42,14 +34,7 @@ const DetailUser = () => {
         </BtnWrapper>
       </TopContent>
       <UserContentBox topContentHeight={topContentHeight}>
-        <UserDetailTab
-          isLoadingGoals={isLoadingGoals}
-          isLoadingBadges={false}
-          isErrorGoals={isErrorGoals}
-          isErrorBadges={false}
-          goals={goals}
-          badges={[]}
-        />
+        <UserDetailTab userId={Number(id)} />
       </UserContentBox>
     </Wrapper>
   );
