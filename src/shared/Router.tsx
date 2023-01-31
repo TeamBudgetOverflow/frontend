@@ -28,6 +28,7 @@ import DetailUser from '../pages/DetailUser';
 import EditUserProfile from '../pages/EditUserProfile';
 import Prepare from '../pages/Prepare';
 import UserSettings from '../pages/UserSettings';
+import WelcomePage from '../pages/WelcomePage';
 
 const Router = () => {
   return (
@@ -63,6 +64,7 @@ const Router = () => {
           <Route path='/chats' element={<Prepare />} />
           <Route path='/users/settings/:id' element={<UserSettings />} />
         </Route>
+        <Route path='/welcome' element={<WelcomePage />} />
         <Route path='/' element={<Redirect />} />
       </Routes>
     </BrowserRouter>

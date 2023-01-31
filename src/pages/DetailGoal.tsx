@@ -19,12 +19,13 @@ import ParticipantSection from '../components/goal/detail/ParticipantSection';
 import { userId } from '../recoil/userAtoms';
 
 import useGoalDetailData from '../hooks/useGoalDetailData';
+import { GoalStatus } from '../interfaces/interfaces';
 
 const setButton = (
   goalId: number,
   createdUserId: number,
   loginUserId: number,
-  isWorking: boolean,
+  status: GoalStatus,
   isGroup: boolean,
   isMember: boolean
 ) => {
@@ -32,10 +33,10 @@ const setButton = (
     return (
       <GoalButtonSet>
         <GoalModifyButton isGroup={isGroup} />
-        {isWorking ? <></> : <GoalDeleteButton goalId={goalId} />}
+        {status === GoalStatus.proceeding ? <></> : <GoalDeleteButton goalId={goalId} />}
       </GoalButtonSet>
     );
-  } else if (isGroup && !isWorking) {
+  } else if (isGroup && status === GoalStatus.recruit) {
     return (
       <GoalButtonSet>{isMember ? <WithDrawButton goalId={goalId} /> : <JoinButton goalId={goalId} />}</GoalButtonSet>
     );
@@ -53,7 +54,7 @@ const DetailGoal = () => {
     data,
     isGroupVal: isGroup,
     isMemberVal: isMember,
-    isWorkingVal: isWorking,
+    status,
     accountId,
     balanceId,
   } = useGoalDetailData({ loginUserId, goalId });
@@ -77,7 +78,11 @@ const DetailGoal = () => {
           />
           <GoalPeriodCard startDate={data.startDate} endDate={data.endDate} />
           <GoalDescCard description={data.description} />
-          {isMember && isWorking ? <GoalBalanceCard balanceId={balanceId} accountId={accountId} /> : <></>}
+          {isMember && status === GoalStatus.proceeding ? (
+            <GoalBalanceCard balanceId={balanceId} accountId={accountId} />
+          ) : (
+            <></>
+          )}
         </TopContent>
         <BottomContent>
           {isMember ? <GoalAccountInfo accountId={accountId} /> : <></>}
@@ -93,7 +98,7 @@ const DetailGoal = () => {
           )}
         </BottomContent>
       </DetailGoalWrapper>
-      {setButton(Number(goalId), data.userId, loginUserId, isWorking, isGroup, isMember)}
+      {setButton(Number(goalId), data.userId, loginUserId, status, isGroup, isMember)}
     </Wrapper>
   );
 };

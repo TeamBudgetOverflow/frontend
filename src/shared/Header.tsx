@@ -21,14 +21,17 @@ const Header = (props: HeaderProps, ref: Ref<HTMLDivElement>) => {
     showChatBtn,
     showPrevBtn,
     showSearchBar,
+    keyword,
     handlePrevClick,
     handleChatClick,
     handleSearchClick,
+    handleKeywordChange,
+    handleKeypress,
   } = useHeaderState({ pathname });
 
   return (
     <HeaderLayout ref={ref}>
-      {pathname === '/home' ? <Logo size={52} /> : <></>}
+      {pathname === '/home' ? <Logo type='small' size={52} /> : <></>}
       <Button show={showPrevBtn} onClick={handlePrevClick}>
         <Icon
           width={showPrevBtn ? 32 : 0}
@@ -40,7 +43,12 @@ const Header = (props: HeaderProps, ref: Ref<HTMLDivElement>) => {
         />
       </Button>
       <SearchBarWrapper>
-        <SearchBar show={showSearchBar} />
+        <SearchBar
+          show={showSearchBar}
+          value={keyword}
+          changeHandler={handleKeywordChange}
+          keyPressHandler={handleKeypress}
+        />
       </SearchBarWrapper>
       <PageNameWrapper>
         <PageName show={!showSearchBar}>{pageName}</PageName>
@@ -84,6 +92,7 @@ const HeaderLayout = styled.div`
 `;
 
 const SearchBarWrapper = styled.div`
+  z-index: 1;
   margin-left: 20px;
   width: 100%;
 `;
@@ -107,7 +116,7 @@ const PageNameWrapper = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 3;
+  z-index: 0;
   padding: 8px 22px;
   display: flex;
   flex-direction: row;

@@ -1,87 +1,66 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
+import React, { useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
-import jwtDecoder from 'jwt-decode';
+import Logo from '../components/common/elem/Logo';
+import RadioInput from '../components/common/elem/RadioInput';
 
-import { userAPI } from '../apis/client';
-
-import { MyToken } from '../interfaces/interfaces';
 import { userId } from '../recoil/userAtoms';
 
-const PASSWORD_MAX_LENGTH = 6;
+import usePinNumberKeypad from '../hooks/usePinNumberKeypad';
+import usePinNumberSignupPost from '../hooks/usePinNumberSignupPost';
+import usePinNumberRepost from '../hooks/usePinNumberRepost';
 
-// TODO: keypad 디자인이랑 똑같게
-// TODO: pinnumber 시간지나면 안보이게
 const PinNumberPage = () => {
-  const numberInit = Array.from({ length: 10 }, (v, k) => k);
-
-  const [numbers, setNumbers] = useState(numberInit);
-  const [pinNumber, setPinNumber] = useState('');
-
-  useEffect(() => {
-    const numbers: number[] = [];
-    for (let i = 0; i < 10; i++) {
-      numbers.push(i);
-    }
-
-    const shuffleNums: number[] = [];
-    for (let n = 0; n < 10; n++) {
-      const index = Math.floor(Math.random() * numbers.length); // 0 ~ 8까지의 인덱스 번호
-      shuffleNums.push(numbers[index]);
-      numbers.splice(index, 1);
-    }
-
-    setNumbers(shuffleNums);
-  }, []);
-
-  const handlePinNumberChange = (num: number) => {
-    setPinNumber(pinNumber + num.toString());
-  };
-
-  const erasePinNumberOne = () => {
-    setPinNumber(pinNumber.slice(0, pinNumber.length === 0 ? 0 : pinNumber.length - 1));
-  };
-
-  const inputNums = (nums: number) => () => {
-    handlePinNumberChange(nums);
-  };
-
-  // TODO: use react query mutate
-  // const postPinCodeMutate = useMutation('postPinCode', () => userAPI.postPinCode(savedUserInfo.id, pinNumber));
-  // const { data, isLoading, mutate } = useMutation('postAccessTokenByPinCode', () =>
-  //   userAPI.postAccessTokenByPinCode(pinNumber)
-  // );
+  const { id } = useRecoilValue(userId);
+  const PASSWORD_MAX_LENGTH = 6;
   const accessToken = localStorage.getItem('accessToken');
-  const setUserId = useSetRecoilState(userId);
-  const navigate = useNavigate();
-  const getAccessToken = async () => {
-    try {
-      const data = await userAPI.postAccessTokenByPinCode(pinNumber);
-      localStorage.setItem('accessToken', data.accessToken);
-      setUserId({ id: jwtDecoder<MyToken>(data.accessToken).userId });
 
-      navigate('/home');
-    } catch (e) {
-      console.log('get access token error:', e);
-      localStorage.removeItem('accessToken');
-      setUserId({ id: 0 });
-    }
-  };
+  const { numbers, pinNumber1, pinNumber2, loginPinNumber, erasePinNumberOne, inputNums } = usePinNumberKeypad({
+    PASSWORD_MAX_LENGTH,
+    accessToken,
+  });
+
+  const { refetch: refetchPinNumber } = usePinNumberSignupPost({
+    id,
+    pinNumber2,
+  });
+
+  const { getAccessToken } = usePinNumberRepost(loginPinNumber);
 
   useEffect(() => {
-    if (pinNumber.length === PASSWORD_MAX_LENGTH && accessToken === null) {
+    if (loginPinNumber.length === PASSWORD_MAX_LENGTH && accessToken === null) {
       getAccessToken();
     }
-  }, [pinNumber, accessToken]);
+    if (pinNumber2.length === PASSWORD_MAX_LENGTH && pinNumber2 === pinNumber1 && accessToken !== null) {
+      refetchPinNumber();
+    }
+  }, [pinNumber1, pinNumber2, accessToken]);
 
   return (
     <Wrapper>
-      <Text>핀번호를 입력해주세요.</Text>
-      <InputWrapper>
-        <PinNumInputContainer type='password' defaultValue={pinNumber} />
-      </InputWrapper>
+      <TextWrapper>
+        {accessToken && pinNumber1.length !== PASSWORD_MAX_LENGTH ? (
+          <Text>
+            <Logo type='small' size={52} />
+            &nbsp;에서 사용할 <br />
+            핀번호를 설정하세요.
+          </Text>
+        ) : (
+          <Text>핀번호를 확인해주세요.</Text>
+        )}
+        <InputWrapper>
+          <GuideText>숫자 6자리</GuideText>
+          <RadioInputWrapper>
+            {accessToken === null && loginPinNumber.length !== PASSWORD_MAX_LENGTH
+              ? Array.from(loginPinNumber).map((pin) => <RadioInput key={pin} />)
+              : accessToken && pinNumber1.length !== PASSWORD_MAX_LENGTH
+              ? Array.from(pinNumber1).map((pin) => <RadioInput key={pin} />)
+              : Array.from(pinNumber2).map((pin) => <RadioInput key={pin} />)}
+          </RadioInputWrapper>
+        </InputWrapper>
+      </TextWrapper>
+      <PinNumInputContainer type='password' defaultValue={pinNumber1} />
       <KeypadWrapper>
         {numbers.map((n) => (
           <NumButtonFlex key={n} value={n} onClick={inputNums(n)}>
@@ -95,33 +74,55 @@ const PinNumberPage = () => {
 };
 
 const Wrapper = styled.div`
-  padding-top: 46px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  background-color: ${(props) => props.theme.primary900};
+`;
+
+const TextWrapper = styled(Wrapper)`
+  margin-top: 140px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  height: calc(100% - 46px);
   width: 100%;
-  gap: 50px;
+  height: 180px;
 `;
 
 const Text = styled.div`
   font: ${(props) => props.theme.headingH2};
+  color: white;
+  text-align: center;
 `;
 
 const InputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
   width: 100%;
-  height: 60px;
+`;
+
+const GuideText = styled.div`
+  font: ${(props) => props.theme.captionC1};
+  color: white;
+`;
+
+const RadioInputWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  height: 20px;
 `;
 
 const PinNumInputContainer = styled.input`
-  font: ${(props) => props.theme.headingH1};
-  text-align: center;
-  border: none;
+  display: none;
 `;
 
 const KeypadWrapper = styled.div`
@@ -143,6 +144,7 @@ const NumButtonFlex = styled.button`
   border: none;
   background-color: transparent;
   font: ${(props) => props.theme.headingH1};
+  color: white;
   overflow: hidden;
   position: relative;
   :hover {

@@ -1,41 +1,62 @@
-import React, { useState, useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
-import { useQuery } from 'react-query';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import BadgeBox from '../common/elem/BadgeBox';
 import Alert from '../common/alert/Alert';
 import LoadingMsg from '../common/elem/LoadingMsg';
-
-import { userAPI } from '../../apis/client';
-
-import { userId } from '../../recoil/userAtoms';
+import ErrorMsg from '../common/elem/ErrorMsg';
+import ModalBox from '../common/elem/ModalBox';
+import CloseIconBtn from '../common/elem/btn/CloseIconBtn';
 
 import { IBadge } from '../../interfaces/interfaces';
 
-const MyFilteredBadges = () => {
-  const { id } = useRecoilValue(userId);
-  const [badges, setBadges] = useState<Array<IBadge>>([{ title: '뱃지', description: '' }]);
-  const { isLoading, data } = useQuery<Array<IBadge>>('userBadges', () => userAPI.getUserBadges(id));
+import useUserBadgesData from '../../hooks/useUserBadgesData';
 
-  useEffect(() => {
-    if (!data) return;
-    setBadges(data);
-  }, [data]);
+const MyFilteredBadges = ({ userId }: { userId: number }) => {
+  const { isLoading, isError, userBadges } = useUserBadgesData({ getUserId: userId });
+  const [selected, setSelected] = useState<IBadge>({ badgeId: 0, title: '', description: '', image: '' });
+  const [showDetail, setShowDetail] = useState<boolean>(false);
 
   return (
     <Wrapper>
-      {isLoading || !badges ? (
+      {isLoading && !userBadges ? (
         <Alert height='100%' showBgColor={true}>
           <LoadingMsg />
         </Alert>
       ) : (
-        <Row>
-          {badges.map((badge) => (
-            <BadgeBox key={badge.title}></BadgeBox>
-          ))}
-        </Row>
+        <>
+          {isError || !userBadges ? (
+            <Alert height='100%' showBgColor={true}>
+              <ErrorMsg />
+            </Alert>
+          ) : (
+            <Row>
+              {userBadges.map((badge) => (
+                <BadgeBoxWrapper
+                  key={badge.title}
+                  onClick={() => {
+                    setShowDetail(true);
+                    setSelected(badge);
+                  }}>
+                  <BadgeBox imgURL={badge.image} />
+                </BadgeBoxWrapper>
+              ))}
+            </Row>
+          )}
+        </>
       )}
+      <ModalBox show={showDetail}>
+        <BtnWrapper>
+          <CloseIconBtn color='black' closeHandler={() => setShowDetail(false)} />
+        </BtnWrapper>
+        <Content>
+          <BadgeBox imgURL={selected.image} />
+          <Text>
+            <Name>{`${selected.badgeId}.${selected.title}`}</Name>
+            <Description>{selected.description.replace('.', '\n')}</Description>
+          </Text>
+        </Content>
+      </ModalBox>
     </Wrapper>
   );
 };
@@ -55,6 +76,42 @@ const Row = styled.div`
   row-gap: 20px;
   column-gap: 35px;
   flex-wrap: wrap;
+`;
+
+const BadgeBoxWrapper = styled.div`
+  width: 100px;
+  height: 100px;
+`;
+
+const BtnWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 100%;
+`;
+
+const Content = styled.div`
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+`;
+
+const Text = styled(Content)`
+  gap: 8px;
+`;
+
+const Name = styled.div`
+  font: ${(props) => props.theme.paragraphsP3M};
+`;
+
+const Description = styled.div`
+  font: ${(props) => props.theme.captionC2};
+  line-height: 150%;
+  text-align: center;
+  white-space: pre-wrap;
 `;
 
 export default MyFilteredBadges;

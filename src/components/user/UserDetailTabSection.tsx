@@ -3,30 +3,10 @@ import styled from 'styled-components';
 
 import MyFilteredGoals from '../goal/MyFilteredGoals';
 import MyFilteredBadges from '../badge/MyFilteredBadges';
-import Alert from '../common/alert/Alert';
-import LoadingMsg from '../common/elem/LoadingMsg';
-
-import { IBadge, IGoal } from '../../interfaces/interfaces';
 
 import useTab from '../../hooks/useTab';
 
-interface UserDetailTabProps {
-  isLoadingGoals: boolean;
-  isLoadingBadges: boolean;
-  isErrorGoals: boolean;
-  isErrorBadges: boolean;
-  goals?: Array<IGoal>;
-  badges: Array<IBadge>;
-}
-
-const UserDetailTab = ({
-  isLoadingGoals,
-  isLoadingBadges,
-  isErrorGoals,
-  isErrorBadges,
-  goals,
-  badges,
-}: UserDetailTabProps) => {
+const UserDetailTab = ({ userId }: { userId: number }) => {
   const { tabs, handleTabClick } = useTab();
 
   return (
@@ -39,24 +19,16 @@ const UserDetailTab = ({
         ))}
       </TabList>
       <ContentBox>
-        {isLoadingGoals || !goals ? (
-          <Alert showBgColor={true}>
-            <LoadingMsg />
-          </Alert>
-        ) : (
-          tabs.map((tab) => {
-            if (tab.isSelected) {
-              switch (tab.title) {
-                case '목표':
-                  return (
-                    <MyFilteredGoals key={tab.title} isLoading={isLoadingGoals} isError={isErrorGoals} goals={goals} />
-                  );
-                case '뱃지':
-                  return <MyFilteredBadges key={tab.title} />;
-              }
+        {tabs.map((tab) => {
+          if (tab.isSelected) {
+            switch (tab.title) {
+              case '목표':
+                return <MyFilteredGoals key={tab.title} userId={userId} />;
+              case '뱃지':
+                return <MyFilteredBadges key={tab.title} userId={userId} />;
             }
-          })
-        )}
+          }
+        })}
       </ContentBox>
     </Wrapper>
   );

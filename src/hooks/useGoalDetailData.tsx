@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { useQuery } from 'react-query';
 
-import { IGoalDetail } from '../interfaces/interfaces';
+import { GoalStatus, IGoalDetail } from '../interfaces/interfaces';
 
 import { goalApi } from '../apis/client';
 
-import { isGroup, isMember, isWorking } from '../utils/goalInfoChecker';
+import { getGoalStatus, isGroup, isMember } from '../utils/goalInfoChecker';
 import { accountIdFinder, balanceIdFinder } from '../utils/accountInfoChecker';
 
 import { goalDetail } from '../recoil/goalsAtoms';
@@ -24,7 +24,7 @@ const fetchGoalDetail = (goalId: string) => {
 const useGoalDetailData = ({ loginUserId, goalId }: useGoalStateProps) => {
   const [isGroupVal, setIsGroup] = useState<boolean>(false);
   const [isMemberVal, setIsMember] = useState<boolean>(false);
-  const [isWorkingVal, setIsWorking] = useState<boolean>(false);
+  const [status, setStatus] = useState<GoalStatus>(GoalStatus.proceeding);
   const [accountId, setAccountId] = useState<number>(0);
   const [balanceId, setBalanceId] = useState<number>(0);
   const setGoalDetail = useSetRecoilState(goalDetail);
@@ -34,7 +34,7 @@ const useGoalDetailData = ({ loginUserId, goalId }: useGoalStateProps) => {
       setGoalDetail(data);
       setIsGroup(isGroup(data.headCount));
       setIsMember(isMember(loginUserId, data.members));
-      setIsWorking(isWorking(new Date(data.startDate), new Date(data.endDate)));
+      setStatus(getGoalStatus(new Date(data.startDate), new Date(data.endDate)));
       setAccountId(accountIdFinder(data.members, loginUserId));
       setBalanceId(balanceIdFinder(data.members, loginUserId));
     },
@@ -45,7 +45,7 @@ const useGoalDetailData = ({ loginUserId, goalId }: useGoalStateProps) => {
     },
   });
 
-  return { isLoading, isError, data, isGroupVal, isMemberVal, isWorkingVal, accountId, balanceId };
+  return { isLoading, isError, data, isGroupVal, isMemberVal, status, accountId, balanceId };
 };
 
 export default useGoalDetailData;
