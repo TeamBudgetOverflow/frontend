@@ -3,13 +3,14 @@ import styled from 'styled-components';
 
 interface ModalBoxProps {
   show: boolean;
+  bgColor?: string;
   children: React.ReactNode;
 }
 
-const ModalBox: FunctionComponent<ModalBoxProps> = ({ show, children }) => {
+const ModalBox: FunctionComponent<ModalBoxProps> = ({ show, children, bgColor }) => {
   return (
     <Wrapper show={show}>
-      <Modal>
+      <Modal bgColor={bgColor}>
         <ContentWrapper>{children}</ContentWrapper>
       </Modal>
     </Wrapper>
@@ -27,14 +28,14 @@ const Wrapper = styled.div<{ show: boolean }>`
   background-color: rgba(0, 0, 0, 0.5);
 `;
 
-const Modal = styled.div`
+const Modal = styled.div<{ bgColor?: string }>`
   position: absolute;
   bottom: 0;
   left: 0;
   padding: 22px;
   width: calc(100% - 44px);
   border-radius: 16px 16px 0 0;
-  background-color: white;
+  background-color: ${(props) => (props.bgColor ? `${props.bgColor}` : 'white')};
 `;
 
 const ContentWrapper = styled.div`
