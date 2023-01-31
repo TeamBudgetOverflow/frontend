@@ -13,7 +13,7 @@ const RefreshLayout = () => {
       return;
     }
     if (!accessToken && !refreshToken) {
-      navigate('/');
+      navigate('/login');
       return;
     }
   }, [accessToken, refreshToken]);
