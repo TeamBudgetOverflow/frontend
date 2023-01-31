@@ -27,6 +27,7 @@ import SearchGoals from '../pages/SearchGoals';
 import DetailUser from '../pages/DetailUser';
 import EditUserProfile from '../pages/EditUserProfile';
 import Prepare from '../pages/Prepare';
+import UserSettings from '../pages/UserSettings';
 
 const Router = () => {
   return (
@@ -60,6 +61,7 @@ const Router = () => {
           <Route path='/users/:id' element={<DetailUser />} />
           <Route path='/users/edit/:id' element={<EditUserProfile />} />
           <Route path='/chats' element={<Prepare />} />
+          <Route path='/users/settings/:id' element={<UserSettings />} />
         </Route>
         <Route path='/' element={<Redirect />} />
       </Routes>
