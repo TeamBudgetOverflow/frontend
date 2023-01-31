@@ -1,9 +1,12 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 import Header from './Header';
 import Navigation from './Navigation';
+
+import { userId } from '../recoil/userAtoms';
 
 const AuthLayout = () => {
   const accessToken = localStorage.getItem('accessToken');
@@ -24,13 +27,15 @@ const AuthLayout = () => {
   const headerRef = useRef<HTMLDivElement>(null);
   const [headerNavHeight, setHeaderNavHeight] = useState<number>(0);
 
+  const { id } = useRecoilValue(userId);
   useEffect(() => {
     if (!headerRef.current) return;
     if (
       (pathname.includes('/goals/') && !pathname.includes('lookup')) ||
       pathname.includes('/accounts') ||
       pathname.includes('/chats') ||
-      pathname.includes('/users/edit')
+      pathname.includes('/users/edit') ||
+      (pathname.includes('/users/') && pathname !== `/users/${id}`)
     ) {
       return setHeaderNavHeight(headerRef.current.clientHeight);
     }
