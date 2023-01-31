@@ -1,4 +1,4 @@
-import React, { Ref, forwardRef } from 'react';
+import React, { Ref, forwardRef, useState } from 'react';
 import { useLocation } from 'react-router';
 import styled from 'styled-components';
 
@@ -21,9 +21,12 @@ const Header = (props: HeaderProps, ref: Ref<HTMLDivElement>) => {
     showChatBtn,
     showPrevBtn,
     showSearchBar,
+    keyword,
     handlePrevClick,
     handleChatClick,
     handleSearchClick,
+    handleKeywordChange,
+    handleKeypress,
   } = useHeaderState({ pathname });
 
   return (
@@ -40,7 +43,12 @@ const Header = (props: HeaderProps, ref: Ref<HTMLDivElement>) => {
         />
       </Button>
       <SearchBarWrapper>
-        <SearchBar show={showSearchBar} />
+        <SearchBar
+          show={showSearchBar}
+          value={keyword}
+          changeHandler={handleKeywordChange}
+          keyPressHandler={handleKeypress}
+        />
       </SearchBarWrapper>
       <PageNameWrapper>
         <PageName show={!showSearchBar}>{pageName}</PageName>

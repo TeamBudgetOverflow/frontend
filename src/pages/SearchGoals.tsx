@@ -1,84 +1,107 @@
-import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import React, { useState, useEffect, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import GroupGoalCards from '../components/goal/GroupGoalCard';
-import ModalBox from '../components/common/elem/ModalBox';
-import SearchFilterSetter from '../components/goal/searchFilter/SearchFilterSetter';
 import Info from '../components/common/alert/Info';
-
-import { showSearchFilters } from '../recoil/goalsAtoms';
-
-import useSearchFilteredData from '../hooks/useSearchFilteredData';
-import useSearchFilterCoditionState from '../hooks/useSearchFilterState';
 import Alert from '../components/common/alert/Alert';
 import LoadingMsg from '../components/common/elem/LoadingMsg';
 import ErrorMsg from '../components/common/elem/ErrorMsg';
+import FilterTag from '../components/common/tag/FilterTag';
+import GroupGoalCards from '../components/goal/GroupGoalCard';
+import ModalBox from '../components/common/elem/ModalBox';
+import FiltersModal from '../components/goal/searchFilter/FiltersModal';
 
-enum SearchFilterType {
-  status,
-  amount,
-  period,
-  member,
-  none,
-}
+import { SearchFilterType, searchFilterKR } from '../components/goal/searchFilter/FiltersModal';
 
-const searchFilters = [
-  SearchFilterType.status,
-  SearchFilterType.amount,
-  SearchFilterType.period,
-  SearchFilterType.member,
-];
+import useSearchFilteredData from '../hooks/useSearchFilteredData';
+import useSearchFilterState from '../hooks/useSearchFilterState';
 
-const searchFilterKR = (filterType: SearchFilterType) => {
-  switch (filterType) {
-    case SearchFilterType.status:
-      return '진행상태';
-    case SearchFilterType.amount:
-      return '목표금액';
-    case SearchFilterType.period:
-      return '진행기간';
-    case SearchFilterType.member:
-      return '모집인원';
-    default:
-      return '';
-  }
-};
+import {
+  StatusTypetoString,
+  OrderTypetoString,
+  SortTypetoString,
+  StatusTypeKR,
+  StatusType,
+  SortType,
+} from '../interfaces/interfaces';
+import useSearchFilterTags from '../hooks/useSearchFilterTags';
 
 const SearchGoals = () => {
-  const [searchFilterType, setSearchFilterType] = useState<SearchFilterType>(SearchFilterType.none);
-
-  const { search } = useLocation();
-  const keyword = search.split('=')[1];
+  const [searchParams] = useSearchParams();
+  const [keyword, setKeyword] = useState<string | null>('');
+  useEffect(() => {
+    const keyword = searchParams.get('keyword');
+    setKeyword(keyword);
+  }, [searchParams]);
 
   const {
-    filterSorted,
-    filterOrdered,
-    filterRangeMin,
-    filterRangeMax,
-    filterStatus,
-    pageNumber,
-    handlePageNumberChange,
-  } = useSearchFilterCoditionState();
+    filter,
+    orderType,
+    page,
+    handleFilterChange,
+    handleStatusChange,
+    handleSortChange,
+    handleRangeChange,
+    handleOrderTypeChange,
+    handlePageChange,
+  } = useSearchFilterState();
+  const handleFilterInputChange = (status: StatusType, sortType: SortType, min: number, max: number) => {
+    handleFilterChange(status, sortType, min, max);
+  };
+  const { filterTags, handleFilterAdd, handleFilterRemove, handleFiltersReset } = useSearchFilterTags({
+    statusChangeHandler: handleStatusChange,
+    sortChangeHandler: handleSortChange,
+    rangeChangeHandler: handleRangeChange,
+  });
+  useEffect(() => {
+    handleFiltersReset();
+    switch (filter.sorted) {
+      case SortType.amount:
+        handleFilterAdd(SearchFilterType.amount, `${filter.min.toLocaleString()}원 ~ ${filter.max.toLocaleString()}원`);
+        break;
+      case SortType.period:
+        handleFilterAdd(SearchFilterType.period, `${filter.min}일 ~ ${filter.max}일`);
+        break;
+      case SortType.member:
+        handleFilterAdd(SearchFilterType.member, `${filter.min}명 ~ ${filter.max}명`);
+        break;
+      case SortType.none:
+        handleFiltersReset();
+    }
 
-  const { isLoading, isError, data } = useSearchFilteredData({
-    queries: {
-      keyword: keyword,
-      sorted: filterSorted,
-      orderd: filterOrdered,
-      min: filterRangeMin,
-      max: filterRangeMax,
-      status: filterStatus,
-      page: pageNumber,
-    },
+    handleFilterAdd(SearchFilterType.status, StatusTypeKR(filter.status));
+  }, [filter]);
+
+  const { isLoading, isError, searchGoals, isLastPage, totalCnt } = useSearchFilteredData({
+    keyword: keyword,
+    status: StatusTypetoString(filter.status),
+    ordered: OrderTypetoString(orderType),
+    sorted: SortTypetoString(filter.sorted),
+    min: filter.min,
+    max: filter.max,
+    page,
   });
 
-  const showSearchFiltersModal = useRecoilValue(showSearchFilters);
-  const setShowSearchFiltersModal = useSetRecoilState(showSearchFilters);
-  const handleOnClickShowSearchFilters = () => {
-    setShowSearchFiltersModal(!showSearchFiltersModal);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const handleFilterModal = (show: boolean) => {
+    setShowModal(show);
   };
+
+  const scrollBoxRef = useRef<HTMLDivElement>(null);
+  const isScrollBottom = () => {
+    if (!scrollBoxRef.current) return;
+    if (scrollBoxRef.current.scrollHeight - scrollBoxRef.current.scrollTop === scrollBoxRef.current.clientHeight) {
+      handlePageChange(page + 1);
+      localStorage.setItem('scrollTop', String(scrollBoxRef.current.scrollTop));
+    }
+  };
+
+  useEffect(() => {
+    if (!scrollBoxRef.current) return;
+    if (page === 1) return localStorage.setItem('scrollTop', '0');
+    const scrollTop = localStorage.getItem('scrollTop');
+    scrollBoxRef.current.scrollTop = Number(scrollTop);
+  }, [searchGoals]);
 
   if (isLoading)
     return (
@@ -101,23 +124,25 @@ const SearchGoals = () => {
   return (
     <Wrapper>
       <TopContentWrapper>
-        <div>전체 {data ? data.result.length : 0}개</div>
+        <Total>전체 {totalCnt}개</Total>
         <FiltersBox>
-          {searchFilters.map((filter) => (
-            <FilterButton
-              key={filter}
-              selected={searchFilterType === filter}
-              onClick={() => {
-                handleOnClickShowSearchFilters();
-              }}>
-              {searchFilterKR(filter)}
-            </FilterButton>
-          ))}
+          {filterTags.map((filter) =>
+            filter.value.length === 0 ? (
+              <TagWrapper key={filter.type} onClick={() => handleFilterModal(true)}>
+                <FilterTag value={searchFilterKR(filter.type)} />
+              </TagWrapper>
+            ) : (
+              <FilterTag key={filter.type} value={filter.value} removeHandler={() => handleFilterRemove(filter.type)} />
+            )
+          )}
         </FiltersBox>
       </TopContentWrapper>
-
-      <GoalCardsWrapper>
-        {isLoading || !data ? (
+      <GoalCardsWrapper
+        ref={scrollBoxRef}
+        onScroll={() => {
+          if (!isLastPage) isScrollBottom();
+        }}>
+        {isLoading ? (
           <Alert showBgColor={true}>
             <LoadingMsg />
           </Alert>
@@ -126,12 +151,11 @@ const SearchGoals = () => {
             <ErrorMsg />
           </Alert>
         ) : (
-          data.result.map((goal) => <GroupGoalCards key={goal.goalId} goal={goal} />)
+          searchGoals.map((goal) => <GroupGoalCards key={goal.goalId} goal={goal} />)
         )}
       </GoalCardsWrapper>
-
-      <ModalBox show={showSearchFiltersModal}>
-        <SearchFilterSetter />
+      <ModalBox show={showModal}>
+        <FiltersModal changeHandler={handleFilterInputChange} closeHandler={() => handleFilterModal(false)} />
       </ModalBox>
     </Wrapper>
   );
@@ -145,11 +169,16 @@ const Wrapper = styled.div`
 `;
 
 const TopContentWrapper = styled.div`
-  padding-bottom: 8px;
+  padding: 20px 0 8px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  border-bottom: 4px solid ${(props) => props.theme.primaryMain};
+  gap: 8px;
+  border-bottom: 4px solid ${(props) => props.theme.gray100};
+`;
+
+const Total = styled.div`
+  padding: 5px 22px;
+  font: ${(props) => props.theme.captionC1};
 `;
 
 const FiltersBox = styled.div`
@@ -158,25 +187,20 @@ const FiltersBox = styled.div`
   justify-content: flex-start;
   gap: 8px;
   padding: 0px 22px;
+  overflow-x: auto;
 `;
 
-const FilterButton = styled.div<{ selected: boolean }>`
-  padding: 4px 10px;
-  font: ${(props) => props.theme.captionC1};
-  color: white;
-  border: ${(props) => (props.selected ? `2px solid ${props.theme.primary900}` : '')};
-  border-radius: 8px;
-  background-color: ${(props) => props.theme.primaryMain};
-`;
+const TagWrapper = styled.div``;
 
 const GoalCardsWrapper = styled.div`
+  padding: 20px 22px;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  overflow-y: auto;
   gap: 20px;
-  width: 100%;
-  height: 100%;
+  width: calc(100% - 44px);
+  height: calc(100% - 40px);
+  overflow-y: auto;
 `;
 
 export default SearchGoals;

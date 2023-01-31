@@ -4,12 +4,14 @@ import { useNavigate } from 'react-router-dom';
 export enum Menu {
   home,
   lookup,
+  search,
   my,
   none,
 }
 
 const pathMenuConverter = (path: string) => {
-  // if (path.includes('/goals/lookup')) return Menu.lookup;
+  if (path.includes('/goals/lookup/search')) return Menu.search;
+  if (path === '/goals/lookup') return Menu.lookup;
   if (path === '/home') return Menu.home;
   if (path.includes('/users') && !path.includes('/edit')) return Menu.my;
 
@@ -28,13 +30,23 @@ const useNavigateState = ({ pathname, userId }: useNavigateStateProps) => {
   const handleMenuSelect = (menu: Menu) => {
     switch (menu) {
       case Menu.home:
-        setSelectedMenu(Menu.home);
+        return setSelectedMenu(Menu.home);
+      case Menu.lookup:
+        return setSelectedMenu(Menu.lookup);
+      case Menu.search:
+        return setSelectedMenu(Menu.search);
+      case Menu.my:
+        return setSelectedMenu(Menu.my);
+    }
+  };
+
+  const handlePageNavigate = (menu: Menu) => {
+    switch (menu) {
+      case Menu.home:
         return navigate('/home');
       case Menu.lookup:
-        setSelectedMenu(Menu.lookup);
         return navigate('/goals/lookup');
       case Menu.my:
-        setSelectedMenu(Menu.my);
         return navigate(`/users/${userId}`);
     }
   };
@@ -47,9 +59,10 @@ const useNavigateState = ({ pathname, userId }: useNavigateStateProps) => {
 
     setShow(true);
     handleMenuSelect(pathMenuConverter(pathname));
+    handlePageNavigate(pathMenuConverter(pathname));
   }, [pathname]);
 
-  return { selectedMenu, show, handleMenuSelect };
+  return { selectedMenu, show, handleMenuSelect, handlePageNavigate };
 };
 
 export default useNavigateState;

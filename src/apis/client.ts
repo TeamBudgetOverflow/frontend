@@ -15,8 +15,10 @@ import {
   IModifyGoal,
   IBalance,
   IUpdateUserProfile,
+  ISearchFilter,
+  ISearchGoal,
   ISearchGoalResult,
-  ISearchFilterQueriesType,
+  IUserBadge,
 } from '../interfaces/interfaces';
 
 const BASE_URL = process.env.REACT_APP_API_ENDPOINT;
@@ -66,32 +68,40 @@ tokenClient.interceptors.response.use(
   }
 );
 
+refreshClient.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('refreshToken');
+    }
+
+    return Promise.reject(error.response.status);
+  }
+);
+
 export const userAPI = {
   getKakaoSignup: async (code: string) => {
-    console.log(code);
     const { data } = await noneTokenClient.post(`/users/auth/kakao?code=${code}`);
 
     return data;
   },
-
   getNaverSignup: async (code: string) => {
     const { data } = await noneTokenClient.post(`/users/auth/naver?code=${code}`);
 
     return data;
   },
-
   getGoogleSignup: async (code: string) => {
     const { data } = await noneTokenClient.post(`/users/auth/google?code=${code}`);
 
     return data;
   },
-
   postPinCode: async (userId: number, pinCode: string) => {
     const { data } = await tokenClient.post(`/users/${userId}/pincode`, { pinCode: pinCode });
 
     return data;
   },
-
   postAccessTokenByPinCode: async (pinCode: string) => {
     const { data } = await refreshClient.post('/users/pinCode', { pinCode: pinCode });
 
@@ -107,50 +117,23 @@ export const userAPI = {
 
     return data.result;
   },
-  getUserBadges: async (userId: number) => {
-    const { data } = await tokenClient.get(`/users/${userId}/badges`);
-    // const data = [
-    //   {
-    //     title: '첫 목표 생성',
-    //     description: '처음 목표를 추가하면 획득할 수 있는 뱃지입니다.',
-    //     isObtained: true,
-    //   },
-    //   {
-    //     title: '첫 목표 달성',
-    //     description:
-    //       '마감 기한까지 목표 금액을 100% 달성하면 획득할 수 있는 뱃지입니다.',
-    //     isObtained: true,
-    //   },
-    //   {
-    //     title: '첫 그룹 참여',
-    //     description: '처음 그룹 목표에 참여하면 획득할 수 있는 뱃지입니다.',
-    //     isObtained: true,
-    //   },
-    //   {
-    //     title: '첫 그룹 모집',
-    //     description: '처음 그룹 목표를 모집하면 획득할 수 있는 뱃지입니다.',
-    //     isObtained: true,
-    //   },
-    //   {
-    //     title: '첫 그룹 목표 100% 달성',
-    //     description:
-    //       '그룹 목표에서 마감 기한까지 목표 금액을 100% 달성하면 획득할 수 있는 뱃지입니다.',
-    //     isObtained: true,
-    //   },
-    //   {
-    //     title: '3회 연속 도달',
-    //     description:
-    //       '목표 금액 100% 달성을 3번 연속하면 획득할 수 있는 뱃지입니다.',
-    //     isObtained: true,
-    //   },
-    // ];
-    return data;
-  },
+  getUserBadges: async (userId: number): Promise<Array<IUserBadge>> => {
+    const { data } = await tokenClient.get(`/users/badges/${userId}`);
 
+    return data.result;
+  },
   patchEditUserProfile: async ({ userId, userProfile }: IUpdateUserProfile) => {
     const { data } = await tokenClient.patch(`/users/${userId}`, userProfile);
 
     return data;
+  },
+};
+
+export const badgeApi = {
+  getBadges: async () => {
+    const { data } = await tokenClient.get(`/users/badges`);
+
+    return data.result;
   },
 };
 
@@ -203,9 +186,9 @@ export const goalApi = {
 
     return data.result[0];
   },
-  getGoalsByWord: async ({ queries }: ISearchFilterQueriesType): Promise<ISearchGoalResult> => {
+  getGoalsByWord: async (queries: ISearchFilter): Promise<ISearchGoalResult> => {
     const { data } = await tokenClient.get(
-      `/goals/search?keyword=${queries.keyword}&sortby=${queries.sorted.sortby}&min=${queries.min}&max=${queries.max}&orderby=${queries.orderd.orderby}&status=${queries.status.status}&page=${queries.page}`
+      `/goals/search?keyword=${queries.keyword}&sortby=${queries.sorted}&min=${queries.min}&max=${queries.max}&orderby=${queries.ordered}&status=${queries.status}&page=${queries.page}`
     );
 
     return data;
