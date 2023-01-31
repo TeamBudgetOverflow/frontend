@@ -47,6 +47,12 @@ export interface IGoal {
   isPrivate: boolean;
 }
 
+export enum GoalStatus {
+  recruit,
+  proceeding,
+  done,
+}
+
 export interface IPostGoal {
   emoji: string;
   title: string;

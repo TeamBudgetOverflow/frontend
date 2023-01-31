@@ -1,4 +1,4 @@
-import { IMemeberInfo } from '../interfaces/interfaces';
+import { GoalStatus, IMemeberInfo } from '../interfaces/interfaces';
 
 export const participantFinder = (members: Array<IMemeberInfo>, userId: number) => {
   const found = members.find((member) => member.userId === userId);
@@ -7,10 +7,12 @@ export const participantFinder = (members: Array<IMemeberInfo>, userId: number) 
   return participant;
 };
 
-export const isWorking = (startDate: Date, endDate: Date) => {
+export const getGoalStatus = (startDate: Date, endDate: Date): GoalStatus => {
   const today = new Date().getTime();
 
-  return !(today > endDate.getTime() || today < startDate.getTime());
+  if (today < startDate.getTime()) return GoalStatus.recruit;
+  if (today > startDate.getTime() && today < endDate.getTime()) return GoalStatus.proceeding;
+  return GoalStatus.done;
 };
 
 export const isGroup = (headCount: number) => {
