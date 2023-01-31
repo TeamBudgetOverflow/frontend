@@ -43,7 +43,6 @@ const Router = () => {
         <Route element={<RefreshLayout />}>
           <Route path='/pinnumber' element={<PinNumberPage />} />
         </Route>
-
         <Route element={<AuthLayout />}>
           <Route path='/home' element={<Home />} />
           <Route path='/agreement' element={<AgreementOfCollectionPersonalInfo />} />

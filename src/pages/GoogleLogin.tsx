@@ -23,7 +23,12 @@ const GoogleLogin = () => {
       localStorage.setItem('refreshToken', data.refreshToken);
 
       setUserId({ id: jwtDecoder<MyToken>(data.accessToken).userId });
-      navigate('/home');
+
+      if (data.newComer === true) {
+        return navigate('/pinnumber');
+      } else {
+        return navigate('/home');
+      }
     } catch (e) {
       console.log('google signup error:', e);
       localStorage.removeItem('accessToken');

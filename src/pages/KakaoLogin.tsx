@@ -20,16 +20,15 @@ const KakaoLogin = () => {
       if (!code) return alert('잘못된 코드를 받았습니다.');
       const data = await userAPI.getKakaoSignup(code);
 
-      console.log(data);
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
 
       setUserId({ id: jwtDecoder<MyToken>(data.accessToken).userId });
 
       if (data.newComer === true) {
-        navigate('/pinnumber');
+        return navigate('/pinnumber');
       } else {
-        navigate('/home');
+        return navigate('/home');
       }
     } catch (e) {
       console.log('kakao signup error:', e);

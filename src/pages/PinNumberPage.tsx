@@ -103,9 +103,9 @@ const PinNumberPage = () => {
   );
 
   useEffect(() => {
-    // if (pinNumber1.length === PASSWORD_MAX_LENGTH && accessToken === null) {
-    //   getAccessToken();
-    // }
+    if (pinNumber1.length === PASSWORD_MAX_LENGTH && accessToken === null) {
+      getAccessToken();
+    }
     if (pinNumber2.length === PASSWORD_MAX_LENGTH && pinNumber2 === pinNumber1 && accessToken !== null) {
       refetch();
     }
