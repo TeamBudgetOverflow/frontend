@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+
+import { userId } from '../recoil/userAtoms';
 
 const useHeaderState = ({ pathname }: { pathname: string }) => {
   const navigate = useNavigate();
@@ -54,13 +57,18 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
     setShowChatBtn(true);
   };
 
+  const { id } = useRecoilValue(userId);
   useEffect(() => {
     if (pathname === '/home') {
       showChatOnly();
       return;
     }
-    if (pathname.includes('/users') && !pathname.includes('/edit')) {
+    if (pathname === `/users/${id}`) {
       showChatOnly();
+      return;
+    }
+    if (pathname.includes('/users/')) {
+      showPrevOnly();
       return;
     }
     if (pathname.includes('/edit')) {

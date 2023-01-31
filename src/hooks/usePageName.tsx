@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
+
+import { userId } from '../recoil/userAtoms';
 
 enum PageType {
   postGoal,
@@ -30,6 +33,7 @@ const PageKR = (type: PageType) => {
 };
 
 const usePageName = ({ pathname }: { pathname: string }) => {
+  const { id } = useRecoilValue(userId);
   const [pageType, setPageType] = useState<PageType>(PageType.none);
   useEffect(() => {
     switch (pathname) {
@@ -58,7 +62,7 @@ const usePageName = ({ pathname }: { pathname: string }) => {
       setPageType(PageType.editProfile);
       return;
     }
-    if (pathname.includes('/users')) {
+    if (pathname === `/users/${id}`) {
       setPageType(PageType.my);
       return;
     }
