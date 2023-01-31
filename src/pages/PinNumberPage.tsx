@@ -19,11 +19,16 @@ const PASSWORD_MAX_LENGTH = 6;
 // TODO: keypad 디자인이랑 똑같게
 const PinNumberPage = () => {
   const { id } = useRecoilValue(userId);
+  const accessToken = localStorage.getItem('accessToken');
   const numberInit = Array.from({ length: 10 }, (v, k) => k);
 
   const [numbers, setNumbers] = useState(numberInit);
   const [pinNumber1, setPinNumber1] = useState('');
   const [pinNumber2, setPinNumber2] = useState('');
+
+  const [loginPinNumber, setLoginPinNumber] = useState('');
+
+  const [isCheck, setIsCheck] = useState(false);
   console.log(pinNumber1);
   console.log(pinNumber2);
 
@@ -41,10 +46,19 @@ const PinNumberPage = () => {
     }
 
     setNumbers(shuffleNums);
-  }, []);
+  }, [isCheck]);
+
+  useEffect(() => {
+    if (pinNumber1.length === PASSWORD_MAX_LENGTH) {
+      setIsCheck(true);
+    }
+  }, [pinNumber1]);
 
   const handlePinNumberChange = (num: number) => {
-    if (pinNumber1.length !== PASSWORD_MAX_LENGTH) {
+    if (accessToken === null) {
+      setLoginPinNumber(loginPinNumber + num.toString());
+    }
+    if (accessToken && pinNumber1.length !== PASSWORD_MAX_LENGTH) {
       setPinNumber1(pinNumber1 + num.toString());
     } else {
       setPinNumber2(pinNumber2 + num.toString());
@@ -58,6 +72,9 @@ const PinNumberPage = () => {
     if (pinNumber2.length !== 0) {
       setPinNumber2(pinNumber2.slice(0, pinNumber2.length === 0 ? 0 : pinNumber2.length - 1));
     }
+    if (loginPinNumber.length !== 0) {
+      setLoginPinNumber(loginPinNumber.slice(0, loginPinNumber.length === 0 ? 0 : loginPinNumber.length - 1));
+    }
   };
 
   const inputNums = (nums: number) => () => {
@@ -69,7 +86,7 @@ const PinNumberPage = () => {
   // const { data, isLoading, mutate } = useMutation('postAccessTokenByPinCode', () =>
   //   userAPI.postAccessTokenByPinCode(pinNumber)
   // );
-  const accessToken = localStorage.getItem('accessToken');
+
   const setUserId = useSetRecoilState(userId);
   const navigate = useNavigate();
   const getAccessToken = async () => {
@@ -86,7 +103,7 @@ const PinNumberPage = () => {
     }
   };
 
-  const { isLoading, isError, data, refetch } = useQuery(
+  const { refetch } = useQuery(
     'postPinCode',
     () => {
       userAPI.postPinCode(id, pinNumber1);
@@ -103,7 +120,7 @@ const PinNumberPage = () => {
   );
 
   useEffect(() => {
-    if (pinNumber1.length === PASSWORD_MAX_LENGTH && accessToken === null) {
+    if (loginPinNumber.length === PASSWORD_MAX_LENGTH && accessToken === null) {
       getAccessToken();
     }
     if (pinNumber2.length === PASSWORD_MAX_LENGTH && pinNumber2 === pinNumber1 && accessToken !== null) {
@@ -114,7 +131,7 @@ const PinNumberPage = () => {
   return (
     <Wrapper>
       <TextWrapper>
-        {pinNumber1.length !== PASSWORD_MAX_LENGTH ? (
+        {accessToken && pinNumber1.length !== PASSWORD_MAX_LENGTH ? (
           <Text>
             <Logo type='small' size={52} />
             &nbsp;에서 사용할 <br />
@@ -126,7 +143,9 @@ const PinNumberPage = () => {
 
         <GuideText>숫자 6자리</GuideText>
         <RadioInputWrapper>
-          {pinNumber1.length !== PASSWORD_MAX_LENGTH
+          {accessToken === null && loginPinNumber.length !== PASSWORD_MAX_LENGTH
+            ? Array.from(loginPinNumber).map((pin) => <RadioInput key={pin} />)
+            : accessToken && pinNumber1.length !== PASSWORD_MAX_LENGTH
             ? Array.from(pinNumber1).map((pin) => <RadioInput key={pin} />)
             : Array.from(pinNumber2).map((pin) => <RadioInput key={pin} />)}
         </RadioInputWrapper>
