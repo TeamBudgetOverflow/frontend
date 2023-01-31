@@ -16,18 +16,24 @@ const LogoutButton = () => {
 
   const { mutate } = useMutation('deleteUserLogout', () => userAPI.deleteUserLogout(Number(id)));
 
-  const handleLogoutButton = () => {
+  const handleLogoutConfirmModal = () => {
     setShowConfirm(true);
+  };
+
+  const handleLogoutButton = () => {
+    mutate();
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
   };
 
   return (
     <>
-      <SettingButton text='로그아웃' onClickHandler={handleLogoutButton}></SettingButton>
+      <SettingButton text='로그아웃' onClickHandler={handleLogoutConfirmModal}></SettingButton>
       <ModalBox show={showConfirm} bgColor={'transparent'}>
         <ModalWrapper>
           <ConfirmButtonWrapper>
             <ConfirmMsg>로그아웃 하시겠습니까?</ConfirmMsg>
-            <TextButton bgColor='white' color='red' text='로그아웃' onClickHandler={() => mutate()} />
+            <TextButton bgColor='white' color='red' text='로그아웃' onClickHandler={handleLogoutButton} />
           </ConfirmButtonWrapper>
           <CancleButtonWrapper>
             <TextButton bgColor='white' color='green' text='취소' onClickHandler={() => setShowConfirm(false)} />
