@@ -209,6 +209,7 @@ export interface ISearchFilter {
 export interface ISearchGoalResult {
   result: Array<ISearchGoal>;
   isLastPage: boolean;
+  count: string;
 }
 
 export interface ISearchGoal {

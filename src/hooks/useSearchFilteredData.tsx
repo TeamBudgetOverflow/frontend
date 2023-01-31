@@ -19,6 +19,7 @@ const useSearchFilteredData = (params: ISearchFilter) => {
   const navigate = useNavigate();
   const setSearchFilters = useSetRecoilState(searchFilters);
   const [searchGoals, setSearchGoals] = useState<Array<ISearchGoal>>([]);
+  const [lastReqPage, setLastReqPage] = useState<number>(0);
   const [isLastPage, setIsLastPage] = useState<boolean>(false);
   const [totalCnt, setTotalCnt] = useState<number>(0);
   const { isLoading, isError, mutate } = useMutation<ISearchGoalResult, unknown, ISearchFilter>(
@@ -38,6 +39,8 @@ const useSearchFilteredData = (params: ISearchFilter) => {
           setSearchGoals((prev) => [...prev, ...data.result]);
         }
         setIsLastPage(data.isLastPage);
+        setTotalCnt(Number(data.count));
+        setLastReqPage(params.page);
       },
       onError: (e) => {
         if (e === 401) {
@@ -47,7 +50,7 @@ const useSearchFilteredData = (params: ISearchFilter) => {
     }
   );
   useEffect(() => {
-    mutate(params);
+    if (lastReqPage !== params.page) mutate(params);
   }, [params.keyword, params.status, params.ordered, params.sorted, params.page]);
 
   return { isLoading, isError, searchGoals, isLastPage, totalCnt };

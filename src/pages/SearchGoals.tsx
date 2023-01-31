@@ -90,7 +90,10 @@ const SearchGoals = () => {
   const scrollBoxRef = useRef<HTMLDivElement>(null);
   const isScrollBottom = () => {
     if (!scrollBoxRef.current) return;
-    if (scrollBoxRef.current.scrollHeight - scrollBoxRef.current.scrollTop === scrollBoxRef.current.clientHeight) {
+    if (
+      Math.trunc(scrollBoxRef.current.scrollHeight - scrollBoxRef.current.scrollTop) ===
+      scrollBoxRef.current.clientHeight
+    ) {
       handlePageChange(page + 1);
       localStorage.setItem('scrollTop', String(scrollBoxRef.current.scrollTop));
     }
