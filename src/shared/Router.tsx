@@ -27,22 +27,23 @@ import SearchGoals from '../pages/SearchGoals';
 import DetailUser from '../pages/DetailUser';
 import EditUserProfile from '../pages/EditUserProfile';
 import Prepare from '../pages/Prepare';
-import SplashPage from '../pages/SplashPage';
+import WelcomePage from '../pages/WelcomePage';
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route element={<PublicLayout />}>
-          <Route path='/landing' element={<SplashPage />} />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/kakaologin' element={<KakaoLogin />} />
           <Route path='/naverlogin' element={<NaverLogin />} />
           <Route path='/googlelogin' element={<GoogleLogin />} />
+          <Route path='/welcome' element={<WelcomePage />} />
         </Route>
         <Route element={<RefreshLayout />}>
           <Route path='/pinnumber' element={<PinNumberPage />} />
         </Route>
+
         <Route element={<AuthLayout />}>
           <Route path='/home' element={<Home />} />
           <Route path='/agreement' element={<AgreementOfCollectionPersonalInfo />} />

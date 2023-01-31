@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import jwtDecoder from 'jwt-decode';
@@ -11,15 +11,21 @@ import { MyToken } from '../interfaces/interfaces';
 import { userId } from '../recoil/userAtoms';
 import Logo from '../components/common/elem/Logo';
 import RadioInput from '../components/common/elem/RadioInput';
+import { useQuery } from 'react-query';
+import CongratePage from './WelcomePage';
 
 const PASSWORD_MAX_LENGTH = 6;
 
 // TODO: keypad 디자인이랑 똑같게
 const PinNumberPage = () => {
+  const { id } = useRecoilValue(userId);
   const numberInit = Array.from({ length: 10 }, (v, k) => k);
 
   const [numbers, setNumbers] = useState(numberInit);
-  const [pinNumber, setPinNumber] = useState('');
+  const [pinNumber1, setPinNumber1] = useState('');
+  const [pinNumber2, setPinNumber2] = useState('');
+  console.log(pinNumber1);
+  console.log(pinNumber2);
 
   useEffect(() => {
     const numbers: number[] = [];
@@ -38,11 +44,20 @@ const PinNumberPage = () => {
   }, []);
 
   const handlePinNumberChange = (num: number) => {
-    setPinNumber(pinNumber + num.toString());
+    if (pinNumber1.length !== PASSWORD_MAX_LENGTH) {
+      setPinNumber1(pinNumber1 + num.toString());
+    } else {
+      setPinNumber2(pinNumber2 + num.toString());
+    }
   };
 
   const erasePinNumberOne = () => {
-    setPinNumber(pinNumber.slice(0, pinNumber.length === 0 ? 0 : pinNumber.length - 1));
+    if (pinNumber1.length !== 0) {
+      setPinNumber1(pinNumber1.slice(0, pinNumber1.length === 0 ? 0 : pinNumber1.length - 1));
+    }
+    if (pinNumber2.length !== 0) {
+      setPinNumber2(pinNumber2.slice(0, pinNumber2.length === 0 ? 0 : pinNumber2.length - 1));
+    }
   };
 
   const inputNums = (nums: number) => () => {
@@ -59,7 +74,7 @@ const PinNumberPage = () => {
   const navigate = useNavigate();
   const getAccessToken = async () => {
     try {
-      const data = await userAPI.postAccessTokenByPinCode(pinNumber);
+      const data = await userAPI.postAccessTokenByPinCode(pinNumber2);
       localStorage.setItem('accessToken', data.accessToken);
       setUserId({ id: jwtDecoder<MyToken>(data.accessToken).userId });
 
@@ -71,29 +86,52 @@ const PinNumberPage = () => {
     }
   };
 
-  useEffect(() => {
-    if (pinNumber.length === PASSWORD_MAX_LENGTH && accessToken === null) {
-      getAccessToken();
+  const { isLoading, isError, data, refetch } = useQuery(
+    'postPinCode',
+    () => {
+      userAPI.postPinCode(id, pinNumber1);
+    },
+    {
+      enabled: false,
+      onSuccess: () => {
+        return <CongratePage />;
+      },
+      onError: (error) => {
+        alert(error);
+      },
     }
-  }, [pinNumber, accessToken]);
+  );
+
+  useEffect(() => {
+    // if (pinNumber1.length === PASSWORD_MAX_LENGTH && accessToken === null) {
+    //   getAccessToken();
+    // }
+    if (pinNumber2.length === PASSWORD_MAX_LENGTH && pinNumber2 === pinNumber1 && accessToken !== null) {
+      refetch();
+    }
+  }, [pinNumber1, pinNumber2, accessToken]);
 
   return (
     <Wrapper>
       <TextWrapper>
-        <Text>
-          <Logo type='small' size={52} />
-          &nbsp;에서 사용할 <br />
-          핀번호를 설정하세요.
-        </Text>
+        {pinNumber1.length !== PASSWORD_MAX_LENGTH ? (
+          <Text>
+            <Logo type='small' size={52} />
+            &nbsp;에서 사용할 <br />
+            핀번호를 설정하세요.
+          </Text>
+        ) : (
+          <Text>핀번호를 확인해주세요.</Text>
+        )}
+
         <GuideText>숫자 6자리</GuideText>
         <RadioInputWrapper>
-          {Array.from(pinNumber).map((pin) => (
-            <RadioInput key={pin} />
-          ))}
+          {pinNumber1.length !== PASSWORD_MAX_LENGTH
+            ? Array.from(pinNumber1).map((pin) => <RadioInput key={pin} />)
+            : Array.from(pinNumber2).map((pin) => <RadioInput key={pin} />)}
         </RadioInputWrapper>
       </TextWrapper>
-
-      <PinNumInputContainer type='password' defaultValue={pinNumber} />
+      <PinNumInputContainer type='password' defaultValue={pinNumber1} />
       <KeypadWrapper>
         {numbers.map((n) => (
           <NumButtonFlex key={n} value={n} onClick={inputNums(n)}>

@@ -16,7 +16,7 @@ const Redirect = () => {
       setTimeout(() => navigate('/pinnumber'), 3000);
       return;
     } else if (!accessToken && !refreshToken) {
-      setTimeout(() => navigate('/landing'), 3000);
+      setTimeout(() => navigate('/login'), 3000);
       return;
     }
   }, [accessToken, refreshToken]);
