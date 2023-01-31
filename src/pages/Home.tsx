@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
@@ -14,18 +14,20 @@ import { userId } from '../recoil/userAtoms';
 
 import useBanksData from '../hooks/useBanksData';
 import useUserGoalsData from '../hooks/useUserGoalsData';
+import useBadgesData from '../hooks/useBadgesData';
 
 const Home = () => {
   useBanksData();
   const { id } = useRecoilValue(userId);
-  const { isLoading, isError, data } = useUserGoalsData({ getUserId: Number(id) });
+  const { isLoading, isError, goals } = useUserGoalsData({ getUserId: Number(id) });
+  useBadgesData();
   const navigate = useNavigate();
 
   return (
     <Wrapper>
       <UserProfile />
       <ContentWrapper>
-        {isLoading || !data ? (
+        {isLoading || !goals ? (
           <Alert showBgColor={true}>
             <LoadingMsg />
           </Alert>
@@ -34,7 +36,7 @@ const Home = () => {
             <ErrorMsg />
           </Alert>
         ) : (
-          data
+          goals
             .filter(
               (goal) =>
                 new Date(goal.startDate).getTime() < new Date().getTime() &&

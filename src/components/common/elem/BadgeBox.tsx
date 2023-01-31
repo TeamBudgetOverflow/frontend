@@ -1,14 +1,13 @@
-import React, { FunctionComponent, PropsWithChildren } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
-const BadgeBox: FunctionComponent<PropsWithChildren> = ({ children }) => {
-  return <Badge>{children}</Badge>;
+const BadgeBox = ({ imgURL }: { imgURL: string }) => {
+  return <Badge src={imgURL}></Badge>;
 };
 
-const Badge = styled.div`
+const Badge = styled.img`
   width: 100px;
   height: 100px;
-  background-color: ${(props) => props.theme.gray300};
 `;
 
 export default BadgeBox;

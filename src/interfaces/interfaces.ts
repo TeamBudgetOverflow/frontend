@@ -195,6 +195,12 @@ export interface data {
 
 // badge
 export interface IBadge {
+  badgeId: number;
   title: string;
   description: string;
+  image: string;
+}
+
+export interface IUserBadge {
+  badgeId: number;
 }
