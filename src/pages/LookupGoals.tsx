@@ -18,20 +18,14 @@ import { ISearchGoal } from '../interfaces/interfaces';
 import { dDayCalculator } from '../utils/dDayCalculator';
 
 const LookupGoals = () => {
-  const {
-    isLoading: isLoadingGoals,
-    data: goalsData,
-    isError,
-  } = useQuery<Array<ISearchGoal>>('getGoals', () => goalApi.getGoals());
-  const setUserGoals = useSetRecoilState(groupGoals);
+  const setGoals = useSetRecoilState(groupGoals);
+  const { isLoading: isLoadingGoals, isError } = useQuery<Array<ISearchGoal>>('getGoals', () => goalApi.getGoals(), {
+    onSuccess: (data) => {
+      setGoals(data);
+    },
+  });
   const goals = useRecoilValue(groupGoals);
   const [impendingGoals, setImpendingGoals] = useState<Array<ISearchGoal>>([...goals]);
-
-  useEffect(() => {
-    if (!goalsData) return;
-
-    setUserGoals(goalsData);
-  }, [goalsData]);
 
   useEffect(() => {
     setImpendingGoals(() => {

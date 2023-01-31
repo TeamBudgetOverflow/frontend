@@ -46,3 +46,9 @@ export const dateISOStringDateTranslator = (date: Date) => {
   const localDate = date.getTime() - localTimeOffset;
   return new Date(localDate).toISOString().split('T')[0];
 };
+
+export const dateCalculator = (startDate: Date, endDate: Date) => {
+  const start = startDate.getTime() / (1000 * 60 * 60 * 24);
+  const end = endDate.getTime() / (1000 * 60 * 60 * 24);
+  return end - start;
+};

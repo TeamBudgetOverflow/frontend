@@ -22,6 +22,8 @@ const InputBox = ({
   placeholder,
   onChangeHandler,
   onKeyPressHandler,
+  onFocusHandler,
+  onBlurHandler,
   isDisabled,
   showBorder = true,
   showTextCounter = false,
@@ -36,6 +38,8 @@ const InputBox = ({
         placeholder={placeholder}
         onChange={onChangeHandler}
         onKeyPress={onKeyPressHandler}
+        onFocus={onFocusHandler}
+        onBlur={onBlurHandler}
         disabled={isDisabled}
         showBorder={showBorder}
       />

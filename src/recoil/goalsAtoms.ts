@@ -1,7 +1,14 @@
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 
-import { IGoalDetail, IPostGoal, ISearchGoal } from '../interfaces/interfaces';
+import {
+  IGoalDetail,
+  IPostGoal,
+  ISearchFilterTypes,
+  ISearchGoal,
+  SortType,
+  StatusType,
+} from '../interfaces/interfaces';
 
 const { persistAtom } = recoilPersist();
 
@@ -73,4 +80,14 @@ export const groupGoals = atom<Array<ISearchGoal>>({
       updatedAt: new Date(),
     },
   ],
+});
+
+export const searchFilters = atom<ISearchFilterTypes>({
+  key: 'searchFilters',
+  default: {
+    status: StatusType.total,
+    sorted: SortType.none,
+    min: 0,
+    max: 0,
+  },
 });

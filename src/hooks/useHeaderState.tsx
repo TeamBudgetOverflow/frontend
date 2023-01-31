@@ -5,10 +5,22 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
   const navigate = useNavigate();
   const [showSearchBtn, setShowSearchBtn] = useState<boolean>(false);
   const [showSearchBar, setShowSearchBar] = useState<boolean>(false);
+  const [keyword, setKeyword] = useState<string>('');
+  const handleKeywordChange = (keyword: string) => {
+    setKeyword(keyword);
+  };
+  const handleKeypress = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.code === 'Enter') {
+      handleSearchClick();
+    }
+  };
   const handleSearchClick = () => {
-    setShowSearchBar(true);
-    setShowSearchBtn(false);
-    setShowPrevBtn(true);
+    if (pathname.includes('/goals/lookup'))
+      return navigate({
+        pathname: '/goals/lookup/search',
+        search: `?keyword=${keyword}`,
+      });
+    navigate('/goals/lookup');
   };
 
   const [showChatBtn, setShowChatBtn] = useState<boolean>(false);
@@ -19,6 +31,7 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
   const [showPrevBtn, setShowPrevBtn] = useState<boolean>(false);
   const handlePrevClick = () => {
     if (pathname !== '/goals/lookup') {
+      setKeyword('');
       return navigate(-1);
     }
 
@@ -70,6 +83,13 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
       showPrevOnly();
       return;
     }
+    if (pathname === '/goals/lookup/search') {
+      setShowSearchBar(true);
+      setShowPrevBtn(true);
+      setShowSearchBtn(false);
+      setShowChatBtn(false);
+      return;
+    }
 
     setShowPrevBtn(false);
     setShowSearchBar(false);
@@ -82,9 +102,12 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
     showChatBtn,
     showPrevBtn,
     showSearchBar,
+    keyword,
     handleSearchClick,
     handleChatClick,
     handlePrevClick,
+    handleKeywordChange,
+    handleKeypress,
   };
 };
 

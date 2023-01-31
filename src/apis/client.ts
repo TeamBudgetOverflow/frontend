@@ -14,8 +14,11 @@ import {
   IUpdateBalance,
   IModifyGoal,
   IBalance,
-  IUserBadge,
   IUpdateUserProfile,
+  IUserBadge,
+  ISearchFilter,
+  ISearchGoal,
+  ISearchGoalResult,
 } from '../interfaces/interfaces';
 
 const BASE_URL = process.env.REACT_APP_API_ENDPOINT;
@@ -65,32 +68,40 @@ tokenClient.interceptors.response.use(
   }
 );
 
+refreshClient.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('refreshToken');
+    }
+
+    return Promise.reject(error.response.status);
+  }
+);
+
 export const userAPI = {
   getKakaoSignup: async (code: string) => {
-    console.log(code);
     const { data } = await noneTokenClient.post(`/users/auth/kakao?code=${code}`);
 
     return data;
   },
-
   getNaverSignup: async (code: string) => {
     const { data } = await noneTokenClient.post(`/users/auth/naver?code=${code}`);
 
     return data;
   },
-
   getGoogleSignup: async (code: string) => {
     const { data } = await noneTokenClient.post(`/users/auth/google?code=${code}`);
 
     return data;
   },
-
   postPinCode: async (userId: number, pinCode: string) => {
     const { data } = await tokenClient.post(`/users/${userId}/pincode`, { pinCode: pinCode });
 
     return data;
   },
-
   postAccessTokenByPinCode: async (pinCode: string) => {
     const { data } = await refreshClient.post('/users/pinCode', { pinCode: pinCode });
 
@@ -111,7 +122,6 @@ export const userAPI = {
 
     return data.result;
   },
-
   patchEditUserProfile: async ({ userId, userProfile }: IUpdateUserProfile) => {
     const { data } = await tokenClient.patch(`/users/${userId}`, userProfile);
 
@@ -176,8 +186,10 @@ export const goalApi = {
 
     return data.result[0];
   },
-  getGoalsByWord: async (query: string) => {
-    const { data } = await tokenClient.get(`/goals/getgoals/search` + query);
+  getGoalsByWord: async (queries: ISearchFilter): Promise<ISearchGoalResult> => {
+    const { data } = await tokenClient.get(
+      `/goals/search?keyword=${queries.keyword}&sortby=${queries.sorted}&min=${queries.min}&max=${queries.max}&orderby=${queries.ordered}&status=${queries.status}&page=${queries.page}`
+    );
 
     return data;
   },
