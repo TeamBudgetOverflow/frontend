@@ -15,7 +15,11 @@ const getSuccessCnt = (goals: Array<IGoal>) => {
 };
 
 const getWorkingCnt = (goals: Array<IGoal>) => {
-  return goals.filter((goal) => new Date(goal.startDate).getTime() < new Date().getTime()).length;
+  return goals.filter(
+    (goal) =>
+      new Date(goal.startDate).getTime() < new Date().getTime() &&
+      new Date(goal.endDate).getTime() > new Date().getTime()
+  ).length;
 };
 
 const getTotalCnt = (goals: Array<IGoal>) => {
