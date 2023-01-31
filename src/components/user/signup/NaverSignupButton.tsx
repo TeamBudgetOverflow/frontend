@@ -1,6 +1,5 @@
 import React from 'react';
 import LoginButton from '../../common/elem/LoginButton';
-import TextButton from '../../common/elem/TextButton';
 
 const NaverSignupButton = () => {
   // TODO: state 추후 변경 필요

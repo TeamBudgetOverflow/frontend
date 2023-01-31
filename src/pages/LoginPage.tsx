@@ -12,7 +12,7 @@ const LoginPage = () => {
     <Wrapper>
       <ContentWrapper>
         <LogoWrapper>
-          <Logo size={180} />
+          <Logo type='large' size={180} />
           <LogoSubTitle width={180} height={90} />
         </LogoWrapper>
         <ButtonSetWrapper>

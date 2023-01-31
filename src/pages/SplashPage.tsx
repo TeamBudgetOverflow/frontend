@@ -15,7 +15,7 @@ const SplashPage = () => {
   return (
     <Wrapper>
       <ContentWrapper>
-        <Logo size={135} />
+        <Logo type='large' size={135} />
         <LogoTitle width={180} height={135} />
       </ContentWrapper>
     </Wrapper>

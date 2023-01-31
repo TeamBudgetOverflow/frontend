@@ -9,11 +9,12 @@ import { userAPI } from '../apis/client';
 
 import { MyToken } from '../interfaces/interfaces';
 import { userId } from '../recoil/userAtoms';
+import Logo from '../components/common/elem/Logo';
+import RadioInput from '../components/common/elem/RadioInput';
 
 const PASSWORD_MAX_LENGTH = 6;
 
 // TODO: keypad 디자인이랑 똑같게
-// TODO: pinnumber 시간지나면 안보이게
 const PinNumberPage = () => {
   const numberInit = Array.from({ length: 10 }, (v, k) => k);
 
@@ -78,10 +79,21 @@ const PinNumberPage = () => {
 
   return (
     <Wrapper>
-      <Text>핀번호를 입력해주세요.</Text>
-      <InputWrapper>
-        <PinNumInputContainer type='password' defaultValue={pinNumber} />
-      </InputWrapper>
+      <TextWrapper>
+        <Text>
+          <Logo type='small' size={52} />
+          &nbsp;에서 사용할 <br />
+          핀번호를 설정하세요.
+        </Text>
+        <GuideText>숫자 6자리</GuideText>
+        <RadioInputWrapper>
+          {Array.from(pinNumber).map((pin) => (
+            <RadioInput key={pin} />
+          ))}
+        </RadioInputWrapper>
+      </TextWrapper>
+
+      <PinNumInputContainer type='password' defaultValue={pinNumber} />
       <KeypadWrapper>
         {numbers.map((n) => (
           <NumButtonFlex key={n} value={n} onClick={inputNums(n)}>
@@ -95,33 +107,53 @@ const PinNumberPage = () => {
 };
 
 const Wrapper = styled.div`
-  padding-top: 46px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
   height: calc(100% - 46px);
   width: 100%;
-  gap: 50px;
+  gap: 20px;
+  background-color: ${(props) => props.theme.primary900}; ;
 `;
 
 const Text = styled.div`
   font: ${(props) => props.theme.headingH2};
+  color: white;
+  text-align: center;
+  margin: 20px;
 `;
 
-const InputWrapper = styled.div`
+const GuideText = styled.div`
+  font: ${(props) => props.theme.captionC1};
+  color: white;
+`;
+
+const TextWrapper = styled(Wrapper)`
   width: 100%;
-  height: 60px;
-  display: flex;
-  flex-direction: row;
+  height: 50%;
   justify-content: center;
   align-items: center;
 `;
 
+const RadioInputWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+`;
+
+// const InputWrapper = styled.div`
+//   width: 100%;
+//   height: 60px;
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: center;
+//   align-items: center;
+// `;
+
 const PinNumInputContainer = styled.input`
-  font: ${(props) => props.theme.headingH1};
-  text-align: center;
-  border: none;
+  display: none;
 `;
 
 const KeypadWrapper = styled.div`
@@ -143,6 +175,7 @@ const NumButtonFlex = styled.button`
   border: none;
   background-color: transparent;
   font: ${(props) => props.theme.headingH1};
+  color: white;
   overflow: hidden;
   position: relative;
   :hover {
