@@ -9,23 +9,23 @@ import LogoSubTitle from '../components/common/elem/LogoSubTitle';
 import LogoTitle from '../components/common/elem/LogoTitle';
 
 const LoginPage = () => {
-  const [isLanded, setIsLanded] = useState(false);
+  const [isLanding, setIsLanding] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => setIsLanded(true), 3000);
+    setIsLanding(true);
+    setTimeout(() => setIsLanding(false), 2000);
   }, []);
   return (
-    <>
-      {!isLanded ? (
-        <LandingWrapper>
-          <ContentWrapper>
-            <Logo type='large' size={135} />
-            <LogoTitle width={180} height={135} />
-          </ContentWrapper>
-        </LandingWrapper>
+    <Wrapper>
+      <LandingWrapper show={isLanding}>
+        <Logo type='large' size={135} />
+        <LogoTitle width={180} height={135} />
+      </LandingWrapper>
+      {isLanding ? (
+        <></>
       ) : (
-        <Wrapper>
-          <ContentWrapper>
+        <LoginWrapper>
+          <Content>
             <LogoWrapper>
               <Logo type='large' size={180} />
               <LogoSubTitle width={180} height={90} />
@@ -35,60 +35,67 @@ const LoginPage = () => {
               <NaverSignupButton />
               <GoogleSignupButton />
             </ButtonSetWrapper>
-          </ContentWrapper>
-        </Wrapper>
+          </Content>
+        </LoginWrapper>
       )}
-    </>
+    </Wrapper>
   );
 };
 
-const FadeIn = keyframes`
+const Wrapper = styled.div`
+  position: relative;
+  width: 200%;
+  height: 100%;
+`;
+
+const LandingWrapper = styled.div<{ show: boolean }>`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 100%;
+  opacity: ${(props) => (props.show ? 1 : 0)};
+  transition: opacity 0.5s;
+`;
+
+const SlideIn = keyframes`
   0% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
+    right: 0;
   }
   100% {
-    opacity: 0;
+    right: 50%;
   }
-  `;
+`;
 
-const LandingWrapper = styled.div`
+const LoginWrapper = styled.div`
+  position: absolute;
+  padding: 0 20px;
+  top: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: calc(50% - 40px);
   height: 100%;
-  animation: ${FadeIn} 3s ease-in;
+  gap: 10px;
+  animation: ${SlideIn} 0.8s ease-in;
 `;
 
-const Wrapper = styled.div`
+const Content = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  gap: 180px;
   width: 100%;
-  height: 100%;
+`;
+
+const LogoWrapper = styled(Content)`
   gap: 10px;
 `;
 
-const ContentWrapper = styled(Wrapper)`
-  padding: 10px;
-  gap: 8px;
-`;
-
-const LogoWrapper = styled(ContentWrapper)`
-  gap: 10px;
-`;
-
-const ButtonSetWrapper = styled(ContentWrapper)`
-  max-width: 370px;
-  padding: 20px;
+const ButtonSetWrapper = styled(Content)`
   gap: 4px;
-  width: 100%;
-  height: 40%;
 `;
 
 export default LoginPage;

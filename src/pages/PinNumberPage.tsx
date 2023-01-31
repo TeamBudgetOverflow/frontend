@@ -49,15 +49,16 @@ const PinNumberPage = () => {
         ) : (
           <Text>핀번호를 확인해주세요.</Text>
         )}
-
-        <GuideText>숫자 6자리</GuideText>
-        <RadioInputWrapper>
-          {accessToken === null && loginPinNumber.length !== PASSWORD_MAX_LENGTH
-            ? Array.from(loginPinNumber).map((pin) => <RadioInput key={pin} />)
-            : accessToken && pinNumber1.length !== PASSWORD_MAX_LENGTH
-            ? Array.from(pinNumber1).map((pin) => <RadioInput key={pin} />)
-            : Array.from(pinNumber2).map((pin) => <RadioInput key={pin} />)}
-        </RadioInputWrapper>
+        <InputWrapper>
+          <GuideText>숫자 6자리</GuideText>
+          <RadioInputWrapper>
+            {accessToken === null && loginPinNumber.length !== PASSWORD_MAX_LENGTH
+              ? Array.from(loginPinNumber).map((pin) => <RadioInput key={pin} />)
+              : accessToken && pinNumber1.length !== PASSWORD_MAX_LENGTH
+              ? Array.from(pinNumber1).map((pin) => <RadioInput key={pin} />)
+              : Array.from(pinNumber2).map((pin) => <RadioInput key={pin} />)}
+          </RadioInputWrapper>
+        </InputWrapper>
       </TextWrapper>
       <PinNumInputContainer type='password' defaultValue={pinNumber1} />
       <KeypadWrapper>
@@ -75,17 +76,34 @@ const PinNumberPage = () => {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: calc(100% - 46px);
+  justify-content: space-between;
   width: 100%;
-  gap: 20px;
-  background-color: ${(props) => props.theme.primary900}; ;
+  height: 100%;
+  background-color: ${(props) => props.theme.primary900};
+`;
+
+const TextWrapper = styled(Wrapper)`
+  margin-top: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 180px;
 `;
 
 const Text = styled.div`
   font: ${(props) => props.theme.headingH2};
   color: white;
   text-align: center;
-  margin: 20px;
+`;
+
+const InputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
 `;
 
 const GuideText = styled.div`
@@ -93,20 +111,14 @@ const GuideText = styled.div`
   color: white;
 `;
 
-const TextWrapper = styled(Wrapper)`
-  width: 100%;
-  height: 50%;
-  justify-content: center;
-  align-items: center;
-`;
-
 const RadioInputWrapper = styled.div`
-  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: 20px;
+  width: 100%;
+  height: 20px;
 `;
 
 const PinNumInputContainer = styled.input`
