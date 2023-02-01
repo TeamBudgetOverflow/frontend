@@ -79,7 +79,7 @@ const DetailGoal = () => {
           <GoalPeriodCard startDate={data.startDate} endDate={data.endDate} />
           <GoalDescCard description={data.description} />
           {isMember && status === GoalStatus.proceeding ? (
-            <GoalBalanceCard balanceId={balanceId} accountId={accountId} />
+            <GoalBalanceCard balanceId={balanceId} accountId={accountId} maxBalance={data.amount} />
           ) : (
             <></>
           )}

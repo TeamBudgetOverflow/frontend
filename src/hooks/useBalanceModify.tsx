@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
@@ -9,7 +9,13 @@ import { userId } from '../recoil/userAtoms';
 
 import { IUpdateBalance } from '../interfaces/interfaces';
 
-const useBalanceModify = ({ balanceId, accountId }: { balanceId: number; accountId: number }) => {
+interface useBalanceModifyProps {
+  balanceId: number;
+  accountId: number;
+  maxBalance: number;
+}
+
+const useBalanceModify = ({ balanceId, accountId, maxBalance }: useBalanceModifyProps) => {
   const [isModify, setIsModify] = useState<boolean>(false);
   const handleModifyInput = (isModify: boolean) => {
     setIsModify(isModify);
@@ -38,6 +44,20 @@ const useBalanceModify = ({ balanceId, accountId }: { balanceId: number; account
     }
   );
 
+  const [isValid, setIsValid] = useState<boolean>(false);
+  const validate = () => {
+    if (inputVal < 0) {
+      return setIsValid(false);
+    }
+    if (inputVal > maxBalance) {
+      return setIsValid(false);
+    }
+
+    setIsValid(true);
+  };
+  useEffect(() => {
+    validate();
+  }, [inputVal]);
   const navigate = useNavigate();
   const {
     isLoading: isLoadingModify,
@@ -66,6 +86,7 @@ const useBalanceModify = ({ balanceId, accountId }: { balanceId: number; account
     isModify,
     inputVal,
     balance,
+    isValid,
     handleModifyInput,
     handleInputChange,
     handleBalanceModify,
