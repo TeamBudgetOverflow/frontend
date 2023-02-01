@@ -12,7 +12,7 @@ import { ISearchGoal } from '../../interfaces/interfaces';
 
 import useGoalState, { GoalState } from '../../hooks/useGoalState';
 
-const GroupGoalCards = ({ goal }: { goal: ISearchGoal }) => {
+const GroupGoalCard = ({ goal }: { goal: ISearchGoal }) => {
   const navigate = useNavigate();
   const { state } = useGoalState({ startDate: new Date(goal.startDate), endDate: new Date(goal.endDate) });
   return (
@@ -118,4 +118,4 @@ const ProgressInfo = styled.div`
 
 const ProgressText = styled(RecruitState)``;
 
-export default GroupGoalCards;
+export default GroupGoalCard;

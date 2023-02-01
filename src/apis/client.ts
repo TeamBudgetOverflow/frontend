@@ -15,10 +15,10 @@ import {
   IModifyGoal,
   IBalance,
   IUpdateUserProfile,
+  ISearchGoalResult,
   IUserBadge,
   ISearchFilter,
   ISearchGoal,
-  ISearchGoalResult,
 } from '../interfaces/interfaces';
 
 const BASE_URL = process.env.REACT_APP_API_ENDPOINT;
@@ -188,8 +188,13 @@ export const goalApi = {
 
     return data.goalId;
   },
-  getGoals: async () => {
-    const { data } = await tokenClient.get(`/goals`);
+  getGoals: async (page: number) => {
+    const { data } = await tokenClient.get(`/goals?page=${page}`);
+
+    return data;
+  },
+  getImpendingGoals: async (): Promise<Array<ISearchGoal>> => {
+    const { data } = await tokenClient.get('/goals/imminent');
 
     return data.result;
   },
