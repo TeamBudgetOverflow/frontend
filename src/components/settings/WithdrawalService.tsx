@@ -43,28 +43,23 @@ const WithdrawalService = () => {
     <>
       <SettingButton text='탈퇴하기' onClickHandler={handleWithdrawalConfirmModal}></SettingButton>
       <ModalBox show={showConfirm} bgColor={'transparent'}>
-        <ModalWrapper>
-          <ConfirmButtonWrapper>
-            <ConfirmMsg>탈..퇴.. 하시겠습니까?</ConfirmMsg>
-            <TextButton bgColor='white' color='red' text='탈퇴하기' onClickHandler={handleWithdrawalServiceButton} />
-          </ConfirmButtonWrapper>
-          <CancleButtonWrapper>
-            <TextButton bgColor='white' color='green' text='취소' onClickHandler={() => setShowConfirm(false)} />
-          </CancleButtonWrapper>
-        </ModalWrapper>
+        <ConfirmButtonWrapper>
+          <ConfirmMsg>탈..퇴.. 하시겠습니까?</ConfirmMsg>
+          <TextButton bgColor='white' color='red' text='탈퇴하기' onClickHandler={handleWithdrawalServiceButton} />
+        </ConfirmButtonWrapper>
+        <CancleButtonWrapper>
+          <TextButton bgColor='white' color='green' text='취소' onClickHandler={() => setShowConfirm(false)} />
+        </CancleButtonWrapper>
       </ModalBox>
     </>
   );
 };
-
-const ModalWrapper = styled.div``;
 
 const ConfirmButtonWrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 6px 0px;
   margin: 8px 0px;
-  max-width: 370px;
   width: 100%;
   gap: 10px;
   border-radius: 8px;
@@ -85,7 +80,6 @@ const CancleButtonWrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 6px 0px;
-  max-width: 370px;
   width: 100%;
   border-radius: 8px;
   background-color: white;

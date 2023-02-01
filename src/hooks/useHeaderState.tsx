@@ -112,6 +112,7 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
       setShowPrevBtn(true);
       setShowSearchBtn(false);
       setShowChatBtn(false);
+      setShowSettingsBtn(false);
       return;
     }
 
@@ -119,6 +120,7 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
     setShowSearchBar(false);
     setShowSearchBtn(true);
     setShowChatBtn(true);
+    setShowSettingsBtn(false);
   }, [pathname]);
 
   return {
