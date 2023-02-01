@@ -24,13 +24,13 @@ const Info: FunctionComponent<InfoProps> = ({ type, children }: InfoProps) => {
           />
         );
       case 'accntSuccess':
-        return <Img width='180px' height='147px' src={require('../../../assets/icons/accntSuccess.png')} />;
+        return <Img width='280px' height='280px' src={require('../../../assets/icons/accntSuccess.png')} />;
       case 'goalSuccess':
         return <Img width='334px' height='124px' src={require('../../../assets/icons/goalSuccess.png')} />;
       case 'success':
         return <Img width='80px' height='80px' src={require('../../../assets/icons/success.png')} />;
       case 'prepare':
-        return <Img width='135px' height='129px' src={require('../../../assets/icons/prepare.png')} />;
+        return <Img width='280px' height='280px' src={require('../../../assets/icons/prepare.png')} />;
       default:
         return <></>;
     }
@@ -53,6 +53,7 @@ const Wrapper = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
+  background-color: white;
 `;
 
 const ContentWrapper = styled.div`

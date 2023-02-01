@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
 
@@ -6,11 +6,17 @@ import TextButton from '../../common/elem/TextButton';
 
 import { goalApi } from '../../../apis/client';
 
-const GoalDeleteButton = ({ goalId }: { goalId: number }) => {
+interface GoalDeleteButtonProps {
+  goalId: number;
+  isDeletedHandler: (result: boolean) => void;
+}
+
+const GoalDeleteButton = ({ goalId, isDeletedHandler }: GoalDeleteButtonProps) => {
   const navigate = useNavigate();
   const { mutate } = useMutation('deleteGoal', () => goalApi.deleteGoal(goalId), {
     onSuccess: () => {
-      navigate(-1);
+      isDeletedHandler(true);
+      setTimeout(() => navigate(-1), 2000);
     },
   });
 

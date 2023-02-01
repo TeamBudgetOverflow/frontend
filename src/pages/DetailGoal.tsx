@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
@@ -20,6 +20,7 @@ import { userId } from '../recoil/userAtoms';
 
 import useGoalDetailData from '../hooks/useGoalDetailData';
 import { GoalStatus } from '../interfaces/interfaces';
+import Info from '../components/common/alert/Info';
 
 const setButton = (
   goalId: number,
@@ -27,13 +28,18 @@ const setButton = (
   loginUserId: number,
   status: GoalStatus,
   isGroup: boolean,
-  isMember: boolean
+  isMember: boolean,
+  deleteHandler: (result: boolean) => void
 ) => {
   if (loginUserId === createdUserId) {
     return (
       <GoalButtonSet>
         <GoalModifyButton isGroup={isGroup} />
-        {status === GoalStatus.proceeding ? <></> : <GoalDeleteButton goalId={goalId} />}
+        {status === GoalStatus.proceeding ? (
+          <></>
+        ) : (
+          <GoalDeleteButton goalId={goalId} isDeletedHandler={deleteHandler} />
+        )}
       </GoalButtonSet>
     );
   } else if (isGroup && status === GoalStatus.recruit) {
@@ -59,8 +65,19 @@ const DetailGoal = () => {
     balanceId,
   } = useGoalDetailData({ loginUserId, goalId });
 
+  const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const handleDelete = (result: boolean) => {
+    setIsDeleted(result);
+  };
+
   if (isLoading && !data) return <InfoLoading />;
   if (isError || !data) return <InfoError />;
+  if (isDeleted)
+    return (
+      <Wrapper>
+        <Info type='success'>목표 삭제가 완료되었습니다.</Info>
+      </Wrapper>
+    );
 
   return (
     <Wrapper>
@@ -98,7 +115,7 @@ const DetailGoal = () => {
           )}
         </BottomContent>
       </DetailGoalWrapper>
-      {setButton(Number(goalId), data.userId, loginUserId, status, isGroup, isMember)}
+      {setButton(Number(goalId), data.userId, loginUserId, status, isGroup, isMember, handleDelete)}
     </Wrapper>
   );
 };
