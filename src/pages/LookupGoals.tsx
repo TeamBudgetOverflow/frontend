@@ -11,25 +11,14 @@ import useGoalLookupData from '../hooks/useGoalLookupData';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
 
 const LookupGoals = () => {
-  const [page, setPage] = useState(1);
-  const [isLoaded, setIsLoad] = useState(false);
-
-  const { isLoading, isError, refetch, goals, impendingGoals } = useGoalLookupData(page);
-
-  const onIntersect: IntersectionObserverCallback = ([entry], observer) => {
-    if (entry.isIntersecting && !isLoaded) {
-      observer.unobserve(entry.target);
-
-      getGoals();
-      observer.observe(entry.target);
-    }
-  };
-
-  const getGoals = async () => {
-    setIsLoad(true);
-    setPage((prev) => prev + 1);
-
-    await refetch();
+  const setGoals = useSetRecoilState(groupGoals);
+  const { isLoading: isLoadingGoals, isError } = useQuery<Array<ISearchGoal>>('getGoals', () => goalApi.getGoals(), {
+    onSuccess: (data) => {
+      setGoals(data);
+    },
+  });
+  const goals = useRecoilValue(groupGoals);
+  const [impendingGoals, setImpendingGoals] = useState<Array<ISearchGoal>>([...goals]);
 
     setIsLoad(false);
   };

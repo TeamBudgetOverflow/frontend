@@ -3,19 +3,26 @@ import styled from 'styled-components';
 
 import RadioSelectBox from '../../common/elem/RadioSelectBox';
 
-const StatusFilter = () => {
-  const statusArr = ['전체', '진행중', '모집중'];
+import { StatusType, StatusTypeKR, StatusKRtoEnum } from '../../../interfaces/interfaces';
 
-  const handleStatusRadioSelect = (event: string) => {
-    console.log(event);
+const statusList = [StatusType.total, StatusType.proceeding, StatusType.recruit];
+
+interface StatusFilterProps {
+  selected: StatusType;
+  changeHandler: (status: StatusType) => void;
+}
+
+const StatusFilter = ({ selected, changeHandler }: StatusFilterProps) => {
+  const handleStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    changeHandler(StatusKRtoEnum(e.currentTarget.value));
   };
 
   return (
     <Wrapper>
-      <SubTitle>진행상태</SubTitle>
       <RadioSelectBox
-        options={statusArr}
-        onChangeHandler={(event) => handleStatusRadioSelect(event.currentTarget.value)}
+        options={statusList.map((v) => StatusTypeKR(v))}
+        selected={StatusTypeKR(selected)}
+        onChangeHandler={handleStatusChange}
         flexDirection='column'
         alignItems='flex-start'
       />
@@ -28,11 +35,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   width: 100%;
-  gap: 10px;
-`;
-
-const SubTitle = styled.span`
-  font: ${(props) => props.theme.captionC1};
+  gap: 8px;
 `;
 
 export default StatusFilter;

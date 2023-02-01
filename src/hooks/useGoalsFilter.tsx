@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useQuery } from 'react-query';
 
 import { IGoal } from '../interfaces/interfaces';
+
+import { userAPI } from '../apis/client';
+import { useNavigate } from 'react-router-dom';
 
 export enum FilterType {
   success,
@@ -10,12 +14,21 @@ export enum FilterType {
   none,
 }
 
-const useGoalsFilter = ({ goals }: { goals: Array<IGoal> }) => {
-  const [initialGoals, setInitialGoals] = useState<Array<IGoal>>([...goals]);
-  useEffect(() => {
-    setInitialGoals([...goals]);
-  }, []);
-  const [filtered, setFiltered] = useState<Array<IGoal>>([...goals]);
+const useGoalsFilter = ({ userId }: { userId: number }) => {
+  const [initialGoals, setInitialGoals] = useState<Array<IGoal>>([]);
+  const navigate = useNavigate();
+  const { isLoading, isError } = useQuery<Array<IGoal>>('userGoals', () => userAPI.getUserGoals(userId), {
+    onSuccess: (data) => {
+      setInitialGoals(data);
+    },
+    onError: (e) => {
+      if (e === 401) {
+        navigate('/', { replace: true });
+      }
+    },
+  });
+
+  const [filtered, setFiltered] = useState<Array<IGoal>>([]);
   const [filterType, setFilterType] = useState<FilterType>(FilterType.none);
   const handleFilterType = (type: FilterType) => {
     setFilterType((prev) => {
@@ -36,6 +49,11 @@ const useGoalsFilter = ({ goals }: { goals: Array<IGoal> }) => {
             return new Date(goal.startDate).getTime() < new Date().getTime() && goal.attainment < 100;
           case FilterType.waiting:
             return new Date(goal.startDate).getTime() > new Date().getTime();
+          case FilterType.working:
+            return (
+              new Date(goal.startDate).getTime() < new Date().getTime() &&
+              new Date(goal.endDate).getTime() > new Date().getTime()
+            );
           case FilterType.none:
             return goal;
         }
@@ -43,7 +61,7 @@ const useGoalsFilter = ({ goals }: { goals: Array<IGoal> }) => {
 
       return filtered;
     });
-  }, [filterType]);
+  }, [initialGoals, filterType]);
 
   const [orderType, setOrderType] = useState<'asc' | 'desc'>('desc');
   const handleOrderType = () => {
@@ -65,9 +83,9 @@ const useGoalsFilter = ({ goals }: { goals: Array<IGoal> }) => {
       });
       return prevGoals;
     });
-  }, [orderType]);
+  }, [initialGoals, orderType, filterType]);
 
-  return { filtered, filterType, orderType, handleFilterType, handleOrderType };
+  return { isLoading, isError, filtered, filterType, orderType, handleFilterType, handleOrderType };
 };
 
 export default useGoalsFilter;

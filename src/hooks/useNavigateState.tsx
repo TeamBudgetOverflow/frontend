@@ -1,17 +1,22 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+
+import { userId } from '../recoil/userAtoms';
 
 export enum Menu {
   home,
   lookup,
+  search,
   my,
   none,
 }
 
-const pathMenuConverter = (path: string) => {
-  // if (path.includes('/goals/lookup')) return Menu.lookup;
+const pathMenuConverter = (path: string, userId: number) => {
+  if (path.includes('/goals/lookup/search')) return Menu.search;
+  if (path === '/goals/lookup') return Menu.lookup;
   if (path === '/home') return Menu.home;
-  if (path.includes('/users') && !path.includes('/edit')) return Menu.my;
+  if (path === `/users/${userId}`) return Menu.my;
 
   return Menu.none;
 };
@@ -28,13 +33,23 @@ const useNavigateState = ({ pathname, userId }: useNavigateStateProps) => {
   const handleMenuSelect = (menu: Menu) => {
     switch (menu) {
       case Menu.home:
-        setSelectedMenu(Menu.home);
+        return setSelectedMenu(Menu.home);
+      case Menu.lookup:
+        return setSelectedMenu(Menu.lookup);
+      case Menu.search:
+        return setSelectedMenu(Menu.search);
+      case Menu.my:
+        return setSelectedMenu(Menu.my);
+    }
+  };
+
+  const handlePageNavigate = (menu: Menu) => {
+    switch (menu) {
+      case Menu.home:
         return navigate('/home');
       case Menu.lookup:
-        setSelectedMenu(Menu.lookup);
         return navigate('/goals/lookup');
       case Menu.my:
-        setSelectedMenu(Menu.my);
         return navigate(`/users/${userId}`);
     }
   };
@@ -43,13 +58,15 @@ const useNavigateState = ({ pathname, userId }: useNavigateStateProps) => {
     if (pathname.includes('/goals/') && !pathname.includes('lookup')) return setShow(false);
     if (pathname.includes('/accounts')) return setShow(false);
     if (pathname.includes('/users/edit')) return setShow(false);
+    if (pathname.includes('/users/') && pathname !== `/users/${userId}`) return setShow(false);
     if (pathname.includes('/chats')) return setShow(false);
 
     setShow(true);
-    handleMenuSelect(pathMenuConverter(pathname));
+    handleMenuSelect(pathMenuConverter(pathname, userId));
+    handlePageNavigate(pathMenuConverter(pathname, userId));
   }, [pathname]);
 
-  return { selectedMenu, show, handleMenuSelect };
+  return { selectedMenu, show, handleMenuSelect, handlePageNavigate };
 };
 
 export default useNavigateState;

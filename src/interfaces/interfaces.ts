@@ -47,6 +47,12 @@ export interface IGoal {
   isPrivate: boolean;
 }
 
+export enum GoalStatus {
+  recruit,
+  proceeding,
+  done,
+}
+
 export interface IPostGoal {
   emoji: string;
   title: string;
@@ -66,8 +72,150 @@ export interface IModifyGoal {
   goal: IPostGoal;
 }
 
+// search filter
+export type IStatusType = 'total' | 'recruit' | 'proceeding' | 'done';
+
+export enum StatusType {
+  total,
+  recruit,
+  proceeding,
+  done,
+}
+
+export const StatusTypetoString = (type: StatusType): IStatusType => {
+  switch (type) {
+    case StatusType.total:
+      return 'total';
+    case StatusType.recruit:
+      return 'recruit';
+    case StatusType.proceeding:
+      return 'proceeding';
+    case StatusType.done:
+      return 'done';
+    default:
+      return 'total';
+  }
+};
+
+export const StatusStringtoType = (type: IStatusType): StatusType => {
+  switch (type) {
+    case 'total':
+      return StatusType.total;
+    case 'recruit':
+      return StatusType.recruit;
+    case 'proceeding':
+      return StatusType.proceeding;
+    case 'done':
+      return StatusType.done;
+    default:
+      return StatusType.total;
+  }
+};
+
+export const StatusTypeKR = (type: StatusType): string => {
+  switch (type) {
+    case StatusType.total:
+      return '전체';
+    case StatusType.recruit:
+      return '모집중';
+    case StatusType.proceeding:
+      return '진행중';
+    case StatusType.done:
+      return '완료';
+    default:
+      return '전체';
+  }
+};
+
+export const StatusKRtoEnum = (type: string): StatusType => {
+  switch (type) {
+    case '전체':
+      return StatusType.total;
+    case '모집중':
+      return StatusType.recruit;
+    case '진행중':
+      return StatusType.proceeding;
+    case '완료':
+      return StatusType.done;
+    default:
+      return StatusType.total;
+  }
+};
+
+export type IOrderType = 'ASC' | 'DESC';
+
+export enum OrderType {
+  asc,
+  desc,
+}
+
+export const OrderTypetoString = (type: OrderType): IOrderType => {
+  switch (type) {
+    case OrderType.asc:
+      return 'ASC';
+    case OrderType.desc:
+      return 'DESC';
+    default:
+      return 'DESC';
+  }
+};
+
+export type ISortType = 'amount' | 'period' | 'member' | '';
+
+export enum SortType {
+  amount,
+  period,
+  member,
+  none,
+}
+
+export const SortTypetoString = (type: SortType): ISortType => {
+  switch (type) {
+    case SortType.amount:
+      return 'amount';
+    case SortType.period:
+      return 'period';
+    case SortType.member:
+      return 'member';
+    default:
+      return '';
+  }
+};
+
+export const SortStringtoType = (type: ISortType): SortType => {
+  switch (type) {
+    case 'amount':
+      return SortType.amount;
+    case 'period':
+      return SortType.period;
+    case 'member':
+      return SortType.member;
+    default:
+      return SortType.none;
+  }
+};
+
+export interface ISearchFilterTypes {
+  status: StatusType;
+  sorted: SortType;
+  min: number;
+  max: number;
+}
+
+export interface ISearchFilter {
+  keyword: string | null;
+  status: IStatusType;
+  ordered: IOrderType;
+  sorted: ISortType;
+  min: number;
+  max: number;
+  page: number;
+}
+
 export interface ISearchGoalResult {
   result: Array<ISearchGoal>;
+  isLastPage: boolean;
+  count: string;
 }
 
 export interface ISearchGoal {
@@ -199,8 +347,14 @@ export interface data {
 
 // badge
 export interface IBadge {
+  badgeId: number;
   title: string;
   description: string;
+  image: string;
+}
+
+export interface IUserBadge {
+  badgeId: number;
 }
 
 // filter condition

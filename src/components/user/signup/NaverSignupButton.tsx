@@ -1,7 +1,5 @@
 import React from 'react';
-
-import NaverLogo from '../../../assets/icons/ico_Naver_logo.png';
-import TextButton from '../../common/elem/TextButton';
+import LoginButton from '../../common/elem/LoginButton';
 
 const NaverSignupButton = () => {
   // TODO: state 추후 변경 필요
@@ -13,7 +11,7 @@ const NaverSignupButton = () => {
 
   return (
     <>
-      <TextButton text='네이버로 계속하기' onClickHandler={handleNaverSignup} />
+      <LoginButton method='naver' text='네이버로 계속하기' onClickHandler={handleNaverSignup} />
     </>
   );
 };

@@ -1,50 +1,55 @@
 import { useState } from 'react';
-import { ISearchFilterOrderType, ISearchFilterSortType, ISearchFilterStatusType } from '../interfaces/interfaces';
+import { StatusType, OrderType, SortType, ISearchFilterTypes } from '../interfaces/interfaces';
 
 const useSearchFilterState = () => {
-  const [filterSorted, setFilterSorted] = useState<ISearchFilterSortType>({ sortby: null });
-  const handleFilterSortedChange = (sorted: ISearchFilterSortType) => {
-    setFilterSorted(sorted);
+  const [filter, setFilter] = useState<ISearchFilterTypes>({
+    status: StatusType.total,
+    sorted: SortType.none,
+    min: 0,
+    max: 0,
+  });
+
+  const handleFilterChange = (status: StatusType, sort: SortType, min: number, max: number) => {
+    setFilter(() => {
+      return { status, sorted: sort, min: min, max: max };
+    });
+  };
+  const handleStatusChange = (type: StatusType) => {
+    setFilter((prev) => {
+      return { ...prev, status: type };
+    });
+  };
+  const handleSortChange = (type: SortType) => {
+    setFilter((prev) => {
+      return { ...prev, sorted: type };
+    });
+  };
+  const handleRangeChange = (min: number, max: number) => {
+    setFilter((prev) => {
+      return { ...prev, min, max };
+    });
   };
 
-  const [filterOrdered, setFilterOrdered] = useState<ISearchFilterOrderType>({ orderby: 'DESC' });
-  const handleFilterOrderedChange = (ordered: ISearchFilterOrderType) => {
-    setFilterOrdered(ordered);
+  const [orderType, setOrderType] = useState<OrderType>(OrderType.desc);
+  const handleOrderTypeChange = (type: OrderType) => {
+    setOrderType(() => type);
   };
 
-  const [filterStatus, setFilterStatus] = useState<ISearchFilterStatusType>({ status: 'total' });
-  const handleFilterStatusChange = (filterStatus: ISearchFilterStatusType) => {
-    setFilterStatus(filterStatus);
-  };
-
-  const [filterRangeMin, setFilterRangeMin] = useState<number>(0);
-  const handleRangeMinChange = (min: number) => {
-    setFilterRangeMin(min);
-  };
-
-  const [filterRangeMax, setFilterRangeMax] = useState<number>(0);
-  const handleRangeMaxChange = (max: number) => {
-    setFilterRangeMax(max);
-  };
-
-  const [pageNumber, setPageNumber] = useState<number>(1);
-  const handlePageNumberChange = (page: number) => {
-    setPageNumber(page);
+  const [page, setPage] = useState<number>(1);
+  const handlePageChange = (page: number) => {
+    setPage(page);
   };
 
   return {
-    filterSorted,
-    filterOrdered,
-    filterRangeMin,
-    filterRangeMax,
-    filterStatus,
-    pageNumber,
-    handleFilterSortedChange,
-    handleFilterOrderedChange,
-    handleFilterStatusChange,
-    handleRangeMinChange,
-    handleRangeMaxChange,
-    handlePageNumberChange,
+    filter,
+    orderType,
+    page,
+    handleFilterChange,
+    handleStatusChange,
+    handleSortChange,
+    handleRangeChange,
+    handleOrderTypeChange,
+    handlePageChange,
   };
 };
 
