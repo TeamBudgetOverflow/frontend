@@ -22,7 +22,7 @@ const ParticipantList = ({ createdUserId, members }: IParticipnatListProps) => {
   return (
     <Wrapper>
       <Type>목표 개설자</Type>
-      <CardWrapper>{creator}</CardWrapper>
+      <CardWrapper>{creator.length === 0 ? <Info>탈퇴한 사용자가 개설한 목표입니다</Info> : creator}</CardWrapper>
       <Type>목표 참여자</Type>
       <ListWrapper>{participants.length === 0 ? <Info>아직 참여자가 없습니다</Info> : participants}</ListWrapper>
     </Wrapper>
