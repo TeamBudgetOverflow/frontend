@@ -3,7 +3,6 @@ import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import ImgEditBtn from '../components/common/elem/btn/ImgEditBtn';
 
-import Icon from '../components/common/elem/Icon';
 import InputBox from '../components/common/elem/InputBox';
 import ProfileImg from '../components/common/elem/ProfileImg';
 import TextButton from '../components/common/elem/TextButton';
