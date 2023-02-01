@@ -10,10 +10,11 @@ import HashTag from '../../common/tag/HashTag';
 import useTxtInput from '../../../hooks/useTxtInput';
 
 interface TagInputSectionProps {
+  initVal: Array<string>;
   changeTagListHandler: (tagList: Array<string>) => void;
 }
 
-const TagInputSection = ({ changeTagListHandler }: TagInputSectionProps) => {
+const TagInputSection = ({ initVal, changeTagListHandler }: TagInputSectionProps) => {
   const {
     value: tagContent,
     errMsg: tagErr,
@@ -26,7 +27,7 @@ const TagInputSection = ({ changeTagListHandler }: TagInputSectionProps) => {
     type: '해시태그',
   });
 
-  const [tagList, setTagList] = useState<Array<string>>([]);
+  const [tagList, setTagList] = useState<Array<string>>(initVal);
   const validateTag = (tagContent: string): boolean => {
     if (tagContent.length === 0) {
       alert('키워드를 입력해주세요.');

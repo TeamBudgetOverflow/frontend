@@ -151,7 +151,7 @@ function GoalInfoInput({ isGroup, initVal }: GoalInfoInputProps) {
           </InputWrapper>
           <ValidateMsg msg={titleErr} type='error' />
         </ContentBox>
-        <TagInputSection changeTagListHandler={handleTagListChange} />
+        <TagInputSection initVal={[]} changeTagListHandler={handleTagListChange} />
         <ContentBox>
           <SubTitle>내용</SubTitle>
           <InputWrapper>
