@@ -64,22 +64,22 @@ const MyFilteredBadges = ({ userId }: { userId: number }) => {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   width: 100%;
   height: 100%;
   overflow-y: auto;
 `;
 
 const Row = styled.div`
-  width: 100%;
   display: flex;
   flex-direction: row;
   row-gap: 20px;
-  column-gap: 35px;
+  column-gap: calc(10% / 2);
   flex-wrap: wrap;
 `;
 
 const BadgeBoxWrapper = styled.div`
-  width: 100px;
+  width: 30%;
   height: 100px;
 `;
 
