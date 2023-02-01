@@ -18,7 +18,6 @@ import CreateAccntAuto from '../pages/CreateAccntAuto';
 import CreateAccntManual from '../pages/CreateAccntManual';
 import PostGoal from '../pages/PostGoal';
 import JoinGoal from '../pages/JoinGoal';
-import AgreementOfCollectionPersonalInfo from '../pages/AgreementOfCollectionPersonalInfo';
 import DetailGoal from '../pages/DetailGoal';
 import ModifyGoalData from '../pages/ModifyGoalData';
 import ModifyGoal from '../pages/ModifyGoal';
@@ -45,7 +44,6 @@ const Router = () => {
         </Route>
         <Route element={<AuthLayout />}>
           <Route path='/home' element={<Home />} />
-          <Route path='/agreement' element={<AgreementOfCollectionPersonalInfo />} />
           <Route path='/goals/post/type' element={<SelectGoalType />} />
           <Route path='/goals/post/data/:type' element={<CreateGoalData />} />
           <Route path='/accounts/choose' element={<SelectAccnt />} />
@@ -63,6 +61,7 @@ const Router = () => {
           <Route path='/users/edit/:id' element={<EditUserProfile />} />
           <Route path='/chats' element={<Prepare />} />
           <Route path='/users/settings/:id' element={<UserSettings />} />
+          <Route path='/users/settings/accounts/:id' element={<Prepare />} />
         </Route>
         <Route path='/welcome' element={<WelcomePage />} />
         <Route path='/' element={<Redirect />} />

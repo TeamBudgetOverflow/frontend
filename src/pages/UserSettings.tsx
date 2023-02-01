@@ -1,17 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
+
 import LogoutButton from '../components/settings/LogoutButton';
 import ModifyAccount from '../components/settings/ModifyAccount';
-import ResetPinNumber from '../components/settings/ResetPinNumber';
 import WithdrawalService from '../components/settings/WithdrawalService';
 
+// TODO: 2차개발, 핀번호 재설정
+// TODO: 2차개발, 실계좌 정보 관리
 const UserSettings = () => {
   return (
     <Wrapper>
       <UserSettingWrapper>
         <Label>사용자 설정</Label>
         <ModifyAccount />
-        <ResetPinNumber />
       </UserSettingWrapper>
       <UserSettingWrapper>
         <Label>기타</Label>
@@ -33,7 +34,6 @@ const Wrapper = styled.div`
 
 const UserSettingWrapper = styled.div`
   width: 100%;
-  height: 113px;
   padding: 30px 10px 10px 10px;
   gap: 20px;
   display: flex;

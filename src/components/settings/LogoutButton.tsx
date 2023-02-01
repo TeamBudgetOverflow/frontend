@@ -38,28 +38,23 @@ const LogoutButton = () => {
     <>
       <SettingButton text='로그아웃' onClickHandler={handleLogoutConfirmModal}></SettingButton>
       <ModalBox show={showConfirm} bgColor={'transparent'}>
-        <ModalWrapper>
-          <ConfirmButtonWrapper>
-            <ConfirmMsg>로그아웃 하시겠습니까?</ConfirmMsg>
-            <TextButton bgColor='white' color='red' text='로그아웃' onClickHandler={handleLogoutButton} />
-          </ConfirmButtonWrapper>
-          <CancleButtonWrapper>
-            <TextButton bgColor='white' color='green' text='취소' onClickHandler={() => setShowConfirm(false)} />
-          </CancleButtonWrapper>
-        </ModalWrapper>
+        <ConfirmButtonWrapper>
+          <ConfirmMsg>로그아웃 하시겠습니까?</ConfirmMsg>
+          <TextButton bgColor='white' color='red' text='로그아웃' onClickHandler={handleLogoutButton} />
+        </ConfirmButtonWrapper>
+        <CancleButtonWrapper>
+          <TextButton bgColor='white' color='green' text='취소' onClickHandler={() => setShowConfirm(false)} />
+        </CancleButtonWrapper>
       </ModalBox>
     </>
   );
 };
-
-const ModalWrapper = styled.div``;
 
 const ConfirmButtonWrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 6px 0px;
   margin: 8px 0px;
-  max-width: 370px;
   width: 100%;
   gap: 10px;
   border-radius: 8px;
@@ -80,7 +75,6 @@ const CancleButtonWrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 6px 0px;
-  max-width: 370px;
   width: 100%;
   border-radius: 8px;
   background-color: white;

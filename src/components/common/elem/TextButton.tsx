@@ -42,7 +42,7 @@ const Button = styled.button<{ bgColor?: string; disable?: boolean }>`
 
 const TextWrapper = styled.div<{ bgColor?: string; disable?: boolean; color?: string }>`
   padding: 10px 0;
-  font: ${(props) => props.theme.paragraphP2M};
+  font: ${(props) => props.theme.paragraphsP2M};
   color: ${(props) =>
     props.disable ? 'black' : props.bgColor === 'gray' ? 'black' : props.color ? `${props.color}` : 'white'};
 `;
