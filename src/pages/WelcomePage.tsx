@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
+import DesktopLayout from '../shared/DesktopLayout';
 import WelcomePic from '../components/common/elem/WelcomePic';
 
 import { userProfile } from '../recoil/userAtoms';
@@ -17,25 +18,29 @@ const WelcomePage = () => {
   }, []);
 
   return (
-    <Wrapper>
-      <Text>
-        {name} 님 <br />
-        가입을 환영합니다!
-      </Text>
-      <WelcomePic />
-    </Wrapper>
+    <DesktopLayout>
+      <Wrapper>
+        <Text>
+          {name} 님 <br />
+          가입을 환영합니다!
+        </Text>
+        <WelcomePic />
+      </Wrapper>
+    </DesktopLayout>
   );
 };
 
 const Wrapper = styled.div`
-  position: absolute;
+  padding-top: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  height: 100%;
   gap: 10px;
-  top: 200px;
+  width: 100%;
+  min-width: 414px;
+  height: calc(100% - 200px);
+  background-color: white;
+  overflow: hidden;
 `;
 
 const Text = styled.div`
