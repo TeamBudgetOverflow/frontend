@@ -356,28 +356,3 @@ export interface IBadge {
 export interface IUserBadge {
   badgeId: number;
 }
-
-// filter condition
-export interface ISearchFilterSortType {
-  sortby: 'amount' | 'period' | 'member' | null;
-}
-
-export interface ISearchFilterOrderType {
-  orderby: 'ASC' | 'DESC';
-}
-
-export interface ISearchFilterStatusType {
-  status: 'total' | 'recruit' | 'proceeding';
-}
-
-export interface ISearchFilterQueriesType {
-  queries: {
-    keyword: string;
-    sorted: ISearchFilterSortType;
-    min: number;
-    max: number;
-    orderd: ISearchFilterOrderType;
-    status: ISearchFilterStatusType;
-    page: number;
-  };
-}

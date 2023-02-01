@@ -16,7 +16,6 @@ import {
   IBalance,
   IUpdateUserProfile,
   ISearchGoalResult,
-  ISearchFilterQueriesType,
   IUserBadge,
   ISearchFilter,
   ISearchGoal,
@@ -178,7 +177,7 @@ export const goalApi = {
     return data.goalId;
   },
   getGoals: async (page: number) => {
-    const { data } = await tokenClient.get(`/goals?&page=${page}`);
+    const { data } = await tokenClient.get(`/goals?page=${page}`);
 
     return data;
   },
