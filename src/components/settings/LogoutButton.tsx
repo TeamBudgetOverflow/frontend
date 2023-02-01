@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation } from 'react-query';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { userAPI } from '../../apis/client';
@@ -11,18 +11,22 @@ import TextButton from '../common/elem/TextButton';
 
 const LogoutButton = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
 
   const [showConfirm, setShowConfirm] = useState(false);
 
-  const { mutate } = useMutation('deleteUserLogout', () => userAPI.deleteUserLogout(Number(id)), {
+  const { mutate } = useMutation('deleteUserLogout', () => userAPI.deleteUserLogout(), {
     onSuccess: () => {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
       navigate('/login');
     },
-    onError: (err) => {
-      alert(err);
+    onError: (e) => {
+      if (e === 401) {
+        navigate('/', { replace: true });
+      } else {
+        alert(e);
+        navigate('/home');
+      }
     },
   });
 

@@ -127,9 +127,8 @@ export const userAPI = {
 
     return data;
   },
-  deleteUserLogout: async (userId: number) => {
-    // api 명세서 업데이트 후 수정요
-    const { data } = await tokenClient.delete(`/users/${userId}`);
+  deleteUserLogout: async () => {
+    const { data } = await tokenClient.delete(`/users`);
 
     return data;
   },

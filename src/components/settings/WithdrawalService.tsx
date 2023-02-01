@@ -21,8 +21,13 @@ const WithdrawalService = () => {
       localStorage.removeItem('refreshToken');
       navigate('/login');
     },
-    onError: (err) => {
-      alert(err);
+    onError: (e) => {
+      if (e === 401) {
+        navigate('/', { replace: true });
+      } else {
+        alert(e);
+        navigate('/home');
+      }
     },
   });
 
