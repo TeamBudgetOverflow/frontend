@@ -61,7 +61,15 @@ const GroupGoals = () => {
             <ErrorMsg />
           </Alert>
         ) : (
-          goals.map((goal) => <GroupGoalCard key={goal.goalId} goal={goal} />)
+          <>
+            {goals.length === 0 ? (
+              <EmptyData>
+                <InfoText>{`아직 마감 임박인 목표가 없습니다.\n첫번째 목표를 추가해보세요!`}</InfoText>
+              </EmptyData>
+            ) : (
+              goals.map((goal) => <GroupGoalCard key={goal.goalId} goal={goal} />)
+            )}
+          </>
         )}
       </GoalCardsWrapper>
     </BottomContent>
@@ -98,6 +106,26 @@ const GoalCardsWrapper = styled.div`
   width: calc(100% - 44px);
   height: calc(100% - 20px);
   overflow-y: auto;
+`;
+
+const EmptyData = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 150px;
+  background-color: white;
+  border-radius: 12px;
+  border: 1px solid ${(props) => props.theme.gray300};
+`;
+
+const InfoText = styled.div`
+  text-align: center;
+  font: ${(props) => props.theme.captionC1};
+  color: ${(props) => props.theme.primary400};
+  line-height: 150%;
+  white-space: pre-wrap;
 `;
 
 export default GroupGoals;
