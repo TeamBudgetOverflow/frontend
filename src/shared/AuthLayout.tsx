@@ -7,6 +7,7 @@ import Header from './Header';
 import Navigation from './Navigation';
 
 import { userId } from '../recoil/userAtoms';
+import DesktopLayout from './DesktopLayout';
 
 const AuthLayout = () => {
   const accessToken = localStorage.getItem('accessToken');
@@ -43,26 +44,29 @@ const AuthLayout = () => {
   }, [headerRef.current?.clientHeight, pathname]);
 
   return (
-    <Wrapper>
-      <Header props='' ref={headerRef} />
-      <Body height={`${headerNavHeight}px`}>
-        <Outlet />
-      </Body>
-      <Navigation />
-    </Wrapper>
+    <DesktopLayout>
+      <Wrapper>
+        <Header props='' ref={headerRef} />
+        <Body height={`${headerNavHeight}px`}>
+          <Outlet />
+        </Body>
+        <Navigation />
+      </Wrapper>
+    </DesktopLayout>
   );
 };
 
 const Wrapper = styled.div`
   position: relative;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  min-width: 414px;
+  height: 100%;
   overflow: hidden;
 `;
 
 const Body = styled.div<{ height: string }>`
   width: 100%;
-  height: ${(props) => `calc(100vh - ${props.height})`};
+  height: ${(props) => `calc(100% - ${props.height})`};
   background-color: white;
 `;
 

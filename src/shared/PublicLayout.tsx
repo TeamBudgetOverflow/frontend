@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Outlet } from 'react-router';
 import styled from 'styled-components';
 
+import DesktopLayout from './DesktopLayout';
+
 const PublicLayout = () => {
   const navigate = useNavigate();
   const accessToken = localStorage.getItem('accessToken');
@@ -20,15 +22,20 @@ const PublicLayout = () => {
   }, [accessToken, refreshToken]);
 
   return (
-    <Wrapper>
-      <Outlet />
-    </Wrapper>
+    <DesktopLayout>
+      <Wrapper>
+        <Outlet />
+      </Wrapper>
+    </DesktopLayout>
   );
 };
 
 const Wrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  min-width: 414px;
+  height: 100%;
+  background-color: white;
+  overflow: hidden;
 `;
 
 export default PublicLayout;
