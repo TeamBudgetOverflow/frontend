@@ -55,13 +55,16 @@ const Title = styled.p`
 `;
 
 const TagList = styled.div`
-  display: block;
-  gap: 4px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
   width: 100%;
 `;
 
 const Tag = styled.span`
   word-break: keep-all;
+  white-space: nowrap;
   font: ${(props) => props.theme.paragraphsP3M};
   color: ${(props) => props.theme.primaryMain};
 `;
