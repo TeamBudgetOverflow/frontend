@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import EmojiPicker from 'emoji-picker-react';
 
-import EmojiBox from '../../common/elem/EmojiBox';
-import Icon from '../../common/elem/Icon';
 import InputBox from '../../common/elem/InputBox';
 import ValidateMsg from '../../common/elem/ValidateMsg';
 import TagInputSection from './TagInputSection';
@@ -13,8 +10,6 @@ import TextButton from '../../common/elem/TextButton';
 
 import useTxtInput from '../../../hooks/useTxtInput';
 import useNumInput from '../../../hooks/useNumInput';
-
-import useEmojiSelect from '../../../hooks/useEmojiSelect';
 
 import { IPostGoal } from '../../../interfaces/interfaces';
 
@@ -230,35 +225,12 @@ const ContentWrapper = styled.div`
   gap: 20px;
 `;
 
-const EmojiContentBox = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: flex-end;
-  width: 100%;
-`;
-
 const ContentBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 8px;
   width: 100%;
-`;
-
-const Button = styled.div`
-  width: 24px;
-  height: 24px;
-  border: 1px solid black;
-`;
-
-const EmojiPickerWrapper = styled.div<{ show: boolean }>`
-  position: absolute;
-  top: 110%;
-  z-index: 5;
-  display: ${(props) => (props.show ? '' : 'none')};
-  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2);
 `;
 
 const SubTitle = styled.div`

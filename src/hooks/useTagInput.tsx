@@ -4,7 +4,7 @@ const useTagInput = ({ initVal }: { initVal: Array<string> }) => {
   const [tagList, setTagList] = useState<Array<string>>(initVal);
 
   const handleTagListChange = (tagList: Array<string>) => {
-    setTagList((prev) => [...prev, ...tagList]);
+    setTagList(tagList);
   };
 
   return { tagList, handleTagListChange };

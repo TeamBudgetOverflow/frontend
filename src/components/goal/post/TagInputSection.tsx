@@ -27,25 +27,32 @@ const TagInputSection = ({ changeTagListHandler }: TagInputSectionProps) => {
   });
 
   const [tagList, setTagList] = useState<Array<string>>([]);
-  const validateTag = (tagContent: string) => {
+  const validateTag = (tagContent: string): boolean => {
     if (tagContent.length === 0) {
-      return alert('키워드를 입력해주세요.');
+      alert('키워드를 입력해주세요.');
+      return false;
     }
 
     if (tagList.length === 10) {
-      return alert('해시태그는 최대 10개까지 추가가 가능합니다.');
+      alert('해시태그는 최대 10개까지 추가가 가능합니다.');
+      return false;
     }
 
     for (const t of tagList) {
       if (t === tagContent) {
-        return alert('이미 추가된 해시태그입니다');
+        alert('이미 추가된 해시태그입니다');
+        return false;
       }
     }
+
+    return true;
   };
 
   const handleAddTag = () => {
-    validateTag(tagContent);
-    setTagList((prev) => [...prev, tagContent]);
+    if (!validateTag(tagContent)) return;
+    setTagList((prev) => {
+      return [...prev, tagContent];
+    });
     resetTag();
   };
 
