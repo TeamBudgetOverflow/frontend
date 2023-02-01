@@ -35,9 +35,9 @@ const Router = () => {
       <Routes>
         <Route element={<PublicLayout />}>
           <Route path='/login' element={<LoginPage />} />
-          <Route path='/kakaologin' element={<KakaoLogin />} />
-          <Route path='/naverlogin' element={<NaverLogin />} />
-          <Route path='/googlelogin' element={<GoogleLogin />} />
+          <Route path='/api/users/auth/kakao' element={<KakaoLogin />} />
+          <Route path='/api/users/auth/naver' element={<NaverLogin />} />
+          <Route path='/api/users/auth/google' element={<GoogleLogin />} />
         </Route>
         <Route element={<RefreshLayout />}>
           <Route path='/pinnumber' element={<PinNumberPage />} />
