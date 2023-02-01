@@ -16,7 +16,7 @@ const pathMenuConverter = (path: string, userId: number) => {
   if (path.includes('/goals/lookup/search')) return Menu.search;
   if (path === '/goals/lookup') return Menu.lookup;
   if (path === '/home') return Menu.home;
-  if (path === `/users/${userId}`) return Menu.my;
+  if (path.includes('/users') && !path.includes('/edit') && !path.includes('/settings')) return Menu.my;
 
   return Menu.none;
 };

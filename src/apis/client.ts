@@ -127,6 +127,16 @@ export const userAPI = {
 
     return data;
   },
+  deleteUserLogout: async () => {
+    const { data } = await tokenClient.delete(`/users`);
+
+    return data;
+  },
+  deleteUserWithdrawalService: async (userId: number) => {
+    const { data } = await tokenClient.delete(`/users/exit/${userId}`);
+
+    return data;
+  },
 };
 
 export const badgeApi = {

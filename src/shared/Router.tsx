@@ -26,6 +26,7 @@ import SearchGoals from '../pages/SearchGoals';
 import DetailUser from '../pages/DetailUser';
 import EditUserProfile from '../pages/EditUserProfile';
 import Prepare from '../pages/Prepare';
+import UserSettings from '../pages/UserSettings';
 import WelcomePage from '../pages/WelcomePage';
 
 const Router = () => {
@@ -59,6 +60,8 @@ const Router = () => {
           <Route path='/users/:id' element={<DetailUser />} />
           <Route path='/users/edit/:id' element={<EditUserProfile />} />
           <Route path='/chats' element={<Prepare />} />
+          <Route path='/users/settings/:id' element={<UserSettings />} />
+          <Route path='/users/settings/accounts/:id' element={<Prepare />} />
         </Route>
         <Route path='/welcome' element={<WelcomePage />} />
         <Route path='/' element={<Redirect />} />

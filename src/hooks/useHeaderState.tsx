@@ -43,11 +43,19 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
     setShowPrevBtn(false);
   };
 
+  const { id } = useRecoilValue(userId);
+
+  const [showSettingsBtn, setShowSettingsBtn] = useState<boolean>(false);
+  const handleSettingsClick = () => {
+    navigate(`/users/settings/${id}`);
+  };
+
   const showPrevOnly = () => {
     setShowPrevBtn(true);
     setShowSearchBar(false);
     setShowSearchBtn(false);
     setShowChatBtn(false);
+    setShowSettingsBtn(false);
   };
 
   const showChatOnly = () => {
@@ -55,23 +63,31 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
     setShowSearchBar(false);
     setShowSearchBtn(false);
     setShowChatBtn(true);
+    setShowSettingsBtn(false);
   };
 
-  const { id } = useRecoilValue(userId);
+  const showSettingsOnly = () => {
+    setShowPrevBtn(false);
+    setShowSearchBar(false);
+    setShowSearchBtn(false);
+    setShowChatBtn(false);
+    setShowSettingsBtn(true);
+  };
+
   useEffect(() => {
     if (pathname === '/home') {
       showChatOnly();
       return;
     }
-    if (pathname === `/users/${id}`) {
-      showChatOnly();
-      return;
-    }
-    if (pathname.includes('/users/')) {
-      showPrevOnly();
+    if (pathname.includes('/users') && !pathname.includes('/edit') && !pathname.includes('/settings')) {
+      showSettingsOnly();
       return;
     }
     if (pathname.includes('/edit')) {
+      showPrevOnly();
+      return;
+    }
+    if (pathname.includes('/settings')) {
       showPrevOnly();
       return;
     }
@@ -96,6 +112,7 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
       setShowPrevBtn(true);
       setShowSearchBtn(false);
       setShowChatBtn(false);
+      setShowSettingsBtn(false);
       return;
     }
 
@@ -103,6 +120,7 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
     setShowSearchBar(false);
     setShowSearchBtn(true);
     setShowChatBtn(true);
+    setShowSettingsBtn(false);
   }, [pathname]);
 
   return {
@@ -111,11 +129,13 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
     showPrevBtn,
     showSearchBar,
     keyword,
+    showSettingsBtn,
     handleSearchClick,
     handleChatClick,
     handlePrevClick,
     handleKeywordChange,
     handleKeypress,
+    handleSettingsClick,
   };
 };
 

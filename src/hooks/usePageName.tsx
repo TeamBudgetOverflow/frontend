@@ -10,6 +10,7 @@ enum PageType {
   lookupGoal,
   my,
   editProfile,
+  settings,
   none,
 }
 
@@ -27,6 +28,8 @@ const PageKR = (type: PageType) => {
       return '마이페이지';
     case PageType.editProfile:
       return '프로필 수정';
+    case PageType.settings:
+      return '설정';
     default:
       return '';
   }
@@ -60,6 +63,10 @@ const usePageName = ({ pathname }: { pathname: string }) => {
     }
     if (pathname.includes('/edit')) {
       setPageType(PageType.editProfile);
+      return;
+    }
+    if (pathname.includes('/settings')) {
+      setPageType(PageType.settings);
       return;
     }
     if (pathname === `/users/${id}`) {
