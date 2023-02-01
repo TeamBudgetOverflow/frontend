@@ -24,8 +24,10 @@ const usePinNumberSignupPost = ({
       onSuccess: () => {
         navigate('/welcome');
       },
-      onError: (error) => {
-        alert(error);
+      onError: (e) => {
+        if (e === 401) {
+          navigate('/', { replace: true });
+        }
       },
     }
   );
