@@ -15,10 +15,12 @@ import WithDrawButton from '../components/goal/goalDetail/group/WithdrawButton';
 import GoalModifyButton from '../components/goal/goalDetail/GoalModifyButton';
 import GoalDeleteButton from '../components/goal/goalDetail/GoalDeleteButton';
 import ParticipantSection from '../components/goal/detail/ParticipantSection';
+import GoalTagsCard from '../components/goal/goalDetail/GoalTagsCard';
 
 import { userId } from '../recoil/userAtoms';
 
 import useGoalDetailData from '../hooks/useGoalDetailData';
+
 import { GoalStatus } from '../interfaces/interfaces';
 
 const setButton = (
@@ -78,6 +80,7 @@ const DetailGoal = () => {
           />
           <GoalPeriodCard startDate={data.startDate} endDate={data.endDate} />
           <GoalDescCard description={data.description} />
+          <GoalTagsCard hashTag={data.hashTag} />
           {isMember && status === GoalStatus.proceeding ? (
             <GoalBalanceCard balanceId={balanceId} accountId={accountId} />
           ) : (

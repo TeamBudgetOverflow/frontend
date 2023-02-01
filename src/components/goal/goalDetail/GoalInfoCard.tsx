@@ -42,7 +42,7 @@ const GoalInfoCard = ({
             <ProgressBar percentage={attainment} height={8} borderRadius={25} />
             <ProgressInfo>
               <C3TextBox text={setProgressState(attainment)} />
-              <C3TextBox text={`${attainment}%`} />
+              <C3TextBox text={`${Math.floor(attainment)}%`} />
             </ProgressInfo>
           </ProgressBarWrapper>
         ) : (
