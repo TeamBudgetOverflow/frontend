@@ -133,8 +133,7 @@ export const userAPI = {
     return data;
   },
   deleteUserWithdrawalService: async (userId: number) => {
-    // api 명세서 업데이트 후 수정요
-    const { data } = await tokenClient.delete(`/users/${userId}`);
+    const { data } = await tokenClient.delete(`/users/exit/${userId}`);
 
     return data;
   },
