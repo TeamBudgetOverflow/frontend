@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
 
 import TextButton from '../../common/elem/TextButton';
@@ -6,7 +7,12 @@ import TextButton from '../../common/elem/TextButton';
 import { goalApi } from '../../../apis/client';
 
 const GoalDeleteButton = ({ goalId }: { goalId: number }) => {
-  const { mutate } = useMutation('deleteGoal', () => goalApi.deleteGoal(goalId));
+  const navigate = useNavigate();
+  const { mutate } = useMutation('deleteGoal', () => goalApi.deleteGoal(goalId), {
+    onSuccess: () => {
+      navigate(-1);
+    },
+  });
 
   const handleDeleteGoalButton = () => {
     mutate();
