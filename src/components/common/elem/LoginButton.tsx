@@ -72,7 +72,7 @@ const LogoWrapper = styled.div`
 const TextWrapper = styled.div<{ method: 'naver' | 'kakao' | 'google' }>`
   text-align: center;
   padding: 10px 0;
-  font: ${(props) => props.theme.paragraphP2M};
+  font: ${(props) => props.theme.paragraphsP2M};
   color: ${(props) => loginButtonStyles[props.method].fontColor};
 `;
 
