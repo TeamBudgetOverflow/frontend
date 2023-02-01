@@ -50,6 +50,7 @@ const useSearchFilteredData = (params: ISearchFilter) => {
     }
   );
   useEffect(() => {
+    if (lastReqPage === 1) mutate(params);
     if (lastReqPage !== params.page) mutate(params);
   }, [params.keyword, params.status, params.ordered, params.sorted, params.page]);
 
