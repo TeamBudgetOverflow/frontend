@@ -79,8 +79,16 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
       showChatOnly();
       return;
     }
-    if (pathname.includes('/users') && !pathname.includes('/edit') && !pathname.includes('/settings')) {
+    if (pathname === `/users/${id}`) {
       showSettingsOnly();
+      return;
+    }
+    if (pathname.includes('/users') && !pathname.includes('/edit') && !pathname.includes('/settings')) {
+      setShowSearchBar(false);
+      setShowPrevBtn(true);
+      setShowSearchBtn(false);
+      setShowChatBtn(false);
+      setShowSettingsBtn(true);
       return;
     }
     if (pathname.includes('/edit')) {
