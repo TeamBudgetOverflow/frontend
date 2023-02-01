@@ -25,9 +25,9 @@ import LookupGoals from '../pages/LookupGoals';
 import SearchGoals from '../pages/SearchGoals';
 import DetailUser from '../pages/DetailUser';
 import EditUserProfile from '../pages/EditUserProfile';
-import Prepare from '../pages/Prepare';
 import UserSettings from '../pages/UserSettings';
 import WelcomePage from '../pages/WelcomePage';
+import Prepare from '../pages/Prepare';
 
 const Router = () => {
   return (

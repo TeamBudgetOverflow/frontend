@@ -7,11 +7,7 @@ interface PinNumberSignupPostProps {
   pinNumber2: string;
 }
 
-const usePinNumberSignupPost = ({
-  id,
-
-  pinNumber2,
-}: PinNumberSignupPostProps) => {
+const usePinNumberSignupPost = ({ id, pinNumber2 }: PinNumberSignupPostProps) => {
   const navigate = useNavigate();
 
   const { refetch } = useQuery(
@@ -22,6 +18,7 @@ const usePinNumberSignupPost = ({
     {
       enabled: false,
       onSuccess: () => {
+        localStorage.removeItem('isNewComer');
         navigate('/welcome');
       },
       onError: (e) => {
