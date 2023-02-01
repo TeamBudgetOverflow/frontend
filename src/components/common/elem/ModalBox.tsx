@@ -23,7 +23,7 @@ const Wrapper = styled.div<{ show: boolean }>`
   left: 0;
   z-index: 10;
   display: ${(props) => (props.show ? '' : 'none')};
-  width: 100vw;
+  width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
 `;
