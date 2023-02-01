@@ -9,14 +9,18 @@ const RefreshLayout = () => {
   const navigate = useNavigate();
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
+  const IsNewComer = localStorage.getItem('isNewComer');
+
   useEffect(() => {
-    if (accessToken && refreshToken) {
-      navigate('/home');
-      return;
-    }
-    if (!accessToken && !refreshToken) {
-      navigate('/login');
-      return;
+    if (!IsNewComer) {
+      if (accessToken && refreshToken) {
+        navigate('/home');
+        return;
+      }
+      if (!accessToken && !refreshToken) {
+        navigate('/login');
+        return;
+      }
     }
   }, [accessToken, refreshToken]);
 
