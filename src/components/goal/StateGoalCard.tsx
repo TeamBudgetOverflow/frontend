@@ -46,7 +46,7 @@ const StateGoalCard = ({ goal }: { goal: IGoal }) => {
               ? `${dateStringTranslator(new Date(goal.endDate))} 자정 종료`
               : `${dateStringTranslator(new Date(goal.startDate))} 자정 시작`}
           </ProgressText>
-          {state !== GoalState.waiting ? <ProgressText>{`${goal.attainment}%`}</ProgressText> : <></>}
+          {state !== GoalState.waiting ? <ProgressText>{`${Math.round(goal.attainment)}%`}</ProgressText> : <></>}
         </ProgressInfo>
       </BottomContent>
     </Wrapper>

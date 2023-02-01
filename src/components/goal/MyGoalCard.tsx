@@ -33,7 +33,7 @@ const MyGoalCard = ({ goal }: { goal: IGoal }) => {
         </ProgressBarWrapper>
         <ProgressInfo>
           <C3TextBox text={setProgressState(goal.attainment)} />
-          <C3TextBox text={`${goal.attainment}%`} />
+          <C3TextBox text={`${Math.round(goal.attainment)}%`} />
         </ProgressInfo>
       </BottomContent>
     </Wrapper>
