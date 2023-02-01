@@ -22,7 +22,7 @@ const KakaoLogin = () => {
 
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
-
+      localStorage.setItem('isNewComer', data.newComer);
       setUserId({ id: jwtDecoder<MyToken>(data.accessToken).userId });
 
       if (data.newComer === true) {
@@ -34,6 +34,7 @@ const KakaoLogin = () => {
       console.log('kakao signup error:', e);
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
+      localStorage.removeItem('isNewComer');
     }
   };
   useEffect(() => {

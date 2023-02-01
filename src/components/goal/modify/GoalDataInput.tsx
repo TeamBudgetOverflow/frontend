@@ -86,7 +86,7 @@ const GoalDataInput = ({ goalId, isEditable, isGroup, initVal, createdAt }: Goal
           changeHandler={(title: string) => setTitle(title)}
           errHandler={handleInputErr}
         />
-        <TagInputSection changeTagListHandler={handleTagListChange} />
+        <TagInputSection initVal={initVal.hashTag} changeTagListHandler={handleTagListChange} />
         <TextInput
           title='내용'
           type='설명'

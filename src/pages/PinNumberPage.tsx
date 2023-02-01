@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
@@ -14,11 +14,16 @@ import usePinNumberRepost from '../hooks/usePinNumberRepost';
 const PinNumberPage = () => {
   const { id } = useRecoilValue(userId);
   const PASSWORD_MAX_LENGTH = 6;
-  const accessToken = localStorage.getItem('accessToken');
+  const storedIsNewComer = localStorage.getItem('isNewComer');
+  const [isNewComer, setIsNewComer] = useState<boolean>(false);
+  useEffect(() => {
+    if (storedIsNewComer === 'true') return setIsNewComer(true);
+    setIsNewComer(false);
+  }, [storedIsNewComer]);
 
   const { numbers, pinNumber1, pinNumber2, loginPinNumber, erasePinNumberOne, inputNums } = usePinNumberKeypad({
     PASSWORD_MAX_LENGTH,
-    accessToken,
+    isNewComer,
   });
 
   const { refetch: refetchPinNumber } = usePinNumberSignupPost({
@@ -29,34 +34,50 @@ const PinNumberPage = () => {
   const { getAccessToken } = usePinNumberRepost(loginPinNumber);
 
   useEffect(() => {
-    if (loginPinNumber.length === PASSWORD_MAX_LENGTH && accessToken === null) {
+    if (loginPinNumber.length === PASSWORD_MAX_LENGTH && !isNewComer) {
       getAccessToken();
     }
-    if (pinNumber2.length === PASSWORD_MAX_LENGTH && pinNumber2 === pinNumber1 && accessToken !== null) {
+    if (pinNumber2.length === PASSWORD_MAX_LENGTH && pinNumber2 === pinNumber1 && isNewComer) {
       refetchPinNumber();
     }
-  }, [pinNumber1, pinNumber2, accessToken]);
+  }, [loginPinNumber, pinNumber1, pinNumber2]);
 
   return (
     <Wrapper>
       <TextWrapper>
-        {accessToken && pinNumber1.length !== PASSWORD_MAX_LENGTH ? (
-          <Text>
-            <Logo type='small' size={52} />
-            &nbsp;에서 사용할 <br />
-            핀번호를 설정하세요.
-          </Text>
+        {!isNewComer ? (
+          <Text>핀번호를 입력해주세요.</Text>
         ) : (
-          <Text>핀번호를 확인해주세요.</Text>
+          <>
+            {pinNumber1.length !== PASSWORD_MAX_LENGTH ? (
+              <Text>
+                <Logo type='small' size={52} />
+                &nbsp;에서 사용할 <br />
+                핀번호를 설정하세요.
+              </Text>
+            ) : (
+              <Text>핀번호를 확인해주세요.</Text>
+            )}
+          </>
         )}
         <InputWrapper>
           <GuideText>숫자 6자리</GuideText>
           <RadioInputWrapper>
-            {accessToken === null && loginPinNumber.length !== PASSWORD_MAX_LENGTH
-              ? Array.from(loginPinNumber).map((pin) => <RadioInput key={pin} />)
-              : accessToken && pinNumber1.length !== PASSWORD_MAX_LENGTH
-              ? Array.from(pinNumber1).map((pin) => <RadioInput key={pin} />)
-              : Array.from(pinNumber2).map((pin) => <RadioInput key={pin} />)}
+            {!isNewComer ? (
+              <>
+                {loginPinNumber.length !== PASSWORD_MAX_LENGTH ? (
+                  Array.from(loginPinNumber).map((pin) => <RadioInput key={pin} />)
+                ) : (
+                  <></>
+                )}
+              </>
+            ) : (
+              <>
+                {pinNumber1.length !== PASSWORD_MAX_LENGTH
+                  ? Array.from(pinNumber1).map((v, i) => <RadioInput key={i} />)
+                  : Array.from(pinNumber2).map((v, i) => <RadioInput key={i} />)}
+              </>
+            )}
           </RadioInputWrapper>
         </InputWrapper>
       </TextWrapper>

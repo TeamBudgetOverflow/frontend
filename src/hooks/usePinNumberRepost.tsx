@@ -14,13 +14,17 @@ const usePinNumberRepost = (loginPinNumber: string) => {
     try {
       const data = await userAPI.postAccessTokenByPinCode(loginPinNumber);
       localStorage.setItem('accessToken', data.accessToken);
+      localStorage.removeItem('isNewComer');
       setUserId({ id: jwtDecoder<MyToken>(data.accessToken).userId });
 
       navigate('/home');
     } catch (e) {
-      console.log('get access token error:', e);
       localStorage.removeItem('accessToken');
+      localStorage.removeItem('isNewComer');
       setUserId({ id: 0 });
+      if (e === 401) {
+        navigate('/', { replace: true });
+      }
     }
   };
 

@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 
 interface PinNumberKeypadProps {
   PASSWORD_MAX_LENGTH: number;
-  accessToken: string | null;
+  isNewComer: boolean;
 }
 
-const usePinNumberKeypad = ({ PASSWORD_MAX_LENGTH, accessToken }: PinNumberKeypadProps) => {
+const usePinNumberKeypad = ({ PASSWORD_MAX_LENGTH, isNewComer }: PinNumberKeypadProps) => {
   const numberInit = Array.from({ length: 10 }, (v, k) => k);
 
   const [numbers, setNumbers] = useState(numberInit);
@@ -38,10 +38,9 @@ const usePinNumberKeypad = ({ PASSWORD_MAX_LENGTH, accessToken }: PinNumberKeypa
   }, [pinNumber1]);
 
   const handlePinNumberChange = (num: number) => {
-    if (accessToken === null) {
-      setLoginPinNumber(loginPinNumber + num.toString());
-    }
-    if (accessToken && pinNumber1.length !== PASSWORD_MAX_LENGTH) {
+    if (!isNewComer) return setLoginPinNumber(loginPinNumber + num.toString());
+
+    if (pinNumber1.length !== PASSWORD_MAX_LENGTH) {
       setPinNumber1(pinNumber1 + num.toString());
     } else {
       setPinNumber2(pinNumber2 + num.toString());
