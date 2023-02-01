@@ -13,6 +13,7 @@ import { userId, userProfile } from '../recoil/userAtoms';
 
 const EditUserProfile = () => {
   const savedUserProfile = useRecoilValue(userProfile);
+  const savedDescription = !savedUserProfile.description ? '' : savedUserProfile.description;
   const {
     ref,
     imgURL,
@@ -70,7 +71,14 @@ const EditUserProfile = () => {
           </LabelBox>
         </UserContentBox>
       </TopContent>
-      <TextButton text='프로필 수정 완료' onClickHandler={() => handleProfileModify(uploadFile)} />
+      <TextButton
+        text='프로필 수정 완료'
+        onClickHandler={() => handleProfileModify(uploadFile)}
+        isDisabled={
+          nickname.length === 0 ||
+          (nickname === savedUserProfile.nickname && description === savedDescription && !uploadFile)
+        }
+      />
     </Wrapper>
   );
 };
