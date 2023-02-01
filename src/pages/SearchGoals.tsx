@@ -13,30 +13,153 @@ import FiltersModal from '../components/goal/searchFilter/FiltersModal';
 
 import { SearchFilterType, searchFilterKR } from '../components/goal/searchFilter/FiltersModal';
 
-import { groupGoals } from '../recoil/goalsAtoms';
+import useSearchFilteredData from '../hooks/useSearchFilteredData';
+import useSearchFilterState from '../hooks/useSearchFilterState';
 
-import { ISearchGoal } from '../interfaces/interfaces';
+import {
+  StatusTypetoString,
+  OrderTypetoString,
+  SortTypetoString,
+  StatusTypeKR,
+  StatusType,
+  SortType,
+} from '../interfaces/interfaces';
+import useSearchFilterTags from '../hooks/useSearchFilterTags';
 
 const SearchGoals = () => {
-  const location = useLocation();
-  const setGoalsList = useSetRecoilState(groupGoals);
-  const { isLoading: isLoadingGoals, data: searchGoals } = useQuery<Array<ISearchGoal>>('searchGoals', () =>
-    goalApi.getGoalsByWord(location.search)
-  );
-
-  const searchGroupGoals = useRecoilValue(groupGoals);
+  const [searchParams] = useSearchParams();
+  const [keyword, setKeyword] = useState<string | null>('');
   useEffect(() => {
-    if (!searchGoals) return;
-    setGoalsList(searchGoals);
+    const keyword = searchParams.get('keyword');
+    setKeyword(keyword);
+  }, [searchParams]);
+
+  const {
+    filter,
+    orderType,
+    page,
+    handleFilterChange,
+    handleStatusChange,
+    handleSortChange,
+    handleRangeChange,
+    handleOrderTypeChange,
+    handlePageChange,
+  } = useSearchFilterState();
+  const handleFilterInputChange = (status: StatusType, sortType: SortType, min: number, max: number) => {
+    handleFilterChange(status, sortType, min, max);
+  };
+  const { filterTags, handleFilterAdd, handleFilterRemove, handleFiltersReset } = useSearchFilterTags({
+    statusChangeHandler: handleStatusChange,
+    sortChangeHandler: handleSortChange,
+    rangeChangeHandler: handleRangeChange,
+  });
+  useEffect(() => {
+    handleFiltersReset();
+    switch (filter.sorted) {
+      case SortType.amount:
+        handleFilterAdd(SearchFilterType.amount, `${filter.min.toLocaleString()}원 ~ ${filter.max.toLocaleString()}원`);
+        break;
+      case SortType.period:
+        handleFilterAdd(SearchFilterType.period, `${filter.min}일 ~ ${filter.max}일`);
+        break;
+      case SortType.member:
+        handleFilterAdd(SearchFilterType.member, `${filter.min}명 ~ ${filter.max}명`);
+        break;
+      case SortType.none:
+        handleFiltersReset();
+    }
+
+    handleFilterAdd(SearchFilterType.status, StatusTypeKR(filter.status));
+  }, [filter]);
+
+  const { isLoading, isError, searchGoals, isLastPage, totalCnt } = useSearchFilteredData({
+    keyword: keyword,
+    status: StatusTypetoString(filter.status),
+    ordered: OrderTypetoString(orderType),
+    sorted: SortTypetoString(filter.sorted),
+    min: filter.min,
+    max: filter.max,
+    page,
+  });
+
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const handleFilterModal = (show: boolean) => {
+    setShowModal(show);
+  };
+
+  const scrollBoxRef = useRef<HTMLDivElement>(null);
+  const isScrollBottom = () => {
+    if (!scrollBoxRef.current) return;
+    if (
+      Math.trunc(scrollBoxRef.current.scrollHeight - scrollBoxRef.current.scrollTop) ===
+      scrollBoxRef.current.clientHeight
+    ) {
+      handlePageChange(page + 1);
+      localStorage.setItem('scrollTop', String(scrollBoxRef.current.scrollTop));
+    }
+  };
+
+  useEffect(() => {
+    if (!scrollBoxRef.current) return;
+    if (page === 1) return localStorage.setItem('scrollTop', '0');
+    const scrollTop = localStorage.getItem('scrollTop');
+    scrollBoxRef.current.scrollTop = Number(scrollTop);
   }, [searchGoals]);
 
-  const searchGoalCards = searchGroupGoals.map((goal) => <GroupGoalCards key={goal.goalId} goal={goal} />);
+  if (isLoading)
+    return (
+      <Wrapper>
+        <Info type='loading'>목표를 검색 중 입니다.</Info>
+      </Wrapper>
+    );
+
+  if (isError)
+    return (
+      <Wrapper>
+        <Info type='error'>
+          목표 검색에 실패했습니다.
+          <br />
+          다시 시도해주세요.
+        </Info>
+      </Wrapper>
+    );
 
   return (
     <Wrapper>
-      <GoalCardsWrapper>
-        {isLoadingGoals ? <LoadingMsg>데이터를 불러오는 중입니다</LoadingMsg> : searchGoalCards}
+      <TopContentWrapper>
+        <Total>전체 {totalCnt}개</Total>
+        <FiltersBox>
+          {filterTags.map((filter) =>
+            filter.value.length === 0 ? (
+              <TagWrapper key={filter.type} onClick={() => handleFilterModal(true)}>
+                <FilterTag value={searchFilterKR(filter.type)} />
+              </TagWrapper>
+            ) : (
+              <FilterTag key={filter.type} value={filter.value} removeHandler={() => handleFilterRemove(filter.type)} />
+            )
+          )}
+        </FiltersBox>
+      </TopContentWrapper>
+      <GoalCardsWrapper
+        ref={scrollBoxRef}
+        onScroll={() => {
+          if (!isLastPage) isScrollBottom();
+        }}>
+        {isLoading ? (
+          <Alert showBgColor={true}>
+            <LoadingMsg />
+          </Alert>
+        ) : isError ? (
+          <Alert showBgColor={true}>
+            <ErrorMsg />
+          </Alert>
+        ) : (
+          searchGoals.map((goal) => <GroupGoalCards key={goal.goalId} goal={goal} />)
+        )}
       </GoalCardsWrapper>
+      <ModalBox show={showModal}>
+        <FiltersModal changeHandler={handleFilterInputChange} closeHandler={() => handleFilterModal(false)} />
+      </ModalBox>
     </Wrapper>
   );
 };
@@ -45,7 +168,29 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: calc(100% - 10px);
+  height: 100%;
+`;
+
+const TopContentWrapper = styled.div`
+  padding: 20px 0 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-bottom: 4px solid ${(props) => props.theme.gray100};
+`;
+
+const Total = styled.div`
+  padding: 5px 22px;
+  font: ${(props) => props.theme.captionC1};
+`;
+
+const FiltersBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 8px;
+  padding: 0px 22px;
+  overflow-x: auto;
 `;
 
 const TagWrapper = styled.div``;
@@ -59,18 +204,6 @@ const GoalCardsWrapper = styled.div`
   width: calc(100% - 44px);
   height: calc(100% - 40px);
   overflow-y: auto;
-  gap: 20px;
-  width: 100%;
-  height: 100%;
-`;
-
-const LoadingMsg = styled.div`
-  width: 100%;
-  height: 120px;
-  line-height: 120px;
-  text-align: center;
-  border-radius: 16px;
-  background-color: ${(props) => props.theme.gray400};
 `;
 
 export default SearchGoals;

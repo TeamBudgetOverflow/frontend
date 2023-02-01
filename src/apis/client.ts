@@ -20,7 +20,6 @@ import {
   IUserBadge,
   ISearchFilter,
   ISearchGoal,
-  ISearchGoalResult,
 } from '../interfaces/interfaces';
 
 const BASE_URL = process.env.REACT_APP_API_ENDPOINT;
@@ -181,6 +180,11 @@ export const goalApi = {
   getGoals: async (page: number) => {
     const { data } = await tokenClient.get(`/goals?&page=${page}`);
 
+    return data;
+  },
+  getImpendingGoals: async (): Promise<Array<ISearchGoal>> => {
+    const { data } = await tokenClient.get('/goals/imminent');
+
     return data.result;
   },
   getGoalDetail: async (goalId: number) => {
@@ -188,8 +192,10 @@ export const goalApi = {
 
     return data.result[0];
   },
-  getGoalsByWord: async (query: string) => {
-    const { data } = await tokenClient.get(`/goals/getgoals/search` + query);
+  getGoalsByWord: async (queries: ISearchFilter): Promise<ISearchGoalResult> => {
+    const { data } = await tokenClient.get(
+      `/goals/search?keyword=${queries.keyword}&sortby=${queries.sorted}&min=${queries.min}&max=${queries.max}&orderby=${queries.ordered}&status=${queries.status}&page=${queries.page}`
+    );
 
     return data;
   },

@@ -1,10 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import EmojiBox from '../common/elem/EmojiBox';
 
 import { ISearchGoal } from '../../interfaces/interfaces';
-import { useNavigate } from 'react-router-dom';
 
 const GroupGoalCardSmall = ({ goal }: { goal: ISearchGoal }) => {
   const navigate = useNavigate();
@@ -14,11 +14,10 @@ const GroupGoalCardSmall = ({ goal }: { goal: ISearchGoal }) => {
       <TextWrapper>
         <Title>{goal.title.length > 7 ? `${goal.title.slice(0, 7)}...` : goal.title}</Title>
         <TagList>
-          {goal.hashTag.map((tag) => {
+          {goal.hashTag.slice(0, 2).map((tag) => {
             if (tag.length === 0) {
               return <React.Fragment key={tag}></React.Fragment>;
             }
-
             return <Tag key={tag}>{`#${tag.length > 3 ? `${tag.slice(0, 3)}...` : tag}`}</Tag>;
           })}
         </TagList>
@@ -52,20 +51,17 @@ const TextWrapper = styled.div`
 
 const Title = styled.p`
   width: 100%;
-  text-align: center;
   font: ${(props) => props.theme.paragraphsP3M};
 `;
 
 const TagList = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  display: block;
   gap: 4px;
   width: 100%;
 `;
 
 const Tag = styled.span`
-  font: ${(props) => props.theme.captionC2};
+  font: ${(props) => props.theme.paragraphsP3M};
   color: ${(props) => props.theme.primaryMain};
 `;
 

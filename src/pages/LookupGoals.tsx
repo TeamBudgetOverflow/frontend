@@ -1,89 +1,76 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
-import GroupGoalCardSmall from '../components/goal/GroupGoalCardSmall';
-import GroupGoalCard from '../components/goal/GroupGoalCard';
 import Alert from '../components/common/alert/Alert';
 import LoadingMsg from '../components/common/elem/LoadingMsg';
 import ErrorMsg from '../components/common/elem/ErrorMsg';
+import ImpendingGoals from '../components/goal/lookup/ImpendingGoals';
+import GroupGoalCards from '../components/goal/GroupGoalCard';
 
 import useGoalLookupData from '../hooks/useGoalLookupData';
-import useIntersectionObserver from '../hooks/useIntersectionObserver';
 
 const LookupGoals = () => {
-  const setGoals = useSetRecoilState(groupGoals);
-  const { isLoading: isLoadingGoals, isError } = useQuery<Array<ISearchGoal>>('getGoals', () => goalApi.getGoals(), {
-    onSuccess: (data) => {
-      setGoals(data);
-    },
-  });
-  const goals = useRecoilValue(groupGoals);
-  const [impendingGoals, setImpendingGoals] = useState<Array<ISearchGoal>>([...goals]);
-
-    setIsLoad(false);
+  const [page, setPage] = useState<number>(1);
+  const handlePageChange = (page: number) => {
+    setPage(page);
   };
 
-  const { setTarget } = useIntersectionObserver({
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.5,
-    onIntersect,
-  });
+  const { isLoading, isError, goals, isLastPage, refetch } = useGoalLookupData(page);
 
-  const goalCards = goals
-    .filter((goal) => goal.headCount !== 1)
-    .map((goal) => <GroupGoalCard key={goal.goalId} goal={goal} />);
-  const impendingGoalCard = impendingGoals
-    .filter((goal) => goal.headCount !== 1)
-    .slice(0, 10)
-    .map((goal) => <GroupGoalCardSmall key={goal.goalId} goal={goal} />);
+  const scrollBoxRef = useRef<HTMLDivElement>(null);
+  const isScrollBottom = () => {
+    if (!scrollBoxRef.current) return;
+    if (
+      Math.trunc(scrollBoxRef.current.scrollHeight - scrollBoxRef.current.scrollTop) ===
+      scrollBoxRef.current.clientHeight
+    ) {
+      handlePageChange(page + 1);
+      localStorage.setItem('scrollTop', String(scrollBoxRef.current.scrollTop));
+      refetch();
+    }
+  };
+
+  useEffect(() => {
+    if (!scrollBoxRef.current) return;
+    if (page === 1) return localStorage.setItem('scrollTop', '0');
+    const scrollTop = localStorage.getItem('scrollTop');
+    scrollBoxRef.current.scrollTop = Number(scrollTop);
+  }, [goals]);
+
+  const [topContentHeight, setTopContentHeight] = useState<number>(0);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!ref.current) return;
+    setTopContentHeight(ref.current.clientHeight);
+  }, [ref.current]);
 
   return (
     <Wrapper>
-      <TopContent>
-        <TitleBox>
-          <SubTitle>마감임박 목표</SubTitle>
-          <Button>모두보기</Button>
-        </TitleBox>
-        {isLoading ? (
-          <AlertWrapper>
-            <Alert showBgColor={true}>
-              <LoadingMsg />
-            </Alert>
-          </AlertWrapper>
-        ) : isError ? (
-          <AlertWrapper>
-            <Alert showBgColor={true}>
-              <ErrorMsg />
-            </Alert>
-          </AlertWrapper>
-        ) : (
-          <ImpendingGoalCards>{impendingGoalCard}</ImpendingGoalCards>
-        )}
-      </TopContent>
-      <BottomContent>
+      <div ref={ref}>
+        <ImpendingGoals />
+      </div>
+
+      <BottomContent topContentHeight={topContentHeight}>
         <TitleBox>
           <SubTitle>목표</SubTitle>
         </TitleBox>
-        {isLoading ? (
-          <AlertWrapper>
+        <GoalCardsWrapper
+          ref={scrollBoxRef}
+          onScroll={() => {
+            if (!isLastPage) isScrollBottom();
+          }}>
+          {isLoading ? (
             <Alert showBgColor={true}>
               <LoadingMsg />
             </Alert>
-          </AlertWrapper>
-        ) : isError ? (
-          <AlertWrapper>
+          ) : isError ? (
             <Alert showBgColor={true}>
               <ErrorMsg />
             </Alert>
-          </AlertWrapper>
-        ) : (
-          <GoalCardsWrapper>
-            {goalCards}
-
-            <div ref={setTarget}>{isLoaded ? <ScrollMsg>데이터를 불러오고 있는 중입니다.</ScrollMsg> : <></>}</div>
-          </GoalCardsWrapper>
-        )}
+          ) : (
+            goals.map((goal) => <GroupGoalCards key={goal.goalId} goal={goal} />)
+          )}
+        </GoalCardsWrapper>
       </BottomContent>
     </Wrapper>
   );
@@ -98,16 +85,6 @@ const Wrapper = styled.div`
   overflow: hidden;
 `;
 
-const TopContent = styled.div`
-  padding-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
-  height: calc(35% - 22px);
-  border-bottom: 2px solid ${(props) => props.theme.gray200};
-`;
-
 const TitleBox = styled.div`
   padding: 0 22px;
   display: flex;
@@ -120,28 +97,13 @@ const SubTitle = styled.div`
   font: ${(props) => props.theme.paragraphsP3M};
 `;
 
-const Button = styled.div`
-  font: ${(props) => props.theme.captionC2};
-  color: ${(props) => props.theme.primary900};
-`;
-
-const ImpendingGoalCards = styled.div`
-  padding: 5px 22px;
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
-  flex-wrap: nowrap;
-  width: calc(100% - 44px);
-  overflow-x: auto;
-`;
-
-const BottomContent = styled.div`
+const BottomContent = styled.div<{ topContentHeight: number }>`
   padding-top: 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
   width: 100%;
-  height: calc(65% - 20px);
+  height: calc(100% - ${(props) => props.topContentHeight + 20}px);
 `;
 
 const GoalCardsWrapper = styled.div`
@@ -152,25 +114,6 @@ const GoalCardsWrapper = styled.div`
   width: calc(100% - 44px);
   height: calc(100% - 20px);
   overflow-y: auto;
-`;
-
-const AlertWrapper = styled.div`
-  padding: 0 22px;
-  width: calc(100% - 44px);
-`;
-
-const ScrollMsg = styled.div`
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  flex: 0 0 auto;
-  max-height: 160px;
-  width: 100%;
-  border-radius: 16px;
-  background-color: white;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
 `;
 
 export default LookupGoals;
