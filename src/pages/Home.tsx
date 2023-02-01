@@ -35,6 +35,14 @@ const Home = () => {
           <Alert showBgColor={true}>
             <ErrorMsg />
           </Alert>
+        ) : goals.filter(
+            (goal) =>
+              new Date(goal.startDate).getTime() < new Date().getTime() &&
+              new Date(goal.endDate).getTime() > new Date().getTime()
+          ).length === 0 ? (
+          <EmptyData>
+            <InfoText>{`아직 추가된 목표가 없습니다.\n첫번째 목표를 추가해보세요!`}</InfoText>
+          </EmptyData>
         ) : (
           goals
             .filter(
@@ -65,6 +73,24 @@ const Wrapper = styled.div`
   gap: 10px;
   height: 100%;
   background-color: ${(props) => props.theme.gray100};
+`;
+
+const EmptyData = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+  background-color: white;
+  border-radius: 12px;
+`;
+
+const InfoText = styled.div`
+  text-align: center;
+  font: ${(props) => props.theme.captionC1};
+  color: ${(props) => props.theme.primary400};
+  line-height: 150%;
+  white-space: pre-wrap;
 `;
 
 const ContentWrapper = styled(Wrapper)`
