@@ -45,10 +45,22 @@ const WithdrawalService = () => {
       <ModalBox show={showConfirm} bgColor={'transparent'}>
         <ConfirmButtonWrapper>
           <ConfirmMsg>탈..퇴.. 하시겠습니까?</ConfirmMsg>
-          <TextButton bgColor='white' color='red' text='탈퇴하기' onClickHandler={handleWithdrawalServiceButton} />
+          <TextButton
+            bgColor='white'
+            color='red'
+            text='탈퇴하기'
+            font='600 18px "SUIT"'
+            onClickHandler={handleWithdrawalServiceButton}
+          />
         </ConfirmButtonWrapper>
         <CancleButtonWrapper>
-          <TextButton bgColor='white' color='green' text='취소' onClickHandler={() => setShowConfirm(false)} />
+          <TextButton
+            bgColor='white'
+            color='green'
+            text='취소'
+            font='600 18px "SUIT"'
+            onClickHandler={() => setShowConfirm(false)}
+          />
         </CancleButtonWrapper>
       </ModalBox>
     </>

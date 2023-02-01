@@ -44,10 +44,22 @@ const LogoutButton = () => {
       <ModalBox show={showConfirm} bgColor={'transparent'}>
         <ConfirmButtonWrapper>
           <ConfirmMsg>로그아웃 하시겠습니까?</ConfirmMsg>
-          <TextButton bgColor='white' color='red' text='로그아웃' onClickHandler={handleLogoutButton} />
+          <TextButton
+            bgColor='white'
+            color='red'
+            text='로그아웃'
+            font='600 18px "SUIT"'
+            onClickHandler={handleLogoutButton}
+          />
         </ConfirmButtonWrapper>
         <CancleButtonWrapper>
-          <TextButton bgColor='white' color='green' text='취소' onClickHandler={() => setShowConfirm(false)} />
+          <TextButton
+            bgColor='white'
+            color='green'
+            text='취소'
+            font='600 18px "SUIT"'
+            onClickHandler={() => setShowConfirm(false)}
+          />
         </CancleButtonWrapper>
       </ModalBox>
     </>

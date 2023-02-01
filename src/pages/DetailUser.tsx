@@ -35,7 +35,7 @@ const DetailUser = () => {
         <UserDetailProfile id={Number(id)} totalCnt={totalCnt} successCnt={successCnt} workingCnt={workingCnt} />
         <BtnWrapper>
           {loginUserId === Number(id) ? (
-            <TextButton text='프로필 수정' bgColor='gray' onClickHandler={handleUserEdit} />
+            <TextButton text='프로필 수정' bgColor='#e4e4e4' color='black' onClickHandler={handleUserEdit} />
           ) : (
             <></>
           )}
