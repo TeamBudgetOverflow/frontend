@@ -70,6 +70,7 @@ const Wrapper = styled.div`
 const ContentWrapper = styled(Wrapper)`
   padding: 10px;
   gap: 8px;
+  overflow-y: auto;
 `;
 
 const AddGoalBtn = styled.div`
