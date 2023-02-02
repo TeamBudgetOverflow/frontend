@@ -16,8 +16,7 @@ const LogoutButton = () => {
 
   const { mutate } = useMutation('deleteUserLogout', () => userAPI.deleteUserLogout(), {
     onSuccess: () => {
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
+      localStorage.clear();
       navigate('/login');
     },
     onError: (e) => {
