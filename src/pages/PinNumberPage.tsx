@@ -149,10 +149,9 @@ const PinNumInputContainer = styled.input`
 const KeypadWrapper = styled.div`
   padding: 30px;
   flex-wrap: wrap;
-  max-width: 350px;
   max-height: 360px;
-  width: calc(100% - 30px);
-  height: calc(100% - 30px);
+  width: calc(100% - 60px);
+  height: calc(100% - 60px);
   display: flex;
   align-items: center;
   justify-content: space-between;
