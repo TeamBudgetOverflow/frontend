@@ -26,7 +26,7 @@ const Info: FunctionComponent<InfoProps> = ({ type, children }: InfoProps) => {
       case 'accntSuccess':
         return <Img width='280px' height='280px' src={require('../../../assets/icons/accntSuccess.png')} />;
       case 'goalSuccess':
-        return <Img width='334px' height='124px' src={require('../../../assets/icons/goalSuccess.png')} />;
+        return <Img width='280px' height='280px' src={require('../../../assets/icons/goalSuccess.png')} />;
       case 'success':
         return <Img width='80px' height='80px' src={require('../../../assets/icons/success.png')} />;
       case 'prepare':
