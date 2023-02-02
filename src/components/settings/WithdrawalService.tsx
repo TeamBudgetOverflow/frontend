@@ -1,42 +1,18 @@
 import React, { useState } from 'react';
-import { useMutation } from 'react-query';
-import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-
-import { userAPI } from '../../apis/client';
 
 import ModalBox from '../common/elem/ModalBox';
 import SettingButton from '../common/elem/SettingButton';
 import TextButton from '../common/elem/TextButton';
 
-const WithdrawalService = () => {
-  const navigate = useNavigate();
-  const { id } = useParams();
+interface WithdrawalServiceProps {
+  warningHandler: (show: boolean) => void;
+}
 
+const WithdrawalService = ({ warningHandler }: WithdrawalServiceProps) => {
   const [showConfirm, setShowConfirm] = useState(false);
-
-  const { mutate } = useMutation('withdrawalService', () => userAPI.deleteUserWithdrawalService(Number(id)), {
-    onSuccess: () => {
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      navigate('/login');
-    },
-    onError: (e) => {
-      if (e === 401) {
-        navigate('/', { replace: true });
-      } else {
-        alert(e);
-        navigate('/home');
-      }
-    },
-  });
-
   const handleWithdrawalConfirmModal = () => {
     setShowConfirm(true);
-  };
-
-  const handleWithdrawalServiceButton = () => {
-    mutate();
   };
 
   return (
@@ -50,7 +26,7 @@ const WithdrawalService = () => {
             color='red'
             text='탈퇴하기'
             font='600 18px "SUIT"'
-            onClickHandler={handleWithdrawalServiceButton}
+            onClickHandler={() => warningHandler(true)}
           />
         </ConfirmButtonWrapper>
         <CancleButtonWrapper>

@@ -130,9 +130,11 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  gap: 20px;
   width: calc(100% - 44px);
   height: calc(100% - 40px);
   background-color: ${(props) => props.theme.gray100};
+  overflow-y: auto;
 `;
 
 const DetailGoalWrapper = styled.div`

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import EmojiBox from '../common/elem/EmojiBox';
-import C3TextBox from '../common/elem/C3TextBox';
+import C2TextBox from '../common/elem/C2TextBox';
 import DdayTag from '../common/tag/DdayTag';
 
 import { IGoal } from '../../interfaces/interfaces';
@@ -32,8 +32,8 @@ const MyGoalCard = ({ goal }: { goal: IGoal }) => {
           <ProgressBar width={`${goal.attainment}%`} />
         </ProgressBarWrapper>
         <ProgressInfo>
-          <C3TextBox text={setProgressState(goal.attainment)} />
-          <C3TextBox text={`${Math.round(goal.attainment)}%`} />
+          <C2TextBox text={setProgressState(goal.attainment)} />
+          <C2TextBox text={`${Math.round(goal.attainment)}%`} />
         </ProgressInfo>
       </BottomContent>
     </Wrapper>

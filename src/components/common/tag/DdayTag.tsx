@@ -15,7 +15,7 @@ const DdayTag = ({ targetDate }: { targetDate: Date }) => {
 
 const Tag = styled.div`
   padding: 4px 12px;
-  font: ${(props) => props.theme.captionC3};
+  font: ${(props) => props.theme.captionC2};
   border-radius: 15px;
   color: white;
   background-color: ${(props) => props.theme.primary400};

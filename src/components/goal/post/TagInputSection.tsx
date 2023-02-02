@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import InputBox from '../../common/elem/InputBox';
 import Icon from '../../common/elem/Icon';
 import ValidateMsg from '../../common/elem/ValidateMsg';
-import C3TextBox from '../../common/elem/C3TextBox';
+import C2TextBox from '../../common/elem/C2TextBox';
 import HashTag from '../../common/tag/HashTag';
 
 import useTxtInput from '../../../hooks/useTxtInput';
@@ -89,7 +89,7 @@ const TagInputSection = ({ initVal, changeTagListHandler }: TagInputSectionProps
           ))}
         </TagList>
         <TagInfo>
-          <C3TextBox text={`${tagList.length}/10`} />
+          <C2TextBox text={`${tagList.length}/10`} />
         </TagInfo>
       </TagListRowContent>
     </ContentBox>

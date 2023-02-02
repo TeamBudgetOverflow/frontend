@@ -65,7 +65,7 @@ const TagList = styled.div`
 const Tag = styled.span`
   word-break: keep-all;
   white-space: nowrap;
-  font: ${(props) => props.theme.paragraphsP3M};
+  font: ${(props) => props.theme.paragraphsP3R};
   color: ${(props) => props.theme.primaryMain};
 `;
 

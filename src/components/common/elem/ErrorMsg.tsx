@@ -36,7 +36,7 @@ const Text = styled.div`
 
 const Contact = styled.div`
   text-align: center;
-  font: ${(props) => props.theme.captionC3};
+  font: ${(props) => props.theme.captionC2};
 `;
 
 export default ErrorMsg;

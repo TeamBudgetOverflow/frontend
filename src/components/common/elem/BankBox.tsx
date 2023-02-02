@@ -37,7 +37,7 @@ const Img = styled.div`
 `;
 
 const Name = styled.span`
-  font: ${(props) => props.theme.captionC3};
+  font: ${(props) => props.theme.captionC2};
 `;
 
 export default BankBox;

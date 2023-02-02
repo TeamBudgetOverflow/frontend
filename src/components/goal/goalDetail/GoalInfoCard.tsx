@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import EmojiBox from '../../common/elem/EmojiBox';
 import ProgressBar from '../../common/elem/ProgressBar';
-import C3TextBox from '../../common/elem/C3TextBox';
+import C2TextBox from '../../common/elem/C2TextBox';
 
 import { dateStringTranslator } from '../../../utils/dateTranslator';
 import { setProgressState } from '../../../utils/progressState';
@@ -41,8 +41,8 @@ const GoalInfoCard = ({
           <ProgressBarWrapper>
             <ProgressBar percentage={attainment} height={8} borderRadius={25} />
             <ProgressInfo>
-              <C3TextBox text={setProgressState(attainment)} />
-              <C3TextBox text={`${Math.floor(attainment)}%`} />
+              <C2TextBox text={setProgressState(attainment)} />
+              <C2TextBox text={`${Math.floor(attainment)}%`} />
             </ProgressInfo>
           </ProgressBarWrapper>
         ) : (

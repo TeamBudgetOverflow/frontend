@@ -6,8 +6,10 @@ const BadgeBox = ({ imgURL }: { imgURL: string }) => {
 };
 
 const Badge = styled.img`
-  width: 100px;
-  height: 100px;
+  width: 100%;
+  max-width: 100px;
+  max-height: 100px;
+  aspect-ratio: 1;
 `;
 
 export default BadgeBox;
