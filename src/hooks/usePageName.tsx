@@ -23,7 +23,7 @@ const PageKR = (type: PageType) => {
     case PageType.createAccnt:
       return '계좌 연결';
     case PageType.lookupGoal:
-      return '목표 찾기';
+      return '목표 조회';
     case PageType.my:
       return '마이페이지';
     case PageType.editProfile:
