@@ -32,7 +32,7 @@ const LoginPage = () => {
             </LogoWrapper>
             <ButtonSetWrapper>
               <KakaoSignupButton />
-              <NaverSignupButton />
+              {/* <NaverSignupButton /> */}
               <GoogleSignupButton />
             </ButtonSetWrapper>
           </Content>
