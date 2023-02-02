@@ -81,6 +81,9 @@ const Row = styled.div`
 const BadgeBoxWrapper = styled.div`
   width: 30%;
   height: 100px;
+  @media screen and (max-width: 380px) {
+    aspect-ratio: 1;
+  }
 `;
 
 const BtnWrapper = styled.div`
