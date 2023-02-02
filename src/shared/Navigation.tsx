@@ -92,7 +92,7 @@ const Button = styled.div<{ show: boolean }>`
 `;
 
 const Text = styled.div<{ show: boolean }>`
-  font: ${(props) => props.theme.paragraphP3M};
+  font: ${(props) => props.theme.paragraphsP3M};
   visibility: ${(props) => (props.show ? '' : 'hidden')};
 `;
 

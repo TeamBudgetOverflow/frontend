@@ -19,21 +19,22 @@ const GoogleLogin = () => {
     try {
       if (!code) return alert('잘못된 코드를 받았습니다.');
       const data = await userAPI.getGoogleSignup(code);
+
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
       localStorage.setItem('isNewComer', data.newComer);
+      localStorage.setItem('isPincodeRegistered', data.isExistPincode);
+      localStorage.setItem('name', data.name);
       setUserId({ id: jwtDecoder<MyToken>(data.accessToken).userId });
 
-      if (data.newComer === true) {
-        return navigate('/pinnumber');
+      if (data.newComer === true || !data.isExistPincode) {
+        return navigate('/pinnumber', { replace: true });
       } else {
         return navigate('/home');
       }
     } catch (e) {
       console.log('google signup error:', e);
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('isNewComer');
+      localStorage.clear();
     }
   };
   useEffect(() => {

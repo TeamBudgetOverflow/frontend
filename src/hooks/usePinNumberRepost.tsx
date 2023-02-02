@@ -15,6 +15,7 @@ const usePinNumberRepost = (loginPinNumber: string) => {
       const data = await userAPI.postAccessTokenByPinCode(loginPinNumber);
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.removeItem('isNewComer');
+      localStorage.removeItem('isPincodeRegistered');
       setUserId({ id: jwtDecoder<MyToken>(data.accessToken).userId });
 
       navigate('/home');
