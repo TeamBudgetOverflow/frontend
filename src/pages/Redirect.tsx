@@ -45,7 +45,6 @@ const Redirect = () => {
 
 const Wrapper = styled.div`
   width: 100%;
-  min-width: 414px;
   height: 100%;
   background-color: white;
   overflow: hidden;

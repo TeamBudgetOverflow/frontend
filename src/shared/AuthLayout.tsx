@@ -59,7 +59,6 @@ const AuthLayout = () => {
 const Wrapper = styled.div`
   position: relative;
   width: 100%;
-  min-width: 414px;
   height: 100%;
   overflow: hidden;
 `;

@@ -37,7 +37,6 @@ const Wrapper = styled.div`
   align-items: center;
   gap: 10px;
   width: 100%;
-  min-width: 414px;
   height: calc(100% - 200px);
   background-color: white;
   overflow: hidden;
