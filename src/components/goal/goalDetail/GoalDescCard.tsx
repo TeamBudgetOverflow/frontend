@@ -31,7 +31,7 @@ const SubTitle = styled.div`
 `;
 
 const Description = styled.div`
-  font: ${(props) => props.theme.paragraphsP3M};
+  font: ${(props) => props.theme.paragraphsP3R};
 `;
 
 export default GoalDescCard;

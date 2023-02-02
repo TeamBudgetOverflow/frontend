@@ -119,7 +119,7 @@ const ProgressInfo = styled.div`
 `;
 
 const ProgressText = styled.div`
-  font: ${(props) => props.theme.captionC3};
+  font: ${(props) => props.theme.captionC2};
 `;
 
 export default StateGoalCard;

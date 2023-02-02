@@ -17,7 +17,7 @@ const DateSelect = styled.input`
   padding: 0 10px;
   width: calc(100% - 20px);
   height: 100%;
-  font: ${(props) => props.theme.captionC3};
+  font: ${(props) => props.theme.captionC2};
   border: 1px solid black;
 `;
 

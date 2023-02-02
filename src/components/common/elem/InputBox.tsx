@@ -78,7 +78,7 @@ const InputCounter = styled.span`
   display: flex;
   flex-direction: row;
   align-items: center;
-  font: ${(props) => props.theme.captionC3};
+  font: ${(props) => props.theme.captionC2};
   color: ${(props) => props.theme.gray600};
   background-color: white;
 `;

@@ -46,6 +46,6 @@ const SubTitle = styled.div`
 `;
 
 const Period = styled.div`
-  font: ${(props) => props.theme.paragraphsP3M};
+  font: ${(props) => props.theme.paragraphsP3R};
 `;
 export default GoalPeriodCard;
