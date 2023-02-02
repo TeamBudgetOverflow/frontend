@@ -10,12 +10,13 @@ const Redirect = () => {
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
   const isRefreshExpire = localStorage.getItem('isRefreshExpire');
+  const isPincodeRegistered = localStorage.getItem('isPincodeRegistered') === 'true' ? true : false;
   const navigate = useNavigate();
   useEffect(() => {
     if (accessToken && refreshToken) {
       navigate('/home');
       return;
-    } else if (!accessToken && refreshToken) {
+    } else if ((!isPincodeRegistered && accessToken && refreshToken) || (!accessToken && refreshToken)) {
       setTimeout(() => navigate('/pinnumber'), 3000);
       return;
     } else if (!accessToken && !refreshToken) {

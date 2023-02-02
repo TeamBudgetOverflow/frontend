@@ -1,20 +1,18 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 import DesktopLayout from '../shared/DesktopLayout';
 import WelcomePic from '../components/common/elem/WelcomePic';
 
-import { userProfile } from '../recoil/userAtoms';
-
 const WelcomePage = () => {
   const navigate = useNavigate();
-
-  const { name } = useRecoilValue(userProfile);
-
+  const name = localStorage.getItem('name');
   useEffect(() => {
-    setTimeout(() => navigate('/home'), 3000);
+    setTimeout(() => {
+      localStorage.removeItem('name');
+      navigate('/home');
+    }, 3000);
   }, []);
 
   return (

@@ -15,9 +15,10 @@ const PinNumberPage = () => {
   const { id } = useRecoilValue(userId);
   const PASSWORD_MAX_LENGTH = 6;
   const storedIsNewComer = localStorage.getItem('isNewComer');
+  const isPincodeRegistered = localStorage.getItem('isPincodeRegistered') === 'true' ? true : false;
   const [isNewComer, setIsNewComer] = useState<boolean>(false);
   useEffect(() => {
-    if (storedIsNewComer === 'true') return setIsNewComer(true);
+    if (storedIsNewComer === 'true' || !isPincodeRegistered) return setIsNewComer(true);
     setIsNewComer(false);
   }, [storedIsNewComer]);
 

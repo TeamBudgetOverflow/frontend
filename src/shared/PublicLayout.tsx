@@ -9,13 +9,15 @@ const PublicLayout = () => {
   const navigate = useNavigate();
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
+  const isPincodeRegistered = localStorage.getItem('isPincodeRegistered') === 'true' ? true : false;
 
   useEffect(() => {
-    if (accessToken && refreshToken) {
+    if (isPincodeRegistered && accessToken && refreshToken) {
       navigate('/home');
       return;
     }
-    if (!accessToken && refreshToken) {
+
+    if (!isPincodeRegistered && accessToken && refreshToken) {
       navigate('/pinnumber');
       return;
     }
