@@ -62,6 +62,7 @@ tokenClient.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem('accessToken');
+      localStorage.setItem('isRefreshExpire', 'false');
     }
 
     return Promise.reject(error.response.status);
@@ -75,6 +76,7 @@ refreshClient.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem('refreshToken');
+      localStorage.setItem('isRefreshExpire', 'true');
     }
 
     return Promise.reject(error.response.status);

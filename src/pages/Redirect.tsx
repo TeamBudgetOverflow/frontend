@@ -4,10 +4,12 @@ import styled from 'styled-components';
 
 import DesktopLayout from '../shared/DesktopLayout';
 import Info from '../components/common/alert/Info';
+import LogoTitle from '../components/common/elem/LogoTitle';
 
 const Redirect = () => {
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
+  const isRefreshExpire = localStorage.getItem('isRefreshExpire');
   const navigate = useNavigate();
   useEffect(() => {
     if (accessToken && refreshToken) {
@@ -25,17 +27,25 @@ const Redirect = () => {
   return (
     <DesktopLayout>
       <Wrapper>
-        {!refreshToken ? (
-          <Info type=''>
-            로그인 정보가 만료되었습니다.
-            <br />
-            로그인 화면으로 이동합니다.
-          </Info>
+        {isRefreshExpire ? (
+          <>
+            {!refreshToken ? (
+              <Info type=''>
+                로그인 정보가 만료되었습니다.
+                <br />
+                로그인 화면으로 이동합니다.
+              </Info>
+            ) : (
+              <Info type=''>
+                로그인이 만료되었습니다.
+                <br />
+                핀번호를 다시 입력해주세요.
+              </Info>
+            )}
+          </>
         ) : (
           <Info type=''>
-            로그인이 만료되었습니다.
-            <br />
-            핀번호를 다시 입력해주세요.
+            <LogoTitle width={180} height={135} />
           </Info>
         )}
       </Wrapper>
