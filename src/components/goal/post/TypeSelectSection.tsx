@@ -43,8 +43,8 @@ const TypeSelect = () => {
         <SelectBox selected={!isGroup} onClick={handleSelect}>
           <Content>
             <Img
-              width='58px'
-              height='61px'
+              width='120px'
+              height='120px'
               src={
                 !isGroup
                   ? require('../../../assets/img/goal/personal_color.png')
@@ -58,7 +58,7 @@ const TypeSelect = () => {
           <Content>
             <Img
               width='120px'
-              height='62px'
+              height='120px'
               src={
                 isGroup
                   ? require('../../../assets/img/goal/group_color.png')

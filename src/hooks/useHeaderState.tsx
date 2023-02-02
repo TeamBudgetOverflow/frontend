@@ -27,8 +27,11 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
   };
 
   const [showChatBtn, setShowChatBtn] = useState<boolean>(false);
-  const handleChatClick = () => {
-    navigate('/chats');
+  const handleBugReport = () => {
+    window.open('https://forms.gle/ybKtWoMMLToAwZsq8');
+  };
+  const handleSurvey = () => {
+    window.open('https://forms.gle/WmpabDTW4X5g9dsc6');
   };
 
   const [showPrevBtn, setShowPrevBtn] = useState<boolean>(false);
@@ -139,7 +142,8 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
     keyword,
     showSettingsBtn,
     handleSearchClick,
-    handleChatClick,
+    handleBugReport,
+    handleSurvey,
     handlePrevClick,
     handleKeywordChange,
     handleKeypress,
