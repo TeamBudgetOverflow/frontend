@@ -16,7 +16,10 @@ import useBanksData from '../hooks/useBanksData';
 import useUserGoalsData from '../hooks/useUserGoalsData';
 import useBadgesData from '../hooks/useBadgesData';
 
+import RouteChangeTracker from '../shared/RouteChangeTracker';
+
 const Home = () => {
+  RouteChangeTracker();
   useBanksData();
   const { id } = useRecoilValue(userId);
   const { isLoading, isError, goals } = useUserGoalsData({ getUserId: Number(id) });

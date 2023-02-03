@@ -10,7 +10,10 @@ import { userId } from '../recoil/userAtoms';
 
 import { MyToken } from '../interfaces/interfaces';
 
+import RouteChangeTracker from '../shared/RouteChangeTracker';
+
 const GoogleLogin = () => {
+  RouteChangeTracker();
   const navigate = useNavigate();
   const code = new URL(window.location.href).searchParams.get('code');
 

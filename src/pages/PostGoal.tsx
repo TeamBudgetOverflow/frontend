@@ -7,7 +7,10 @@ import TextButton from '../components/common/elem/TextButton';
 
 import usePostGoal from '../hooks/usePostGoal';
 
+import RouteChangeTracker from '../shared/RouteChangeTracker';
+
 const PostGoal = () => {
+  RouteChangeTracker();
   const { accountId } = useParams();
   if (!accountId) return <>잘못된 요청 값입니다.</>;
   const { isLoading, isError, handlePostGoal } = usePostGoal({ accountId: Number(accountId) });

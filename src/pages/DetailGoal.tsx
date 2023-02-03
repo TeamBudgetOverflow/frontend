@@ -24,6 +24,8 @@ import useGoalDetailData from '../hooks/useGoalDetailData';
 import { GoalStatus } from '../interfaces/interfaces';
 import Info from '../components/common/alert/Info';
 
+import RouteChangeTracker from '../shared/RouteChangeTracker';
+
 const setButton = (
   goalId: number,
   createdUserId: number,
@@ -52,6 +54,7 @@ const setButton = (
 };
 
 const DetailGoal = () => {
+  RouteChangeTracker();
   const { id: loginUserId } = useRecoilValue(userId);
   const { id: goalId } = useParams();
   if (!goalId) return <Navigate to='/' />;

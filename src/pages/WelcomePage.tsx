@@ -3,9 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import DesktopLayout from '../shared/DesktopLayout';
+import RouteChangeTracker from '../shared/RouteChangeTracker';
+
 import WelcomePic from '../components/common/elem/WelcomePic';
 
 const WelcomePage = () => {
+  RouteChangeTracker();
   const navigate = useNavigate();
   const name = localStorage.getItem('name');
   useEffect(() => {

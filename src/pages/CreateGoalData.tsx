@@ -12,7 +12,10 @@ import { postGoal } from '../recoil/goalsAtoms';
 
 import { isManualAccountAddable } from '../utils/accountInfoChecker';
 
+import RouteChangeTracker from '../shared/RouteChangeTracker';
+
 const CreateGoalData = () => {
+  RouteChangeTracker();
   const { type } = useParams();
   const { accounts } = useAccountsData();
   const savedPostGoal = useRecoilValue(postGoal);

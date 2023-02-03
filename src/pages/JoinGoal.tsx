@@ -7,7 +7,10 @@ import TextButton from '../components/common/elem/TextButton';
 
 import useJoinGoal from '../hooks/useJoinGoal';
 
+import RouteChangeTracker from '../shared/RouteChangeTracker';
+
 const JoinGoal = () => {
+  RouteChangeTracker();
   const { goalId, accountId } = useParams();
   if (!goalId || !accountId) return <>잘못된 요청 값입니다.</>;
   const { isLoading, isError, handleJoin } = useJoinGoal({ goalId: Number(goalId) });

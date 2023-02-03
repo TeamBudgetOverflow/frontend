@@ -11,7 +11,10 @@ import usePinNumberKeypad from '../hooks/usePinNumberKeypad';
 import usePinNumberSignupPost from '../hooks/usePinNumberSignupPost';
 import usePinNumberRepost from '../hooks/usePinNumberRepost';
 
+import RouteChangeTracker from '../shared/RouteChangeTracker';
+
 const PinNumberPage = () => {
+  RouteChangeTracker();
   const { id } = useRecoilValue(userId);
   const PASSWORD_MAX_LENGTH = 6;
   const storedIsNewComer = localStorage.getItem('isNewComer');
