@@ -12,9 +12,12 @@ import WithdrawalService from '../components/settings/WithdrawalService';
 
 import { userAPI } from '../apis/client';
 
+import RouteChangeTracker from '../shared/RouteChangeTracker';
+
 // TODO: 2차개발, 핀번호 재설정
 // TODO: 2차개발, 실계좌 정보 관리
 const UserSettings = () => {
+  RouteChangeTracker();
   const navigate = useNavigate();
   const { id } = useParams();
 

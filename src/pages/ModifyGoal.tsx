@@ -7,8 +7,10 @@ import InfoLoading from '../components/common/alert/InfoLoading';
 import TextButton from '../components/common/elem/TextButton';
 
 import useGoalModify from '../hooks/useGoalModify';
+import RouteChangeTracker from '../shared/RouteChangeTracker';
 
 const ModifyGoal = () => {
+  RouteChangeTracker();
   const { id } = useParams();
   if (!id)
     return (

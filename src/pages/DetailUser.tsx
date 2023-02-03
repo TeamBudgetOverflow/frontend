@@ -5,13 +5,16 @@ import styled from 'styled-components';
 
 import UserDetailProfile from '../components/user/UserDetailProfile';
 import TextButton from '../components/common/elem/TextButton';
+import UserDetailTab from '../components/user/UserDetailTabSection';
 
 import useUserGoalsData from '../hooks/useUserGoalsData';
-import UserDetailTab from '../components/user/UserDetailTabSection';
 
 import { userId } from '../recoil/userAtoms';
 
+import RouteChangeTracker from '../shared/RouteChangeTracker';
+
 const DetailUser = () => {
+  RouteChangeTracker();
   const { id } = useParams();
   if (!id) return <>잘못된 아이디 값입니다</>;
 

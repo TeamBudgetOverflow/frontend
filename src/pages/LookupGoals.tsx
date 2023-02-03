@@ -5,7 +5,10 @@ import ImpendingGoals from '../components/goal/lookup/ImpendingGoals';
 
 import GroupGoals from '../components/goal/lookup/GroupGoals';
 
+import RouteChangeTracker from '../shared/RouteChangeTracker';
+
 const LookupGoals = () => {
+  RouteChangeTracker();
   const ref = useRef<HTMLDivElement>(null);
 
   return (
