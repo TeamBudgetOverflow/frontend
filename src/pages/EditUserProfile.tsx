@@ -11,7 +11,10 @@ import useUserProfileModifyInput from '../hooks/useUserProfileModifyInput';
 
 import { userId, userProfile } from '../recoil/userAtoms';
 
+import RouteChangeTracker from '../shared/RouteChangeTracker';
+
 const EditUserProfile = () => {
+  RouteChangeTracker();
   const savedUserProfile = useRecoilValue(userProfile);
   const savedDescription = !savedUserProfile.description ? '' : savedUserProfile.description;
   const {

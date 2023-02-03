@@ -26,7 +26,10 @@ import {
 } from '../interfaces/interfaces';
 import useSearchFilterTags from '../hooks/useSearchFilterTags';
 
+import RouteChangeTracker from '../shared/RouteChangeTracker';
+
 const SearchGoals = () => {
+  RouteChangeTracker();
   const [searchParams] = useSearchParams();
   const [keyword, setKeyword] = useState<string | null>('');
   useEffect(() => {

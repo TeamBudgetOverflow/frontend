@@ -7,8 +7,10 @@ import GoogleSignupButton from '../components/user/signup/GoogleSignupButton';
 import Logo from '../components/common/elem/Logo';
 import LogoSubTitle from '../components/common/elem/LogoSubTitle';
 import LogoTitle from '../components/common/elem/LogoTitle';
+import RouteChangeTracker from '../shared/RouteChangeTracker';
 
 const LoginPage = () => {
+  RouteChangeTracker();
   const [isLanding, setIsLanding] = useState(false);
 
   useEffect(() => {

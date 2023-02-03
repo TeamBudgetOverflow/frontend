@@ -16,7 +16,10 @@ import useIsManual from '../hooks/useIsManual';
 
 import { participantFinder } from '../utils/goalInfoChecker';
 
+import RouteChangeTracker from '../shared/RouteChangeTracker';
+
 const ModifyGoalData = () => {
+  RouteChangeTracker();
   const { id: goalId, type } = useParams();
   const { id: loginUserId } = useRecoilValue(userId);
   const savedGoalDetail = useRecoilValue(goalDetail);

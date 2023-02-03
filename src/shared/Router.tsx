@@ -28,8 +28,10 @@ import EditUserProfile from '../pages/EditUserProfile';
 import UserSettings from '../pages/UserSettings';
 import WelcomePage from '../pages/WelcomePage';
 import Prepare from '../pages/Prepare';
+import RouteChangeTracker from './RouteChangeTracker';
 
 const Router = () => {
+  RouteChangeTracker();
   return (
     <BrowserRouter>
       <Routes>
