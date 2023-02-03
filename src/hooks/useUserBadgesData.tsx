@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { useMutation } from 'react-query';
@@ -11,27 +11,25 @@ import { badges } from '../recoil/badgeAtoms';
 
 const useUserBadgesData = ({ getUserId }: { getUserId: number }) => {
   const savedBadges = useRecoilValue(badges);
-  const [userBadges, setUserBadges] = useState<Array<IBadge>>(savedBadges);
+  const [userBadges, setUserBadges] = useState<Array<IBadge>>([]);
 
   const navigate = useNavigate();
-  const { isLoading, isError } = useMutation<Array<IUserBadge>, unknown, number>(
+  const { isLoading, isError, mutate } = useMutation<Array<IUserBadge>, unknown, number>(
     'userBadges',
-    () => userAPI.getUserBadges(getUserId),
+    userAPI.getUserBadges,
     {
       onSuccess: (data) => {
-        setUserBadges((prev) => {
-          const modified = [...prev];
-          modified.map((v) => {
+        setUserBadges(() => {
+          const modified = [...savedBadges];
+          return modified.map((v) => {
             for (const b of data) {
               if (v.badgeId === b.badgeId) {
-                return (v.image = v.image.split('.png')[0] + '_color.png');
+                v = { ...v, image: v.image.split('.png')[0] + '_color.png' };
               }
             }
 
             return v;
           });
-
-          return modified;
         });
       },
       onError: (e) => {
@@ -41,6 +39,10 @@ const useUserBadgesData = ({ getUserId }: { getUserId: number }) => {
       },
     }
   );
+
+  useEffect(() => {
+    mutate(getUserId);
+  }, []);
 
   return { isLoading, isError, userBadges };
 };
