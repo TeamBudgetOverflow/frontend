@@ -1,67 +1,43 @@
 import { useState, useEffect } from 'react';
 
 interface useRangeBarProps {
-  minVal: number;
-  maxVal: number;
-  gapVal: number;
-  barWidth: number;
+  min: number;
+  max: number;
 }
 
-const useRangeBar = ({ minVal, maxVal, gapVal, barWidth }: useRangeBarProps) => {
-  const [steps, setSteps] = useState<number>(0);
-  useEffect(() => {
-    setSteps(Math.trunc((maxVal - minVal) / gapVal));
-  }, [maxVal, minVal, gapVal]);
-  const [gap, setGap] = useState<number>(0);
-  useEffect(() => {
-    setGap(barWidth / steps);
-  }, [barWidth, steps]);
-  const [minStep, setMinStep] = useState<number>(0);
-  const [maxStep, setMaxStep] = useState<number>(0);
-  useEffect(() => {
-    setMaxStep(steps);
-  }, [steps]);
+const useRangeBar = ({ min, max }: useRangeBarProps) => {
+  const [fixedMin] = useState<number>(min);
+  const [fixedMax] = useState<number>(max);
+  const [minVal, setMinVal] = useState<number>(min);
+  const [maxVal, setMaxVal] = useState<number>(max);
+  const [minPercent, setMinPercent] = useState<number>(0);
+  const [maxPercent, setMaxPercent] = useState<number>(0);
 
-  const handleMinMove = (clientX: number) => {
-    setMinStep((prev) => {
-      if (prev * gap > clientX) {
-        if (prev - 1 < 0) return 0;
-        return prev - 1;
-      }
-      if (prev * gap < clientX) {
-        if (prev + 1 == maxStep) return prev;
-        return prev + 1;
-      }
-
-      return prev;
-    });
+  const setMin = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (Number(e.target.value) >= maxVal) return;
+    setMinVal(Number(e.target.value));
   };
 
-  const handleMaxMove = (clientX: number) => {
-    setMaxStep((prev) => {
-      if (prev * gap > Math.trunc(clientX)) {
-        if (prev - 1 == minStep) {
-          return prev;
-        }
-        return prev - 1;
-      }
-      if (prev * gap < Math.trunc(clientX)) {
-        if (prev + 1 > steps) {
-          return prev;
-        }
-        return prev + 1;
-      }
-
-      return prev;
-    });
+  const setMax = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (Number(e.target.value) <= minVal) return;
+    setMaxVal(Number(e.target.value));
   };
+
+  const handleRageChange = () => {
+    setMinPercent(Math.trunc(((minVal - fixedMin) / (fixedMax - fixedMin)) * 100));
+    setMaxPercent(Math.trunc(((maxVal - minVal) / (fixedMax - fixedMin)) * 100));
+  };
+
+  useEffect(() => {
+    handleRageChange();
+  }, [minVal, maxVal]);
 
   const reset = () => {
-    setMinStep(0);
-    setMaxStep(steps);
+    setMinVal(fixedMin);
+    setMaxVal(fixedMax);
   };
 
-  return { minStep, maxStep, steps, handleMinMove, handleMaxMove, reset };
+  return { minVal, maxVal, minPercent, maxPercent, setMin, setMax, reset };
 };
 
 export default useRangeBar;

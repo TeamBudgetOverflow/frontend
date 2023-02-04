@@ -62,7 +62,6 @@ const Wrapper = styled.div`
     padding: 0 5%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     align-items: center;
     width: 90%;
     background-color: ${(props) => props.theme.primary50};
@@ -139,7 +138,7 @@ const RightContent = styled.div`
     display: flex;
     flex-direction: row;
     width: calc(45% - 414px);
-    height: 100%;
+    height: calc(100% - 100px);
     max-height: 800px;
   }
 `;
@@ -147,7 +146,8 @@ const RightContent = styled.div`
 const CreatorsContent = styled.div`
   display: flex;
   flex-direction: column;
-  white-space: nowrap;
+  white-space: pre-wrap;
+  word-break: keep-all;
   gap: 40px;
   width: 100%;
   height: calc(100% - 118px);
