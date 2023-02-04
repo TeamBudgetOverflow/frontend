@@ -34,8 +34,12 @@ const Modal = styled.div<{ bgColor?: string }>`
   left: 0;
   padding: 22px;
   width: calc(100% - 44px);
+  max-height: 616px;
   border-radius: 16px 16px 0 0;
   background-color: ${(props) => (props.bgColor ? `${props.bgColor}` : 'white')};
+  @media screen and (max-height: 700px) {
+    height: calc(100% - 100px);
+  }
 `;
 
 const ContentWrapper = styled.div`
