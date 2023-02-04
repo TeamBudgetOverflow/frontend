@@ -217,6 +217,15 @@ const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  ::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+    background: transparent;
+    -webkit-appearance: none;
+  }
 `;
 
 const ContentWrapper = styled.div`
