@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
@@ -55,6 +55,31 @@ const FiltersModal = ({ changeHandler, closeHandler }: FiltersModalProps) => {
     handleMaxChange(max);
   };
 
+  const [scrollTop, setScrollTop] = useState(0);
+  const handleFilterSelect = (type: SearchFilterType) => {
+    setSelectedFilter(type);
+    switch (type) {
+      case SearchFilterType.status:
+        return setScrollTop(0);
+      case SearchFilterType.amount:
+        return setScrollTop(amountRef.current ? amountRef.current.offsetTop : 100);
+      case SearchFilterType.period:
+        return setScrollTop(periodRef.current ? periodRef.current.offsetTop : 200);
+      case SearchFilterType.member:
+        return setScrollTop(memberRef.current ? memberRef.current.offsetTop : 300);
+      default:
+        setScrollTop(0);
+    }
+  };
+  const amountRef = useRef<HTMLDivElement>(null);
+  const periodRef = useRef<HTMLDivElement>(null);
+  const memberRef = useRef<HTMLDivElement>(null);
+  const bottomContent = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!bottomContent.current) return;
+    bottomContent.current.scrollTop = scrollTop;
+  }, [bottomContent.current, scrollTop]);
+
   const { status, sort, min, max, handleStatusChange, handleSortChange, handleMinChange, handleMaxChange } =
     useSearchFilterInput({
       initStatus: savedSearchFilters.status,
@@ -84,30 +109,41 @@ const FiltersModal = ({ changeHandler, closeHandler }: FiltersModalProps) => {
     closeHandler();
   };
 
+  const topContent = useRef<HTMLDivElement>(null);
+  const [topContentHeight, setTopContentHeight] = useState(0);
+  useEffect(() => {
+    if (!topContent.current) return;
+    setTopContentHeight(topContent.current.clientHeight);
+  }, [topContent.current]);
   return (
     <Wrapper>
-      <BtnWrapper>
-        <CloseIconBtn color='black' closeHandler={closeHandler} />
-      </BtnWrapper>
-      <FiltersBox>
-        {filters.map((filter) => (
-          <FilterButton key={filter} selected={selectedFilter === filter}>
-            {searchFilterKR(filter)}
-          </FilterButton>
-        ))}
-      </FiltersBox>
-      <Content>
-        <ContentWrapper>
-          <SubTitle>진행여부</SubTitle>
-          <StatusFilter selected={status} changeHandler={handleStatusChange} />
-        </ContentWrapper>
-      </Content>
-      <SortFilters
-        initType={savedSearchFilters.sorted}
-        initMin={savedSearchFilters.min}
-        initMax={savedSearchFilters.max}
-        changeHandler={handleSortSelected}
-      />
+      <TopContent ref={topContent}>
+        <BtnWrapper>
+          <CloseIconBtn color='black' closeHandler={closeHandler} />
+        </BtnWrapper>
+        <FiltersBox>
+          {filters.map((filter) => (
+            <FilterButton key={filter} selected={selectedFilter === filter} onClick={() => handleFilterSelect(filter)}>
+              {searchFilterKR(filter)}
+            </FilterButton>
+          ))}
+        </FiltersBox>
+      </TopContent>
+      <BottomContent topContentHeight={topContentHeight} ref={bottomContent}>
+        <Content>
+          <ContentWrapper>
+            <SubTitle>진행여부</SubTitle>
+            <StatusFilter selected={status} changeHandler={handleStatusChange} />
+          </ContentWrapper>
+        </Content>
+        <SortFilters
+          selectedMenu={selectedFilter}
+          initType={savedSearchFilters.sorted}
+          initMin={savedSearchFilters.min}
+          initMax={savedSearchFilters.max}
+          changeHandler={handleSortSelected}
+        />
+      </BottomContent>
       <TextButton text='확인' onClickHandler={handleFilterChangeSubmit} />
     </Wrapper>
   );
@@ -118,6 +154,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   gap: 20px;
   width: 100%;
+  height: 100%;
 `;
 
 const BtnWrapper = styled.div`
@@ -127,6 +164,8 @@ const BtnWrapper = styled.div`
   width: 100%;
   height: 24px;
 `;
+
+const TopContent = styled.div``;
 
 const FiltersBox = styled.div`
   display: flex;
@@ -141,13 +180,31 @@ const FilterButton = styled.div<{ selected: boolean }>`
   word-break: keep-all;
 `;
 
+const BottomContent = styled.div<{ topContentHeight: number }>`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  height: ${(props) => `calc(100% - ${props.topContentHeight}px)`};
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  ::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+    background: transparent;
+    -webkit-appearance: none;
+  }
+`;
+
 const Content = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
   gap: 20px;
+  width: 100%;
 `;
 
 const ContentWrapper = styled.div`

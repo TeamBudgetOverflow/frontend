@@ -3,16 +3,18 @@ import styled from 'styled-components';
 
 import RangeSelectBox from './RangeSelectBox';
 
+import { SearchFilterType } from './FiltersModal';
 import { SortType } from '../../../interfaces/interfaces';
 
 interface SortFiltersProps {
+  selectedMenu: SearchFilterType;
   initType: SortType;
   initMin: number;
   initMax: number;
   changeHandler: (sortType: SortType, min: number, max: number) => void;
 }
 
-const SortFilters = ({ initType, initMin, initMax, changeHandler }: SortFiltersProps) => {
+const SortFilters = ({ selectedMenu, initType, initMin, initMax, changeHandler }: SortFiltersProps) => {
   const [type, setType] = useState<SortType>(initType);
   const handleTypeChange = (selected: SortType) => {
     if (type === selected) {
@@ -21,6 +23,18 @@ const SortFilters = ({ initType, initMin, initMax, changeHandler }: SortFiltersP
     }
     setType(selected);
   };
+  useEffect(() => {
+    switch (selectedMenu) {
+      case SearchFilterType.amount:
+        return handleTypeChange(SortType.amount);
+      case SearchFilterType.period:
+        return handleTypeChange(SortType.period);
+      case SearchFilterType.member:
+        return handleTypeChange(SortType.member);
+      default:
+        return handleTypeChange(SortType.none);
+    }
+  }, [selectedMenu]);
   const [amountMin, setAmountMin] = useState<number>(initMin);
   const handleAmountMinChange = (min: number) => {
     setAmountMin(min);
