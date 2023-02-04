@@ -46,7 +46,7 @@ const RangeSelectBox = ({
       <RangeSlider
         min={minInitVal}
         max={maxInitVal}
-        valgap={gap}
+        gap={gap}
         minChangeHandler={minChange}
         maxChangeHandler={maxChange}
         isDisabled={isDisabled}
