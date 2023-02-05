@@ -51,7 +51,7 @@ const Tab = styled.div<{ selected: boolean }>`
   width: 50%;
   font: ${(props) => props.theme.paragraphsP1M};
   text-align: center;
-  color: ${(props) => (props.selected ? props.theme.primary400 : '')};
+  color: ${(props) => (props.selected ? props.theme.primary400 : props.theme.gray600)};
   border-bottom: ${(props) => (props.selected ? `2px solid ${props.theme.primary400}` : '')};
 `;
 
