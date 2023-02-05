@@ -11,8 +11,9 @@ import GoalDataInput from '../components/goal/modify/GoalDataInput';
 import { goalDetail } from '../recoil/goalsAtoms';
 import { userId } from '../recoil/userAtoms';
 
-import useGoalState, { GoalState } from '../hooks/useGoalState';
 import useIsManual from '../hooks/useIsManual';
+
+import { GoalStatus, GoalStatusStringtoType } from '../interfaces/interfaces';
 
 import { participantFinder } from '../utils/goalInfoChecker';
 
@@ -23,14 +24,10 @@ const ModifyGoalData = () => {
   const { id: goalId, type } = useParams();
   const { id: loginUserId } = useRecoilValue(userId);
   const savedGoalDetail = useRecoilValue(goalDetail);
+  const status = GoalStatusStringtoType(savedGoalDetail.status);
 
   const userInfo = participantFinder(savedGoalDetail.members, loginUserId);
   const { isLoading, isError, isManual } = useIsManual({ accountId: userInfo.accountId });
-
-  const { state } = useGoalState({
-    startDate: new Date(savedGoalDetail.startDate),
-    endDate: new Date(savedGoalDetail.endDate),
-  });
 
   if (isLoading) return <InfoLoading />;
   if (isError) return <InfoError />;
@@ -39,7 +36,7 @@ const ModifyGoalData = () => {
     <Wrapper>
       <GoalDataInput
         goalId={Number(goalId)}
-        isEditable={state === GoalState.waiting && savedGoalDetail.members.length === 1}
+        isEditable={status === GoalStatus.recruit && savedGoalDetail.members.length === 1}
         isGroup={type === 'group'}
         initVal={{
           emoji: !savedGoalDetail.emoji ? '' : savedGoalDetail.emoji,

@@ -36,6 +36,7 @@ export const userGoals = atom<Array<IGoal>>({
       headCount: 0,
       startDate: new Date(),
       endDate: new Date(),
+      status: 'proceeding',
       title: '',
       hashtag: [''],
       emoji: '',
