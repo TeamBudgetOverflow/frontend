@@ -100,7 +100,7 @@ const DetailGoal = () => {
           />
           <GoalPeriodCard startDate={data.startDate} endDate={data.endDate} />
           <GoalDescCard description={data.description} />
-          <GoalTagsCard hashTag={data.hashTag} />
+          {data.hashTag.length === 1 && data.hashTag[0] === '' ? <></> : <GoalTagsCard hashTag={data.hashTag} />}
           {(isMember && status === GoalStatus.proceeding) || status === GoalStatus.done ? (
             <GoalBalanceCard
               balanceId={balanceId}
