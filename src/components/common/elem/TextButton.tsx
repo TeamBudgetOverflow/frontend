@@ -6,14 +6,15 @@ interface TextButtonProps {
   bgColor?: string;
   color?: string;
   font?: string;
+  padding?: number;
   onClickHandler: () => void;
   isDisabled?: boolean;
 }
 
-const TextButton = ({ text, bgColor, color, font, onClickHandler, isDisabled }: TextButtonProps) => {
+const TextButton = ({ text, bgColor, color, font, padding, onClickHandler, isDisabled }: TextButtonProps) => {
   return (
     <Button bgColor={bgColor} disabled={isDisabled} disable={isDisabled} onClick={onClickHandler}>
-      <TextWrapper bgColor={bgColor} color={color} font={font} disable={isDisabled}>
+      <TextWrapper bgColor={bgColor} color={color} font={font} padding={padding} disable={isDisabled}>
         {text}
       </TextWrapper>
     </Button>
@@ -35,8 +36,14 @@ const Button = styled.button<{ bgColor?: string; disable?: boolean }>`
   }
 `;
 
-const TextWrapper = styled.div<{ bgColor?: string; color?: string; font?: string; disable?: boolean }>`
-  padding: 12px 0;
+const TextWrapper = styled.div<{
+  bgColor?: string;
+  color?: string;
+  font?: string;
+  padding?: number;
+  disable?: boolean;
+}>`
+  padding: ${(props) => (props.padding ? `${props.padding}px 0` : '12px 0')};
   font: ${(props) => (props.font ? props.font : props.theme.paragraphsP2M)};
   color: ${(props) =>
     props.disable ? 'black' : props.bgColor === 'gray' ? 'black' : props.color ? `${props.color}` : 'white'};

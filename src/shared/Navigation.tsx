@@ -68,13 +68,13 @@ const Wrapper = styled.div<{ show: boolean }>`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  align-items: center;
+  align-items: flex-start;
   position: absolute;
   bottom: 0;
   left: 0;
   z-index: 5;
   width: 100%;
-  height: ${(props) => (props.show ? '88px' : '0')};
+  height: ${(props) => (props.show ? '84px' : '0')};
   background-color: white;
   transition: height 0.3s;
 `;
