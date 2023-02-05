@@ -45,6 +45,7 @@ const useNumInput = ({ initValue, min, max, type }: useNumInputProps) => {
 
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
     if (!isValidated) setIsValidated(true);
+    if (isNaN(Number(e.currentTarget.value))) return setValue(0);
     setValue(Number(e.currentTarget.value.replaceAll(',', '')));
   };
 

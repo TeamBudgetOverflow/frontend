@@ -8,20 +8,19 @@ import DdayTag from '../common/tag/DdayTag';
 
 import { dateStringTranslator } from '../../utils/dateTranslator';
 
-import { IGoal } from '../../interfaces/interfaces';
+import { GoalStatus, GoalStatusStringtoType, IGoal } from '../../interfaces/interfaces';
 
-import useGoalState, { GoalState } from '../../hooks/useGoalState';
 import ProgressBar from '../common/elem/ProgressBar';
 
 const StateGoalCard = ({ goal }: { goal: IGoal }) => {
   const navigate = useNavigate();
-  const { state } = useGoalState({ startDate: new Date(goal.startDate), endDate: new Date(goal.endDate) });
+  const status = GoalStatusStringtoType(goal.status);
 
   return (
     <Wrapper onClick={() => navigate(`/goals/${goal.goalId}`)}>
       <TopContent>
         <TopLeftContent>
-          <StateTag state={state} />
+          <StateTag state={status} />
           <Content>
             <EmojiBox unicode={goal.emoji} boxSize={40} emojiSize={20} />
             <TextContent>
@@ -31,22 +30,22 @@ const StateGoalCard = ({ goal }: { goal: IGoal }) => {
           </Content>
         </TopLeftContent>
         <TopRightContent>
-          {state !== GoalState.done ? <DdayTag targetDate={new Date(goal.endDate)} /> : <></>}
+          {status !== GoalStatus.done ? <DdayTag targetDate={new Date(goal.endDate)} /> : <></>}
         </TopRightContent>
       </TopContent>
       <BottomContent>
-        {state !== GoalState.waiting ? (
+        {status !== GoalStatus.recruit ? (
           <ProgressBar percentage={goal.attainment} height={8} borderRadius={25} />
         ) : (
           <></>
         )}
         <ProgressInfo>
           <ProgressText>
-            {state !== GoalState.waiting
+            {status !== GoalStatus.recruit
               ? `${dateStringTranslator(new Date(goal.endDate))} 자정 종료`
               : `${dateStringTranslator(new Date(goal.startDate))} 자정 시작`}
           </ProgressText>
-          {state !== GoalState.waiting ? <ProgressText>{`${Math.round(goal.attainment)}%`}</ProgressText> : <></>}
+          {status !== GoalStatus.recruit ? <ProgressText>{`${Math.round(goal.attainment)}%`}</ProgressText> : <></>}
         </ProgressInfo>
       </BottomContent>
     </Wrapper>

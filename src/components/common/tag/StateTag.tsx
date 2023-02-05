@@ -1,35 +1,35 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { GoalState } from '../../../hooks/useGoalState';
+import { GoalStatus } from '../../../interfaces/interfaces';
 
-const stateKR = (state: GoalState) => {
+const stateKR = (state: GoalStatus) => {
   switch (state) {
-    case GoalState.waiting:
+    case GoalStatus.recruit:
       return '진행 예정';
-    case GoalState.working:
+    case GoalStatus.proceeding:
       return '진행중';
-    case GoalState.done:
+    case GoalStatus.done:
       return '종료';
     default:
       return '';
   }
 };
 
-const stateColor = (state: GoalState) => {
+const stateColor = (state: GoalStatus) => {
   switch (state) {
-    case GoalState.waiting:
+    case GoalStatus.recruit:
       return '#f9c342';
-    case GoalState.working:
+    case GoalStatus.proceeding:
       return '#009642';
-    case GoalState.done:
+    case GoalStatus.done:
       return 'black';
     default:
       return '';
   }
 };
 
-const StateTag = ({ state }: { state: GoalState }) => {
+const StateTag = ({ state }: { state: GoalStatus }) => {
   return (
     <Tag>
       <StateCircle color={stateColor(state)} />

@@ -3,16 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { useQuery } from 'react-query';
 
-import { GoalStatus, IGoalDetail } from '../interfaces/interfaces';
+import { GoalStatus, GoalStatusStringtoType, IGoalDetail } from '../interfaces/interfaces';
 
 import { goalApi } from '../apis/client';
 
-import { getGoalStatus, isGroup, isMember } from '../utils/goalInfoChecker';
+import { isGroup, isMember } from '../utils/goalInfoChecker';
 import { accountIdFinder, balanceIdFinder } from '../utils/accountInfoChecker';
 
 import { goalDetail } from '../recoil/goalsAtoms';
 
-interface useGoalStateProps {
+interface useGoalDetailProps {
   loginUserId: number;
   goalId: string;
 }
@@ -21,7 +21,7 @@ const fetchGoalDetail = (goalId: string) => {
   return goalApi.getGoalDetail(Number(goalId));
 };
 
-const useGoalDetailData = ({ loginUserId, goalId }: useGoalStateProps) => {
+const useGoalDetailData = ({ loginUserId, goalId }: useGoalDetailProps) => {
   const [isGroupVal, setIsGroup] = useState<boolean>(false);
   const [isMemberVal, setIsMember] = useState<boolean>(false);
   const [status, setStatus] = useState<GoalStatus>(GoalStatus.proceeding);
@@ -34,7 +34,7 @@ const useGoalDetailData = ({ loginUserId, goalId }: useGoalStateProps) => {
       setGoalDetail(data);
       setIsGroup(isGroup(data.headCount));
       setIsMember(isMember(loginUserId, data.members));
-      setStatus(getGoalStatus(new Date(data.startDate), new Date(data.endDate)));
+      setStatus(GoalStatusStringtoType(data.status));
       setAccountId(accountIdFinder(data.members, loginUserId));
       setBalanceId(balanceIdFinder(data.members, loginUserId));
     },
