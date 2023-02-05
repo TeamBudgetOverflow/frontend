@@ -5,21 +5,17 @@ import { useQuery } from 'react-query';
 
 import { userId } from '../recoil/userAtoms';
 
-import { IGoal } from '../interfaces/interfaces';
+import { GoalStatus, GoalStatusStringtoType, IGoal } from '../interfaces/interfaces';
 
 import { userAPI } from '../apis/client';
 
 const getSuccessCnt = (goals: Array<IGoal>) => {
-  return goals.filter((goal) => new Date(goal.endDate).getTime() < new Date().getTime() && goal.attainment === 100)
+  return goals.filter((goal) => GoalStatusStringtoType(goal.status) === GoalStatus.done && goal.attainment === 100)
     .length;
 };
 
 const getWorkingCnt = (goals: Array<IGoal>) => {
-  return goals.filter(
-    (goal) =>
-      new Date(goal.startDate).getTime() < new Date().getTime() &&
-      new Date(goal.endDate).getTime() > new Date().getTime()
-  ).length;
+  return goals.filter((goal) => GoalStatusStringtoType(goal.status) === GoalStatus.proceeding).length;
 };
 
 const getTotalCnt = (goals: Array<IGoal>) => {
