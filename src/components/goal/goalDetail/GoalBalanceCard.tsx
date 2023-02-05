@@ -13,9 +13,10 @@ interface GoalBalanceCardProps {
   balanceId: number;
   accountId: number;
   maxBalance: number;
+  isDisabled: boolean;
 }
 
-const GoalBalanceCard = ({ balanceId, accountId, maxBalance }: GoalBalanceCardProps) => {
+const GoalBalanceCard = ({ balanceId, accountId, maxBalance, isDisabled }: GoalBalanceCardProps) => {
   const {
     isLoadingData,
     isErrorData,
@@ -82,7 +83,7 @@ const GoalBalanceCard = ({ balanceId, accountId, maxBalance }: GoalBalanceCardPr
           <CloseIconBtn color='black' closeHandler={() => handleModifyInput(false)} />
         </BtnWrapper>
       ) : (
-        <Button disabled={isErrorData || isLoadingData} onClick={() => handleModifyInput(true)}>
+        <Button disabled={isErrorData || isLoadingData || isDisabled} onClick={() => handleModifyInput(true)}>
           <Icon
             width={24}
             height={24}

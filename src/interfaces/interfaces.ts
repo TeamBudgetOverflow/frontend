@@ -38,6 +38,7 @@ export interface IGoal {
   headCount: number;
   startDate: Date;
   endDate: Date;
+  status: 'recruit' | 'proceeding' | 'done';
   title: string;
   hashtag: Array<string>;
   emoji: string;
@@ -52,6 +53,19 @@ export enum GoalStatus {
   proceeding,
   done,
 }
+
+export const GoalStatusStringtoType = (type: 'recruit' | 'proceeding' | 'done') => {
+  switch (type) {
+    case 'recruit':
+      return GoalStatus.recruit;
+    case 'proceeding':
+      return GoalStatus.proceeding;
+    case 'done':
+      return GoalStatus.done;
+    default:
+      return GoalStatus.done;
+  }
+};
 
 export interface IPostGoal {
   emoji: string;
@@ -227,6 +241,7 @@ export interface ISearchGoal {
   headCount: number;
   startDate: Date;
   endDate: Date;
+  status: 'recruit' | 'proceeding' | 'done';
   title: string;
   hashTag: Array<string>;
   emoji: string;
@@ -247,6 +262,7 @@ export interface IGoalDetail {
   hashTag: Array<string>;
   startDate: Date;
   endDate: Date;
+  status: 'recruit' | 'proceeding' | 'done';
   curCount: number;
   headCount: number;
   members: Array<IMemeberInfo>;

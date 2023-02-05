@@ -8,18 +8,17 @@ import DdayTag from '../common/tag/DdayTag';
 
 import { dateStringTranslator } from '../../utils/dateTranslator';
 
-import { ISearchGoal } from '../../interfaces/interfaces';
-
-import useGoalState, { GoalState } from '../../hooks/useGoalState';
+import { GoalStatus, GoalStatusStringtoType, ISearchGoal } from '../../interfaces/interfaces';
 
 const GroupGoalCard = ({ goal }: { goal: ISearchGoal }) => {
   const navigate = useNavigate();
-  const { state } = useGoalState({ startDate: new Date(goal.startDate), endDate: new Date(goal.endDate) });
+  const status = GoalStatusStringtoType(goal.status);
+
   return (
     <Wrapper onClick={() => navigate(`/goals/${goal.goalId}`)}>
       <TopContent>
         <HeadContent>
-          <StateTag state={state} />
+          <StateTag state={status} />
           <DdayTag targetDate={new Date(goal.endDate)} />
         </HeadContent>
         <BodyContent>
@@ -35,11 +34,15 @@ const GroupGoalCard = ({ goal }: { goal: ISearchGoal }) => {
       <BottomContent>
         <ProgressInfo>
           <ProgressText>
-            {state !== GoalState.waiting
+            {status !== GoalStatus.recruit
               ? `${dateStringTranslator(new Date(goal.endDate))} 자정 종료`
               : `${dateStringTranslator(new Date(goal.startDate))} 자정 시작`}
           </ProgressText>
-          {state !== GoalState.working ? <></> : <RecruitState>{`${goal.curCount}/${goal.headCount}`}</RecruitState>}
+          {status !== GoalStatus.proceeding ? (
+            <></>
+          ) : (
+            <RecruitState>{`${goal.curCount}/${goal.headCount}`}</RecruitState>
+          )}
         </ProgressInfo>
       </BottomContent>
     </Wrapper>

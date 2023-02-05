@@ -100,9 +100,14 @@ const DetailGoal = () => {
           />
           <GoalPeriodCard startDate={data.startDate} endDate={data.endDate} />
           <GoalDescCard description={data.description} />
-          <GoalTagsCard hashTag={data.hashTag} />
-          {isMember && status === GoalStatus.proceeding ? (
-            <GoalBalanceCard balanceId={balanceId} accountId={accountId} maxBalance={data.amount} />
+          {data.hashTag.length === 1 && data.hashTag[0] === '' ? <></> : <GoalTagsCard hashTag={data.hashTag} />}
+          {(isMember && status === GoalStatus.proceeding) || status === GoalStatus.done ? (
+            <GoalBalanceCard
+              balanceId={balanceId}
+              accountId={accountId}
+              maxBalance={data.amount}
+              isDisabled={status === GoalStatus.done}
+            />
           ) : (
             <></>
           )}
@@ -145,7 +150,6 @@ const DetailGoalWrapper = styled.div`
   flex-direction: column;
   gap: 20px;
   width: 100%;
-  height: 100%;
 `;
 
 const TopContent = styled.div`
@@ -157,7 +161,6 @@ const TopContent = styled.div`
 
 const BottomContent = styled(TopContent)`
   gap: 20px;
-  overflow-y: hidden;
 `;
 
 const GoalButtonSet = styled.div`
