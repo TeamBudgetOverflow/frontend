@@ -23,6 +23,7 @@ const useBalanceModify = ({ balanceId, accountId, maxBalance }: useBalanceModify
 
   const [inputVal, setInputVal] = useState<number>(0);
   const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+    if (isNaN(Number(e.currentTarget.value))) return setInputVal(0);
     setInputVal(Number(e.currentTarget.value));
   };
 
