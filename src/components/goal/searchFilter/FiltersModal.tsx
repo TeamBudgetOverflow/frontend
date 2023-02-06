@@ -57,23 +57,23 @@ const FiltersModal = ({ changeHandler, closeHandler }: FiltersModalProps) => {
 
   const [scrollTop, setScrollTop] = useState(0);
   const handleFilterSelect = (type: SearchFilterType) => {
+    if (!amountRef.current) return;
     setSelectedFilter(type);
     switch (type) {
       case SearchFilterType.status:
         return setScrollTop(0);
       case SearchFilterType.amount:
-        return setScrollTop(amountRef.current ? amountRef.current.offsetTop : 100);
+        return setScrollTop(amountRef.current.offsetTop);
       case SearchFilterType.period:
-        return setScrollTop(periodRef.current ? periodRef.current.offsetTop : 200);
+        return setScrollTop(amountRef.current.offsetTop + 82);
       case SearchFilterType.member:
-        return setScrollTop(memberRef.current ? memberRef.current.offsetTop : 300);
+        return setScrollTop(amountRef.current.offsetTop + 164);
       default:
         setScrollTop(0);
     }
   };
   const amountRef = useRef<HTMLDivElement>(null);
-  const periodRef = useRef<HTMLDivElement>(null);
-  const memberRef = useRef<HTMLDivElement>(null);
+
   const bottomContent = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!bottomContent.current) return;
@@ -137,11 +137,11 @@ const FiltersModal = ({ changeHandler, closeHandler }: FiltersModalProps) => {
           </ContentWrapper>
         </Content>
         <SortFilters
-          selectedMenu={selectedFilter}
           initType={savedSearchFilters.sorted}
           initMin={savedSearchFilters.min}
           initMax={savedSearchFilters.max}
           changeHandler={handleSortSelected}
+          ref={amountRef}
         />
       </BottomContent>
       <TextButton text='확인' onClickHandler={handleFilterChangeSubmit} />
