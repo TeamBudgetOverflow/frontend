@@ -24,7 +24,9 @@ const DesktopLayout = ({ children }: { children: React.ReactNode }) => {
               <LogoTitle width={logoSize} height={logoSize} />
             </LogoWrapper>
             <IntroText>{`💰2030 재테크 병아리들🐥 모여라!\n💸현명한 소비 습관 만들기\n🌄티끌모아 태산에서 함께해요!`}</IntroText>
-            <SubText>티끌모아 태산은 모바일 환경에 최적화 되어있습니다.</SubText>
+            <SubText>
+              티끌모아 태산은 모바일 환경에 최적화 <br /> 되어있습니다.
+            </SubText>
           </MainContent>
         </LogoContent>
       </LeftContent>
@@ -67,6 +69,13 @@ const Wrapper = styled.div`
     width: 90%;
     background-color: ${(props) => props.theme.primary50};
   }
+  /* @media screen and (orientation: landscap) {
+    display: block;
+    width: 100%;
+    height: 100vw;
+    transform: translateY(100vh) rotate(-90deg);
+    transform-origin: top left;
+  } */
 `;
 
 const LeftContent = styled.div`
@@ -113,11 +122,19 @@ const IntroText = styled.div`
   @media screen and (max-width: 980px) {
     display: none;
   }
+  @media screen and (max-height: 650px) {
+    display: none;
+  }
 `;
 
-const SubText = styled(IntroText)`
+const SubText = styled.div`
+  font: ${(props) => props.theme.headingH3};
   color: ${(props) => props.theme.primary200};
-  @media screen and (max-width: 980px) {
+
+  @media screen and (max-width: 1200px) {
+    font: ${(props) => props.theme.paragraphsP3M};
+  }
+  @media screen and (max-width: 700px) {
     display: none;
   }
 `;

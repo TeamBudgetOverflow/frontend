@@ -41,21 +41,22 @@ const usePinNumberKeypad = ({ PASSWORD_MAX_LENGTH, isNewComer }: PinNumberKeypad
     if (!isNewComer) return setLoginPinNumber(loginPinNumber + num.toString());
 
     if (pinNumber1.length !== PASSWORD_MAX_LENGTH) {
-      setPinNumber1(pinNumber1 + num.toString());
-    } else {
-      setPinNumber2(pinNumber2 + num.toString());
+      return setPinNumber1(pinNumber1 + num.toString());
+    }
+    if (pinNumber1.length === PASSWORD_MAX_LENGTH && pinNumber2.length !== PASSWORD_MAX_LENGTH) {
+      return setPinNumber2(pinNumber2 + num.toString());
     }
   };
 
   const erasePinNumberOne = () => {
-    if (pinNumber1.length !== 0) {
-      setPinNumber1(pinNumber1.slice(0, pinNumber1.length === 0 ? 0 : pinNumber1.length - 1));
+    if (pinNumber1.length !== 0 && pinNumber2.length === 0) {
+      return setPinNumber1(pinNumber1.slice(0, pinNumber1.length === 0 ? 0 : pinNumber1.length - 1));
     }
-    if (pinNumber2.length !== 0) {
-      setPinNumber2(pinNumber2.slice(0, pinNumber2.length === 0 ? 0 : pinNumber2.length - 1));
+    if (pinNumber1.length === PASSWORD_MAX_LENGTH && pinNumber2.length !== 0) {
+      return setPinNumber2(pinNumber2.slice(0, pinNumber2.length === 0 ? 0 : pinNumber2.length - 1));
     }
     if (loginPinNumber.length !== 0) {
-      setLoginPinNumber(loginPinNumber.slice(0, loginPinNumber.length === 0 ? 0 : loginPinNumber.length - 1));
+      return setLoginPinNumber(loginPinNumber.slice(0, loginPinNumber.length === 0 ? 0 : loginPinNumber.length - 1));
     }
   };
 
