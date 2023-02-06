@@ -3,10 +3,13 @@ import styled from 'styled-components';
 import Logo from '../components/common/elem/Logo';
 import LogoSubTitle from '../components/common/elem/LogoSubTitle';
 import LogoTitle from '../components/common/elem/LogoTitle';
+import NotSuppoertedDevice from '../pages/\bNotSupportedDevice';
 
 const DesktopLayout = ({ children }: { children: React.ReactNode }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [logoSize, setLogoSize] = useState<number>(100);
+  const [isNotSupportedDevice, setIsNotSupportedDevice] = useState(false);
+
   useEffect(() => {
     if (!ref.current) return;
     if (ref.current.clientWidth >= 700) return setLogoSize(120);
@@ -31,6 +34,9 @@ const DesktopLayout = ({ children }: { children: React.ReactNode }) => {
         </LogoContent>
       </LeftContent>
       <ViewContent>{children}</ViewContent>
+      <NotSupportedContent>
+        <NotSuppoertedDevice />
+      </NotSupportedContent>
       <RightContent>
         <CreatorsContent>
           <Label>
@@ -69,13 +75,6 @@ const Wrapper = styled.div`
     width: 90%;
     background-color: ${(props) => props.theme.primary50};
   }
-  /* @media screen and (orientation: landscap) {
-    display: block;
-    width: 100%;
-    height: 100vw;
-    transform: translateY(100vh) rotate(-90deg);
-    transform-origin: top left;
-  } */
 `;
 
 const LeftContent = styled.div`
@@ -145,6 +144,20 @@ const ViewContent = styled.div`
   max-height: 900px;
   @media screen and (min-width: 700px) {
     max-width: 414px;
+  }
+  @media screen and (max-width: 320px) {
+    display: none;
+  }
+  @media screen and (max-height: 550px) {
+    display: none;
+  }
+`;
+
+const NotSupportedContent = styled.div`
+  width: 100vw;
+  height: 100%;
+  @media screen and (min-width: 320px) and (min-height: 550px) {
+    display: none;
   }
 `;
 
