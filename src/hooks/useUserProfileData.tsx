@@ -23,6 +23,9 @@ const useUserProfileData = ({ getUserId }: { getUserId: number }) => {
       setUserProfile(data);
     },
     onError: (e) => {
+      if (e === 404) {
+        navigate('/notfound', { replace: true });
+      }
       if (e === 401) {
         navigate('/', { replace: true });
       }

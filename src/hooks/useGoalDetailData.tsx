@@ -39,6 +39,9 @@ const useGoalDetailData = ({ loginUserId, goalId }: useGoalDetailProps) => {
       setBalanceId(balanceIdFinder(data.members, loginUserId));
     },
     onError: (e) => {
+      if (e === 404) {
+        navigate('/notfound', { replace: true });
+      }
       if (e === 401) {
         navigate('/', { replace: true });
       }
