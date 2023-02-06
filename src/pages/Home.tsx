@@ -18,6 +18,8 @@ import useBadgesData from '../hooks/useBadgesData';
 
 import RouteChangeTracker from '../shared/RouteChangeTracker';
 
+import { GoalStatus, GoalStatusStringtoType } from '../interfaces/interfaces';
+
 const Home = () => {
   RouteChangeTracker();
   useBanksData();
@@ -38,22 +40,41 @@ const Home = () => {
           <Alert showBgColor={true}>
             <ErrorMsg />
           </Alert>
-        ) : goals.filter(
-            (goal) =>
-              new Date(goal.startDate).getTime() < new Date().getTime() &&
-              new Date(goal.endDate).getTime() > new Date().getTime()
-          ).length === 0 ? (
+        ) : goals.filter((goal) => GoalStatusStringtoType(goal.status) !== GoalStatus.done).length === 0 ? (
           <EmptyData>
             <InfoText>{`아직 추가된 목표가 없습니다.\n첫번째 목표를 추가해보세요!`}</InfoText>
           </EmptyData>
         ) : (
-          goals
-            .filter(
-              (goal) =>
-                new Date(goal.startDate).getTime() < new Date().getTime() &&
-                new Date(goal.endDate).getTime() > new Date().getTime()
-            )
-            .map((goal) => <MyGoalCard key={goal.goalId} goal={goal} />)
+          <>
+            <>
+              {goals
+                .filter((goal) => GoalStatusStringtoType(goal.status) === GoalStatus.proceeding)
+                .sort((a, b) => {
+                  if (new Date(a.endDate).getTime() < new Date(b.endDate).getTime()) {
+                    return -1;
+                  }
+
+                  return 0;
+                })
+                .map((goal) => (
+                  <MyGoalCard key={goal.goalId} goal={goal} />
+                ))}
+            </>
+            <>
+              {goals
+                .filter((goal) => GoalStatusStringtoType(goal.status) === GoalStatus.recruit)
+                .sort((a, b) => {
+                  if (new Date(a.startDate).getTime() < new Date(b.startDate).getTime()) {
+                    return -1;
+                  }
+
+                  return 0;
+                })
+                .map((goal) => (
+                  <MyGoalCard key={goal.goalId} goal={goal} />
+                ))}
+            </>
+          </>
         )}
         <AddGoalBtn onClick={() => navigate('/goals/post/type')}>
           <IconWrapper>
