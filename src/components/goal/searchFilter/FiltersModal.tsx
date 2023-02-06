@@ -172,12 +172,18 @@ const FiltersBox = styled.div`
   flex-direction: row;
   gap: 24px;
   width: 100%;
+  @media screen and (max-width: 400px) {
+    gap: 12px;
+  }
 `;
 
 const FilterButton = styled.div<{ selected: boolean }>`
   padding: 8px 0;
   font: ${(props) => (props.selected ? props.theme.paragraphsP1M : props.theme.paragraphsP1R)};
   word-break: keep-all;
+  @media screen and (max-width: 360px) {
+    font: ${(props) => (props.selected ? props.theme.paragraphsP2M : props.theme.paragraphsP2R)};
+  }
 `;
 
 const BottomContent = styled.div<{ topContentHeight: number }>`
