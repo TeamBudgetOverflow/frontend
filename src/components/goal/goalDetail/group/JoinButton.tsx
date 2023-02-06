@@ -38,7 +38,7 @@ const JoinButton = ({ goalId }: { goalId: number }) => {
   return (
     <>
       <TextButton text='참여하기' onClickHandler={handleJoinStart} />
-      <ModalBox show={showOption}>
+      <ModalBox show={showOption} maxScreenHeight={500}>
         <CloseIconBtn closeHandler={handleJoinEnd} />
         <Content>
           {isManualAccountAddable(accounts) ? (
@@ -69,7 +69,7 @@ const JoinButton = ({ goalId }: { goalId: number }) => {
           )}
         </Content>
       </ModalBox>
-      <ModalBox show={showAccounts}>
+      <ModalBox show={showAccounts} maxScreenHeight={500}>
         <CloseIconBtn closeHandler={handleJoinEnd} />
         <Content>
           {isAutoAccountAddable(accounts) ? (

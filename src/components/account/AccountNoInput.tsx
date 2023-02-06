@@ -100,7 +100,7 @@ const AccountNoInput = ({ oriSeqNoHandler, authReqHandler }: AccountNoInputProps
           </BottomContent>
         </ContentWrapper>
         <TextButton text='계좌 인증하기' onClickHandler={handleReqAuthAccnt} isDisabled={!isValid} />
-        <ModalBox show={showBanks}>
+        <ModalBox show={showBanks} maxScreenHeight={700}>
           <BankList banks={banks} closeHandler={handleShowBanks} selectHandler={handleBankSelect} />
         </ModalBox>
       </Wrapper>

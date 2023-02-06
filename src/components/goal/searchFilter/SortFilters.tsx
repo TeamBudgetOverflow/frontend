@@ -1,20 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, forwardRef, Ref } from 'react';
 import styled from 'styled-components';
 
 import RangeSelectBox from './RangeSelectBox';
 
-import { SearchFilterType } from './FiltersModal';
 import { SortType } from '../../../interfaces/interfaces';
 
 interface SortFiltersProps {
-  selectedMenu: SearchFilterType;
   initType: SortType;
   initMin: number;
   initMax: number;
   changeHandler: (sortType: SortType, min: number, max: number) => void;
 }
 
-const SortFilters = ({ selectedMenu, initType, initMin, initMax, changeHandler }: SortFiltersProps) => {
+const SortFilters = ({ initType, initMin, initMax, changeHandler }: SortFiltersProps, ref: Ref<HTMLDivElement>) => {
   const [type, setType] = useState<SortType>(initType);
   const handleTypeChange = (selected: SortType) => {
     if (type === selected) {
@@ -23,18 +21,7 @@ const SortFilters = ({ selectedMenu, initType, initMin, initMax, changeHandler }
     }
     setType(selected);
   };
-  useEffect(() => {
-    switch (selectedMenu) {
-      case SearchFilterType.amount:
-        return handleTypeChange(SortType.amount);
-      case SearchFilterType.period:
-        return handleTypeChange(SortType.period);
-      case SearchFilterType.member:
-        return handleTypeChange(SortType.member);
-      default:
-        return handleTypeChange(SortType.none);
-    }
-  }, [selectedMenu]);
+
   const [amountMin, setAmountMin] = useState<number>(initMin);
   const handleAmountMinChange = (min: number) => {
     setAmountMin(min);
@@ -77,7 +64,7 @@ const SortFilters = ({ selectedMenu, initType, initMin, initMax, changeHandler }
   return (
     <Wrapper>
       <ContentWrapper>
-        <SubTitle>
+        <SubTitle ref={ref}>
           <input
             type='radio'
             value={SortType.amount}
@@ -168,4 +155,4 @@ const SubTitle = styled.span`
   color: ${(props) => props.theme.gray600};
 `;
 
-export default SortFilters;
+export default forwardRef(SortFilters);

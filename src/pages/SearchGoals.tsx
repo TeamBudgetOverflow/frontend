@@ -168,7 +168,7 @@ const SearchGoals = () => {
           </>
         )}
       </GoalCardsWrapper>
-      <ModalBox show={showModal}>
+      <ModalBox show={showModal} maxScreenHeight={700}>
         <FiltersModal changeHandler={handleFilterInputChange} closeHandler={() => handleFilterModal(false)} />
       </ModalBox>
     </Wrapper>

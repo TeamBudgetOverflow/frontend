@@ -5,10 +5,13 @@ import styled from 'styled-components';
 import EmojiBox from '../common/elem/EmojiBox';
 import C2TextBox from '../common/elem/C2TextBox';
 import DdayTag from '../common/tag/DdayTag';
+import StateTag from '../common/tag/StateTag';
+import ProgressBar from '../common/elem/ProgressBar';
 
-import { IGoal } from '../../interfaces/interfaces';
+import { GoalStatus, GoalStatusStringtoType, IGoal } from '../../interfaces/interfaces';
 
 import { setProgressState } from '../../utils/progressState';
+import { dateStringTranslator } from '../../utils/dateTranslator';
 
 const MyGoalCard = ({ goal }: { goal: IGoal }) => {
   const navigate = useNavigate();
@@ -17,24 +20,33 @@ const MyGoalCard = ({ goal }: { goal: IGoal }) => {
     <Wrapper onClick={() => navigate(`/goals/${goal.goalId}`)}>
       <TopContent>
         <TopLeftContent>
-          <EmojiBox unicode={goal.emoji} boxSize={40} emojiSize={20} />
-          <TextContent>
-            <Title>{goal.title}</Title>
-            <Amount>{`${goal.amount.toLocaleString()}원`}</Amount>
-          </TextContent>
+          <StateTag state={GoalStatusStringtoType(goal.status)} />
+          <Content>
+            <EmojiBox unicode={goal.emoji} boxSize={40} emojiSize={20} />
+            <TextContent>
+              <Title>{goal.title}</Title>
+              <Amount>{`${goal.amount.toLocaleString()}원`}</Amount>
+            </TextContent>
+          </Content>
         </TopLeftContent>
         <TopRightContent>
           <DdayTag targetDate={new Date(goal.endDate)} />
         </TopRightContent>
       </TopContent>
       <BottomContent>
-        <ProgressBarWrapper>
-          <ProgressBar width={`${goal.attainment}%`} />
-        </ProgressBarWrapper>
-        <ProgressInfo>
-          <C2TextBox text={setProgressState(goal.attainment)} />
-          <C2TextBox text={`${Math.round(goal.attainment)}%`} />
-        </ProgressInfo>
+        {GoalStatusStringtoType(goal.status) !== GoalStatus.recruit ? (
+          <>
+            <ProgressBar percentage={goal.attainment} height={8} borderRadius={25} />
+            <ProgressInfo>
+              <C2TextBox text={setProgressState(goal.attainment)} />
+              <C2TextBox text={`${Math.round(goal.attainment)}%`} />
+            </ProgressInfo>
+          </>
+        ) : (
+          <>
+            <C2TextBox text={`${dateStringTranslator(new Date(goal.startDate))} 자정 시작`} />
+          </>
+        )}
       </BottomContent>
     </Wrapper>
   );
@@ -61,6 +73,13 @@ const TopContent = styled.div`
 `;
 
 const TopLeftContent = styled.div`
+  float: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+
+const Content = styled.div`
   float: left;
   display: flex;
   flex-direction: row;
@@ -90,24 +109,6 @@ const BottomContent = styled.div`
   flex-direction: column;
   gap: 4px;
   width: 100%;
-`;
-
-const ProgressBarWrapper = styled.div`
-  position: relative;
-  width: 100%;
-  height: 8px;
-  border-radius: 25px;
-  background-color: ${(props) => props.theme.primary50};
-`;
-
-const ProgressBar = styled.div<{ width: string }>`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: ${(props) => props.width};
-  height: 8px;
-  border-radius: 25px;
-  background-color: ${(props) => props.theme.primary500};
 `;
 
 const ProgressInfo = styled.div`

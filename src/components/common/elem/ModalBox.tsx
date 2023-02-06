@@ -3,14 +3,15 @@ import styled from 'styled-components';
 
 interface ModalBoxProps {
   show: boolean;
+  maxScreenHeight: number;
   bgColor?: string;
   children: React.ReactNode;
 }
 
-const ModalBox: FunctionComponent<ModalBoxProps> = ({ show, children, bgColor }) => {
+const ModalBox: FunctionComponent<ModalBoxProps> = ({ show, maxScreenHeight, children, bgColor }) => {
   return (
     <Wrapper show={show}>
-      <Modal bgColor={bgColor}>
+      <Modal bgColor={bgColor} maxScreenHeight={maxScreenHeight}>
         <ContentWrapper>{children}</ContentWrapper>
       </Modal>
     </Wrapper>
@@ -28,7 +29,7 @@ const Wrapper = styled.div<{ show: boolean }>`
   background-color: rgba(0, 0, 0, 0.5);
 `;
 
-const Modal = styled.div<{ bgColor?: string }>`
+const Modal = styled.div<{ bgColor?: string; maxScreenHeight: number }>`
   position: absolute;
   bottom: 0;
   left: 0;
@@ -37,7 +38,7 @@ const Modal = styled.div<{ bgColor?: string }>`
   max-height: 616px;
   border-radius: 16px 16px 0 0;
   background-color: ${(props) => (props.bgColor ? `${props.bgColor}` : 'white')};
-  @media screen and (max-height: 700px) {
+  @media screen and (max-height: ${(props) => `${props.maxScreenHeight}px`}) {
     height: calc(100% - 100px);
   }
 `;
