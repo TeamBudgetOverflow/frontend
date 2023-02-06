@@ -24,8 +24,10 @@ time, mark, audio, video {
 }
 
 @media (orientation: landscape) {
-  html {
-    transform: rotate(-90deg);
+  @media screen and (max-width: 700px) {
+    html {
+      transform: rotate(-90deg);
+    }
   }
 }
 
