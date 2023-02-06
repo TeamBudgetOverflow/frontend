@@ -20,6 +20,7 @@ const PinNumberPage = () => {
   const storedIsNewComer = localStorage.getItem('isNewComer');
   const isPincodeRegistered = localStorage.getItem('isPincodeRegistered') === 'true' ? true : false;
   const [isNewComer, setIsNewComer] = useState<boolean>(false);
+
   useEffect(() => {
     if (storedIsNewComer === 'true' || !isPincodeRegistered) return setIsNewComer(true);
     setIsNewComer(false);
@@ -85,7 +86,6 @@ const PinNumberPage = () => {
           </RadioInputWrapper>
         </InputWrapper>
       </TextWrapper>
-      <PinNumInputContainer type='password' defaultValue={pinNumber1} />
       <KeypadWrapper>
         {numbers.map((n) => (
           <NumButtonFlex key={n} value={n} onClick={inputNums(n)}>
@@ -144,10 +144,6 @@ const RadioInputWrapper = styled.div`
   gap: 20px;
   width: 100%;
   height: 20px;
-`;
-
-const PinNumInputContainer = styled.input`
-  display: none;
 `;
 
 const KeypadWrapper = styled.div`

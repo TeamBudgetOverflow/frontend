@@ -3,10 +3,12 @@ import styled from 'styled-components';
 import Logo from '../components/common/elem/Logo';
 import LogoSubTitle from '../components/common/elem/LogoSubTitle';
 import LogoTitle from '../components/common/elem/LogoTitle';
+import NotSuppoertedDevice from '../pages/NotSupportedDevice';
 
 const DesktopLayout = ({ children }: { children: React.ReactNode }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [logoSize, setLogoSize] = useState<number>(100);
+
   useEffect(() => {
     if (!ref.current) return;
     if (ref.current.clientWidth >= 700) return setLogoSize(120);
@@ -24,11 +26,16 @@ const DesktopLayout = ({ children }: { children: React.ReactNode }) => {
               <LogoTitle width={logoSize} height={logoSize} />
             </LogoWrapper>
             <IntroText>{`💰2030 재테크 병아리들🐥 모여라!\n💸현명한 소비 습관 만들기\n🌄티끌모아 태산에서 함께해요!`}</IntroText>
-            <SubText>티끌모아 태산은 모바일 환경에 최적화 되어있습니다.</SubText>
+            <SubText>
+              티끌모아 태산은 모바일 환경에 최적화 <br /> 되어있습니다.
+            </SubText>
           </MainContent>
         </LogoContent>
       </LeftContent>
       <ViewContent>{children}</ViewContent>
+      <NotSupportedContent>
+        <NotSuppoertedDevice />
+      </NotSupportedContent>
       <RightContent>
         <CreatorsContent>
           <Label>
@@ -112,11 +119,19 @@ const IntroText = styled.div`
   @media screen and (max-width: 980px) {
     display: none;
   }
+  @media screen and (max-height: 650px) {
+    display: none;
+  }
 `;
 
-const SubText = styled(IntroText)`
+const SubText = styled.div`
+  font: ${(props) => props.theme.headingH3};
   color: ${(props) => props.theme.primary200};
-  @media screen and (max-width: 980px) {
+
+  @media screen and (max-width: 1200px) {
+    font: ${(props) => props.theme.paragraphsP3M};
+  }
+  @media screen and (max-width: 700px) {
     display: none;
   }
 `;
@@ -127,6 +142,20 @@ const ViewContent = styled.div`
   max-height: 900px;
   @media screen and (min-width: 700px) {
     max-width: 414px;
+  }
+  @media screen and (max-width: 320px) {
+    display: none;
+  }
+  @media screen and (max-height: 550px) {
+    display: none;
+  }
+`;
+
+const NotSupportedContent = styled.div`
+  width: 100vw;
+  height: 100%;
+  @media screen and (min-width: 320px) and (min-height: 550px) {
+    display: none;
   }
 `;
 
