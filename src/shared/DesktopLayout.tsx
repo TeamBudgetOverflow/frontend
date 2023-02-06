@@ -3,12 +3,11 @@ import styled from 'styled-components';
 import Logo from '../components/common/elem/Logo';
 import LogoSubTitle from '../components/common/elem/LogoSubTitle';
 import LogoTitle from '../components/common/elem/LogoTitle';
-import NotSuppoertedDevice from '../pages/\bNotSupportedDevice';
+import NotSuppoertedDevice from '../pages/NotSupportedDevice';
 
 const DesktopLayout = ({ children }: { children: React.ReactNode }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [logoSize, setLogoSize] = useState<number>(100);
-  const [isNotSupportedDevice, setIsNotSupportedDevice] = useState(false);
 
   useEffect(() => {
     if (!ref.current) return;

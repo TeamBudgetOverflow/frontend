@@ -29,6 +29,7 @@ import UserSettings from '../pages/UserSettings';
 import WelcomePage from '../pages/WelcomePage';
 import Prepare from '../pages/Prepare';
 import RouteChangeTracker from './RouteChangeTracker';
+import NotFoundError from '../pages/NotFoundError';
 
 const Router = () => {
   RouteChangeTracker();
@@ -64,8 +65,10 @@ const Router = () => {
           <Route path='/chats' element={<Prepare />} />
           <Route path='/users/settings/:id' element={<UserSettings />} />
           <Route path='/users/settings/accounts/:id' element={<Prepare />} />
+          <Route path='/notfound' element={<NotFoundError />} />
         </Route>
         <Route path='/welcome' element={<WelcomePage />} />
+
         <Route path='/' element={<Redirect />} />
       </Routes>
     </BrowserRouter>
