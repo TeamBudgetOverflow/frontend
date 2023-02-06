@@ -23,6 +23,12 @@ time, mark, audio, video {
 	vertical-align: baseline;
 }
 
+@media (orientation: landscape) {
+  html {
+    transform: rotate(-90deg);
+  }
+}
+
 /* HTML5 display-role reset for older browsers */
 article,
 aside,

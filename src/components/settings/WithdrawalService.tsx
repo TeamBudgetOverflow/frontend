@@ -18,7 +18,7 @@ const WithdrawalService = ({ warningHandler }: WithdrawalServiceProps) => {
   return (
     <>
       <SettingButton text='탈퇴하기' onClickHandler={handleWithdrawalConfirmModal}></SettingButton>
-      <ModalBox show={showConfirm} bgColor={'transparent'}>
+      <ModalBox show={showConfirm} bgColor={'transparent'} maxScreenHeight={500}>
         <ConfirmButtonWrapper>
           <ConfirmMsg>탈..퇴.. 하시겠습니까?</ConfirmMsg>
           <TextButton

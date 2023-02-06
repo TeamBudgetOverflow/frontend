@@ -45,7 +45,7 @@ const MyFilteredBadges = ({ userId }: { userId: number }) => {
           )}
         </>
       )}
-      <ModalBox show={showDetail}>
+      <ModalBox show={showDetail} maxScreenHeight={500}>
         <BtnWrapper>
           <CloseIconBtn color='black' closeHandler={() => setShowDetail(false)} />
         </BtnWrapper>

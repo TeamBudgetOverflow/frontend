@@ -94,7 +94,7 @@ const MyFilteredGoals = ({ userId }: { userId: number }) => {
           </>
         )}
       </BottomContent>
-      <ModalBox show={showFilters}>
+      <ModalBox show={showFilters} maxScreenHeight={700}>
         <CloseIconBtn closeHandler={() => setShowFilters(false)} />
         <FiltersBox>
           {filters.map((filter) => (

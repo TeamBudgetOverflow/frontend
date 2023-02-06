@@ -40,7 +40,7 @@ const LogoutButton = () => {
   return (
     <>
       <SettingButton text='로그아웃' onClickHandler={handleLogoutConfirmModal}></SettingButton>
-      <ModalBox show={showConfirm} bgColor={'transparent'}>
+      <ModalBox show={showConfirm} bgColor={'transparent'} maxScreenHeight={500}>
         <ConfirmButtonWrapper>
           <ConfirmMsg>로그아웃 하시겠습니까?</ConfirmMsg>
           <TextButton

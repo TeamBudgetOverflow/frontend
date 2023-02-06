@@ -24,7 +24,7 @@ const WithDrawButton = ({ goalId }: { goalId: number }) => {
   return (
     <>
       <TextButton text='그만하기' onClickHandler={() => setShowInfo(true)} />
-      <ModalBox show={showInfo}>
+      <ModalBox show={showInfo} maxScreenHeight={500}>
         <CloseIconBtn closeHandler={() => setShowInfo(false)} />
         <Content>
           <Info>목표를 그만두시겠습니까?</Info>

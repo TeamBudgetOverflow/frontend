@@ -82,7 +82,7 @@ const UserSettingAccountList = () => {
         </AddAccountBtn>
       </ContentWrapper>
 
-      <ModalBox show={showConfirm} bgColor={'transparent'}>
+      <ModalBox show={showConfirm} bgColor={'transparent'} maxScreenHeight={500}>
         <ConfirmButtonWrapper>
           <ConfirmMsg>연결계좌 정보를 삭제 하시겠습니까?</ConfirmMsg>
           <TextButton bgColor='white' color='red' text='삭제' onClickHandler={handleMyAccountDeleteButton} />
