@@ -38,14 +38,14 @@ const RangeSlider = ({ min, max, gap, minChangeHandler, maxChangeHandler, isDisa
       <VirtualBarMin
         type='range'
         min={min}
-        max={maxVal}
+        max={max}
         step={gap}
         value={minVal}
         onChange={isDisabled ? handleDisabled : setMin}
       />
       <VirtualBarMax
         type='range'
-        min={minVal}
+        min={min}
         max={max}
         step={gap}
         value={maxVal}

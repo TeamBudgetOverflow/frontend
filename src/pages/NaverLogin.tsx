@@ -1,49 +1,40 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import jwtDecoder from 'jwt-decode';
 
-import { userAPI } from '../apis/client';
+import Info from '../components/common/alert/Info';
+import Contact from '../components/common/elem/Contact';
 
-import { userId } from '../recoil/userAtoms';
-
-import { MyToken } from '../interfaces/interfaces';
+import useSignup from '../hooks/useSignup';
 
 import RouteChangeTracker from '../shared/RouteChangeTracker';
 
 const NaverLogin = () => {
   RouteChangeTracker();
-  const navigate = useNavigate();
   const code = new URL(window.location.href).searchParams.get('code');
+  if (!code)
+    return (
+      <Wrapper>
+        <Info type='error'>
+          잘못된 코드를 받았습니다.
+          <br />
+          관리자에게 문의해주세요
+          <br />
+          <Contact />
+        </Info>
+      </Wrapper>
+    );
 
-  const setUserId = useSetRecoilState(userId);
-  const signup = async () => {
-    try {
-      if (!code) return alert('잘못된 코드를 받았습니다.');
-      const data = await userAPI.getNaverSignup(code);
-      localStorage.setItem('accessToken', data.accessToken);
-      localStorage.setItem('refreshToken', data.refreshToken);
-      localStorage.setItem('isNewComer', data.newComer);
-      localStorage.setItem('isPincodeRegistered', data.isExistPincode);
-      localStorage.setItem('name', data.name);
-      setUserId({ id: jwtDecoder<MyToken>(data.accessToken).userId });
+  const { mutate } = useSignup({ type: 'naver' });
 
-      if (data.newComer === true || !data.isExistPincode) {
-        return navigate('/pinnumber', { replace: true });
-      } else {
-        return navigate('/home');
-      }
-    } catch (e) {
-      console.log('naver signup error:', e);
-      localStorage.clear();
-    }
-  };
   useEffect(() => {
-    signup();
+    mutate(code);
   }, []);
 
-  return <Wrapper>네이버로 로그인 중입니다</Wrapper>;
+  return (
+    <Wrapper>
+      <Info type='loading'>네이버로 로그인 중입니다.</Info>
+    </Wrapper>
+  );
 };
 
 const Wrapper = styled.div`

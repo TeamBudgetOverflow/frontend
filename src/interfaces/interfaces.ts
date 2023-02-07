@@ -1,6 +1,11 @@
-// error response
-export interface Error {
-  status: number;
+// signup
+export interface ISignupResponse {
+  accessToken: string;
+  refreshToken: string;
+  message: string;
+  newComer: boolean;
+  name: string;
+  isExistPinCode: boolean;
 }
 
 // user
