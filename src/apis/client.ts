@@ -19,6 +19,7 @@ import {
   IUserBadge,
   ISearchFilter,
   ISearchGoal,
+  ISignupResponse,
 } from '../interfaces/interfaces';
 
 const BASE_URL = process.env.REACT_APP_API_ENDPOINT;
@@ -84,17 +85,17 @@ refreshClient.interceptors.response.use(
 );
 
 export const userAPI = {
-  getKakaoSignup: async (code: string) => {
+  getKakaoSignup: async (code: string): Promise<ISignupResponse> => {
     const { data } = await noneTokenClient.post(`/users/auth/kakao?code=${code}`);
 
     return data;
   },
-  getNaverSignup: async (code: string) => {
+  getNaverSignup: async (code: string): Promise<ISignupResponse> => {
     const { data } = await noneTokenClient.post(`/users/auth/naver?code=${code}`);
 
     return data;
   },
-  getGoogleSignup: async (code: string) => {
+  getGoogleSignup: async (code: string): Promise<ISignupResponse> => {
     const { data } = await noneTokenClient.post(`/users/auth/google?code=${code}`);
 
     return data;
