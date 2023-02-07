@@ -40,7 +40,10 @@ const Home = () => {
           </Alert>
         ) : goals.filter((goal) => GoalStatusStringtoType(goal.status) !== GoalStatus.done).length === 0 ? (
           <EmptyData>
-            <InfoText>{`아직 추가된 목표가 없습니다.\n첫번째 목표를 추가해보세요!`}</InfoText>
+            <EmptyDataContent>
+              <Img src={require('../assets/icons/goalEmpty.png')} />
+              <InfoText>{`아직 아무 목표도 없어요.\n목표를 추가하거나, 목표 조회를 통해 \n목표에 참여해 보세요.`}</InfoText>
+            </EmptyDataContent>
           </EmptyData>
         ) : (
           <>
@@ -90,19 +93,30 @@ const Wrapper = styled.div`
 `;
 
 const EmptyData = styled.div`
+  margin-top: 80px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  height: 150px;
-  background-color: white;
-  border-radius: 12px;
+  width: 100%;
+  height: 100%;
+`;
+
+const EmptyDataContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+`;
+
+const Img = styled.img`
+  width: 243px;
+  height: 239px;
 `;
 
 const InfoText = styled.div`
   text-align: center;
-  font: ${(props) => props.theme.captionC1};
-  color: ${(props) => props.theme.primary400};
+  font: ${(props) => props.theme.paragraphsP3R};
+  color: ${(props) => props.theme.gray700};
   line-height: 150%;
   white-space: pre-wrap;
 `;
