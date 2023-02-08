@@ -23,6 +23,14 @@ export const userProfile = atom({
   effects_UNSTABLE: [persistAtom],
 });
 
+export const isGuideDone = atom({
+  key: 'isGuideDone',
+  default: {
+    home: false,
+  },
+  effects_UNSTABLE: [persistAtom],
+});
+
 export const userGoals = atom<Array<IGoal>>({
   key: 'userGoals',
   default: [
