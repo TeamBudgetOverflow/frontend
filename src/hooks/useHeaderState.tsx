@@ -26,7 +26,7 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
     navigate('/goals/lookup');
   };
 
-  const [showChatBtn, setShowChatBtn] = useState<boolean>(false);
+  const [showSurveyBtn, setShowSurveyBtn] = useState<boolean>(false);
   const handleBugReport = () => {
     window.open('https://forms.gle/ybKtWoMMLToAwZsq8');
   };
@@ -57,15 +57,15 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
     setShowPrevBtn(true);
     setShowSearchBar(false);
     setShowSearchBtn(false);
-    setShowChatBtn(false);
+    setShowSurveyBtn(false);
     setShowSettingsBtn(false);
   };
 
-  const showChatOnly = () => {
+  const showSurveyOnly = () => {
     setShowPrevBtn(false);
     setShowSearchBar(false);
     setShowSearchBtn(false);
-    setShowChatBtn(true);
+    setShowSurveyBtn(true);
     setShowSettingsBtn(false);
   };
 
@@ -73,13 +73,13 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
     setShowPrevBtn(false);
     setShowSearchBar(false);
     setShowSearchBtn(false);
-    setShowChatBtn(false);
+    setShowSurveyBtn(false);
     setShowSettingsBtn(true);
   };
 
   useEffect(() => {
     if (pathname === '/home') {
-      showChatOnly();
+      showSurveyOnly();
       return;
     }
     if (pathname === `/users/${id}`) {
@@ -90,7 +90,7 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
       setShowSearchBar(false);
       setShowPrevBtn(true);
       setShowSearchBtn(false);
-      setShowChatBtn(false);
+      setShowSurveyBtn(false);
       setShowSettingsBtn(true);
       return;
     }
@@ -122,7 +122,7 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
       setShowSearchBar(true);
       setShowPrevBtn(true);
       setShowSearchBtn(false);
-      setShowChatBtn(false);
+      setShowSurveyBtn(false);
       setShowSettingsBtn(false);
       return;
     }
@@ -130,13 +130,13 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
     setShowPrevBtn(false);
     setShowSearchBar(false);
     setShowSearchBtn(true);
-    setShowChatBtn(true);
+    setShowSurveyBtn(false);
     setShowSettingsBtn(false);
   }, [pathname]);
 
   return {
     showSearchBtn,
-    showChatBtn,
+    showSurveyBtn,
     showPrevBtn,
     showSearchBar,
     keyword,
