@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 
 import InputBox from '../../common/elem/InputBox';
@@ -38,6 +38,12 @@ const GoalBalanceCard = ({
     handleBalanceModify,
   } = useBalanceModify({ balanceId, accountId, maxBalance, handleProgressModify: progressModifyHandler });
 
+  const inputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (!inputRef.current) return;
+    inputRef.current.focus();
+  }, [isModify]);
+
   return (
     <Wrapper>
       <Content>
@@ -51,6 +57,7 @@ const GoalBalanceCard = ({
                   value={inputVal}
                   onChangeHandler={handleInputChange}
                   isDisabled={isLoadingModify}
+                  ref={inputRef}
                 />
                 <span>원</span>
               </InputBoxWrapper>
