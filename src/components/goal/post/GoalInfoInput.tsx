@@ -164,7 +164,7 @@ function GoalInfoInput({ isGroup, initVal }: GoalInfoInputProps) {
           </InputWrapper>
           <ValidateMsg msg={descriptionErr} type='error' />
         </ContentBox>
-        <DateSelectSection isGroup={isGroup} dateSelectHandler={handleGoalDateChange} isDisabled={false} />
+        <DateSelectSection isGroup={isGroup} dateSelectHandler={handleGoalDateChange} />
         <ContentBox>
           <SubTitle>목표 금액</SubTitle>
           <RowContent>
