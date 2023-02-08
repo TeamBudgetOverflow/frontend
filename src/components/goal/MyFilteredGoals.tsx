@@ -4,12 +4,11 @@ import styled from 'styled-components';
 import Alert from '../common/alert/Alert';
 import LoadingMsg from '../common/elem/LoadingMsg';
 import ErrorMsg from '../common/elem/ErrorMsg';
-import StateGoalCard from './StateGoalCard';
 import Icon from '../common/elem/Icon';
 import ModalBox from '../common/elem/ModalBox';
 import CloseIconBtn from '../common/elem/btn/CloseIconBtn';
+import StateGoalCard from './StateGoalCard';
 
-import useUserGoalsData from '../../hooks/useUserGoalsData';
 import useGoalsFilter, { FilterType } from '../../hooks/useGoalsFilter';
 
 const filters = [FilterType.success, FilterType.fail, FilterType.waiting, FilterType.working];

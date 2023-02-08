@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
+import EmojiInput from '../input/EmojiInput';
 import InputBox from '../../common/elem/InputBox';
 import ValidateMsg from '../../common/elem/ValidateMsg';
 import TagInputSection from './TagInputSection';
 import DateSelectSection, { GoalDate } from './goalInfo/DateSelectSection';
 import ToggleSelectBox from '../../common/elem/ToggleSelectBox';
+import AccntToggle from '../modify/AccntToggle';
 import TextButton from '../../common/elem/TextButton';
 
 import useTxtInput from '../../../hooks/useTxtInput';
 import useNumInput from '../../../hooks/useNumInput';
-
-import { IPostGoal } from '../../../interfaces/interfaces';
-
 import useTagInput from '../../../hooks/useTagInput';
 import useGoalInput from '../../../hooks/useGoalPostInput';
-import AccntToggle from '../modify/AccntToggle';
-import EmojiInput from '../input/EmojiInput';
+
+import { IPostGoal } from '../../../interfaces/interfaces';
 
 interface GoalInfoInputProps {
   isGroup: boolean;
