@@ -32,7 +32,8 @@ const useSearchFilterState = () => {
 
   const [orderType, setOrderType] = useState<OrderType>(OrderType.desc);
   const handleOrderTypeChange = (type: OrderType) => {
-    setOrderType(() => type);
+    setOrderType(type);
+    setPage(1);
   };
 
   const [page, setPage] = useState<number>(1);

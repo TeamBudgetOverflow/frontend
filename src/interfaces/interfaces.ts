@@ -168,6 +168,37 @@ export enum OrderType {
   desc,
 }
 
+export const OrderTypeKR = (sort: SortType, order: OrderType): string => {
+  switch (order) {
+    case OrderType.asc:
+      switch (sort) {
+        case SortType.amount:
+          return '낮은 순';
+        case SortType.period:
+          return '짧은 순';
+        case SortType.member:
+          return '적은 순';
+        case SortType.none:
+          return '과거 순';
+      }
+      break;
+    case OrderType.desc:
+      switch (sort) {
+        case SortType.amount:
+          return '높은 순';
+        case SortType.period:
+          return '긴 순';
+        case SortType.member:
+          return '많은 순';
+        case SortType.none:
+          return '최근 순';
+      }
+      break;
+    default:
+      return '높은 순';
+  }
+};
+
 export const OrderTypetoString = (type: OrderType): IOrderType => {
   switch (type) {
     case OrderType.asc:
@@ -187,6 +218,19 @@ export enum SortType {
   member,
   none,
 }
+
+export const SortTypeKR = (type: SortType): string => {
+  switch (type) {
+    case SortType.amount:
+      return '목표금액';
+    case SortType.period:
+      return '목표기간';
+    case SortType.member:
+      return '모집인원';
+    default:
+      return '생성';
+  }
+};
 
 export const SortTypetoString = (type: SortType): ISortType => {
   switch (type) {
