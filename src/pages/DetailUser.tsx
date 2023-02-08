@@ -12,6 +12,7 @@ import useUserGoalsData from '../hooks/useUserGoalsData';
 import { userId } from '../recoil/userAtoms';
 
 import RouteChangeTracker from '../shared/RouteChangeTracker';
+import AddGoalBtn from '../components/common/elem/btn/AddGoalBtn';
 
 const DetailUser = () => {
   RouteChangeTracker();
@@ -53,6 +54,7 @@ const DetailUser = () => {
       </TopContent>
       <UserContentBox topContentHeight={topContentHeight}>
         <UserDetailTab userId={Number(id)} />
+        {id == loginUserId ? <AddGoalBtn /> : <></>}
       </UserContentBox>
     </Wrapper>
   );
@@ -75,6 +77,7 @@ const BtnWrapper = styled.div`
 `;
 
 const UserContentBox = styled.div<{ topContentHeight: number }>`
+  position: relative;
   height: ${(props) => `calc(100% - ${props.topContentHeight}px)`};
 `;
 
