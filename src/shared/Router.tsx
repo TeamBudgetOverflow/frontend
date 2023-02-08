@@ -68,7 +68,6 @@ const Router = () => {
           <Route path='/notfound' element={<NotFoundError />} />
         </Route>
         <Route path='/welcome' element={<WelcomePage />} />
-
         <Route path='/' element={<Redirect />} />
       </Routes>
     </BrowserRouter>
