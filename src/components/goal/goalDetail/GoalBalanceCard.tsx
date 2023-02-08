@@ -14,9 +14,16 @@ interface GoalBalanceCardProps {
   accountId: number;
   maxBalance: number;
   isDisabled: boolean;
+  progressModifyHandler: (attainment: number) => void;
 }
 
-const GoalBalanceCard = ({ balanceId, accountId, maxBalance, isDisabled }: GoalBalanceCardProps) => {
+const GoalBalanceCard = ({
+  balanceId,
+  accountId,
+  maxBalance,
+  isDisabled,
+  progressModifyHandler,
+}: GoalBalanceCardProps) => {
   const {
     isLoadingData,
     isErrorData,
@@ -29,7 +36,7 @@ const GoalBalanceCard = ({ balanceId, accountId, maxBalance, isDisabled }: GoalB
     handleModifyInput,
     handleInputChange,
     handleBalanceModify,
-  } = useBalanceModify({ balanceId, accountId, maxBalance });
+  } = useBalanceModify({ balanceId, accountId, maxBalance, handleProgressModify: progressModifyHandler });
 
   return (
     <Wrapper>
@@ -47,6 +54,19 @@ const GoalBalanceCard = ({ balanceId, accountId, maxBalance, isDisabled }: GoalB
                 />
                 <span>원</span>
               </InputBoxWrapper>
+              {!isValid ? (
+                <ErrorTooltipWrapper>
+                  <Caret />
+                  <ErrorTooltip>
+                    <ValidateMsg
+                      msg={`0 ~ ${maxBalance.toLocaleString()}원 사이의 값만 입력이 가능합니다`}
+                      type='error'
+                    />
+                  </ErrorTooltip>
+                </ErrorTooltipWrapper>
+              ) : (
+                <></>
+              )}
             </InputWrapper>
           </>
         ) : (
@@ -64,19 +84,14 @@ const GoalBalanceCard = ({ balanceId, accountId, maxBalance, isDisabled }: GoalB
           </>
         )}
         {isModify && isErrorModify ? <ValidateMsg msg='수정을 실패했습니다' type='error' /> : <></>}
-        {isModify && !isValid ? (
-          <ValidateMsg msg={`0 ~ ${maxBalance.toLocaleString()}원 사이 입력 가능`} type='error' />
-        ) : (
-          <></>
-        )}
       </Content>
       {isModify ? (
         <BtnWrapper>
           <Button disabled={isErrorData || isLoadingData || !isValid} onClick={handleBalanceModify}>
             <Icon
-              width={24}
-              height={24}
-              color={isValid ? 'black' : 'gray'}
+              width={19}
+              height={19}
+              color={isValid ? '#2BC470' : 'gray'}
               path='M0 15.4601V18.5001C0 18.7801 0.22 19.0001 0.5 19.0001H3.54C3.67 19.0001 3.8 18.9501 3.89 18.8501L14.81 7.94006L11.06 4.19006L0.15 15.1001C0.0500001 15.2001 0 15.3201 0 15.4601ZM17.71 5.04006C18.1 4.65006 18.1 4.02006 17.71 3.63006L15.37 1.29006C14.98 0.900059 14.35 0.900059 13.96 1.29006L12.13 3.12006L15.88 6.87006L17.71 5.04006Z'
             />
           </Button>
@@ -85,9 +100,9 @@ const GoalBalanceCard = ({ balanceId, accountId, maxBalance, isDisabled }: GoalB
       ) : (
         <Button disabled={isErrorData || isLoadingData || isDisabled} onClick={() => handleModifyInput(true)}>
           <Icon
-            width={24}
-            height={24}
-            color='black'
+            width={19}
+            height={19}
+            color='#2BC470'
             path='M0 15.4601V18.5001C0 18.7801 0.22 19.0001 0.5 19.0001H3.54C3.67 19.0001 3.8 18.9501 3.89 18.8501L14.81 7.94006L11.06 4.19006L0.15 15.1001C0.0500001 15.2001 0 15.3201 0 15.4601ZM17.71 5.04006C18.1 4.65006 18.1 4.02006 17.71 3.63006L15.37 1.29006C14.98 0.900059 14.35 0.900059 13.96 1.29006L12.13 3.12006L15.88 6.87006L17.71 5.04006Z'
           />
         </Button>
@@ -120,6 +135,7 @@ const SubTitle = styled.div`
 `;
 
 const InputWrapper = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -131,6 +147,31 @@ const InputBoxWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 10px;
+`;
+
+const ErrorTooltipWrapper = styled.div`
+  position: absolute;
+  bottom: -100%;
+  left: 0;
+`;
+
+const ErrorTooltip = styled.div`
+  position: relative;
+  padding: 4px 12px;
+  border-radius: 4px;
+  background-color: white;
+  white-space: nowrap;
+  box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.3);
+`;
+
+const Caret = styled.div`
+  position: absolute;
+  top: -5px;
+  left: 10px;
+  z-index: 10;
+  border-color: transparent transparent white;
+  border-style: solid;
+  border-width: 0 5px 5px;
 `;
 
 const LoadingText = styled.div`
@@ -159,6 +200,7 @@ const BtnWrapper = styled.div`
 
 const Button = styled.button<{ disabled: boolean }>`
   display: ${(props) => (props.disabled ? 'none' : '')};
+  padding: 3px;
   width: 24px;
   height: 24px;
   border: none;
