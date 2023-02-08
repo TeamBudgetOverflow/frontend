@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef, Ref } from 'react';
 import styled from 'styled-components';
 
 interface InputBoxProps {
@@ -16,23 +16,27 @@ interface InputBoxProps {
   textLen?: number;
 }
 
-const InputBox = ({
-  type,
-  value,
-  placeholder,
-  onChangeHandler,
-  onKeyPressHandler,
-  onFocusHandler,
-  onBlurHandler,
-  isDisabled,
-  showBorder = true,
-  showTextCounter = false,
-  maxLen,
-  textLen,
-}: InputBoxProps) => {
+const InputBox = (
+  {
+    type,
+    value,
+    placeholder,
+    onChangeHandler,
+    onKeyPressHandler,
+    onFocusHandler,
+    onBlurHandler,
+    isDisabled,
+    showBorder = true,
+    showTextCounter = false,
+    maxLen,
+    textLen,
+  }: InputBoxProps,
+  ref?: Ref<HTMLInputElement>
+) => {
   return (
     <Wrapper>
       <Input
+        ref={ref}
         type={type}
         value={value}
         placeholder={placeholder}
@@ -83,4 +87,4 @@ const InputCounter = styled.span`
   background-color: white;
 `;
 
-export default InputBox;
+export default forwardRef(InputBox);

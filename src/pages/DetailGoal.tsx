@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
@@ -16,13 +16,13 @@ import GoalModifyButton from '../components/goal/goalDetail/GoalModifyButton';
 import GoalDeleteButton from '../components/goal/goalDetail/GoalDeleteButton';
 import ParticipantSection from '../components/goal/detail/ParticipantSection';
 import GoalTagsCard from '../components/goal/goalDetail/GoalTagsCard';
+import Info from '../components/common/alert/Info';
 
 import { userId } from '../recoil/userAtoms';
 
 import useGoalDetailData from '../hooks/useGoalDetailData';
 
 import { GoalStatus } from '../interfaces/interfaces';
-import Info from '../components/common/alert/Info';
 
 import RouteChangeTracker from '../shared/RouteChangeTracker';
 
@@ -69,6 +69,16 @@ const DetailGoal = () => {
     accountId,
     balanceId,
   } = useGoalDetailData({ loginUserId, goalId });
+  const [attainment, setAttainment] = useState(0);
+  useEffect(() => {
+    if (!data) return;
+    const member = data.members.find((m) => m.userId === loginUserId);
+    if (!member) return;
+    setAttainment(member.attainment);
+  }, [data]);
+  const handleAttainmentModify = (attainment: number) => {
+    setAttainment(attainment);
+  };
 
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
   const handleDelete = (result: boolean) => {
@@ -96,7 +106,7 @@ const DetailGoal = () => {
             curCount={data.curCount}
             headCount={data.headCount}
             isMember={isMember}
-            attainment={data.members.find((m) => m.userId === loginUserId)?.attainment}
+            attainment={attainment}
           />
           <GoalPeriodCard startDate={data.startDate} endDate={data.endDate} />
           <GoalDescCard description={data.description} />
@@ -107,6 +117,7 @@ const DetailGoal = () => {
               accountId={accountId}
               maxBalance={data.amount}
               isDisabled={status === GoalStatus.done}
+              progressModifyHandler={handleAttainmentModify}
             />
           ) : (
             <></>

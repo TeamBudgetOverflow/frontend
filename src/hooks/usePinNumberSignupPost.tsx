@@ -18,7 +18,6 @@ const usePinNumberSignupPost = ({ id, pinNumber2 }: PinNumberSignupPostProps) =>
     {
       enabled: false,
       onSuccess: () => {
-        localStorage.removeItem('isNewComer');
         localStorage.removeItem('isPincodeRegistered');
         navigate('/welcome');
       },

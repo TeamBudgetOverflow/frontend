@@ -11,8 +11,8 @@ const TypeSelect = () => {
   const initialType = useRecoilValue(postGoalType);
   const [isGroup, setIsGroup] = useState<boolean>(initialType.isGroup);
   const setPostGoalType = useSetRecoilState(postGoalType);
-  const handleSelect = () => {
-    setIsGroup(!isGroup);
+  const handleSelect = (isGroup: boolean) => {
+    setIsGroup(isGroup);
   };
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const TypeSelect = () => {
   return (
     <Wrapper>
       <SelectBoxWrapper>
-        <SelectBox selected={!isGroup} onClick={handleSelect}>
+        <SelectBox selected={!isGroup} onClick={() => handleSelect(false)}>
           <Content>
             <Img
               width='120px'
@@ -54,7 +54,7 @@ const TypeSelect = () => {
             <Text selected={!isGroup}>혼자하기</Text>
           </Content>
         </SelectBox>
-        <SelectBox selected={isGroup} onClick={handleSelect}>
+        <SelectBox selected={isGroup} onClick={() => handleSelect(true)}>
           <Content>
             <Img
               width='120px'

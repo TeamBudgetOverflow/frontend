@@ -1,7 +1,8 @@
-import React from 'react';
-import { useRecoilValue } from 'recoil';
+import React, { useState, useEffect } from 'react';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
+import HomeGuide from '../components/guide/HomeGuide';
 import UserProfile from '../components/user/UserProfile';
 import MyGoalCard from '../components/goal/MyGoalCard';
 import Alert from '../components/common/alert/Alert';
@@ -9,7 +10,7 @@ import LoadingMsg from '../components/common/elem/LoadingMsg';
 import ErrorMsg from '../components/common/elem/ErrorMsg';
 import AddGoalBtn from '../components/common/elem/btn/AddGoalBtn';
 
-import { userId } from '../recoil/userAtoms';
+import { isGuideDone, userId } from '../recoil/userAtoms';
 
 import useBanksData from '../hooks/useBanksData';
 import useUserGoalsData from '../hooks/useUserGoalsData';
@@ -20,11 +21,27 @@ import RouteChangeTracker from '../shared/RouteChangeTracker';
 import { GoalStatus, GoalStatusStringtoType } from '../interfaces/interfaces';
 
 const Home = () => {
+  const { home } = useRecoilValue(isGuideDone);
+  const [showGuideUI, setShowGuideUI] = useState(false);
+  useEffect(() => {
+    const isNewComer = localStorage.getItem('isNewComer') === 'true' ? true : false;
+    if (isNewComer && !home) setShowGuideUI(true);
+  }, []);
+
+  const setIsGuideDone = useSetRecoilState(isGuideDone);
+  const handleFinishGuide = () => {
+    setShowGuideUI(false);
+    setIsGuideDone({ home: true });
+  };
+
   RouteChangeTracker();
   useBanksData();
   const { id } = useRecoilValue(userId);
+
   const { isLoading, isError, goals } = useUserGoalsData({ getUserId: Number(id) });
   useBadgesData();
+
+  if (showGuideUI) return <HomeGuide closeHandler={handleFinishGuide} />;
 
   return (
     <Wrapper>
@@ -40,7 +57,10 @@ const Home = () => {
           </Alert>
         ) : goals.filter((goal) => GoalStatusStringtoType(goal.status) !== GoalStatus.done).length === 0 ? (
           <EmptyData>
-            <InfoText>{`아직 추가된 목표가 없습니다.\n첫번째 목표를 추가해보세요!`}</InfoText>
+            <EmptyDataContent>
+              <Img src={require('../assets/icons/goalEmpty.png')} />
+              <InfoText>{`아직 목표가 없어요.\n목표를 추가하거나, 목표 조회를 통해 \n목표에 참여해 보세요.`}</InfoText>
+            </EmptyDataContent>
           </EmptyData>
         ) : (
           <>
@@ -90,19 +110,30 @@ const Wrapper = styled.div`
 `;
 
 const EmptyData = styled.div`
+  margin-top: 80px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  height: 150px;
-  background-color: white;
-  border-radius: 12px;
+  width: 100%;
+  height: 100%;
+`;
+
+const EmptyDataContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+`;
+
+const Img = styled.img`
+  width: 243px;
+  height: 239px;
 `;
 
 const InfoText = styled.div`
   text-align: center;
-  font: ${(props) => props.theme.captionC1};
-  color: ${(props) => props.theme.primary400};
+  font: ${(props) => props.theme.paragraphsP3R};
+  color: ${(props) => props.theme.gray700};
   line-height: 150%;
   white-space: pre-wrap;
 `;

@@ -1,22 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
+import EmojiInput from '../input/EmojiInput';
 import InputBox from '../../common/elem/InputBox';
 import ValidateMsg from '../../common/elem/ValidateMsg';
 import TagInputSection from './TagInputSection';
 import DateSelectSection, { GoalDate } from './goalInfo/DateSelectSection';
 import ToggleSelectBox from '../../common/elem/ToggleSelectBox';
+import AccntToggle from '../modify/AccntToggle';
 import TextButton from '../../common/elem/TextButton';
 
 import useTxtInput from '../../../hooks/useTxtInput';
 import useNumInput from '../../../hooks/useNumInput';
-
-import { IPostGoal } from '../../../interfaces/interfaces';
-
 import useTagInput from '../../../hooks/useTagInput';
 import useGoalInput from '../../../hooks/useGoalPostInput';
-import AccntToggle from '../modify/AccntToggle';
-import EmojiInput from '../input/EmojiInput';
+
+import { IPostGoal } from '../../../interfaces/interfaces';
 
 interface GoalInfoInputProps {
   isGroup: boolean;
@@ -133,89 +132,100 @@ function GoalInfoInput({ isGroup, initVal }: GoalInfoInputProps) {
     },
   });
 
+  const btnRef = useRef<HTMLDivElement>(null);
+  const [btnHeight, setBtnHeight] = useState(0);
+  useEffect(() => {
+    if (!btnRef.current) return;
+    setBtnHeight(btnRef.current.clientHeight);
+  }, [btnRef.current]);
+
   return (
-    <Wrapper>
-      <ContentWrapper>
-        <EmojiInput initVal={emoji} changeHandler={(emoji: string) => setEmoji(emoji)} />
-        <ContentBox>
-          <InputWrapper>
-            <InputBox
-              placeholder='목표 이름을 입력해주세요'
-              type='text'
-              value={title}
-              onChangeHandler={changeTitle}
-              showTextCounter={true}
-              maxLen={25}
-              textLen={title.length}
+    <>
+      <Wrapper btnHeight={btnHeight}>
+        <ContentWrapper>
+          <EmojiInput initVal={emoji} changeHandler={(emoji: string) => setEmoji(emoji)} />
+          <ContentBox>
+            <InputWrapper>
+              <InputBox
+                placeholder='목표 이름을 입력해주세요'
+                type='text'
+                value={title}
+                onChangeHandler={changeTitle}
+                showTextCounter={true}
+                maxLen={25}
+                textLen={title.length}
+              />
+            </InputWrapper>
+            <ValidateMsg msg={titleErr} type='error' />
+          </ContentBox>
+          <TagInputSection initVal={[]} changeTagListHandler={handleTagListChange} />
+          <ContentBox>
+            <SubTitle>내용</SubTitle>
+            <InputWrapper>
+              <InputBox
+                placeholder='목표내용을 입력해주세요'
+                type='text'
+                value={description}
+                onChangeHandler={changeDescription}
+              />
+            </InputWrapper>
+            <ValidateMsg msg={descriptionErr} type='error' />
+          </ContentBox>
+          <DateSelectSection isGroup={isGroup} dateSelectHandler={handleGoalDateChange} />
+          <ContentBox>
+            <SubTitle>목표 금액</SubTitle>
+            <RowContent>
+              <AmountInputWrapper>
+                <InputBox placeholder='' type='text' value={amount.toLocaleString()} onChangeHandler={changeAmount} />
+              </AmountInputWrapper>
+              <span>원</span>
+            </RowContent>
+            <ValidateMsg msg={amountErr} type='error' />
+          </ContentBox>
+          {isGroup ? (
+            <>
+              <SubTitle>모집 인원</SubTitle>
+              <ContentBox>
+                <RowContent>
+                  <HeadCountInputWrapper>
+                    <InputBox placeholder='' type='text' value={headCount} onChangeHandler={changeHeadCount} />
+                  </HeadCountInputWrapper>
+                  <span>명</span>
+                </RowContent>
+                <ValidateMsg msg={headCountErr} type='error' />
+              </ContentBox>
+            </>
+          ) : (
+            <></>
+          )}
+          {/* TODO: 실계좌 기능 오픈 */}
+          {/* <AccntToggle initVal={isManual} changeHandler={handleSelectisAuto} /> */}
+          {isGroup ? (
+            <></>
+          ) : (
+            <ToggleSelectBox
+              title='비공개 목표'
+              description='목표를 다른이들에게 공유하지 않고 나만 봅니다.'
+              initVal={isPrivate}
+              selectHandler={handleSelectIsPrivate}
             />
-          </InputWrapper>
-          <ValidateMsg msg={titleErr} type='error' />
-        </ContentBox>
-        <TagInputSection initVal={[]} changeTagListHandler={handleTagListChange} />
-        <ContentBox>
-          <SubTitle>내용</SubTitle>
-          <InputWrapper>
-            <InputBox
-              placeholder='목표내용을 입력해주세요'
-              type='text'
-              value={description}
-              onChangeHandler={changeDescription}
-            />
-          </InputWrapper>
-          <ValidateMsg msg={descriptionErr} type='error' />
-        </ContentBox>
-        <DateSelectSection isGroup={isGroup} dateSelectHandler={handleGoalDateChange} isDisabled={false} />
-        <ContentBox>
-          <SubTitle>목표 금액</SubTitle>
-          <RowContent>
-            <AmountInputWrapper>
-              <InputBox placeholder='' type='text' value={amount.toLocaleString()} onChangeHandler={changeAmount} />
-            </AmountInputWrapper>
-            <span>원</span>
-          </RowContent>
-          <ValidateMsg msg={amountErr} type='error' />
-        </ContentBox>
-        {isGroup ? (
-          <>
-            <SubTitle>모집 인원</SubTitle>
-            <ContentBox>
-              <RowContent>
-                <HeadCountInputWrapper>
-                  <InputBox placeholder='' type='text' value={headCount} onChangeHandler={changeHeadCount} />
-                </HeadCountInputWrapper>
-                <span>명</span>
-              </RowContent>
-              <ValidateMsg msg={headCountErr} type='error' />
-            </ContentBox>
-          </>
-        ) : (
-          <></>
-        )}
-        {/* TODO: 실계좌 기능 오픈 */}
-        {/* <AccntToggle initVal={isManual} changeHandler={handleSelectisAuto} /> */}
-        {isGroup ? (
-          <></>
-        ) : (
-          <ToggleSelectBox
-            title='비공개 목표'
-            description='목표를 다른이들에게 공유하지 않고 나만 봅니다.'
-            initVal={isPrivate}
-            selectHandler={handleSelectIsPrivate}
-          />
-        )}
-      </ContentWrapper>
-      <TextButton text={'목표 생성'} onClickHandler={handleSaveGoalInput} isDisabled={!isValid} />
-    </Wrapper>
+          )}
+        </ContentWrapper>
+      </Wrapper>
+      <BtnWrapper ref={btnRef}>
+        <TextButton text={'목표 생성'} onClickHandler={handleSaveGoalInput} isDisabled={!isValid} />
+      </BtnWrapper>
+    </>
   );
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ btnHeight: number }>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 20px;
   width: 100%;
-  height: 100%;
+  height: ${(props) => `calc(100% - ${props.btnHeight}px)`};
   overflow-y: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -232,6 +242,14 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+`;
+
+const BtnWrapper = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 20px 22px;
+  width: calc(100% - 44px);
 `;
 
 const ContentBox = styled.div`
