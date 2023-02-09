@@ -32,17 +32,17 @@ const SearchResults = ({ params, totalCntHandler }: SearchResultsProps) => {
     mutate: searchGoals,
     resetIsLastPage,
   } = useSearchGoalsData({ initVal: savedSearchGoals });
+
   // cursor is last goal's sorted type value (ex. amount, period, member(=headCount))
   // cursor is 0 on goal's sorted type is none
-  const [cursor, setCursor] = useState(0);
   // goalId is search result's last goal's goalId
+  const [cursor, setCursor] = useState(0);
   const [goalId, setGoalId] = useState(0);
   useEffect(() => {
     if (!savedIsLastPage) searchGoals({ ...params, cursor, goalId });
   }, [goalId]);
 
   useEffect(() => {
-    if (savedIsLastPage && new Date().getTime() - savedLastUpdate.getTime() < 30000) return;
     setCursor(0);
     setGoalId(0);
     resetIsLastPage();
