@@ -14,7 +14,7 @@ const ImpendingGoals = () => {
   return (
     <Wrapper>
       <TitleBox>
-        <SubTitle>마감임박 목표</SubTitle>
+        <SubTitle>모집 마감 임박 목표</SubTitle>
       </TitleBox>
       {isLoading ? (
         <AlertWrapper>
@@ -32,7 +32,7 @@ const ImpendingGoals = () => {
         <ImpendingGoalCards>
           {impendingGoals.length === 0 ? (
             <EmptyData>
-              <InfoText>{`아직 마감 임박인 목표가 없습니다.\n첫번째 목표를 추가해보세요!`}</InfoText>
+              <InfoText>{`현재 모집 중인 목표가 없습니다.\n그룹 목표를 추가해보세요!`}</InfoText>
             </EmptyData>
           ) : (
             impendingGoals?.map((goal) => <GroupGoalCardSmall key={goal.goalId} goal={goal} />)

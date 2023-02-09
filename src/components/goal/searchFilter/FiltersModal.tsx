@@ -7,7 +7,7 @@ import TextButton from '../../common/elem/TextButton';
 import StatusFilter from './StatusFilter';
 import SortFilters from './SortFilters';
 
-import { StatusType, SortType } from '../../../interfaces/interfaces';
+import { StatusType, StatusStringtoType, SortType, SortStringtoType } from '../../../interfaces/interfaces';
 
 import { searchFilters } from '../../../recoil/goalsAtoms';
 
@@ -83,8 +83,8 @@ const FiltersModal = ({ changeHandler, closeHandler }: FiltersModalProps) => {
 
   const { status, sort, min, max, handleStatusChange, handleSortChange, handleMinChange, handleMaxChange } =
     useSearchFilterInput({
-      initStatus: savedSearchFilters.status,
-      initSort: savedSearchFilters.sorted,
+      initStatus: StatusStringtoType(savedSearchFilters.status),
+      initSort: SortStringtoType(savedSearchFilters.sorted),
       initMin: savedSearchFilters.min,
       initMax: savedSearchFilters.max,
     });
@@ -138,7 +138,7 @@ const FiltersModal = ({ changeHandler, closeHandler }: FiltersModalProps) => {
           </ContentWrapper>
         </Content>
         <SortFilters
-          initType={savedSearchFilters.sorted}
+          initType={SortStringtoType(savedSearchFilters.sorted)}
           initMin={savedSearchFilters.min}
           initMax={savedSearchFilters.max}
           changeHandler={handleSortSelected}
