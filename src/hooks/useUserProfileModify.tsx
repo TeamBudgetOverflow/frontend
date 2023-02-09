@@ -1,4 +1,4 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import AWS from 'aws-sdk';
@@ -8,7 +8,7 @@ import { IUpdateUserProfile } from '../interfaces/interfaces';
 import { userAPI } from '../apis/client';
 
 const useUserProfileModify = ({ userId, userProfile }: IUpdateUserProfile) => {
-  const [imgURL, setImgURL] = useState<string>('');
+  // const [imgURL, setImgURL] = useState<string>('');
   const navigate = useNavigate();
   const { mutate: profileUpdate } = useMutation<unknown, unknown, IUpdateUserProfile>(
     'postEditUserProfile',
@@ -46,7 +46,7 @@ const useUserProfileModify = ({ userId, userProfile }: IUpdateUserProfile) => {
       upload
         .promise()
         .then((data) => {
-          setImgURL(data.Location);
+          // setImgURL(data.Location);
           profileUpdate({
             userId,
             userProfile: { ...userProfile, image: uploadFile ? data.Location : userProfile.image },
@@ -64,7 +64,7 @@ const useUserProfileModify = ({ userId, userProfile }: IUpdateUserProfile) => {
     profileUpdate({ userId, userProfile });
   };
 
-  return { imgURL, handleProfileModify };
+  return { handleProfileModify };
 };
 
 export default useUserProfileModify;
