@@ -8,7 +8,6 @@ import { IUpdateUserProfile } from '../interfaces/interfaces';
 import { userAPI } from '../apis/client';
 
 const useUserProfileModify = ({ userId, userProfile }: IUpdateUserProfile) => {
-  // const [imgURL, setImgURL] = useState<string>('');
   const navigate = useNavigate();
   const { mutate: profileUpdate } = useMutation<unknown, unknown, IUpdateUserProfile>(
     'postEditUserProfile',
@@ -27,6 +26,7 @@ const useUserProfileModify = ({ userId, userProfile }: IUpdateUserProfile) => {
   );
 
   const handleProfileModify = (uploadFile?: File) => {
+    console.log(uploadFile?.name);
     if (uploadFile) {
       AWS.config.update({
         region: process.env.REACT_APP_S3_REGION,
@@ -46,7 +46,7 @@ const useUserProfileModify = ({ userId, userProfile }: IUpdateUserProfile) => {
       upload
         .promise()
         .then((data) => {
-          // setImgURL(data.Location);
+          console.log(data.Location);
           profileUpdate({
             userId,
             userProfile: { ...userProfile, image: uploadFile ? data.Location : userProfile.image },

@@ -1,22 +1,26 @@
 import React, { useState, useCallback } from 'react';
+import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
-import Slider from '@mui/material/Slider/Slider';
 import Cropper from 'react-easy-crop';
 import { Point, Area } from 'react-easy-crop/types';
+import Slider from '@mui/material/Slider/Slider';
+
 import TextButton from '../../../common/elem/TextButton';
+
 import getCroppedImg from '../../../../utils/imageCropper';
-import { useSetRecoilState } from 'recoil';
+
 import { userProfileCropImage } from '../../../../recoil/userAtoms';
 
 interface CropProps {
   showCropper: () => void;
-  // setCroppedAreaPixels: (e: Area) => void;
+  setUploadFile: (e: File) => void;
   profileImage: string;
 }
 
-const Crop = ({ showCropper, profileImage }: CropProps) => {
-  const setCroppedImageData = useSetRecoilState(userProfileCropImage);
+const Crop = ({ showCropper, setUploadFile, profileImage }: CropProps) => {
+  const setCroppedImage = useSetRecoilState(userProfileCropImage);
+
   const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area>({
@@ -26,37 +30,33 @@ const Crop = ({ showCropper, profileImage }: CropProps) => {
     y: 0,
   });
 
-  console.log();
-
-  const onCropComplete = useCallback((croppedAreaPixels: Area) => {
+  const onCropComplete = useCallback((croppedArea: Area, croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
 
-  // const blobToFile = (theBlob: Blob, fileName: string): File => {
-  //   const blobData: any = theBlob;
-  //   //A Blob() is almost a File() - it's just missing the two properties below which we will add
-  //   blobData.lastModifiedDate = new Date();
-  //   blobData.name = fileName;
+  const getFileFromBase64 = (base64: string, fileName: string) => {
+    const trimmedString = base64.replace('data:image/jpeg;base64,', '');
+    const imageContent = atob(trimmedString);
+    const buffer = new ArrayBuffer(imageContent.length);
+    const view = new Uint8Array(buffer);
 
-  //   //Cast to a File() type
-  //   return blobData as File;
-  // };
+    for (let n = 0; n < imageContent.length; n++) {
+      view[n] = imageContent.charCodeAt(n);
+    }
+    const type = 'image/jpeg';
+    const blob = new Blob([buffer], { type });
 
-  // var myBlob = new Blob();
-
-  // //do stuff here to give the blob some data...
-
-  // var myFile = blobToFile(myBlob, "my-image.png");e
-
-  console.log(profileImage);
+    return new File([blob], fileName, { lastModified: new Date().getTime(), type });
+  };
 
   const showCroppedImage = useCallback(async () => {
     try {
-      const cropCompletedImage: any = await getCroppedImg(profileImage, croppedAreaPixels);
+      const cropCompletedImage = await getCroppedImg(profileImage, croppedAreaPixels);
 
-      console.log(cropCompletedImage);
-      // const file = new File();
-      setCroppedImageData({ cropImage: cropCompletedImage });
+      const myFile = getFileFromBase64(cropCompletedImage as string, 'myCroppedImage.jpeg');
+
+      setUploadFile(myFile);
+      setCroppedImage({ cropImage: cropCompletedImage as string });
     } catch (e) {
       console.error(e);
     } finally {
@@ -127,7 +127,7 @@ const Contoller = styled.div`
   left: 50%;
   width: 90%;
   transform: translateX(-50%);
-  height: 80px;
+  height: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;

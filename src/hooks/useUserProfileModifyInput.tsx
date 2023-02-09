@@ -1,8 +1,9 @@
 import React, { useRef, useState, SetStateAction, Dispatch } from 'react';
-import { Area } from 'react-easy-crop/types';
 import { SetterOrUpdater } from 'recoil';
 
 import { IUserProfile } from '../interfaces/interfaces';
+
+import { readFile } from '../utils/imageCropper';
 
 interface UseUserProfileModifyInputParams {
   profile: IUserProfile;
@@ -17,17 +18,10 @@ const useUserProfileModifyInput = ({
 }: UseUserProfileModifyInputParams) => {
   const ref = useRef<HTMLInputElement>(null);
 
-  const [imgURL, setImgURL] = useState<string>(profile.image);
   const [nickname, setNickname] = useState<string>(profile.nickname);
   const [description, setDescription] = useState<string>(profile.description);
-  const [uploadFile, setUploadFile] = useState<File>();
-  const [croppedImg, setCroppedImg] = useState<string>(profile.image);
 
-  // const [croppedImage, setCroppedImage] = useState<void>();
-  // const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area>({ width: 0, height: 0, x: 0, y: 0 });
-  // console.log(croppedAreaPixels);
-
-  const handleUploadedImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUploadedImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
 
     const uploadedFile = e.target.files[0];
@@ -40,21 +34,11 @@ const useUserProfileModifyInput = ({
       alert('이미지가 너무 큽니다.');
       return;
     }
-    const imageUrl = URL.createObjectURL(uploadedFile);
+
+    const imageDataUrl = await readFile(uploadedFile);
+
     setShowCropper(true);
-    setCroppedImageData({ cropImage: imageUrl });
-    // console.log(uploadedFile);
-
-    // const img = document.getElementById('myimg');
-    // img.src = imageUrl;
-    // img.onload = function() {
-    //   URL.revokeObjectURL(img.src);
-    // }
-
-    // const imageSrc = URL.createObjectURL(croppedImage);
-    // setUploadFile(uploadedFile);
-    // setCroppedImg(imageSrc);
-    // setImgURL(imageSrc);
+    setCroppedImageData({ cropImage: imageDataUrl as string });
   };
 
   const handleEditProfileImage = () => {
@@ -70,22 +54,14 @@ const useUserProfileModifyInput = ({
     setDescription(e.currentTarget.value);
   };
 
-  // const handleShowCropper = () => {
-  //   setShowCropper(false);
-  // };
-
   return {
     ref,
-    imgURL,
     nickname,
     description,
-    uploadFile,
-    croppedImg,
     handleUploadedImageChange,
     handleEditProfileImage,
     handleNicknameChange,
     handleDescriptionChange,
-    setUploadFile,
   };
 };
 

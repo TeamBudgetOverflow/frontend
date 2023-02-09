@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
-import ImgEditBtn from '../components/common/elem/btn/ImgEditBtn';
 
+import ImgEditBtn from '../components/common/elem/btn/ImgEditBtn';
 import InputBox from '../components/common/elem/InputBox';
 import ProfileImg from '../components/common/elem/ProfileImg';
 import TextButton from '../components/common/elem/TextButton';
 import Crop from '../components/user/editUserProfile/imageCroper/Crop';
-import ImageEdit from '../components/user/editUserProfile/ImageEdit';
+
 import useUserProfileModify from '../hooks/useUserProfileModify';
 import useUserProfileModifyInput from '../hooks/useUserProfileModifyInput';
 
@@ -26,30 +26,25 @@ const EditUserProfile = () => {
     setCroppedImageData({ cropImage: savedUserProfile.image });
   }, []);
 
-  console.log(cropImageData);
-
   const savedDescription = !savedUserProfile.description ? '' : savedUserProfile.description;
 
   const [showCropper, setShowCropper] = useState(false);
+  const [uploadFile, setUploadFile] = useState<File>();
 
   const {
     ref,
-    imgURL,
     nickname,
     description,
-    uploadFile,
-    croppedImg,
     handleUploadedImageChange,
     handleEditProfileImage,
     handleDescriptionChange,
     handleNicknameChange,
-    // setCroppedAreaPixels,
   } = useUserProfileModifyInput({ profile: savedUserProfile, setShowCropper, setCroppedImageData });
 
   const { id } = useRecoilValue(userId);
   const { handleProfileModify } = useUserProfileModify({
     userId: id,
-    userProfile: { image: imgURL, nickname: nickname, description: description },
+    userProfile: { image: cropImageData.cropImage, nickname: nickname, description: description },
   });
 
   return (
@@ -59,8 +54,8 @@ const EditUserProfile = () => {
           <CropperWrapper>
             <Crop
               showCropper={() => setShowCropper(false)}
+              setUploadFile={setUploadFile}
               profileImage={cropImageData.cropImage}
-              // setCroppedAreaPixels={setCroppedAreaPixels}
             />
           </CropperWrapper>
         </>
@@ -74,7 +69,7 @@ const EditUserProfile = () => {
                   ref={ref}
                   type='file'
                   name='profileImage'
-                  accept='image/jpeg, image/jpg, image/png image/gif'
+                  accept='image/jpg'
                   onChange={handleUploadedImageChange}
                 />
               </ProfileImgInputWrapper>
