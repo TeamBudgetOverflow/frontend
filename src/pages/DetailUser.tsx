@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import UserDetailProfile from '../components/user/UserDetailProfile';
@@ -13,8 +13,13 @@ import { userId } from '../recoil/userAtoms';
 
 import RouteChangeTracker from '../shared/RouteChangeTracker';
 import AddGoalBtn from '../components/common/elem/btn/AddGoalBtn';
+import { detailGoalId } from '../recoil/goalsAtoms';
 
 const DetailUser = () => {
+  const setGoalId = useSetRecoilState(detailGoalId);
+  useEffect(() => {
+    setGoalId(0);
+  }, []);
   RouteChangeTracker();
   const { id } = useParams();
   if (!id) return <>잘못된 아이디 값입니다</>;

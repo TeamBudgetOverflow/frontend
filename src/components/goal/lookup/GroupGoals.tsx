@@ -1,39 +1,67 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import Alert from '../../common/alert/Alert';
 import LoadingMsg from '../../common/elem/LoadingMsg';
 import ErrorMsg from '../../common/elem/ErrorMsg';
 import GroupGoalCard from '../GroupGoalCard';
+
 import useGoalLookupData from '../../../hooks/useGoalLookupData';
 
-const GroupGoals = () => {
-  const [pages, setPages] = useState<number>(1);
+import { detailGoalId, groupGoals, isSearchGoalLastPage, searchGoalLastUpdate } from '../../../recoil/goalsAtoms';
+import { useNavigate } from 'react-router-dom';
 
-  const { isLoading, isError, goals, isLastPage, refetch } = useGoalLookupData(pages);
+const GroupGoals = () => {
+  const [cursor, setCursor] = useState<number>(0);
+  const savedLookupGoals = useRecoilValue(groupGoals);
+  const savedIsLastPage = useRecoilValue(isSearchGoalLastPage);
+  const savedLastUpdate = useRecoilValue(searchGoalLastUpdate);
+  const savedGoalId = useRecoilValue(detailGoalId);
+  const { isLoading, isError, goals, mutate } = useGoalLookupData({ initVal: savedLookupGoals });
+
+  useEffect(() => {
+    if (!savedIsLastPage) mutate(cursor);
+  }, [cursor]);
 
   const scrollBoxRef = useRef<HTMLDivElement>(null);
-  const isScrollBottom = () => {
-    if (!scrollBoxRef.current) return;
-    if (
-      Math.trunc(scrollBoxRef.current.scrollHeight - scrollBoxRef.current.scrollTop) ===
-      scrollBoxRef.current.clientHeight
-    ) {
-      setPages((prev) => prev + 1);
-      localStorage.setItem('scrollTop', String(scrollBoxRef.current.scrollTop));
+  const isScrollBottom = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+    if (Math.trunc(e.currentTarget.scrollHeight - e.currentTarget.scrollTop) === e.currentTarget.clientHeight) {
+      setCursor(goals[goals.length - 1].goalId);
+      localStorage.setItem('scrollTop', String(e.currentTarget.scrollTop));
     }
   };
 
   useEffect(() => {
-    refetch();
-  }, [pages]);
-
-  useEffect(() => {
     if (!scrollBoxRef.current) return;
-    if (pages === 1) return localStorage.setItem('scrollTop', '0');
     const scrollTop = localStorage.getItem('scrollTop');
     scrollBoxRef.current.scrollTop = Number(scrollTop);
   }, [goals]);
+
+  const detailGoalRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!detailGoalRef.current) return;
+    detailGoalRef.current.scrollIntoView();
+  }, [detailGoalRef.current]);
+
+  const [routeGoalId, setRouteGoalId] = useState(0);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (routeGoalId !== 0) return navigate(`/goals/${routeGoalId}`);
+    saveGoalId(0);
+  }, [routeGoalId]);
+
+  const saveGoalId = useSetRecoilState(detailGoalId);
+  useEffect(() => {
+    if (
+      (savedLookupGoals.length === 1 && savedLookupGoals[0].goalId === 0) ||
+      new Date().getTime() - savedLastUpdate.getTime() > 30000
+    ) {
+      return setCursor(0);
+    }
+
+    setCursor(savedLookupGoals[savedLookupGoals.length - 1].goalId);
+  }, []);
 
   const [topContentHeight, setTopContentHeight] = useState<number>(0);
   const ref = useRef<HTMLDivElement>(null);
@@ -49,8 +77,8 @@ const GroupGoals = () => {
       </TitleBox>
       <GoalCardsWrapper
         ref={scrollBoxRef}
-        onScroll={() => {
-          if (!isLastPage) isScrollBottom();
+        onScroll={(e) => {
+          if (!savedIsLastPage) isScrollBottom(e);
         }}>
         {isLoading ? (
           <Alert showBgColor={true}>
@@ -67,7 +95,18 @@ const GroupGoals = () => {
                 <InfoText>{`아직 마감 임박인 목표가 없습니다.\n첫번째 목표를 추가해보세요!`}</InfoText>
               </EmptyData>
             ) : (
-              goals.map((goal) => <GroupGoalCard key={goal.goalId} goal={goal} />)
+              goals.map((goal) => {
+                if (goal.goalId === savedGoalId) {
+                  return (
+                    <div key={goal.goalId} ref={detailGoalRef}>
+                      <GroupGoalCard goal={goal} goalClickHandler={() => setRouteGoalId(goal.goalId)} />
+                    </div>
+                  );
+                }
+                return (
+                  <GroupGoalCard key={goal.goalId} goal={goal} goalClickHandler={() => setRouteGoalId(goal.goalId)} />
+                );
+              })
             )}
           </>
         )}

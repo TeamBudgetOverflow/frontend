@@ -1,39 +1,27 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
-import Info from '../components/common/alert/Info';
-import Alert from '../components/common/alert/Alert';
-import LoadingMsg from '../components/common/elem/LoadingMsg';
-import ErrorMsg from '../components/common/elem/ErrorMsg';
 import FilterTag from '../components/common/tag/FilterTag';
-import GroupGoalCards from '../components/goal/GroupGoalCard';
 import ModalBox from '../components/common/elem/ModalBox';
 import FiltersModal from '../components/goal/searchFilter/FiltersModal';
 import Icon from '../components/common/elem/Icon';
+import SearchResults from '../components/goal/search/SearchResults';
 
 import { SearchFilterType, searchFilterKR } from '../components/goal/searchFilter/FiltersModal';
 
-import useSearchFilteredData from '../hooks/useSearchFilteredData';
 import useSearchFilterState from '../hooks/useSearchFilterState';
 import useSearchFilterTags from '../hooks/useSearchFilterTags';
 
-import {
-  StatusTypetoString,
-  OrderTypeKR,
-  OrderTypetoString,
-  SortTypetoString,
-  StatusTypeKR,
-  StatusType,
-  SortType,
-  SortTypeKR,
-  OrderType,
-} from '../interfaces/interfaces';
+import { OrderTypeKR, StatusType, StatusKR, SortType, SortKR, OrderType } from '../interfaces/interfaces';
 
 import RouteChangeTracker from '../shared/RouteChangeTracker';
+import { searchFilters } from '../recoil/goalsAtoms';
 
 const SearchGoals = () => {
   RouteChangeTracker();
+
   const [searchParams] = useSearchParams();
   const [keyword, setKeyword] = useState<string | null>('');
   useEffect(() => {
@@ -41,103 +29,64 @@ const SearchGoals = () => {
     setKeyword(keyword);
   }, [searchParams]);
 
+  useEffect(() => {
+    handleKeywordChange(keyword ? keyword : '');
+  }, [keyword]);
+
+  const savedSearchFilters = useRecoilValue(searchFilters);
   const {
     filter,
-    orderType,
-    page,
+    handleKeywordChange,
     handleFilterChange,
     handleStatusChange,
     handleSortChange,
     handleRangeChange,
     handleOrderTypeChange,
-    handlePageChange,
-  } = useSearchFilterState();
+  } = useSearchFilterState({ initVal: savedSearchFilters });
+
   const handleFilterInputChange = (status: StatusType, sortType: SortType, min: number, max: number) => {
     handleFilterChange(status, sortType, min, max);
   };
+
   const { filterTags, handleFilterAdd, handleFilterRemove, handleFiltersReset } = useSearchFilterTags({
     statusChangeHandler: handleStatusChange,
     sortChangeHandler: handleSortChange,
     rangeChangeHandler: handleRangeChange,
   });
+
   useEffect(() => {
     handleFiltersReset();
     switch (filter.sorted) {
-      case SortType.amount:
+      case 'amount':
         handleFilterAdd(SearchFilterType.amount, `${filter.min.toLocaleString()}원 ~ ${filter.max.toLocaleString()}원`);
         break;
-      case SortType.period:
+      case 'period':
         handleFilterAdd(SearchFilterType.period, `${filter.min}일 ~ ${filter.max}일`);
         break;
-      case SortType.member:
+      case 'member':
         handleFilterAdd(SearchFilterType.member, `${filter.min}명 ~ ${filter.max}명`);
         break;
-      case SortType.none:
+      case '':
         handleFiltersReset();
     }
 
-    handleFilterAdd(SearchFilterType.status, StatusTypeKR(filter.status));
+    handleFilterAdd(SearchFilterType.status, StatusKR(filter.status));
   }, [filter]);
-
-  const { isLoading, isError, searchGoals, isLastPage, totalCnt } = useSearchFilteredData({
-    keyword: keyword,
-    status: StatusTypetoString(filter.status),
-    ordered: OrderTypetoString(orderType),
-    sorted: SortTypetoString(filter.sorted),
-    min: filter.min,
-    max: filter.max,
-    page,
-  });
 
   const [showModal, setShowModal] = useState<boolean>(false);
   const handleFilterModal = (show: boolean) => {
     setShowModal(show);
   };
 
-  const scrollBoxRef = useRef<HTMLDivElement>(null);
-  const isScrollBottom = () => {
-    if (!scrollBoxRef.current) return;
-    if (
-      Math.trunc(scrollBoxRef.current.scrollHeight - scrollBoxRef.current.scrollTop) ===
-      scrollBoxRef.current.clientHeight
-    ) {
-      handlePageChange(page + 1);
-      localStorage.setItem('scrollTop', String(scrollBoxRef.current.scrollTop));
-    }
-  };
-
-  useEffect(() => {
-    if (!scrollBoxRef.current) return;
-    if (page === 1) return localStorage.setItem('scrollTop', '0');
-    const scrollTop = localStorage.getItem('scrollTop');
-    scrollBoxRef.current.scrollTop = Number(scrollTop);
-  }, [searchGoals]);
-
-  if (isLoading)
-    return (
-      <Wrapper>
-        <Info type='loading'>목표를 검색 중 입니다.</Info>
-      </Wrapper>
-    );
-
-  if (isError)
-    return (
-      <Wrapper>
-        <Info type='error'>
-          목표 검색에 실패했습니다.
-          <br />
-          다시 시도해주세요.
-        </Info>
-      </Wrapper>
-    );
+  const [totalCnt, setTotalCnt] = useState(0);
 
   return (
     <Wrapper>
       <TopContentWrapper>
         <TopContent>
           <Total>전체 {totalCnt}개</Total>
-          <OrderBtn onClick={() => handleOrderTypeChange(orderType === OrderType.asc ? OrderType.desc : OrderType.asc)}>
-            {`${SortTypeKR(filter.sorted)} ${OrderTypeKR(filter.sorted, orderType)}`}
+          <OrderBtn onClick={() => handleOrderTypeChange(filter.ordered === 'ASC' ? OrderType.desc : OrderType.asc)}>
+            {`${SortKR(filter.sorted)} ${OrderTypeKR(filter.sorted, filter.ordered)}`}
             <IconWrapper>
               <Icon
                 width={14}
@@ -160,31 +109,7 @@ const SearchGoals = () => {
           )}
         </FiltersBox>
       </TopContentWrapper>
-      <GoalCardsWrapper
-        ref={scrollBoxRef}
-        onScroll={() => {
-          if (!isLastPage) isScrollBottom();
-        }}>
-        {isLoading ? (
-          <Alert showBgColor={true}>
-            <LoadingMsg />
-          </Alert>
-        ) : isError ? (
-          <Alert showBgColor={true}>
-            <ErrorMsg />
-          </Alert>
-        ) : (
-          <>
-            {searchGoals.length === 0 ? (
-              <EmptyData>
-                <InfoText>{`검색 결과가 없습니다.\n검색 결과에 알맞는 첫번째 목표를 추가해보세요!`}</InfoText>
-              </EmptyData>
-            ) : (
-              searchGoals.map((goal) => <GroupGoalCards key={goal.goalId} goal={goal} />)
-            )}
-          </>
-        )}
-      </GoalCardsWrapper>
+      <SearchResults params={filter} totalCntHandler={setTotalCnt} />
       <ModalBox show={showModal} maxScreenHeight={700}>
         <FiltersModal changeHandler={handleFilterInputChange} closeHandler={() => handleFilterModal(false)} />
       </ModalBox>
@@ -251,36 +176,5 @@ const FiltersBox = styled.div`
 `;
 
 const TagWrapper = styled.div``;
-
-const GoalCardsWrapper = styled.div`
-  padding: 20px 22px;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  gap: 20px;
-  width: calc(100% - 44px);
-  height: calc(100% - 40px);
-  overflow-y: auto;
-`;
-
-const EmptyData = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 150px;
-  background-color: white;
-  border-radius: 12px;
-  border: 1px solid ${(props) => props.theme.gray300};
-`;
-
-const InfoText = styled.div`
-  text-align: center;
-  font: ${(props) => props.theme.captionC1};
-  color: ${(props) => props.theme.primary400};
-  line-height: 150%;
-  white-space: pre-wrap;
-`;
 
 export default SearchGoals;
