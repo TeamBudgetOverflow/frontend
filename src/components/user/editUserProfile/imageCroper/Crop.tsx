@@ -26,6 +26,8 @@ const Crop = ({ showCropper, profileImage }: CropProps) => {
     y: 0,
   });
 
+  console.log();
+
   const onCropComplete = useCallback((croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
