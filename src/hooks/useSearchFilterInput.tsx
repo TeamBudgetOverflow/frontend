@@ -26,10 +26,6 @@ const useSearchFilterInput = ({ initStatus, initSort, initMin, initMax }: useSea
   const handleMaxChange = (max: number) => {
     setMax(max);
   };
-  const handleInitialize = (min: number, max: number) => {
-    setMin(min);
-    setMax(max);
-  };
 
   return {
     status,
@@ -40,7 +36,6 @@ const useSearchFilterInput = ({ initStatus, initSort, initMin, initMax }: useSea
     handleSortChange,
     handleMinChange,
     handleMaxChange,
-    handleInitialize,
   };
 };
 
