@@ -13,6 +13,10 @@ interface SortFiltersProps {
 }
 
 const SortFilters = ({ initType, initMin, initMax, changeHandler }: SortFiltersProps, ref: Ref<HTMLDivElement>) => {
+  useEffect(() => {
+    setType(initType);
+  }, [initType]);
+
   const [type, setType] = useState<SortType>(initType);
   const handleTypeChange = (selected: SortType) => {
     if (type === selected) {

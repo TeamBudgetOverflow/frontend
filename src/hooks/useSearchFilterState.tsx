@@ -1,27 +1,45 @@
 import { useState } from 'react';
-import { StatusType, OrderType, SortType, ISearchFilterTypes } from '../interfaces/interfaces';
+import {
+  StatusType,
+  OrderType,
+  SortType,
+  ISearchFilter,
+  StatusTypetoString,
+  SortTypetoString,
+  OrderTypetoString,
+} from '../interfaces/interfaces';
 
-const useSearchFilterState = () => {
-  const [filter, setFilter] = useState<ISearchFilterTypes>({
-    status: StatusType.total,
-    sorted: SortType.none,
-    min: 0,
-    max: 0,
-  });
+const useSearchFilterState = ({ initVal }: { initVal: ISearchFilter }) => {
+  const [filter, setFilter] = useState<ISearchFilter>(initVal);
 
   const handleFilterChange = (status: StatusType, sort: SortType, min: number, max: number) => {
-    setFilter(() => {
-      return { status, sorted: sort, min: min, max: max };
+    setFilter((prev) => {
+      return {
+        ...prev,
+        status: StatusTypetoString(status),
+        ordered: 'DESC',
+        sorted: SortTypetoString(sort),
+        min: min,
+        max: max,
+        cursor: 0,
+        goalId: 0,
+      };
+    });
+  };
+
+  const handleKeywordChange = (keyword: string) => {
+    setFilter((prev) => {
+      return { ...prev, keyword };
     });
   };
   const handleStatusChange = (type: StatusType) => {
     setFilter((prev) => {
-      return { ...prev, status: type };
+      return { ...prev, status: StatusTypetoString(type) };
     });
   };
   const handleSortChange = (type: SortType) => {
     setFilter((prev) => {
-      return { ...prev, sorted: type };
+      return { ...prev, sorted: SortTypetoString(type) };
     });
   };
   const handleRangeChange = (min: number, max: number) => {
@@ -29,27 +47,20 @@ const useSearchFilterState = () => {
       return { ...prev, min, max };
     });
   };
-
-  const [orderType, setOrderType] = useState<OrderType>(OrderType.desc);
   const handleOrderTypeChange = (type: OrderType) => {
-    setOrderType(() => type);
-  };
-
-  const [page, setPage] = useState<number>(1);
-  const handlePageChange = (page: number) => {
-    setPage(page);
+    setFilter((prev) => {
+      return { ...prev, ordered: OrderTypetoString(type) };
+    });
   };
 
   return {
     filter,
-    orderType,
-    page,
+    handleKeywordChange,
     handleFilterChange,
     handleStatusChange,
     handleSortChange,
     handleRangeChange,
     handleOrderTypeChange,
-    handlePageChange,
   };
 };
 

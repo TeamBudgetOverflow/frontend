@@ -1,26 +1,40 @@
 import { useState } from 'react';
-import { useQuery } from 'react-query';
+import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { goalApi } from '../apis/client';
 
 import { ISearchGoal, ISearchGoalResult } from '../interfaces/interfaces';
+import { groupGoals, isSearchGoalLastPage, searchGoalLastUpdate } from '../recoil/goalsAtoms';
 
-const useGoalLookupData = (page: number) => {
+interface useGoalLookupData {
+  initVal: Array<ISearchGoal>;
+}
+
+const useGoalLookupData = ({ initVal }: useGoalLookupData) => {
   const navigate = useNavigate();
+  const savedLookupGoals = useRecoilValue(groupGoals);
 
-  const [goals, setUserGoals] = useState<Array<ISearchGoal>>([]);
-  const [isLastPage, setIsLastPage] = useState<boolean>(false);
+  const [goals, setGoals] = useState<Array<ISearchGoal>>(initVal);
+  const saveLookupGoals = useSetRecoilState(groupGoals);
+  const saveIsLastPage = useSetRecoilState(isSearchGoalLastPage);
+  const saveLastUpdate = useSetRecoilState(searchGoalLastUpdate);
 
-  const { isLoading, isError, refetch } = useQuery<ISearchGoalResult>('getGoals', () => goalApi.getGoals(page), {
-    staleTime: 3000,
-    onSuccess: (data) => {
-      if (page === 1) {
-        setUserGoals(data.result);
-      } else {
-        setUserGoals((prev) => [...prev, ...data.result]);
+  const { isLoading, isError, mutate } = useMutation<ISearchGoalResult, unknown, number>('getGoals', goalApi.getGoals, {
+    onSuccess: (data, cursor) => {
+      if (cursor === 0) {
+        setGoals([...data.result]);
+        saveLookupGoals([...data.result]);
+        saveIsLastPage(data.isLastPage);
+        saveLastUpdate(new Date());
+        return;
       }
-      setIsLastPage(data.isLastPage);
+
+      setGoals((prev) => [...prev, ...data.result]);
+      saveLookupGoals([...savedLookupGoals, ...data.result]);
+      saveIsLastPage(data.isLastPage);
+      saveLastUpdate(new Date());
     },
     onError: (error) => {
       if (error === 401) {
@@ -29,7 +43,7 @@ const useGoalLookupData = (page: number) => {
     },
   });
 
-  return { isLoading, isError, goals, isLastPage, refetch };
+  return { isLoading, isError, goals, mutate };
 };
 
 export default useGoalLookupData;

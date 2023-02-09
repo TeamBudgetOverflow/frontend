@@ -11,6 +11,7 @@ import ErrorMsg from '../components/common/elem/ErrorMsg';
 import AddGoalBtn from '../components/common/elem/btn/AddGoalBtn';
 
 import { isGuideDone, userId } from '../recoil/userAtoms';
+import { detailGoalId } from '../recoil/goalsAtoms';
 
 import useBanksData from '../hooks/useBanksData';
 import useUserGoalsData from '../hooks/useUserGoalsData';
@@ -21,11 +22,13 @@ import RouteChangeTracker from '../shared/RouteChangeTracker';
 import { GoalStatus, GoalStatusStringtoType } from '../interfaces/interfaces';
 
 const Home = () => {
+  const setGoalId = useSetRecoilState(detailGoalId);
   const { home } = useRecoilValue(isGuideDone);
   const [showGuideUI, setShowGuideUI] = useState(false);
   useEffect(() => {
     const isNewComer = localStorage.getItem('isNewComer') === 'true' ? true : false;
     if (isNewComer && !home) setShowGuideUI(true);
+    setGoalId(0);
   }, []);
 
   const setIsGuideDone = useSetRecoilState(isGuideDone);
