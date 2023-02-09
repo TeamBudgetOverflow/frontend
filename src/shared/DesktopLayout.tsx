@@ -154,7 +154,7 @@ const ViewContent = styled.div`
 const NotSupportedContent = styled.div`
   width: 100vw;
   height: 100%;
-  @media screen and (min-width: 320px) and (min-height: 550px) {
+  @media screen and (min-width: 320px) and (min-height: 600px) {
     display: none;
   }
 `;

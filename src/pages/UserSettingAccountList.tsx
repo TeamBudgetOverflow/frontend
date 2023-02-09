@@ -24,22 +24,17 @@ const UserSettingAccountList = () => {
   const [accounts, setAccounts] = useState<Array<IAccount>>();
   const [showConfirm, setShowConfirm] = useState(false);
 
-  const { isLoading, isError, data } = useQuery<Array<IAccount>>(
-    'getAccounts',
-    () => accountApi.getAccounts(Number(id)),
-    {
-      onSuccess: (data) => {
-        console.log(data);
-        setAccounts(data);
-        return;
-      },
-      onError: (e) => {
-        if (e === 401) {
-          navigate('/', { replace: true });
-        }
-      },
-    }
-  );
+  const { isLoading, isError } = useQuery<Array<IAccount>>('getAccounts', () => accountApi.getAccounts(Number(id)), {
+    onSuccess: (data) => {
+      setAccounts(data);
+      return;
+    },
+    onError: (e) => {
+      if (e === 401) {
+        navigate('/', { replace: true });
+      }
+    },
+  });
 
   const handleMyAccountClick = () => {
     console.log('계좌 삭제');

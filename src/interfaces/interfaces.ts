@@ -1,6 +1,11 @@
-// error response
-export interface Error {
-  status: number;
+// signup
+export interface ISignupResponse {
+  accessToken: string;
+  refreshToken: string;
+  message: string;
+  newComer: boolean;
+  name: string;
+  isExistPinCode: boolean;
 }
 
 // user
@@ -86,8 +91,13 @@ export interface IModifyGoal {
   goal: IPostGoal;
 }
 
+export interface IReportGoal {
+  goalId: number;
+  reason: string;
+}
+
 // search filter
-export type IStatusType = 'total' | 'recruit' | 'proceeding' | 'done';
+export type StatusString = 'total' | 'recruit' | 'proceeding' | 'done';
 
 export enum StatusType {
   total,
@@ -96,7 +106,22 @@ export enum StatusType {
   done,
 }
 
-export const StatusTypetoString = (type: StatusType): IStatusType => {
+export const StatusKR = (type: StatusString) => {
+  switch (type) {
+    case 'total':
+      return '전체';
+    case 'recruit':
+      return '모집중';
+    case 'proceeding':
+      return '진행중';
+    case 'done':
+      return '완료';
+    default:
+      return '전체';
+  }
+};
+
+export const StatusTypetoString = (type: StatusType): StatusString => {
   switch (type) {
     case StatusType.total:
       return 'total';
@@ -111,7 +136,7 @@ export const StatusTypetoString = (type: StatusType): IStatusType => {
   }
 };
 
-export const StatusStringtoType = (type: IStatusType): StatusType => {
+export const StatusStringtoType = (type: StatusString): StatusType => {
   switch (type) {
     case 'total':
       return StatusType.total;
@@ -156,14 +181,45 @@ export const StatusKRtoEnum = (type: string): StatusType => {
   }
 };
 
-export type IOrderType = 'ASC' | 'DESC';
+export type OrderString = 'ASC' | 'DESC';
 
 export enum OrderType {
   asc,
   desc,
 }
 
-export const OrderTypetoString = (type: OrderType): IOrderType => {
+export const OrderTypeKR = (sort: SortString, order: OrderString): string => {
+  switch (order) {
+    case 'ASC':
+      switch (sort) {
+        case 'amount':
+          return '낮은 순';
+        case 'period':
+          return '짧은 순';
+        case 'member':
+          return '적은 순';
+        case '':
+          return '과거 순';
+      }
+      break;
+    case 'DESC':
+      switch (sort) {
+        case 'amount':
+          return '높은 순';
+        case 'period':
+          return '긴 순';
+        case 'member':
+          return '많은 순';
+        case '':
+          return '최근 순';
+      }
+      break;
+    default:
+      return '높은 순';
+  }
+};
+
+export const OrderTypetoString = (type: OrderType): OrderString => {
   switch (type) {
     case OrderType.asc:
       return 'ASC';
@@ -174,7 +230,7 @@ export const OrderTypetoString = (type: OrderType): IOrderType => {
   }
 };
 
-export type ISortType = 'amount' | 'period' | 'member' | '';
+export type SortString = 'amount' | 'period' | 'member' | '';
 
 export enum SortType {
   amount,
@@ -183,7 +239,20 @@ export enum SortType {
   none,
 }
 
-export const SortTypetoString = (type: SortType): ISortType => {
+export const SortKR = (type: SortString): string => {
+  switch (type) {
+    case 'amount':
+      return '목표금액';
+    case 'period':
+      return '목표기간';
+    case 'member':
+      return '모집인원';
+    default:
+      return '생성';
+  }
+};
+
+export const SortTypetoString = (type: SortType): SortString => {
   switch (type) {
     case SortType.amount:
       return 'amount';
@@ -196,7 +265,7 @@ export const SortTypetoString = (type: SortType): ISortType => {
   }
 };
 
-export const SortStringtoType = (type: ISortType): SortType => {
+export const SortStringtoType = (type: SortString): SortType => {
   switch (type) {
     case 'amount':
       return SortType.amount;
@@ -209,21 +278,15 @@ export const SortStringtoType = (type: ISortType): SortType => {
   }
 };
 
-export interface ISearchFilterTypes {
-  status: StatusType;
-  sorted: SortType;
-  min: number;
-  max: number;
-}
-
 export interface ISearchFilter {
   keyword: string | null;
-  status: IStatusType;
-  ordered: IOrderType;
-  sorted: ISortType;
+  status: StatusString;
+  ordered: OrderString;
+  sorted: SortString;
   min: number;
   max: number;
-  page: number;
+  cursor: number;
+  goalId: number;
 }
 
 export interface ISearchGoalResult {
@@ -241,6 +304,7 @@ export interface ISearchGoal {
   headCount: number;
   startDate: Date;
   endDate: Date;
+  period: number;
   status: 'recruit' | 'proceeding' | 'done';
   title: string;
   hashTag: Array<string>;

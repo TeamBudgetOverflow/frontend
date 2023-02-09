@@ -90,6 +90,9 @@ const Content = styled.div`
   align-items: center;
   gap: 180px;
   width: 100%;
+  @media screen and (max-height: 650px) {
+    gap: 90px;
+  }
 `;
 
 const LogoWrapper = styled(Content)`

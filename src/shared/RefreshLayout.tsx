@@ -17,7 +17,7 @@ const RefreshLayout = () => {
       return;
     }
 
-    if (!accessToken || !refreshToken) {
+    if (!accessToken && !refreshToken) {
       navigate('/login');
       return;
     }

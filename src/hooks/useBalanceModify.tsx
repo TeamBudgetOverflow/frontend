@@ -13,9 +13,10 @@ interface useBalanceModifyProps {
   balanceId: number;
   accountId: number;
   maxBalance: number;
+  handleProgressModify: (attainment: number) => void;
 }
 
-const useBalanceModify = ({ balanceId, accountId, maxBalance }: useBalanceModifyProps) => {
+const useBalanceModify = ({ balanceId, accountId, maxBalance, handleProgressModify }: useBalanceModifyProps) => {
   const [isModify, setIsModify] = useState<boolean>(false);
   const handleModifyInput = (isModify: boolean) => {
     setIsModify(isModify);
@@ -67,7 +68,8 @@ const useBalanceModify = ({ balanceId, accountId, maxBalance }: useBalanceModify
   } = useMutation<unknown, unknown, IUpdateBalance>('updateBalance', accountApi.updateAccountBalance, {
     onSuccess: () => {
       handleModifyInput(false);
-      navigate(0);
+      setBalance(inputVal);
+      handleProgressModify(Math.trunc((inputVal / maxBalance) * 100));
     },
     onError: (e) => {
       if (e === 401) {

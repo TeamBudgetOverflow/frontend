@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 import EmojiBox from '../common/elem/EmojiBox';
@@ -10,12 +10,24 @@ import { dateStringTranslator } from '../../utils/dateTranslator';
 
 import { GoalStatus, GoalStatusStringtoType, ISearchGoal } from '../../interfaces/interfaces';
 
-const GroupGoalCard = ({ goal }: { goal: ISearchGoal }) => {
-  const navigate = useNavigate();
+import { detailGoalId } from '../../recoil/goalsAtoms';
+
+interface GroupGoalCardProps {
+  goal: ISearchGoal;
+  goalClickHandler: (goalId: number) => void;
+}
+
+const GroupGoalCard = ({ goal, goalClickHandler }: GroupGoalCardProps) => {
   const status = GoalStatusStringtoType(goal.status);
+  const saveGoalId = useSetRecoilState(detailGoalId);
+
+  const handleDetailGoal = () => {
+    saveGoalId(goal.goalId);
+    goalClickHandler(goal.goalId);
+  };
 
   return (
-    <Wrapper onClick={() => navigate(`/goals/${goal.goalId}`)}>
+    <Wrapper onClick={handleDetailGoal}>
       <TopContent>
         <HeadContent>
           <StateTag state={status} />

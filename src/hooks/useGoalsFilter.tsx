@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 
-import { IGoal } from '../interfaces/interfaces';
+import { GoalStatus, GoalStatusStringtoType, IGoal } from '../interfaces/interfaces';
 
 import { userAPI } from '../apis/client';
 import { useNavigate } from 'react-router-dom';
@@ -44,16 +44,21 @@ const useGoalsFilter = ({ userId }: { userId: number }) => {
       const filtered = goals.filter((goal) => {
         switch (filterType) {
           case FilterType.success:
-            return new Date(goal.startDate).getTime() < new Date().getTime() && goal.attainment === 100;
-          case FilterType.fail:
-            return new Date(goal.startDate).getTime() < new Date().getTime() && goal.attainment < 100;
-          case FilterType.waiting:
-            return new Date(goal.startDate).getTime() > new Date().getTime();
-          case FilterType.working:
             return (
-              new Date(goal.startDate).getTime() < new Date().getTime() &&
-              new Date(goal.endDate).getTime() > new Date().getTime()
+              (GoalStatusStringtoType(goal.status) === GoalStatus.done ||
+                GoalStatusStringtoType(goal.status) === GoalStatus.proceeding) &&
+              goal.attainment === 100
             );
+          case FilterType.fail:
+            return (
+              (GoalStatusStringtoType(goal.status) === GoalStatus.done ||
+                GoalStatusStringtoType(goal.status) === GoalStatus.proceeding) &&
+              goal.attainment < 100
+            );
+          case FilterType.waiting:
+            return GoalStatusStringtoType(goal.status) === GoalStatus.recruit;
+          case FilterType.working:
+            return GoalStatusStringtoType(goal.status) === GoalStatus.proceeding;
           case FilterType.none:
             return goal;
         }

@@ -62,7 +62,6 @@ const TopContent = styled.div`
 `;
 
 const UserInfo = styled.div`
-  padding: 0 18px;
   display: flex;
   flex-direction: column;
   gap: 4px;

@@ -13,12 +13,14 @@ import {
   IValidateAccountResp,
   IUpdateBalance,
   IModifyGoal,
+  IReportGoal,
   IBalance,
   IUpdateUserProfile,
   ISearchGoalResult,
   IUserBadge,
   ISearchFilter,
   ISearchGoal,
+  ISignupResponse,
 } from '../interfaces/interfaces';
 
 const BASE_URL = process.env.REACT_APP_API_ENDPOINT;
@@ -84,17 +86,17 @@ refreshClient.interceptors.response.use(
 );
 
 export const userAPI = {
-  getKakaoSignup: async (code: string) => {
+  getKakaoSignup: async (code: string): Promise<ISignupResponse> => {
     const { data } = await noneTokenClient.post(`/users/auth/kakao?code=${code}`);
 
     return data;
   },
-  getNaverSignup: async (code: string) => {
+  getNaverSignup: async (code: string): Promise<ISignupResponse> => {
     const { data } = await noneTokenClient.post(`/users/auth/naver?code=${code}`);
 
     return data;
   },
-  getGoogleSignup: async (code: string) => {
+  getGoogleSignup: async (code: string): Promise<ISignupResponse> => {
     const { data } = await noneTokenClient.post(`/users/auth/google?code=${code}`);
 
     return data;
@@ -188,8 +190,8 @@ export const goalApi = {
 
     return data.goalId;
   },
-  getGoals: async (page: number) => {
-    const { data } = await tokenClient.get(`/goals?page=${page}`);
+  getGoals: async (cursor: number) => {
+    const { data } = await tokenClient.get(`/goals?cursor=${cursor === 0 ? '' : cursor}`);
 
     return data;
   },
@@ -204,8 +206,12 @@ export const goalApi = {
     return data.result[0];
   },
   getGoalsByWord: async (queries: ISearchFilter): Promise<ISearchGoalResult> => {
+    let goalId = '';
+    let cursor = '';
+    if (queries.goalId !== 0) goalId = String(queries.goalId);
+    if (queries.cursor !== 0) cursor = String(queries.cursor);
     const { data } = await tokenClient.get(
-      `/goals/search?keyword=${queries.keyword}&sortby=${queries.sorted}&min=${queries.min}&max=${queries.max}&orderby=${queries.ordered}&status=${queries.status}&page=${queries.page}`
+      `/goals/search?keyword=${queries.keyword}&sortby=${queries.sorted}&min=${queries.min}&max=${queries.max}&orderby=${queries.ordered}&status=${queries.status}&cursor=${cursor}&id=${goalId}`
     );
 
     return data;
@@ -229,6 +235,11 @@ export const goalApi = {
     const response = await tokenClient.delete(`/goals/${goalId}`);
 
     return response;
+  },
+  reportGoal: async ({ goalId, reason }: IReportGoal) => {
+    const { data } = await tokenClient.post(`/report/${goalId}`, { goalId, reason });
+
+    return data;
   },
 };
 

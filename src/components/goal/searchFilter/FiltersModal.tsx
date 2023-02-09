@@ -3,13 +3,14 @@ import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 import CloseIconBtn from '../../common/elem/btn/CloseIconBtn';
+import TextButton from '../../common/elem/TextButton';
 import StatusFilter from './StatusFilter';
 import SortFilters from './SortFilters';
-import TextButton from '../../common/elem/TextButton';
 
-import { StatusType, SortType } from '../../../interfaces/interfaces';
+import { StatusType, StatusStringtoType, SortType, SortStringtoType } from '../../../interfaces/interfaces';
 
 import { searchFilters } from '../../../recoil/goalsAtoms';
+
 import useSearchFilterInput from '../../../hooks/useSearchFilterInput';
 
 export enum SearchFilterType {
@@ -82,8 +83,8 @@ const FiltersModal = ({ changeHandler, closeHandler }: FiltersModalProps) => {
 
   const { status, sort, min, max, handleStatusChange, handleSortChange, handleMinChange, handleMaxChange } =
     useSearchFilterInput({
-      initStatus: savedSearchFilters.status,
-      initSort: savedSearchFilters.sorted,
+      initStatus: StatusStringtoType(savedSearchFilters.status),
+      initSort: SortStringtoType(savedSearchFilters.sorted),
       initMin: savedSearchFilters.min,
       initMax: savedSearchFilters.max,
     });
@@ -117,7 +118,7 @@ const FiltersModal = ({ changeHandler, closeHandler }: FiltersModalProps) => {
   }, [topContent.current]);
   return (
     <Wrapper>
-      <TopContent ref={topContent}>
+      <div ref={topContent}>
         <BtnWrapper>
           <CloseIconBtn color='black' closeHandler={closeHandler} />
         </BtnWrapper>
@@ -128,7 +129,7 @@ const FiltersModal = ({ changeHandler, closeHandler }: FiltersModalProps) => {
             </FilterButton>
           ))}
         </FiltersBox>
-      </TopContent>
+      </div>
       <BottomContent topContentHeight={topContentHeight} ref={bottomContent}>
         <Content>
           <ContentWrapper>
@@ -137,7 +138,7 @@ const FiltersModal = ({ changeHandler, closeHandler }: FiltersModalProps) => {
           </ContentWrapper>
         </Content>
         <SortFilters
-          initType={savedSearchFilters.sorted}
+          initType={SortStringtoType(savedSearchFilters.sorted)}
           initMin={savedSearchFilters.min}
           initMax={savedSearchFilters.max}
           changeHandler={handleSortSelected}
@@ -164,8 +165,6 @@ const BtnWrapper = styled.div`
   width: 100%;
   height: 24px;
 `;
-
-const TopContent = styled.div``;
 
 const FiltersBox = styled.div`
   display: flex;

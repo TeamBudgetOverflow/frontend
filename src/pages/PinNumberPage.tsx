@@ -17,12 +17,13 @@ const PinNumberPage = () => {
   RouteChangeTracker();
   const { id } = useRecoilValue(userId);
   const PASSWORD_MAX_LENGTH = 6;
-  const storedIsNewComer = localStorage.getItem('isNewComer');
+  const accessToken = localStorage.getItem('accessToken');
+  const storedIsNewComer = localStorage.getItem('isNewComer') === 'true' ? true : false;
   const isPincodeRegistered = localStorage.getItem('isPincodeRegistered') === 'true' ? true : false;
   const [isNewComer, setIsNewComer] = useState<boolean>(false);
 
   useEffect(() => {
-    if (storedIsNewComer === 'true' || !isPincodeRegistered) return setIsNewComer(true);
+    if ((storedIsNewComer || !isPincodeRegistered) && accessToken) return setIsNewComer(true);
     setIsNewComer(false);
   }, [storedIsNewComer]);
 

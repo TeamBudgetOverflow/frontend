@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 import InputBox from '../../common/elem/InputBox';
@@ -55,6 +55,13 @@ const TagInputSection = ({ initVal, changeTagListHandler }: TagInputSectionProps
       return [...prev, tagContent];
     });
     resetTag();
+    inputRef.current?.focus();
+  };
+
+  const handleAddTagOnKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.code === 'Enter' && tagContent.length > 0) {
+      handleAddTag();
+    }
   };
 
   const handleDeleteTag = (tag: string) => {
@@ -65,16 +72,20 @@ const TagInputSection = ({ initVal, changeTagListHandler }: TagInputSectionProps
     changeTagListHandler(tagList);
   }, [tagList]);
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   return (
     <ContentBox>
       <SubTitle>해시태그</SubTitle>
       <RowContent>
         <InputWrapper>
           <InputBox
-            placeholder='+ 버튼으로 해시태그를 등록해 주세요'
+            placeholder='추가할 해시태그 내용을 입력해주세요'
             type='text'
             value={tagContent}
             onChangeHandler={changeTag}
+            onKeyPressHandler={handleAddTagOnKeyPress}
+            ref={inputRef}
           />
           <IconButton onClick={handleAddTag}>
             <Icon width={14} height={14} color='#2bc470' path='M14 8H8V14H6V8H0V6H6V0H8V6H14V8Z' />

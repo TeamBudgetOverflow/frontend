@@ -8,7 +8,6 @@ import { dateStringTranslatorWithPoint } from '../../../../utils/dateTranslator'
 
 interface DateSelectSectionProps {
   isGroup: boolean;
-  isDisabled: boolean;
   dateSelectHandler: (dateInfo: GoalDate) => void;
 }
 
@@ -17,7 +16,7 @@ export interface GoalDate {
   endDate: Date;
 }
 
-const DateSelectSection = ({ isGroup, isDisabled, dateSelectHandler }: DateSelectSectionProps) => {
+const DateSelectSection = ({ isGroup, dateSelectHandler }: DateSelectSectionProps) => {
   const {
     minDate: minRecruitEndDate,
     maxDate: maxRecruitEndDate,
@@ -86,6 +85,7 @@ const DateSelectSection = ({ isGroup, isDisabled, dateSelectHandler }: DateSelec
             <DateSelectBox value={goalEndDate} min={minGoalEndDate} max={maxGoalEndDate} onChange={changeGoalEndDate} />
           </InputWrapper>
         </RowContent>
+        <Warning>※목표금액과 목표 기간에 모두 도달해야, 목표 달성이 완료됩니다.</Warning>
       </ContentBox>
     </>
   );
@@ -110,6 +110,12 @@ const RowContent = styled.div`
   align-items: center;
   gap: 20px;
   width: 100%;
+`;
+
+const Warning = styled.div`
+  width: 100%;
+  font: ${(props) => props.theme.captionC2};
+  color: #ff6666;
 `;
 
 const DateText = styled.div`
