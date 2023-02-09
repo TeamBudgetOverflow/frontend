@@ -25,6 +25,7 @@ import useGoalDetailData from '../hooks/useGoalDetailData';
 import { GoalStatus } from '../interfaces/interfaces';
 
 import RouteChangeTracker from '../shared/RouteChangeTracker';
+import ReportModal from '../components/goal/detail/ReportModal';
 
 const setButton = (
   goalId: number,
@@ -80,6 +81,8 @@ const DetailGoal = () => {
     setAttainment(attainment);
   };
 
+  const [showMenuModal, setShowMenuModal] = useState<boolean>(false);
+
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
   const handleDelete = (result: boolean) => {
     setIsDeleted(result);
@@ -107,6 +110,7 @@ const DetailGoal = () => {
             headCount={data.headCount}
             isMember={isMember}
             attainment={attainment}
+            reportModalHandler={() => setShowMenuModal(true)}
           />
           <GoalPeriodCard startDate={data.startDate} endDate={data.endDate} />
           <GoalDescCard description={data.description} />
@@ -138,6 +142,7 @@ const DetailGoal = () => {
         </BottomContent>
       </DetailGoalWrapper>
       {setButton(Number(goalId), data.userId, loginUserId, status, isGroup, isMember, handleDelete)}
+      <ReportModal goalId={Number(goalId)} showMenu={showMenuModal} closeMenuHandler={() => setShowMenuModal(false)} />
     </Wrapper>
   );
 };
