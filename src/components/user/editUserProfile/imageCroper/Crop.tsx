@@ -44,11 +44,15 @@ const Crop = ({ showCropper, profileImage }: CropProps) => {
 
   // //do stuff here to give the blob some data...
 
-  // var myFile = blobToFile(myBlob, "my-image.png");
+  // var myFile = blobToFile(myBlob, "my-image.png");e
+
+  console.log(profileImage);
 
   const showCroppedImage = useCallback(async () => {
     try {
       const cropCompletedImage: any = await getCroppedImg(profileImage, croppedAreaPixels);
+
+      console.log(cropCompletedImage);
       // const file = new File();
       setCroppedImageData({ cropImage: cropCompletedImage });
     } catch (e) {
