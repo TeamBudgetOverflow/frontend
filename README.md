@@ -38,15 +38,33 @@
 [`emoji-picker-react`](https://www.npmjs.com/package/emoji-picker-react)
 [`axios`](https://axios-http.com/kr/docs/intro)
 
+<<<<<<< HEAD
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will
+remove the single build dependency from your project.
+
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right
+into your project so you have full control over them. All of the commands except `eject` will still work, but they will
+point to the copied scripts so you can tweak them. At this point you’re on your own.
+
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you
+shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t
+customize it when you are ready for it.
+=======
 ## 기술적 선택 이유 && 트러블 슈팅
 
 :wrench: [TroubleShooting](https://www.notion.so/0c15396642cc4607991b275f8fe52c1a)
 
 ## API 명세
+>>>>>>> ec98fb1d7268648dc2e7f079756498b45b0ccb0a
 
 :notebook: [API](https://www.notion.so/MVP-09346594381b498d94bbaf4f629193a9)
 
+<<<<<<< HEAD
+You can learn more in the
+[Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+=======
 ## 와이어프레임
+>>>>>>> ec98fb1d7268648dc2e7f079756498b45b0ccb0a
 
 :art: [Figma](https://www.figma.com/file/XZx7V517CCYsc55go50xMZ/%ED%8B%B0%EB%81%8C%EB%AA%A8%EC%95%84%ED%83%9C%EC%82%B0?node-id=0%3A1&t=L9PpVmOEUqOAIzOP-0)
 

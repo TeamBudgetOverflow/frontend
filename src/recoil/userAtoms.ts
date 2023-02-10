@@ -55,3 +55,10 @@ export const userGoals = atom<Array<IGoal>>({
     },
   ],
 });
+
+export const userProfileCropImage = atom({
+  key: 'userProfileCropImage',
+  default: {
+    cropImage: '',
+  },
+});
