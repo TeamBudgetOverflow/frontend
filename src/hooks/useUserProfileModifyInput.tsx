@@ -1,19 +1,31 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, SetStateAction, Dispatch } from 'react';
+import { SetterOrUpdater } from 'recoil';
 
 import { IUserProfile } from '../interfaces/interfaces';
 
-const useUserProfileModifyInput = ({ profile }: { profile: IUserProfile }) => {
+import { readFile } from '../utils/imageCropper';
+
+interface UseUserProfileModifyInputParams {
+  profile: IUserProfile;
+  setShowCropper: Dispatch<SetStateAction<boolean>>;
+  setCroppedImageData: SetterOrUpdater<{ cropImage: string }>;
+}
+
+const useUserProfileModifyInput = ({
+  profile,
+  setShowCropper,
+  setCroppedImageData,
+}: UseUserProfileModifyInputParams) => {
   const ref = useRef<HTMLInputElement>(null);
 
-  const [imgURL, setImgURL] = useState<string>(profile.image);
   const [nickname, setNickname] = useState<string>(profile.nickname);
   const [description, setDescription] = useState<string>(profile.description);
-  const [uploadFile, setUploadFile] = useState<File>();
 
-  const handleUploadedImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUploadedImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
 
     const uploadedFile = e.target.files[0];
+
     if (uploadedFile?.type.indexOf('image/') === -1) {
       alert('이미지를 첨부해주세요!');
       return;
@@ -23,9 +35,10 @@ const useUserProfileModifyInput = ({ profile }: { profile: IUserProfile }) => {
       return;
     }
 
-    const imageSrc = URL.createObjectURL(uploadedFile);
-    setUploadFile(uploadedFile);
-    setImgURL(imageSrc);
+    const imageDataUrl = await readFile(uploadedFile);
+
+    setShowCropper(true);
+    setCroppedImageData({ cropImage: imageDataUrl as string });
   };
 
   const handleEditProfileImage = () => {
@@ -43,10 +56,8 @@ const useUserProfileModifyInput = ({ profile }: { profile: IUserProfile }) => {
 
   return {
     ref,
-    imgURL,
     nickname,
     description,
-    uploadFile,
     handleUploadedImageChange,
     handleEditProfileImage,
     handleNicknameChange,
