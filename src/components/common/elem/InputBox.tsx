@@ -3,14 +3,11 @@ import styled from 'styled-components';
 
 interface InputBoxProps {
   type: 'text' | 'password';
-  value?: string | number;
+  value: string | number;
   placeholder?: string;
-  onChangeHandler?: (e: React.FormEvent<HTMLInputElement>) => void;
+  onChangeHandler: (e: React.FormEvent<HTMLInputElement>) => void;
   onKeyPressHandler?: (e: React.KeyboardEvent<HTMLDivElement>) => void;
-  onFocusHandler?: (e: React.FocusEvent<HTMLInputElement>) => void;
-  onBlurHandler?: (e: React.FocusEvent<HTMLInputElement>) => void;
   isDisabled?: boolean;
-  showBorder?: boolean;
   showTextCounter?: boolean;
   maxLen?: number;
   textLen?: number;
@@ -23,10 +20,7 @@ const InputBox = (
     placeholder,
     onChangeHandler,
     onKeyPressHandler,
-    onFocusHandler,
-    onBlurHandler,
     isDisabled,
-    showBorder = true,
     showTextCounter = false,
     maxLen,
     textLen,
@@ -42,10 +36,7 @@ const InputBox = (
         placeholder={placeholder}
         onChange={onChangeHandler}
         onKeyPress={onKeyPressHandler}
-        onFocus={onFocusHandler}
-        onBlur={onBlurHandler}
         disabled={isDisabled}
-        showBorder={showBorder}
       />
       {showTextCounter ? <InputCounter>{`${textLen}/${maxLen}`}</InputCounter> : <></>}
     </Wrapper>
@@ -61,12 +52,12 @@ const Wrapper = styled.div`
   height: 100%;
 `;
 
-const Input = styled.input<{ showBorder: boolean }>`
+const Input = styled.input`
   padding: 3px 0;
   width: 100%;
   height: 100%;
   border: none;
-  border-bottom: ${(props) => (props.showBorder ? '1px solid black' : '')};
+  border-bottom: 1px solid black;
   font: ${(props) => props.theme.paragraphsP3R};
   color: black;
   background-color: transparent;

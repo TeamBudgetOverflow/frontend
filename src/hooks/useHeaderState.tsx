@@ -8,21 +8,6 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
   const navigate = useNavigate();
   const [showSearchBtn, setShowSearchBtn] = useState<boolean>(false);
   const [showSearchBar, setShowSearchBar] = useState<boolean>(false);
-  const [keyword, setKeyword] = useState<string>('');
-  const handleKeywordChange = (keyword: string) => {
-    setKeyword(keyword);
-  };
-  const handleKeypress = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.code === 'Enter') {
-      return navigate(
-        {
-          pathname: '/goals/lookup/search',
-          search: `?keyword=${keyword}`,
-        },
-        { replace: true }
-      );
-    }
-  };
 
   const handleSearchClick = () => {
     if (pathname.includes('/goals/lookup'))
@@ -131,9 +116,6 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
       return;
     }
     if (pathname === '/goals/lookup/search') {
-      if (pathname.split('keyword=')[1] === undefined) {
-        setKeyword('');
-      }
       setShowSearchBar(true);
       setShowPrevBtn(true);
       setShowSearchBtn(false);
@@ -154,14 +136,11 @@ const useHeaderState = ({ pathname }: { pathname: string }) => {
     showSurveyBtn,
     showPrevBtn,
     showSearchBar,
-    keyword,
     showSettingsBtn,
     handleSearchClick,
     handleBugReport,
     handleSurvey,
     handlePrevClick,
-    handleKeywordChange,
-    handleKeypress,
     handleSettingsClick,
   };
 };
