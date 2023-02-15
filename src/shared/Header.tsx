@@ -3,7 +3,7 @@ import { useLocation } from 'react-router';
 import styled from 'styled-components';
 
 import Logo from '../components/common/elem/Logo';
-import SearchBar from '../components/header/SearchBar';
+import SearchInput from '../components/header/SearchInput';
 import Icon from '../components/common/elem/Icon';
 
 import useHeaderState from '../hooks/useHeaderState';
@@ -21,14 +21,11 @@ const Header = (props: HeaderProps, ref: Ref<HTMLDivElement>) => {
     showSurveyBtn,
     showPrevBtn,
     showSearchBar,
-    keyword,
     showSettingsBtn,
     handlePrevClick,
     handleBugReport,
     handleSurvey,
     handleSearchClick,
-    handleKeywordChange,
-    handleKeypress,
     handleSettingsClick,
   } = useHeaderState({ pathname });
 
@@ -49,12 +46,7 @@ const Header = (props: HeaderProps, ref: Ref<HTMLDivElement>) => {
         />
       </Button>
       <SearchBarWrapper>
-        <SearchBar
-          show={showSearchBar}
-          value={keyword}
-          changeHandler={handleKeywordChange}
-          keyPressHandler={handleKeypress}
-        />
+        <SearchInput show={showSearchBar} pathname={pathname} />
       </SearchBarWrapper>
       <PageNameWrapper>
         <PageName show={!showSearchBar}>{pageName}</PageName>
