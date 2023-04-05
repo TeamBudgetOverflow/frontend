@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 
-import { IGoalDetail, IPostGoal, ISearchFilter, ISearchGoal, SortType, StatusType } from '../interfaces/interfaces';
+import { IGoalDetail, IPostGoal, ISearchFilter, ISearchGoal } from '../interfaces/interfaces';
 
 const { persistAtom } = recoilPersist();
 
@@ -70,26 +70,22 @@ export const searchFilters = atom<ISearchFilter>({
 
 export const groupGoals = atom<Array<ISearchGoal>>({
   key: 'groupGoals',
-  default: [
-    {
-      userId: 0,
-      goalId: 0,
-      nickname: '',
-      amount: 0,
-      curCount: 0,
-      headCount: 0,
-      startDate: new Date(),
-      endDate: new Date(),
-      period: 0,
-      status: 'proceeding',
-      title: '',
-      hashTag: [],
-      emoji: '',
-      description: '',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-  ],
+  default: [],
+});
+
+export const scrollPosition = atom({
+  key: 'scrollPosition',
+  default: 0,
+});
+
+export const cursor = atom({
+  key: 'cursor',
+  default: 0,
+});
+
+export const goalId = atom({
+  key: 'goalId',
+  default: 0,
 });
 
 export const isSearchGoalLastPage = atom<boolean>({
@@ -100,9 +96,4 @@ export const isSearchGoalLastPage = atom<boolean>({
 export const searchGoalLastUpdate = atom<Date>({
   key: 'searchGoalLastUpdate',
   default: new Date(),
-});
-
-export const detailGoalId = atom<number>({
-  key: 'detailGoalId',
-  default: 0,
 });
