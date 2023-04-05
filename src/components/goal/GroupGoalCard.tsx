@@ -10,8 +10,6 @@ import { dateStringTranslator } from '../../utils/dateTranslator';
 
 import { GoalStatus, GoalStatusStringtoType, ISearchGoal } from '../../interfaces/interfaces';
 
-import { detailGoalId } from '../../recoil/goalsAtoms';
-
 interface GroupGoalCardProps {
   goal: ISearchGoal;
   goalClickHandler: (goalId: number) => void;
@@ -19,10 +17,8 @@ interface GroupGoalCardProps {
 
 const GroupGoalCard = ({ goal, goalClickHandler }: GroupGoalCardProps) => {
   const status = GoalStatusStringtoType(goal.status);
-  const saveGoalId = useSetRecoilState(detailGoalId);
 
   const handleDetailGoal = () => {
-    saveGoalId(goal.goalId);
     goalClickHandler(goal.goalId);
   };
 

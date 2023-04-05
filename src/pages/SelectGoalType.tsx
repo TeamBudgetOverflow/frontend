@@ -1,10 +1,7 @@
-import React, { useEffect } from 'react';
-import { useSetRecoilState } from 'recoil';
+import React from 'react';
 import styled from 'styled-components';
 
 import TypeSelect from '../components/goal/post/TypeSelectSection';
-
-import { detailGoalId } from '../recoil/goalsAtoms';
 
 export enum GoalType {
   group,
@@ -13,11 +10,6 @@ export enum GoalType {
 }
 
 const SelectGoalType = () => {
-  const setGoalId = useSetRecoilState(detailGoalId);
-  useEffect(() => {
-    setGoalId(0);
-  }, []);
-
   return (
     <Wrapper>
       <TypeSelect />
